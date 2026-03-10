@@ -35,9 +35,15 @@ book:
 
   chapters:
   - index.qmd
+  #- fundamentos-estocasticos.qmd
+  #- 02-edes-saltos.qmd
+  #- 03-metodos-numericos.qmd
+  #- 04-modelo-actuarial.qmd
+  #- 05-resultados-simulacion.qmd
+  #- 06-conclusiones.qmd
   - intro.qmd
   - references.qmd
-  - sumary.qmd
+  - summary.qmd
 comments:
   hypothesis: true
 
