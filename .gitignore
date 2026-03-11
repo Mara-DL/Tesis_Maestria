@@ -1,3 +1,8 @@
-
-/.quarto/
-**/*.quarto_ipynb
+_book/
+.quarto/
+project-cache/
+*.html_book
+*.tex
+*.pdf
+deno-kv-file*
+site_libs/
