@@ -17,7 +17,6 @@ book:
   date: "09/03/2026"
   output-file: "Tesis_Maestria_MDL"
   image: assets/UNACH.png
-  cover-image: assets/logofcfm.png
   sharing: [twitter, facebook]
   downloads: [pdf, epub]
   favicon: assets/UNACH.png
@@ -34,16 +33,15 @@ book:
   page-navigation: true
 
   chapters:
-  - index.qmd
-  #- fundamentos-estocasticos.qmd
-  #- 02-edes-saltos.qmd
-  #- 03-metodos-numericos.qmd
-  #- 04-modelo-actuarial.qmd
-  #- 05-resultados-simulacion.qmd
-  #- 06-conclusiones.qmd
-  - intro.qmd
-  - references.qmd
-  - summary.qmd
+    - index.qmd
+    - intro.qmd
+    - fundamentos_estocasticos.qmd
+    - edes_saltos.qmd
+    - metodos-numericos.qmd
+    - modelo-actuarial.qmd
+    - resultados_simulacion.qmd
+    - conclusiones.qmd
+    - references.qmd
 comments:
   hypothesis: true
 
@@ -62,9 +60,6 @@ format:
       body-width: 900px
       margin-width: 300px
       gutter-width: 1.5rem
-    code-copy: true
-    code-fold: true
-    toc-location: right
 
   pdf:
     lang: es
@@ -81,5 +76,12 @@ format:
 
   epub:
     cover-image: assets/UNACH.png
+
+# === SECCIÓN DE PUBLICACIÓN ===
+publish:
+  - id: github-pages
+    type: gh-pages
+    branch: gh-pages
+    repo: Mara-DL/Tesis_Maestria
 
 editor: visual

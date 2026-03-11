@@ -116,12 +116,12 @@
 
 
 % packa.tex - Paquetes LaTeX personalizados
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{hyperref}
 \usepackage{booktabs}
 \usepackage{float}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
 \makeatletter
 \@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
 \makeatother
@@ -199,15 +199,14 @@ diferenciales estocasticas con saltos}
 
 \bookmarksetup{startatroot}
 
-\chapter*{Preface}\label{preface}
-\addcontentsline{toc}{chapter}{Preface}
+\chapter*{}\label{section}
+\addcontentsline{toc}{chapter}{}
 
-\markboth{Preface}{Preface}
+\markboth{}{}
 
-This is a Quarto book.
+\bookmarksetup{startatroot}
 
-To learn more about Quarto books visit
-\url{https://quarto.org/docs/books}.
+\chapter{Introducción}\label{introducciuxf3n}
 
 \bookmarksetup{startatroot}
 
@@ -235,18 +234,51 @@ alta densidad poblacional y valor patrimonial de los inmuebles .
 
 \bookmarksetup{startatroot}
 
+\chapter{Resultados Técnicos
+Fundamentales}\label{resultados-tuxe9cnicos-fundamentales}
+
+En esta sección se presentan con detalle los resultados clave que
+sustentan la demostración del teorema de isometría de Itô para la parte
+de saltos. Se asume que
+\((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t\geq0}, \mathbb{P})\) es un
+espacio de probabilidad filtrado que satisface las condiciones usuales,
+\(Z\) es un espacio métrico separable completo, y \(\nu\) es una medida
+\(\sigma\)-finita sobre \((Z, \mathcal{B}(Z))\). Sea
+\(\widetilde{N}(ds,dz) = N(ds,dz) - \nu(dz)ds\) la medida aleatoria
+compensada asociada a una medida de Poisson.\}
+\textbackslash begin\{teorema\}{[}Teorema de Convergencia
+Dominada{]}\label{thm:dct} Sea \((X, \mathcal{A}, \mu)\) un espacio de
+medida y \(\{f_n\}_{n\in\mathbb{N}}\) una sucesión de funciones
+\(\mu\)-medibles \(f_n : X \to \mathbb{R}\). Supongamos que:
+
+\bookmarksetup{startatroot}
+
+\chapter{}\label{section-1}
+
+\bookmarksetup{startatroot}
+
+\chapter{}\label{section-2}
+
+\bookmarksetup{startatroot}
+
+\chapter{}\label{section-3}
+
+\bookmarksetup{startatroot}
+
+\chapter{}\label{section-4}
+
+\bookmarksetup{startatroot}
+
+\chapter{}\label{section-5}
+
+\bookmarksetup{startatroot}
+
 \chapter*{References}\label{references}
 \addcontentsline{toc}{chapter}{References}
 
 \markboth{References}{References}
 
 \protect\phantomsection\label{refs}
-
-\bookmarksetup{startatroot}
-
-\chapter{Summary}\label{summary}
-
-In summary, this book has no content whatsoever.
 
 
 
