@@ -4,7 +4,7 @@
     "href": "Introduccion.html",
     "title": "2  Introducción",
     "section": "",
-    "text": "La Ciudad de México (CDMX) representa uno de los mercados más relevantes para el sector asegurador mexicano. Según el Censo de Población y Vivienda 2020 del INEGI negi2020censo, la CDMX contaba con \\(2330816\\) viviendas particulares habitadas. Ajustando por un crecimiento demográfico estimado del \\(SI{0.5}\\) anual, para el periodo 2024–2025 se proyecta un parque habitacional de aproximadamente \\(2378000\\) unidadesssion of literate programming.\nDe acuerdo con el Panorama Analítico del Sector de Seguros y Fianzas 2024 publicado por la Comisión Nacional de Seguros y Fianzas (CNSF), el ramo de Daños sin Automóviles registró una colocación de \\(12200\\) millones de pesos en 2024, estimándose que aproximadamente el corresponde a seguros de vivienda, lo que equivale a primas del orden de \\(7320\\) millones de pesos.\nEstudios de la Asociación Mexicana de Instituciones de Seguros (AMIS) y consultoras especializadas (Marsh, AON) indican que la CDMX concentra entre el SI 22 del mercado nacional de seguros de vivienda, debido a su alta densidad poblacional y valor patrimonial de los inmuebles. cumputacion",
+    "text": "La Ciudad de México (CDMX) representa uno de los mercados más relevantes para el sector asegurador mexicano. Según el Censo de Población y Vivienda 2020 del INEGI((INEGI 2020)), la CDMX contaba con \\(2330816\\) viviendas particulares habitadas. Ajustando por un crecimiento demográfico estimado del \\(SI{0.5}\\) anual, para el periodo 2024–2025 se proyecta un parque habitacional de aproximadamente \\(2378000\\) unidadesssion of literate programming.\nDe acuerdo con el Panorama Analítico del Sector de Seguros y Fianzas 2024 publicado por la Comisión Nacional de Seguros y Fianzas (CNSF), el ramo de Daños sin Automóviles registró una colocación de \\(12200\\) millones de pesos en 2024, estimándose que aproximadamente el corresponde a seguros de vivienda, lo que equivale a primas del orden de \\(7320\\) millones de pesos.\nEstudios de la Asociación Mexicana de Instituciones de Seguros (AMIS) y consultoras especializadas (Marsh, AON) indican que la CDMX concentra entre el SI 22 del mercado nacional de seguros de vivienda, debido a su alta densidad poblacional y valor patrimonial de los inmuebles.\n\n\n\n\nINEGI. 2020. Censo de Población y Vivienda 2020. Instituto Nacional de Estadística y Geografía. https://www.inegi.org.mx/.",
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Introducción</span>"
     ]
@@ -17,6 +17,16 @@
     "text": "En esta sección se presentan con detalle los resultados clave que sustentan la demostración del teorema de isometría de Itô para la parte de saltos. Se asume que \\((\\Omega, \\mathcal{F}, \\{\\mathcal{F}_t\\}_{t\\geq0}, \\mathbb{P})\\) es un espacio de probabilidad filtrado que satisface las condiciones usuales, \\(Z\\) es un espacio métrico separable completo, y \\(\\nu\\) es una medida \\(\\sigma\\)-finita sobre \\((Z, \\mathcal{B}(Z))\\). Sea \\(\\widetilde{N}(ds,dz) = N(ds,dz) - \\nu(dz)ds\\) la medida aleatoria compensada asociada a una medida de Poisson.\n\n\nTeorema 3.1 (Convergencia dominada) Sea \\((X, \\mathcal{A}, \\mu)\\) un espacio de medida y \\(\\{f_n\\}_{n\\in\\mathbb{N}}\\) una sucesión de funciones \\(\\mu\\)-medibles \\(f_n : X \\to \\mathbb{R}\\). Supongamos que:",
     "crumbs": [
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Resultados técnicos fundamentales</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "Referencias",
+    "section": "",
+    "text": "INEGI. 2020. Censo de Población y Vivienda 2020. Instituto\nNacional de Estadística y Geografía. https://www.inegi.org.mx/.",
+    "crumbs": [
+      "Referencias"
     ]
   }
 ]
