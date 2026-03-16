@@ -12,11 +12,11 @@
   {
     "objectID": "fundamentos_estocasticos.html",
     "href": "fundamentos_estocasticos.html",
-    "title": "3  Resultados técnicos fundamentales",
+    "title": "1 ",
     "section": "",
-    "text": "En esta sección se presentan con detalle los resultados clave que sustentan la demostración del teorema de isometría de Itô para la parte de saltos. Se asume que \\((\\Omega, \\mathcal{F}, \\{\\mathcal{F}_t\\}_{t\\geq0}, \\mathbb{P})\\) es un espacio de probabilidad filtrado que satisface las condiciones usuales, \\(Z\\) es un espacio métrico separable completo, y \\(\\nu\\) es una medida \\(\\sigma\\)-finita sobre \\((Z, \\mathcal{B}(Z))\\). Sea \\(\\widetilde{N}(ds,dz) = N(ds,dz) - \\nu(dz)ds\\) la medida aleatoria compensada asociada a una medida de Poisson.\n\n\nTeorema 3.1 (Convergencia dominada) Sea \\((X, \\mathcal{A}, \\mu)\\) un espacio de medida y \\(\\{f_n\\}_{n\\in\\mathbb{N}}\\) una sucesión de funciones \\(\\mu\\)-medibles \\(f_n : X \\to \\mathbb{R}\\). Supongamos que:\n\n\\(f_n(x)\\rightarrow f(x) \\quad \\mu\\text{-casi en todas partes},\\)\nExiste una función \\(g \\in L^1(X, \\mathcal{A}, \\mu)\\) tal que \\(|f_n(x)| \\leq g(x)\\) para \\(\\mu\\)-casi todo \\(x \\in X\\) y todo \\(n \\in \\mathbb{N}\\).\n\nEntonces \\(f \\in L^1(\\mu)\\) y\n\\[\\lim_{n \\to \\infty} \\int_X f_n \\, d\\mu = \\int_X f \\, d\\mu.\\]",
+    "text": "1",
     "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Resultados técnicos fundamentales</span>"
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>fundamentos_estocasticos.html</span>"
     ]
   },
   {
