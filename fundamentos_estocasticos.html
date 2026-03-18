@@ -437,6 +437,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#herramientas-de-análisis-funcional" id="toc-herramientas-de-análisis-funcional" class="nav-link" data-scroll-target="#herramientas-de-análisis-funcional"><span class="header-section-number">3.3.1</span> Herramientas de análisis funcional</a></li>
   <li><a href="#marco-probabilístico-y-notación" id="toc-marco-probabilístico-y-notación" class="nav-link" data-scroll-target="#marco-probabilístico-y-notación"><span class="header-section-number">3.3.2</span> Marco probabilístico y notación</a></li>
+  <li><a href="#medida-aleatoria-de-poisson-y-su-compensación" id="toc-medida-aleatoria-de-poisson-y-su-compensación" class="nav-link" data-scroll-target="#medida-aleatoria-de-poisson-y-su-compensación"><span class="header-section-number">3.3.3</span> Medida aleatoria de Poisson y su compensación</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/fundamentos_estocasticos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/fundamentos_estocasticos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
@@ -713,7 +714,64 @@ Consideramos ahora la desigualdad de Doob para martingalas: para <span class="ma
 <div id="def-Espacio_probabilidad_filtrado" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.10</strong></span> &nbsp;</p>
 Sea <span class="math inline">\((\Omega, \mathcal{F}, \mathbb{P})\)</span> un espacio de probabilidad y <span class="math inline">\(\{\mathcal{F}_t\}_{t \geq 0}\)</span> una filtración, es decir, una familia creciente de sub-<span class="math inline">\(\sigma\)</span>-álgebras de <span class="math inline">\(\mathcal{F}\)</span>: <span class="math display">\[\mathcal{F}_s \subseteq \mathcal{F}_t \subseteq \mathcal{F} \quad \text{para todo } 0 \leq s \leq t.\]</span> Se dice que la filtración satisface las hipótesis usuales si cumple las siguientes dos condiciones:
-<p>Completitud: La <span class="math inline">\(\sigma\)</span>-álgebra inicial <span class="math inline">\(\mathcal{F}_0\)</span> contiene todos los conjuntos <span class="math inline">\(\mathbb{P}\)</span>-nulos. Es decir: <span class="math display">\[\text{Si } A \in \mathcal{F} \text{ y } \mathbb{P}(A) = 0, \quad \text{entonces } A \in \mathcal{F}_0.\]</span></p>
+Completitud: La <span class="math inline">\(\sigma\)</span>-álgebra inicial <span class="math inline">\(\mathcal{F}_0\)</span> contiene todos los conjuntos <span class="math inline">\(\mathbb{P}\)</span>-nulos. Es decir: <span class="math display">\[\text{Si } A \in \mathcal{F} \text{ y } \mathbb{P}(A) = 0, \quad \text{entonces } A \in \mathcal{F}_0.\]</span> Como <span class="math inline">\(\mathcal{F}_0 \subseteq \mathcal{F}_t\)</span> para todo <span class="math inline">\(t\)</span>, esto implica que todos los conjuntos nulos están en cada <span class="math inline">\(\mathcal{F}_t\)</span>. En otras palabras, cada <span class="math inline">\(\mathcal{F}_t\)</span> es completa respecto a <span class="math inline">\(\mathbb{P}\)</span>.
+<p>Continuidad por la derecha: Para todo <span class="math inline">\(t \geq 0\)</span>, <span class="math display">\[\mathcal{F}_t = \bigcap_{s &gt; t} \mathcal{F}_s.\]</span></p>
+</div>
+<div id="def-Filtracion_natural" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 3.11</strong></span> Sea <span class="math inline">\(W = \{W_t\}_{t \geq 0}\)</span> un movimiento browniano. La es <span class="math inline">\(\ \mathcal{F}_t^W = \sigma(W_s : s \leq t)\)</span>. La filtración usual asociada es <span class="math display">\[\mathcal{F}_t = \bigcap_{s &gt; t} \sigma(\mathcal{F}_s^W \cup \mathcal{N}),\]</span> donde <span class="math inline">\(\mathcal{N}\)</span> es la colección de todos los conjuntos <span class="math inline">\(\mathbb{P}\)</span>-nulos.</p>
+</div>
+<div id="def-Tiempo_paro" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 3.12</strong></span> Una variable aleatoria <span class="math inline">\(\tau : \Omega \to [0,\infty]\)</span> es un tiempo de paro respecto a <span class="math inline">\(\{\ \mathcal{F} \}\)</span> si <span class="math inline">\(\{\tau \leq t\} \in \mathcal{F}_t\)</span> para todo <span class="math inline">\(t \geq 0\)</span>.</p>
+</div>
+<div id="def-Tiempos_paro_controlados" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 3.13</strong></span> Un tiempo de paro <span class="math inline">\(\{\tau &lt; t\} \in \mathcal{F}_t\)</span> para todo <span class="math inline">\(t\)</span>. La continuidad por la derecha se deduce que <span class="math display">\[\{\tau &lt; t\} = \bigcup_{q \in \mathbb{Q}, q &lt; t} \{\tau \leq q\} \in \mathcal{F}_t.\]</span></p>
+</div>
+<div id="def-Semimartingalas_saltos" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 3.14</strong></span> &nbsp;</p>
+Un proceso <span class="math inline">\(Y = \{Y_t\}_{t \geq 0}\)</span> es una semimartingala si admite la descomposición canónica <span class="math display">\[Y_t = Y_0 + Y_t^c + \sum_{s \leq t} \Delta Y_s,\]</span> donde:
+</div>
+<div id="def-Proceso_Wiener" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 3.15</strong></span> &nbsp;</p>
+Sea <span class="math inline">\((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t \geq 0}, \mathbb{P})\)</span> un espacio de probabilidad filtrado. Un proceso de Wiener es un proceso estocástico <span class="math inline">\(W = \{W(t)\}_{t \geq 0}\)</span> que satisface las siguientes propiedades:
+<p>Condición inicial:<br>
+<span class="math display">\[ W(0) = 0 \quad \text{casi seguramente}.\]</span></p>
+<p>Trayectorias continuas:<br>
+Casi todas las trayectorias <span class="math inline">\(t \mapsto W(t,\omega)\)</span> son funciones continuas en <span class="math inline">\([0, \infty)\)</span>.</p>
+<p>Incrementos independientes: Para cualesquiera <span class="math inline">\(0 \leq t_0 &lt; t_1 &lt; \cdots &lt; t_n\)</span>, los incrementos<br>
+<span class="math display">\[W(t_1) - W(t_0), \; W(t_2) - W(t_1), \; \dots, \; W(t_n) - W(t_{n-1})\]</span> son independientes como variables aleatorias reales.</p>
+Incrementos estacionarios y gaussianos:<br>
+Para todo <span class="math inline">\(0 \leq s &lt; t\)</span>, el incremento <span class="math inline">\(W(t) - W(s)\)</span> tiene distribución normal con media cero y varianza <span class="math inline">\(t - s\)</span>:<br>
+<span class="math display">\[W(t) - W(s) \sim \mathcal{N}(0, t - s).\]</span>
+<p>Adaptación:<br>
+El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <span class="math inline">\(\{\mathcal{F}_t\}_{t \geq 0}\)</span>, es decir, <span class="math inline">\(W(t)\)</span> es <span class="math inline">\(\mathcal{F}_t\)</span>-medible para todo <span class="math inline">\(t \geq 0\)</span>.</p>
+</div>
+</section>
+<section id="medida-aleatoria-de-poisson-y-su-compensación" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="medida-aleatoria-de-poisson-y-su-compensación"><span class="header-section-number">3.3.3</span> Medida aleatoria de Poisson y su compensación</h3>
+<div id="def-Espacio_topológico_Hausdorff" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 3.16</strong></span> &nbsp;</p>
+Sea <span class="math inline">\((Z, \tau)\)</span> un espacio topológico, es decir, <span class="math inline">\(Z\)</span> es un conjunto no vacío y <span class="math inline">\(\tau \subseteq \mathcal{P}(Z)\)</span> es una colección de subconjuntos (llamados abiertos) que satisface
+<p>Se dice que <span class="math inline">\((Z, \tau)\)</span> es un espacio Hausdorff (o <span class="math inline">\(T_2\)</span>) si satisface la siguiente propiedad de separación: Para todo par de puntos distintos <span class="math inline">\(x, y \in Z\)</span>, con <span class="math inline">\(x \neq y\)</span>, existen abiertos <span class="math inline">\(U, V \in \tau\)</span> tales que: <span class="math display">\[x \in U,\quad y \in V,\quad \text{y} \quad U \cap V = \varnothing.\]</span></p>
+</div>
+<div class="callout callout-style-default callout-caution no-icon callout-titled" style="text-align: justify">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Precaución</span>Ejemplo (<strong><em>Espacio topológicoHausdorff</em></strong>)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>El espacio <span class="math inline">\(Z= \mathbb{R}\)</span> con topología euclidiana. Es métrico, y todo espacio métrico es Hausdorff.</p>
+</div>
+</div>
+</div>
+<div id="def-Espacio_Lusin" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 3.17</strong></span> &nbsp;</p>
+n espacio de Lusin es un espacio topológico Hausdorff <span class="math inline">\(Z\)</span> que es imagen continua e inyectiva de un espacio polaco.
 </div>
 
 
