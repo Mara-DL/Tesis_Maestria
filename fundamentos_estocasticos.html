@@ -433,7 +433,11 @@ window.Quarto = {
   <li><a href="#integral-como-proceso-y-propiedades" id="toc-integral-como-proceso-y-propiedades" class="nav-link" data-scroll-target="#integral-como-proceso-y-propiedades"><span class="header-section-number">3.2.5</span> Integral como proceso y propiedades</a></li>
   <li><a href="#extensión-por-localización" id="toc-extensión-por-localización" class="nav-link" data-scroll-target="#extensión-por-localización"><span class="header-section-number">3.2.6</span> Extensión por localización</a></li>
   </ul></li>
-  <li><a href="#fórmula-de-itô." id="toc-fórmula-de-itô." class="nav-link" data-scroll-target="#fórmula-de-itô."><span class="header-section-number">3.3</span> Fórmula de Itô.</a></li>
+  <li><a href="#fórmula-de-itô." id="toc-fórmula-de-itô." class="nav-link" data-scroll-target="#fórmula-de-itô."><span class="header-section-number">3.3</span> Fórmula de Itô.</a>
+  <ul class="collapse">
+  <li><a href="#herramientas-de-análisis-funcional" id="toc-herramientas-de-análisis-funcional" class="nav-link" data-scroll-target="#herramientas-de-análisis-funcional"><span class="header-section-number">3.3.1</span> Herramientas de análisis funcional</a></li>
+  <li><a href="#marco-probabilístico-y-notación" id="toc-marco-probabilístico-y-notación" class="nav-link" data-scroll-target="#marco-probabilístico-y-notación"><span class="header-section-number">3.3.2</span> Marco probabilístico y notación</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/fundamentos_estocasticos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/fundamentos_estocasticos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
@@ -695,8 +699,25 @@ Consideramos ahora la desigualdad de Doob para martingalas: para <span class="ma
 \end{align*}\]</span> Sustituyendo en la expresión anterior para <span class="math inline">\(v(t)\)</span>, se sigue que <span class="math display">\[v(t) \leq \alpha(t) \Bigl( \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right) - 1 \Bigr).\]</span> Finalmente, combinando con la desigualdad <span class="math inline">\(u(t) \leq \alpha(t) + v(t)\)</span>, obtenemos <span class="math display">\[u(t) \leq \alpha(t) + \alpha(t) \Bigl( \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right) - 1 \Bigr)
 = \alpha(t) \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right),\]</span> lo cual concluye la demostración. El caso <span class="math inline">\(\alpha \equiv 0\)</span> se deduce inmediatamente: la desigualdad implica <span class="math inline">\(u(t) \leq 0\)</span>. Si además <span class="math inline">\(u \geq 0\)</span>, entonces <span class="math inline">\(u \equiv 0\)</span> en <span class="math inline">\([0,T]\)</span>.</p>
 </div>
+<div id="thm-Modificacion_cadlag" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 3.20</strong></span> Toda martingala local en un espacio filtrado que satisface las hipótesis usuales admite una versión cádlág.</p>
+</div>
+<section id="herramientas-de-análisis-funcional" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="herramientas-de-análisis-funcional"><span class="header-section-number">3.3.1</span> Herramientas de análisis funcional</h3>
+<div id="thm-Principio_contracción_Banach" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 3.21</strong></span> Sea <span class="math inline">\((H, \|\cdot\|)\)</span> un espacio de Banach y <span class="math inline">\(\Phi: H \to H\)</span> una contracción, es decir, existe <span class="math inline">\(\kappa &lt; 1\)</span> tal que <span class="math inline">\(\|\Phi(x) - \Phi(y)\| \leq \kappa \|x - y\|\)</span> para todo <span class="math inline">\(x, y \in H\)</span>. Entonces <span class="math inline">\(\Phi\)</span> tiene un único punto fijo en <span class="math inline">\(H\)</span>.</p>
+</div>
+</section>
+<section id="marco-probabilístico-y-notación" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="marco-probabilístico-y-notación"><span class="header-section-number">3.3.2</span> Marco probabilístico y notación</h3>
+<div id="def-Espacio_probabilidad_filtrado" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 3.10</strong></span> &nbsp;</p>
+Sea <span class="math inline">\((\Omega, \mathcal{F}, \mathbb{P})\)</span> un espacio de probabilidad y <span class="math inline">\(\{\mathcal{F}_t\}_{t \geq 0}\)</span> una filtración, es decir, una familia creciente de sub-<span class="math inline">\(\sigma\)</span>-álgebras de <span class="math inline">\(\mathcal{F}\)</span>: <span class="math display">\[\mathcal{F}_s \subseteq \mathcal{F}_t \subseteq \mathcal{F} \quad \text{para todo } 0 \leq s \leq t.\]</span> Se dice que la filtración satisface las hipótesis usuales si cumple las siguientes dos condiciones:
+<p>Completitud: La <span class="math inline">\(\sigma\)</span>-álgebra inicial <span class="math inline">\(\mathcal{F}_0\)</span> contiene todos los conjuntos <span class="math inline">\(\mathbb{P}\)</span>-nulos. Es decir: <span class="math display">\[\text{Si } A \in \mathcal{F} \text{ y } \mathbb{P}(A) = 0, \quad \text{entonces } A \in \mathcal{F}_0.\]</span></p>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
