@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>edes_saltos – Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos</title>
+<title>4&nbsp; Ecuaciones diferenciales estocásticas – Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -82,16 +82,45 @@ ul.task-list li input[type="checkbox"] {
   });
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta property="og:title" content="Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="4&nbsp; Ecuaciones diferenciales estocásticas – Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos">
 <meta property="og:image" content="assets/UNACH.png">
 <meta property="og:site_name" content="Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos">
-<meta name="twitter:title" content="Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos">
+<meta name="twitter:title" content="4&nbsp; Ecuaciones diferenciales estocásticas – Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos">
 <meta name="twitter:image" content="assets/UNACH.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar floating fullcontent quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -260,7 +289,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./edes_saltos.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">edes_saltos.html</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./edes_saltos.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
@@ -348,7 +377,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./edes_saltos.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">edes_saltos.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -386,16 +415,118 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-sde-con-difusión-y-saltos" id="toc-teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-sde-con-difusión-y-saltos" class="nav-link active" data-scroll-target="#teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-sde-con-difusión-y-saltos"><span class="header-section-number">4.1</span> Teorema de existencia y unicidad global de una solución fuerte para la SDE con difusión y saltos</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/edes_saltos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/edes_saltos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
+    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas</span></h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
 
 
+</header>
 
 
+<section id="teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-sde-con-difusión-y-saltos" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-sde-con-difusión-y-saltos"><span class="header-section-number">4.1</span> Teorema de existencia y unicidad global de una solución fuerte para la SDE con difusión y saltos</h2>
+<div id="def-Solucion_fuerte" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 4.1</strong></span> <span class="math inline">\(\{x_t\}_{t\geq0}\)</span> es una solución <span class="math inline">\((\mathcal{F}_t-)\)</span> de<br>
+<span id="eq-1"><span class="math display">\[\begin{split}
+x_t = x_0 &amp;+ \int_0^t b(s,x_s,\omega)\,ds
+           + \int_0^t \sigma(s,x_s,\omega)\,dw_s \\
+          &amp; \ \ \ \ \ \ \ \ \ \ \ +  \int_0^t\int_Z R(s,x_{s-},z,\omega)\,\tilde{N}_t(ds,dz),
+          \qquad t\geq 0
+\end{split} \tag{4.1}\]</span></span> si y solo si <span class="math inline">\(\{x_t\}_{t\geq}0\)</span> satisface la <a href="#eq-1" class="quarto-xref">Ecuación&nbsp;<span>4.1</span></a>. en el caso que <span class="math inline">\(x_t\in \mathcal{F}_t^{\omega_s}, \forall t \geq 0,\)</span> donde <span class="math inline">\(\mathcal{F}_t^{\omega_s}\)</span> es la <span class="math inline">\(\sigma\)</span>-álgebra generada por <span class="math inline">\(\omega_s, s\leq t\)</span>, es una solución fuerte</p>
+</div>
+<div style="text-align:justify">
+<p>Consideramos el espacio: <span id="eq-2"><span class="math display">\[\begin{split}
+      \small S_{\mathcal{F}}^{2,loc}(R) = \left\lbrace\begin{array}{c}f(t,\omega):f(t,\omega) \text{\ es \ } \mathcal{F}_t- \text{adaptada, de valor real, tal que}
+       \\
+     \mathbb{E} [sup_{t\in[0,T]} |f(t,\omega)|]^2 &lt; \infty, \forall T &lt; \infty  \end{array}\right\rbrace
+\end{split} \tag{4.2}\]</span></span></p>
+</div>
+<div id="thm-exis_uni_glo_fuerte_SDE" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 4.1</strong></span> Suponga que:</p>
+<ol type="1">
+<li><p><span class="math inline">\(b\)</span> y <span class="math inline">\(\sigma : [0,\infty) \times \mathbb{R} \times \Omega \to \mathbb{R}\)</span>,<span class="math inline">\(R : [0,\infty) \times \mathbb{R}\times Z \times \Omega \to \mathbb{R}\)</span> son conjuntamente medibles y <span class="math inline">\(\mathcal{F}_t\)</span> -adaptadas, donde además <span class="math inline">\(R\)</span> es <span class="math inline">\(\mathcal{F}_t\)</span>-predecible, tales que <span class="math inline">\(P\)</span>-c.s.: <span class="math display">\[|b(t,x,\omega)| \leq \widetilde{c} (t)(1 + |x|),\]</span> <span class="math display">\[|\sigma(t,x,\omega)|^2 + \int_Z |R(t,x,z,\omega)|^2 \pi(dz) \leq \widetilde{c}(t)(1 + |x|^2),\]</span></p></li>
+<li><p><span class="math display">\[|b(t,x_1,\omega) - b(t,x_2,\omega)| \leq \widetilde{c}(t) |x_1 - x_2|,\]</span> <span class="math display">\[|\sigma(t,x_1,\omega) - \sigma(t,x_2,\omega)|^2 + \int_Z |R(t,x_1,z,\omega) - R(t,x_2,z,\omega)|^2 \pi(dz) \leq \widetilde{c}(t) |x_1 - x_2|^2,\]</span> donde <span class="math inline">\(\widetilde{c}(t)\)</span> satisface las mismas condiciones que en 1°;</p></li>
+<li><p><span class="math display">\[x_0 \in \mathcal{F}_0, \quad E|x_0|^2 &lt; \infty.\]</span> Entonces la <a href="#eq-1" class="quarto-xref">Ecuación&nbsp;<span>4.1</span></a> tiene una solución única por trayectoria, <span class="math inline">\(\mathcal{F}_t\)</span>-adaptada, <span class="math inline">\(\{x_t\}_{t \geq 0} \in S_{\mathcal{F}}^{2,\text{loc}}(\mathbb{R}^d)\)</span>.</p></li>
+</ol>
+<p>En el caso en que <span class="math inline">\(b(t,x,\omega)\)</span> y <span class="math inline">\(\sigma(t,x,\omega)\)</span> sean <span class="math inline">\(\mathcal{F}_t^{w,\tilde{N}}\)</span>-adaptadas, y <span class="math inline">\(R(t,x,z,\omega)\)</span> sea <span class="math inline">\(\mathcal{F}_t^{w,\tilde{N}}\)</span>-predecible, entonces la solución también es <span class="math inline">\(\mathcal{F}_t^{w,\tilde{N}}\)</span>-adaptada, es decir, es una solución fuerte.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Demostración</em>. </span>Para algún <span class="math inline">\(T &lt; \infty\)</span> fijo, se define la norma: <span class="math display">\[\| (x_{\cdot}) \|_M^2 = \sup_{t \in [0,T]} e^{-b_0 A(t)} \mathbb{E}[|x_t|^2],\]</span> donde: - <span class="math inline">\(A(t) := \int_0^t 4\widetilde{c}(s) ds\)</span>, - <span class="math inline">\(b_0 \geq 0\)</span> es una constante que se elegirá más adelante para hacer que el operador sea contractivo, - <span class="math inline">\(\widetilde{c}(s)\)</span> es la función no aleatoria que aparece en las hipótesis del Teorema 117 (crecimiento lineal y Lipschitz)</p>
+<p>Entonces, el espacio sobre el cual se aplica el principio de contracción es: <span class="math display">\[H = \left\{ \{x_t\} \in B :B \in L_{\mathfrak{F}}^{2}(\mathbb{R}), \  \| (x_{\cdot}) \|_M &lt; \infty \right\}.\]</span> Sea <span class="math inline">\(\Phi: H \to H\)</span> el operador definido por: <span class="math display">\[(\Phi(x))_t = x_0 + \int_0^t b(s, x_s, \omega)\,ds + \int_0^t \sigma(s, x_s, \omega)\,dW_s + \int_0^t \int_Z R(s, x_{s-}, z, \omega)\,\tilde{N}(ds, dz).\]</span> y sea <span class="math inline">\(X_t = x_t^{(1)} - x_t^{(2)}\)</span>, y <span class="math inline">\(Y_t = (\Phi(x^{(1)}))_t - (\Phi(x^{(2)}))_t\)</span>. Entonces para un <span class="math inline">\(\omega\)</span> fijo <span class="math display">\[Y_t = \int_0^t [b(s, x_s^{(1)}, \omega) - b(s, x_s^{(2)}, \omega)]\,ds + \int_0^t [\sigma(s, x_s^{(1)}, \omega) - \sigma(s, x_s^{(2)}, \omega)]\,dW_s\]</span> <span class="math display">\[+ \int_0^t \int_Z [R(s, x_{s-}^{(1)}, z, \omega) - R(s, x_{s-}^{(2)}, z, \omega)]\,\tilde{N}(ds, dz).\]</span> Por comodidad <span class="math display">\[Y_t = \int_0^t \Delta b_s\,ds + \int_0^t \Delta \sigma_s\,dW_s + \int_0^t \int_Z \Delta R_s(z)\,\tilde{N}(ds, dz),\]</span> donde <span class="math inline">\(\Delta b_s := b(s, x_s^{(1)}) - b(s, x_s^{(2)}), \Delta \sigma_s := \sigma(s, x_s^{(1)}) - \sigma(s, x_s^{(2)}), \Delta R_s(z) := R(s, x_{s-}^{(1)}, z) - R(s, x_{s-}^{(2)}, z)\)</span> Puesto que la función <span class="math inline">\(f(y) = y^2\)</span> tiene derivadas <span class="math inline">\(f'(y) = 2y, \ \ f''(y) = 2\)</span>, al aplicar la fórmula de Itô para semimartingalas con saltos, obtenemos <span class="math display">\[Y_t^2 = Y_0^2 + 2 \int_0^t Y_s \, dY_s^c + \int_0^t d\langle Y^c \rangle_s + \sum_{s \leq t} \left[ Y_s^2 - Y_{s-}^2 - 2 Y_{s-} \Delta Y_s \right],\]</span> donde: - <span class="math inline">\(dY_s^c = \Delta b_s \, ds + \Delta \sigma_s \, dW_s\)</span> es la parte continua, - <span class="math inline">\(d\langle Y^c \rangle_s = (\Delta \sigma_s)^2 \, ds\)</span> es la variación cuadrática de la parte continua, - <span class="math inline">\(\Delta Y_s = \int_Z \Delta R_s(z) \, N(\{s\}, dz)\)</span> es el tamaño del salto en el instante <span class="math inline">\(s\)</span>. Al reescribir a la versión integral ya desarrollada y aplicar la formula de itô para <span class="math inline">\(f(y) = y^2\)</span> aplicada a <span class="math inline">\(Y_t\)</span> <span class="math display">\[|Y_t|^2 = 2 \int_0^t Y_s \, \Delta b_s \, ds
++ 2 \int_0^t Y_s \, \Delta \sigma_s \, dW_s
++ \int_0^t |\Delta \sigma_s|^2 \, ds
++ 2 \int_0^t \int_Z Y_s \, \Delta R_s(z) \, \tilde{N}(ds, dz)\]</span> <span class="math display">\[+ \int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz).\]</span> Aplicando valor esperado y sus propiedades <span class="math display">\[\mathbb{E}[
+|Y_t|^2] = \mathbb{E}\left[2 \int_0^t Y_s \, \Delta b_s \, ds \right]
++\mathbb{E}\left[ 2 \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right]
++\mathbb{E}\left[ \int_0^t |\Delta \sigma_s|^2 \, ds
++ 2 \int_0^t \int_Z Y_s \, \Delta R_s(s,z) \, \tilde{N}(ds, dz)\right]\]</span> <span class="math display">\[\mathbb{E}\left[\int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz)\right]\]</span> Dado que los valores esperados de las integrales respecto a <span class="math inline">\(dW_s\)</span> y <span class="math inline">\(\widetilde{N}\)</span> son martingalas, <span class="math display">\[\mathbb{E}\left[ \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right] = 0,\]</span> <span class="math display">\[\mathbb{E} \left[  \int_0^t \int_Z Y_s \, \Delta R_s(z) \, \tilde{N}(ds, dz)\right]  = 0,\]</span> y puesto que <span class="math inline">\(\mathbb{E}[N(ds,dz)] = \pi(dz)ds,\)</span> se reduce a <span class="math display">\[\mathbb{E}[|Y_t|^2] = \mathbb{E}\left[\int_0^t \left(2Y_s \, \Delta b(s) \, + |\Delta \sigma(s)|^2 \ + \int_Z |\Delta R_s(s,z)|^2 \, \pi ( dz)\right) ds\right].\]</span> Nótese que para el primer término, al aplicar la desigualdad de Cauchy-Schwarz <span class="math inline">\(2Y_s\Delta b(s)\leq 2|Y_s||\Delta b(s)|,\)</span> y por las hipótesis de Lipschitz</p>
+<p><span class="math display">\[|\Delta b(s) |\leq \widetilde{c}(s)|X_s|, \ \ |\Delta \sigma(s)|^2 + \int_z |\Delta R(s.z)|^2 \pi(dz) \leq \widetilde{c}(s)|X_s|^2.\]</span> Además usando la desigualdad <span class="math inline">\(2ab \leq a^2 + b^2\)</span>, se tiene que <span class="math display">\[2Y_s\Delta b(s) \leq 2|Y_s |\widetilde{c}(s)|X_s| \leq \widetilde{c}(s)(|Y_s|^2 + |X_s|^2),\]</span> aplicando valor esperado y tomando el supremo <span class="math display">\[\mathbb{E}[|{Y_t}|^2] \leq \int_0^t \widetilde{c}(s) \left( \mathbb{E}[|{Y_s}|^2] + \mathbb{E}[|{X_s}|^2] \right) ds.\]</span> <span id="eq-3"><span class="math display">\[\mathbb{E}\!\left[ \sup_{0 \leq r \leq t} |{Y_r}|^2 \right] \leq \int_0^t \widetilde{c}(s) \left( \mathbb{E}\!\left[ \sup_{0 \leq r \leq s} |{Y_r}|^2 \right] + \!\left[ \sup_{0 \leq r \leq s} |{X_r}|^2 \right] \right) ds. \tag{4.3}\]</span></span></p>
+<p>Como se ha eliminado la parte estocástica al tomar el valor esperado anteriormente, se procederá a obtener un acotamiento determinista.</p>
+<p>Sea</p>
+<p><span class="math display">\[u(t) := \mathbb{E}\!\left[ \sup_{0 \leq r \leq t} |{Y_r}|^2 \right], \qquad v(t) := \mathbb{E}\!\left[ \sup_{0 \leq r \leq t} |{X_r}|^2 \right],\]</span></p>
+<p>entonces podemos reescribir <a href="#eq-3" class="quarto-xref">Ecuación&nbsp;<span>4.3</span></a> como</p>
+<p><span class="math display">\[u(t) \leq \int_0^t \widetilde{c}(s) \bigl( u(s) + v(s) \bigr) ds,\]</span></p>
+<p>aplicando la desigualdad de Gronwall</p>
+<p><span class="math display">\[u(t) \leq \int_0^t \widetilde{c}(s) v(s) \exp\!\left( \int_s^t \widetilde{c}(r) \, dr \right) ds.\]</span></p>
+<p>Multiplicamos ambos lados por <span class="math inline">\(e^{-b_0 A(t)}\)</span>, donde <span class="math inline">\(A(t) = \int_0^t 4\widetilde{c}(r),dr,\)</span> entonces</p>
+<p><span class="math display">\[e^{-b_0 A(t)}u(t) \leq e^{-b_0 A(t)}\int_0^t \widetilde{c}(s) v(s) \exp\!\left( \int_s^t \widetilde{c}(r) \, dr \right) ds.\]</span></p>
+<p>Notemos que</p>
+<p><span class="math display">\[\int_s^t \widetilde{c}(r) \, dr = \frac{1}{4} \bigl( A(t) - A(s) \bigr),\]</span></p>
+<p>y por lo tanto,</p>
+<p><span class="math display">\[\begin{align*}e^{-b_0 A(t)} u(t)&amp;\leq \int_0^t \widetilde{c}(s)v(s)\exp\!\left( \frac{1}{4}\bigl( A(t) - A(s) \bigr) -b_0 A(t)\right) ds \\  &amp; = \int_0^t \widetilde{c}(s)v(s)exp\left(-\left(b_0-\frac{1}{4}\right)A(t) - \frac{1}{4}A(s)\right)ds.\end{align*}\]</span></p>
+<p>Como <span class="math inline">\(v(s) \leq e^{b_0A(s)}\|{X}\|_M^2\)</span>, se tiene</p>
+<p><span class="math display">\[\begin{align*}e^{-b_0 A(t)} u(t)&amp;\leq \|{X}\|_M^2  \int_0^t \widetilde{c}(s)exp\left(-\left(b_0-\frac{1}{4}\right)A(t) - \frac{1}{4}A(s)\right)ds\end{align*}\]</span></p>
+<p>simplificando lo que esta dentro de la exponencial</p>
+<p><span class="math display">\[\left(-\left(b_0-\frac{1}{4}\right)A(t) - \frac{1}{4}A(s)\right) = \left(b_0-\frac{1}{4}\right)(A(s) -A(t)),\]</span></p>
+<p>se reduce a <span class="math display">\[\begin{align*}
+e^{-b_0 A(t)} u(t)
+&amp;\leq \|{X}\|_M^2  \int_0^t \widetilde{c}(s)exp \left(\left(b_0-\frac{1}{4}\right)(A(s) -A(t))\right) ds.
+\end{align*}\]</span> Dado que <span class="math inline">\(A(s)-A(t)\leq 0\)</span>, el término exponencial es menor que uno si <span class="math inline">\(b_0\geq\frac{1}{4}.\)</span> Por lo que haciendo un cambio de variable <span class="math inline">\(U = A(s)\)</span>, <span class="math inline">\(dU=\widetilde{c}(s)ds,\)</span> y <span class="math inline">\(A(t)= \int_0^t \widetilde{c}(s)ds\)</span> <span class="math display">\[\begin{align*}
+\int_0^t \widetilde{c}(s) exp\left(\left(b_0 - \frac{1}{4}\right)(A(s(-A(t))))\right)ds &amp; = \int_0^{A(t)}exp\left(\left( b_0 - \frac{1}{4}\right)(U-A(t))\right)dU\\
+&amp; = exp\left(-\left( b_0 - \frac{1}{4}\right)A(t)\right)\int_0^{A(t)}exp\left(\left( b_0 - \frac{1}{4}\right)U\right)dU,
+\end{align*}\]</span> Si <span class="math inline">\(b_0&gt;\frac{1}4{}\)</span></p>
+<p><span class="math display">\[\int_0^{A(t)}exp\left(\left( b_0 - \frac{1}{4}\right)U\right)dU = \frac{1}{b_0 - \frac{1}{4}}\left[exp\left(\left(b_0-\frac{1}{4}\right)A(t)\right)-1\right],\]</span> entonces <span class="math display">\[e^{-b_0A(t)} u(t) \leq \|{X}\|_M^2 \frac{1}{b_0-\frac{1}{4}}\left[1-exp\left(-\left(b_0-\frac{1}{4}\right)A(t)\right)\right]\leq\|{X}\|_M^2\frac{1}{b_0-\frac{1}{4}},\]</span> por lo tanto <span class="math display">\[\|{Y}\|_M^2 = \sup_{t\in[0,T]}e^{-b_0A(t)}u(t)\leq\frac{1}{b_0-\frac{1}{4}} \|{X}\|_M^2.\]</span> Elegimos apropiadamente a <span class="math inline">\(b_0&gt;\frac{5}{4}\)</span>, para que <span class="math inline">\(\frac{1}{b_0-\frac{1}{4}}&lt;1\)</span>, en consecuencia <span class="math inline">\(\Phi\)</span> es contractivo. Por el principio de contracción de Banach, <span class="math inline">\(\Phi\)</span>tiene un único punto fijo en <span class="math inline">\(H\)</span> , que es la solución única de la SDE.</p>
+<p>Ahora se demostrará que la solución es única por trayectoria. Sea <span class="math inline">\(x^{\prime}_{t}\)</span>, una versión RCLL del proceso <span class="math inline">\(x_t\)</span> que es solución de <a href="#eq-1" class="quarto-xref">Ecuación&nbsp;<span>4.1</span></a>, es decir para cada <span class="math inline">\(t \in [0,T]\)</span>, <span class="math inline">\(P(x^{\prime}_{t} \neq x_t) = 0\)</span>, <span class="math inline">\(x^{\prime}_{t}\)</span> es solución de <a href="#eq-1" class="quarto-xref">Ecuación&nbsp;<span>4.1</span></a> y es un proceso continuo por la derecha y con limite por la izquierda en <span class="math inline">\(t.\)</span></p>
+<p>Denotemos <span class="math inline">\(x^{\prime\prime}_{t}\)</span> y <span class="math inline">\(y_t\)</span> como <span class="math display">\[\begin{align*}
+x^{\prime\prime}_t = x_0 &amp;+ \int_0^t b(s,x_s,\omega)\,ds
+           + \int_0^t \sigma(s,x_s,\omega)\,dw_s \\
+          &amp; \ \ \ \ \ \ \ \ \ \ \ +  \int_0^t\!\int_Z R(s,x_{s-},z,\omega)\,\tilde{N}_t(ds,dz),
+          \qquad t\ \in [0,T]
+\end{align*}\]</span> <span class="math display">\[\begin{align*}
+y_t = x_0 &amp;+ \int_0^t b(s,x^{\prime}_s,\omega)\,ds
+           + \int_0^t \sigma(s,x^{\prime}_s,\omega)\,dw_s \\
+          &amp; \ \ \ \ \ \ \ \ \ \ \ +  \int_0^t\!\int_Z R(s,x^{\prime}_{s-},z,\omega)\,\tilde{N}_t(ds,dz),
+          \qquad t\in [0,T].
+\end{align*}\]</span> Dado que <span class="math inline">\(x^{\prime}\)</span> es una versión RCLL de un proceso adaptado, por el teorema (<em>) <span class="math inline">\(x^{\prime}\)</span> es adaptado. \ Puesto que <span class="math inline">\(x_t \in L^2(\Omega \times [0,T])\)</span> y ademas ambos procesos son medibles como funciones <span class="math inline">\((t,\omega) \mapsto x_t(\omega)\)</span> con respecto a la <span class="math inline">\(\sigma-\)</span>álgebra producto <span class="math inline">\(\mathcal{B}([0,T])\bigotimes\mathcal{F}.\)</span> Entonces para cada <span class="math inline">\(t\)</span>, <span class="math inline">\(|x^{\prime}_t - x_t|^2 =0\)</span> casi seguramente, es decir <span class="math display">\[\mathbb{E}[|x^{\prime}_t - x_t|^2] = 0, \quad \text{para todo } t \in [0,T]. \]</span> Ahora, bajo la suposición de medibilidad conjunta (que se cumple si, por ejemplo, los procesos son progresivamente medibles, lo cual es cierto para soluciones de SDEs con coeficientes medibles), podemos aplicar el (teorema de Fubini)</em>, <span id="eq-4"><span class="math display">\[\mathbb{E}[\int_0^T|x^{\prime}_t - x_t|^2dt] = \int_0^T\mathbb{E}[|x^{\prime}_t - x_t|^2]dt =0. \tag{4.4}\]</span></span> Consideremos el conjunto donde los procesos no coinciden <span class="math display">\[N := \{(t,\omega) \in [0,T]\times \Omega : x^{\prime}_t(\omega)\neq x_t(\omega)\},\]</span> este conjunto es medible en <span class="math inline">\(\mathcal{B}([0,T])\bigotimes\mathcal{F}\)</span> ya que <span class="math inline">\(x^{\prime}_t(\omega) - x_t(\omega)\)</span> es una función medible y además es equivalente a <span class="math inline">\(N = \{(t,\omega) : |x^{\prime}_t(\omega)- x_t(\omega)|^2&gt;0\}.\)</span></p>
+<p>De la <a href="#eq-4" class="quarto-xref">Ecuación&nbsp;<span>4.4</span></a> se sigue que <span id="eq-5"><span class="math display">\[(dt\bigotimes\mathbb{P})(N) = \int_0^T \mathbb{P}(x^{\prime}_t\neq x_t)dt = \mathbb{E} \left[\int_0^T 1_N(t,\omega)dt\right]= 0. \tag{4.5}\]</span></span></p>
+</div>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -828,4 +959,4 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/edes_saltos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/edes_saltos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/edes_saltos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/edes_saltos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></div></div></footer></body></html>

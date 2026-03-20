@@ -377,7 +377,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./edes_saltos.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">edes_saltos.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -772,6 +772,25 @@ Sea <span class="math inline">\((Z, \tau)\)</span> un espacio topológico, es de
 <div id="def-Espacio_Lusin" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.17</strong></span> &nbsp;</p>
 n espacio de Lusin es un espacio topológico Hausdorff <span class="math inline">\(Z\)</span> que es imagen continua e inyectiva de un espacio polaco.
+</div>
+<div id="def-med_alea_poisson" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 3.18</strong></span> <span class="math inline">\(N(dt,dz)\)</span>: medida aleatoria de Poisson en <span class="math inline">\(\mathbb{R}_+ \times Z\)</span>, donde <span class="math inline">\(Z\)</span> es un espacio de Lusin (e.g., <span class="math inline">\(\mathbb{R}^d \setminus \{0\}\)</span>), con medida de intensidad <span class="math inline">\(\nu(dz)dt\)</span>, y <span class="math inline">\(\nu\)</span> es una medida de Lévy, i.e., <span class="math display">\[\int_Z (1 \wedge |z|^2)\,\nu(dz) &lt; \infty.\]</span> <span class="math inline">\(\tilde{N}(dt,dz) = N(dt,dz) - \nu(dz)dt\)</span>: medida de Poisson compensada. Se asume que <span class="math inline">\(W\)</span> y <span class="math inline">\(N\)</span> son independientes entre sí y de <span class="math inline">\(\mathcal{F}_0\)</span></p>
+</div>
+<div id="def-Proceso_cadlag" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 3.19</strong></span> &nbsp;</p>
+Sea <span class="math inline">\((\Omega, \mathcal{F}, \mathbb{P})\)</span> un espacio de probabilidad y sea <span class="math inline">\(X = \{X_t : t \geq 0\}\)</span> un proceso estocástico con valores en <span class="math inline">\(\mathbb{R}\)</span>, es decir, para cada <span class="math inline">\(t \geq 0\)</span>, <span class="math inline">\(X_t : \Omega \to \mathbb{R}\)</span> es una variable aleatoria. Se dice que el proceso <span class="math inline">\(X\)</span> es cádlág (o RCLL) si casi todas sus trayectorias son funciones cádlág; es decir, existe un conjunto <span class="math inline">\(\Omega_0 \in \mathcal{F}\)</span> con <span class="math inline">\(\mathbb{P}(\Omega_0) = 1\)</span> tal que, para todo <span class="math inline">\(\omega \in \Omega_0\)</span>, la función<br>
+<span class="math display">\[t \mapsto X_t(\omega)\]</span> satisface las siguientes dos propiedades:
+Continuidad por la derecha:<br>
+Para todo <span class="math inline">\(t \geq 0\)</span>, <span class="math display">\[\lim_{s \downarrow t} X_s(\omega) = X_t(\omega).\]</span>
+<p>Existencia del límite por la izquierda:<br>
+Para todo <span class="math inline">\(t &gt; 0\)</span>, el límite<br>
+<span class="math display">\[\lim_{s \uparrow t} X_s(\omega)\]</span> existe en <span class="math inline">\(\mathbb{R}\)</span>. Este límite se denota por <span class="math inline">\(X_{t-}(\omega)\)</span>.</p>
+</div>
+<div id="def-Unicidad_trayectorias" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 3.20</strong></span> Se dice que una EDE tiene solución única por trayectorias si para cualquier par de soluciones <span class="math inline">\(\{x_t^i\}_{t\geq0}, i = 1,2,\)</span> satisface la ecuación (<span class="math inline">\(\ref{Eq:1}\)</span>) sobre el mismo espacio de probabilidad con el mismo movimiento browniano <span class="math inline">\(\{W_t\}_{t\geq0}\)</span> y una medida de Poisson <span class="math inline">\(\widetilde{N}_t(dt,dz)\)</span>, <span class="math inline">\(P(sup_{t\geq0} |x_t^1 - x_t^2|=0) =1\)</span></p>
+</div>
+<div id="def-Tiempos_paro_explosión" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 3.21</strong></span> <span class="math display">\[\tau^N := \inf\{ t \geq 0 : |x_t| &gt; N \}\]</span></p>
 </div>
 
 
@@ -1199,8 +1218,8 @@ n espacio de Lusin es un espacio topológico Hausdorff <span class="math inline"
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./edes_saltos.html" class="pagination-link" aria-label="edes_saltos.html">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">edes_saltos.html</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./edes_saltos.html" class="pagination-link" aria-label="Ecuaciones diferenciales estocásticas">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
