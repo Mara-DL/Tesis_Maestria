@@ -23,7 +23,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -466,7 +485,7 @@ window.Quarto = {
 
 
 <div style="text-align:justify">
-<p>En esta sección se presentan con detalle los resultados clave que sustentan la demostración del teorema de isometría de Itô para la parte de saltos. Se asume que <span class="math inline">\((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t\geq0}, \mathbb{P})\)</span> es un espacio de probabilidad filtrado que satisface las condiciones usuales, <span class="math inline">\(Z\)</span> es un espacio métrico separable completo, y <span class="math inline">\(\nu\)</span> es una medida <span class="math inline">\(\sigma\)</span>-finita sobre <span class="math inline">\((Z, \mathcal{B}(Z))\)</span>. Sea <span class="math inline">\(\widetilde{N}(ds,dz) = N(ds,dz) - \nu(dz)ds\)</span> la medida aleatoria compensada asociada a una medida de Poisson.</p>
+<p>En esta sección se presentan con detalle los resultados clave que sustentan la demostración del Teorema de Isometría de Itô para la parte de saltos. Se asume que <span class="math inline">\((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t\geq0}, \mathbb{P})\)</span> es un espacio de probabilidad filtrado que satisface las condiciones usuales, <span class="math inline">\(Z\)</span> es un espacio métrico separable completo, y <span class="math inline">\(\nu\)</span> es una medida <span class="math inline">\(\sigma\)</span>-finita sobre <span class="math inline">\((Z, \mathcal{B}(Z))\)</span>. Sea <span class="math inline">\(\widetilde{N}(ds,dz) = N(ds,dz) - \nu(dz)ds\)</span> la medida aleatoria compensada asociada a una medida de Poisson.</p>
 </div>
 <div id="thm-con_dom" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.1</strong></span> Sea <span class="math inline">\((X, \mathcal{A}, \mu)\)</span> un espacio de medida y <span class="math inline">\(\{f_n\}_{n\in\mathbb{N}}\)</span> una sucesión de funciones <span class="math inline">\(\mu\)</span>-medibles <span class="math inline">\(f_n : X \to \mathbb{R}\)</span>. Supongamos que:</p>
@@ -478,13 +497,13 @@ window.Quarto = {
 <p><span class="math display">\[\lim_{n \to \infty} \int_X f_n \, d\mu = \int_X f \, d\mu.\]</span></p>
 </div>
 <div class="proof">
-<p><span class="proof-title"><em>Demostración</em>. </span>Ver demostración completa <sub>\cite[Teorema</sub>1.34]{Rudin1987}. La idea central consiste en aplicar el Lema de Fatou a la sucesión <span class="math inline">\(2g - |f_n - f| \geq 0\)</span>.</p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Ver demostración completa Teorema 1.34 <span class="citation" data-cites="rudin1987real">(<a href="references.html#ref-rudin1987real" role="doc-biblioref">Rudin 1987</a>)</span> La idea central consiste en aplicar el Lema de Fatou a la sucesión <span class="math inline">\(2g - |f_n - f| \geq 0\)</span>.</p>
 </div>
 <div id="thm-aprox_fun_simp" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.2</strong></span> Sea <span class="math inline">\((X, \mathcal{A}, \mu)\)</span> un espacio de medida <span class="math inline">\(\sigma\)</span>-finito. Entonces, el conjunto de funciones simples integrables es denso en <span class="math inline">\(L^2(X, \mathcal{A}, \mu)\)</span>. Es decir, para toda (f L^2()) existe una sucesión de funciones simples <span class="math inline">\(\{\phi_n\}\)</span> tal que <span class="math inline">\(\|\phi_n - f\|_{L^2(\mu)} \to 0.\)</span></p>
+<p><span class="theorem-title"><strong>Teorema 3.2</strong></span> Sea <span class="math inline">\((X, \mathcal{A}, \mu)\)</span> un espacio de medida <span class="math inline">\(\sigma\)</span>-finito. Entonces, el conjunto de funciones simples integrables es denso en <span class="math inline">\(L^2(X, \mathcal{A}, \mu)\)</span>. Es decir, para toda <span class="math inline">\(f \in L^2(\mu)\)</span> existe una sucesión de funciones simples <span class="math inline">\(\{\phi_n\}\)</span> tal que <span class="math inline">\(\|\phi_n - f\|_{L^2(\mu)} \to 0.\)</span></p>
 </div>
 <div class="proof">
-<p><span class="proof-title"><em>Demostración</em>. </span>Sea <span class="math inline">\(f \in L^2(\mu)\)</span>. Como <span class="math inline">\(f\)</span> es medible, existen funciones simples <span class="math inline">\(\psi_n\)</span> tales que <span class="math inline">\(\psi_n \to f\)</span> puntualmente y <span class="math inline">\(|\psi_n| \leq |f|\)</span> para todo <span class="math inline">\(n\)</span> (ver Folland, , Prop. 2.20). Entonces,</p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Sea <span class="math inline">\(f \in L^2(\mu)\)</span>. Como <span class="math inline">\(f\)</span> es medible, existen funciones simples <span class="math inline">\(\psi_n\)</span> tales que <span class="math inline">\(\psi_n \to f\)</span> puntualmente y <span class="math inline">\(|\psi_n| \leq |f|\)</span> para todo <span class="math inline">\(n\)</span> (ver <span class="citation" data-cites="folland1999real">(<a href="references.html#ref-folland1999real" role="doc-biblioref">Folland 1999</a>)</span>, Prop. 2.20). Entonces,</p>
 <p><span class="math display">\[|\psi_n - f|^2 \leq 4|f|^2 \in L^1(\mu).\]</span></p>
 <p>Por el <a href="#thm-con_dom" class="quarto-xref">Teorema&nbsp;<span>3.1</span></a>,</p>
 <p><span class="math display">\[\int_X |\psi_n - f|^2 \, d\mu \to 0.\]</span></p>
@@ -498,7 +517,7 @@ window.Quarto = {
 <p><span class="math display">\[L^2_{\text{pred}}(\widetilde{N}) := \left\{ R : \mathbb{E}\!\left[ \int_0^T \int_Z R(s,z)^2 \, \nu(dz) ds \right] &lt; \infty \right\}\]</span> dotado de la norma <span class="math display">\[\|R\| := \left( \mathbb{E}\!\left[ \int_0^T \int_Z R(s,z)^2 \, \nu(dz) ds \right] \right)^{1/2}.\]</span></p>
 </div>
 <div class="proof">
-<p><span class="proof-title"><em>Demostración</em>. </span>Sea <span class="math inline">\(R \in L^2_{\text{pred}}(\widetilde{N})\)</span>. Por el resultado anterior, existe una sucesión de funciones simples <span class="math inline">\(\phi_n\)</span> (no necesariamente predecibles) tal que <span class="math inline">\(\|\phi_n - R\| \to 0\)</span>. Cada <span class="math inline">\(\phi_n\)</span> es <span class="math inline">\(\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z)\)</span>-medible. Dado que la <span class="math inline">\(\sigma\)</span>-álgebra predecible <span class="math inline">\(\mathcal{P}\)</span> es generada por procesos adaptados y càglàd, y la filtración satisface las condiciones usuales, el espacio <span class="math inline">\(L^2(\mathcal{P} \otimes \mathcal{B}(Z))\)</span> es un subespacio cerrado de <span class="math inline">\(L^2(\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z))\)</span>. Existe, por tanto, una proyección ortogonal de <span class="math inline">\(\phi_n\)</span> sobre este subespacio, sin embargo, basta observar que cualquier función simple puede aproximarse por funciones simples <span class="math inline">\(\mathcal{P} \otimes \mathcal{B}(Z)\)</span>-medibles (Applebaum, , Lema 4.3.3). Más explícitamente, uno puede refinar la partición de <span class="math inline">\([0,T]\)</span> y usar funciones constantes en intervalos <span class="math inline">\((t_{i-1}, t_i]\)</span> con coeficientes <span class="math inline">\(\mathcal{F}_{t_{i-1}}\)</span>-medibles. Esto define una sucesión <span class="math inline">\(\{R_n\} \subset \mathcal{E}\)</span> tal que <span class="math inline">\(\|R_n - R\| \to 0\)</span>.</p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Sea <span class="math inline">\(R \in L^2_{\text{pred}}(\widetilde{N})\)</span>. Por el resultado anterior, existe una sucesión de funciones simples <span class="math inline">\(\phi_n\)</span> (no necesariamente predecibles) tal que <span class="math inline">\(\|\phi_n - R\| \to 0\)</span>. Cada <span class="math inline">\(\phi_n\)</span> es <span class="math inline">\(\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z)\)</span>-medible. Dado que la <span class="math inline">\(\sigma\)</span>-álgebra predecible <span class="math inline">\(\mathcal{P}\)</span> es generada por procesos adaptados y càglàd, y la filtración satisface las condiciones usuales, el espacio <span class="math inline">\(L^2(\mathcal{P} \otimes \mathcal{B}(Z))\)</span> es un subespacio cerrado de <span class="math inline">\(L^2(\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z))\)</span>. Existe, por tanto, una proyección ortogonal de <span class="math inline">\(\phi_n\)</span> sobre este subespacio, sin embargo, basta observar que cualquier función simple puede aproximarse por funciones simples <span class="math inline">\(\mathcal{P} \otimes \mathcal{B}(Z)\)</span>-medibles <span class="citation" data-cites="applebaum2009levy">(<a href="references.html#ref-applebaum2009levy" role="doc-biblioref">Applebaum 2009</a>)</span> Más explícitamente, uno puede refinar la partición de <span class="math inline">\([0,T]\)</span> y usar funciones constantes en intervalos <span class="math inline">\((t_{i-1}, t_i]\)</span> con coeficientes <span class="math inline">\(\mathcal{F}_{t_{i-1}}\)</span>-medibles. Esto define una sucesión <span class="math inline">\(\{R_n\} \subset \mathcal{E}\)</span> tal que <span class="math inline">\(\|R_n - R\| \to 0\)</span>.</p>
 </div>
 <div id="thm-cont_norm_esp_Hil" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.4</strong></span> Sea <span class="math inline">\(H\)</span> un espacio de Hilbert y <span class="math inline">\(\{x_n\} \subset H\)</span> una sucesión tal que <span class="math inline">\(x_n \to x\)</span> en norma. Entonces <span class="math inline">\(\|x_n\| \to \|x\|\)</span></p>
@@ -787,6 +806,17 @@ Para todo <span class="math inline">\(t &gt; 0\)</span>, el límite<br>
 </div>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-applebaum2009levy" class="csl-entry" role="listitem">
+Applebaum, David. 2009. <em>L<span>é</span>vy processes and stochastic calculus</em>. Cambridge university press.
+</div>
+<div id="ref-folland1999real" class="csl-entry" role="listitem">
+Folland, Gerald B. 1999. <em>Real analysis: modern techniques and their applications</em>. John Wiley &amp; Sons.
+</div>
+<div id="ref-rudin1987real" class="csl-entry" role="listitem">
+Rudin, W. 1987. <em>Real and Complex Analysis Real &amp; Complex Analysis</em>. McGraw-Hill. <a href="https://books.google.com.mx/books?id=UGpaAQAACAAJ">https://books.google.com.mx/books?id=UGpaAQAACAAJ</a>.
+</div>
+</div>
 </section>
 </section>
 
