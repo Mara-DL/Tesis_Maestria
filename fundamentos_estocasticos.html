@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>3&nbsp; Resultados técnicos fundamentales – Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos</title>
+<title>3&nbsp; Resultados técnicos fundamentales – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -112,10 +112,10 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="3&nbsp; Resultados técnicos fundamentales – Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos">
+<meta property="og:title" content="3&nbsp; Resultados técnicos fundamentales – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta property="og:image" content="assets/UNACH.png">
-<meta property="og:site_name" content="Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos">
-<meta name="twitter:title" content="3&nbsp; Resultados técnicos fundamentales – Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos">
+<meta property="og:site_name" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta name="twitter:title" content="3&nbsp; Resultados técnicos fundamentales – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta name="twitter:image" content="assets/UNACH.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -308,7 +308,7 @@ window.Quarto = {
       <img src="./assets/UNACH.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos</a> 
+      <a href="./">Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos</a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/Mara-DL/Tesis_Maestria" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
@@ -678,14 +678,13 @@ window.Quarto = {
         \end{cases}\]</span></p>
 </div>
 <div class="proof">
-<p><span class="proof-title"><em>Demostración</em>. </span></p>
-Sin pérdida de generalidad, podemos suponer que tanto <span class="math inline">\(M\)</span> como su variación cuadrática previsible <span class="math inline">\(\langle M \rangle\)</span> son procesos acotados. Esto se justifica mediante un argumento de localización: existe una sucesión creciente de tiempos de paro <span class="math inline">\(\{\tau_n\}\)</span> tal que <span class="math inline">\(\tau_n \uparrow \infty\)</span> c.s. y los procesos detenidos <span class="math inline">\(M^{\tau_n}\)</span> y <span class="math inline">\(\langle M \rangle^{\tau_n}\)</span> son acotados. Las desigualdades se obtienen para cada <span class="math inline">\(n\)</span> y luego se extienden al caso general mediante el teorema de convergencia monótona.\ El caso <span class="math inline">\(m = \tfrac{1}{2}\)</span> se deduce directamente del Teorema 2.5.17 de de Constantin Tudor, que establece <span class="math display">\[\mathbb{E}\left[ \sup_{0 \leq t \leq \tau} |M_t| \right] \leq 3 \, \mathbb{E}\left[ \langle M \rangle_\tau^{1/2} \right].\]</span> Ahora asumimos <span class="math inline">\(m &gt; \tfrac{1}{2}\)</span> y que <span class="math inline">\(M\)</span>, <span class="math inline">\(\langle M \rangle\)</span> son acotados. Denotemos <span class="math display">\[ M_t^* := \sup_{0 \leq s \leq t} |M_s|, \quad Y_t := \delta + \varepsilon \langle M \rangle_t + M_t^2,\]</span> donde <span class="math inline">\(\delta &gt; 0\)</span> y <span class="math inline">\(\varepsilon \geq 0\)</span> son constantes a elegir posteriormente. Obsérvese que <span class="math inline">\(Y_t &gt; 0\)</span> y es continuo. Aplicamos la fórmula de Itô a la función <span class="math inline">\(f(x) = x^m\)</span>, <span class="math inline">\(x &gt; 0\)</span> <span class="math display">\[Y_t^m = \delta^m + m \int_0^t Y_s^{m-1} \, dY_s + \frac{m(m-1)}{2} \int_0^t Y_s^{m-2} \, d\langle Y \rangle_s.\]</span> Como <span class="math inline">\(dY_s = (\varepsilon + 1) \, d\langle M \rangle_s + 2 M_s \, dM_s\)</span> y <span class="math inline">\(d\langle Y \rangle_s = 4 M_s^2 \, d\langle M \rangle_s\)</span>, sustituimos y obtenemos <span class="math display">\[\begin{aligned}
+<p><span class="proof-title"><em>Demostración</em>. </span>Sin pérdida de generalidad, podemos suponer que tanto <span class="math inline">\(M\)</span> como su variación cuadrática previsible <span class="math inline">\(\langle M \rangle\)</span> son procesos acotados. Esto se justifica mediante un argumento de localización: existe una sucesión creciente de tiempos de paro <span class="math inline">\(\{\tau_n\}\)</span> tal que <span class="math inline">\(\tau_n \uparrow \infty\)</span> c.s. y los procesos detenidos <span class="math inline">\(M^{\tau_n}\)</span> y <span class="math inline">\(\langle M \rangle^{\tau_n}\)</span> son acotados. Las desigualdades se obtienen para cada <span class="math inline">\(n\)</span> y luego se extienden al caso general mediante el teorema de convergencia monótona.\ El caso <span class="math inline">\(m = \tfrac{1}{2}\)</span> se deduce directamente del Teorema 2.5.17 de de Constantin Tudor, que establece <span class="math display">\[\mathbb{E}\left[ \sup_{0 \leq t \leq \tau} |M_t| \right] \leq 3 \, \mathbb{E}\left[ \langle M \rangle_\tau^{1/2} \right].\]</span> Ahora asumimos <span class="math inline">\(m &gt; \tfrac{1}{2}\)</span> y que <span class="math inline">\(M\)</span>, <span class="math inline">\(\langle M \rangle\)</span> son acotados. Denotemos <span class="math display">\[ M_t^* := \sup_{0 \leq s \leq t} |M_s|, \quad Y_t := \delta + \varepsilon \langle M \rangle_t + M_t^2,\]</span> donde <span class="math inline">\(\delta &gt; 0\)</span> y <span class="math inline">\(\varepsilon \geq 0\)</span> son constantes a elegir posteriormente. Obsérvese que <span class="math inline">\(Y_t &gt; 0\)</span> y es continuo. Aplicamos la fórmula de Itô a la función <span class="math inline">\(f(x) = x^m\)</span>, <span class="math inline">\(x &gt; 0\)</span> <span class="math display">\[Y_t^m = \delta^m + m \int_0^t Y_s^{m-1} \, dY_s + \frac{m(m-1)}{2} \int_0^t Y_s^{m-2} \, d\langle Y \rangle_s.\]</span> Como <span class="math inline">\(dY_s = (\varepsilon + 1) \, d\langle M \rangle_s + 2 M_s \, dM_s\)</span> y <span class="math inline">\(d\langle Y \rangle_s = 4 M_s^2 \, d\langle M \rangle_s\)</span>, sustituimos y obtenemos <span class="math display">\[\begin{aligned}
 Y_t^m = &amp;\ \delta^m
 + m(1+\varepsilon) \int_0^t Y_s^{m-1} \, d\langle M \rangle_s
 + 2m \int_0^t Y_s^{m-1} M_s \, dM_s \\
 &amp;+ 2m(m-1) \int_0^t Y_s^{m-2} M_s^2 \, d\langle M \rangle_s.
-\end{aligned}\]</span> Al tomar esperanza matemática, el término de la integral estocástica desaparece (es una martingala de media cero por acotación), y obtenemos <span class="math display">\[\mathbb{E}[Y_t^m] = \delta^m + m(1+\varepsilon) \, \mathbb{E}\!\left[ \int_0^t Y_s^{m-1} \, d\langle M \rangle_s \right] + 2m(m-1) \, \mathbb{E}\!\left[ \int_0^t Y_s^{m-2} M_s^2 \, d\langle M \rangle_s \right].\]</span>
-Consideramos ahora la desigualdad de Doob para martingalas: para <span class="math inline">\(p = 2m &gt; 1\)</span>, <span class="math display">\[ \mathbb{E}[(M_t^*)^{2m}] \leq q^{2m} \, \mathbb{E}[|M_t|^{2m}], \quad \text{donde } \frac{1}{p} + \frac{1}{q} = 1.\]</span> Aplicando la fórmula de Itô a <span class="math inline">\(|M_t|^{2m}\)</span> (con segunda derivada <span class="math inline">\(2m(2m-1)|M_t|^{2m-2}\)</span>) y tomando esperanza <span class="math display">\[\mathbb{E}[|M_t|^{2m}] = m(2m-1) \, \mathbb{E}\!\left[ \int_0^t |M_s|^{2(m-1)} \, d\langle M \rangle_s \right].\]</span> Combinando ambas expresiones y aplicando la desigualdad de Hölder, se obtiene <span class="math display">\[ \mathbb{E}[(M_t^*)^{2m}] \leq \bigl[ q^{2m} m (2m - 1) \bigr]^m \, \mathbb{E}[\langle M \rangle_t^m].\]</span>
+\end{aligned}\]</span> Al tomar esperanza matemática, el término de la integral estocástica desaparece (es una martingala de media cero por acotación), y obtenemos <span class="math display">\[\mathbb{E}[Y_t^m] = \delta^m + m(1+\varepsilon) \, \mathbb{E}\!\left[ \int_0^t Y_s^{m-1} \, d\langle M \rangle_s \right] + 2m(m-1) \, \mathbb{E}\!\left[ \int_0^t Y_s^{m-2} M_s^2 \, d\langle M \rangle_s \right].\]</span></p>
+<p>Consideramos ahora la desigualdad de Doob para martingalas: para <span class="math inline">\(p = 2m &gt; 1\)</span>, <span class="math display">\[ \mathbb{E}[(M_t^*)^{2m}] \leq q^{2m} \, \mathbb{E}[|M_t|^{2m}], \quad \text{donde } \frac{1}{p} + \frac{1}{q} = 1.\]</span> Aplicando la fórmula de Itô a <span class="math inline">\(|M_t|^{2m}\)</span> (con segunda derivada <span class="math inline">\(2m(2m-1)|M_t|^{2m-2}\)</span>) y tomando esperanza <span class="math display">\[\mathbb{E}[|M_t|^{2m}] = m(2m-1) \, \mathbb{E}\!\left[ \int_0^t |M_s|^{2(m-1)} \, d\langle M \rangle_s \right].\]</span> Combinando ambas expresiones y aplicando la desigualdad de Hölder, se obtiene <span class="math display">\[ \mathbb{E}[(M_t^*)^{2m}] \leq \bigl[ q^{2m} m (2m - 1) \bigr]^m \, \mathbb{E}[\langle M \rangle_t^m].\]</span></p>
 <p>Retomamos la expresión de <span class="math inline">\(\mathbb{E}[Y_t^m]\)</span>. Como <span class="math inline">\(Y_t \geq M_t^2\)</span>, se tiene <span class="math inline">\(Y_t^m \geq |M_t|^{2m}\)</span>. Además, <span class="math inline">\(Y_s \geq \delta\)</span>, por lo que <span class="math display">\[\mathbb{E}[|M_t|^{2m}] \geq m(1+\varepsilon) \, \mathbb{E}\!\left[ \int_0^t Y_s^{m-1} \, d\langle M \rangle_s \right].\]</span> Usando la desigualdad <span class="math inline">\((x+y)^m \leq 2^{m-1}(x^m + y^m)\)</span> para <span class="math inline">\(m \geq 1\)</span>, y un argumento de paso al límite <span class="math inline">\(\delta \downarrow 0\)</span>, se deduce <span class="math display">\[\mathbb{E}[(M_t^*)^{2m}] \geq C_m \, \mathbb{E}[\langle M \rangle_t^m],\]</span> con <span class="math inline">\(C_m\)</span> como en el enunciado (obtenido mediante optimización sobre <span class="math inline">\(\varepsilon\)</span>). Finalmente, al considerar <span class="math inline">\(\tau\)</span> en lugar de <span class="math inline">\(t\)</span>, basta observar que <span class="math inline">\(M^\tau\)</span> es también una martingala local continua y <span class="math inline">\(\langle M^\tau \rangle = \langle M \rangle^\tau\)</span>, con lo que las desigualdades se mantienen reemplazando <span class="math inline">\(t\)</span> por <span class="math inline">\(\tau\)</span>. Esto concluye la demostración.</p>
 </div>
 <div id="thm-Desigualdad_Grönwall" class="theorem">
@@ -712,9 +711,8 @@ Consideramos ahora la desigualdad de Doob para martingalas: para <span class="ma
 <section id="marco-probabilístico-y-notación" class="level3" data-number="3.3.2">
 <h3 data-number="3.3.2" class="anchored" data-anchor-id="marco-probabilístico-y-notación"><span class="header-section-number">3.3.2</span> Marco probabilístico y notación</h3>
 <div id="def-Espacio_probabilidad_filtrado" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.10</strong></span> &nbsp;</p>
-Sea <span class="math inline">\((\Omega, \mathcal{F}, \mathbb{P})\)</span> un espacio de probabilidad y <span class="math inline">\(\{\mathcal{F}_t\}_{t \geq 0}\)</span> una filtración, es decir, una familia creciente de sub-<span class="math inline">\(\sigma\)</span>-álgebras de <span class="math inline">\(\mathcal{F}\)</span>: <span class="math display">\[\mathcal{F}_s \subseteq \mathcal{F}_t \subseteq \mathcal{F} \quad \text{para todo } 0 \leq s \leq t.\]</span> Se dice que la filtración satisface las hipótesis usuales si cumple las siguientes dos condiciones:
-Completitud: La <span class="math inline">\(\sigma\)</span>-álgebra inicial <span class="math inline">\(\mathcal{F}_0\)</span> contiene todos los conjuntos <span class="math inline">\(\mathbb{P}\)</span>-nulos. Es decir: <span class="math display">\[\text{Si } A \in \mathcal{F} \text{ y } \mathbb{P}(A) = 0, \quad \text{entonces } A \in \mathcal{F}_0.\]</span> Como <span class="math inline">\(\mathcal{F}_0 \subseteq \mathcal{F}_t\)</span> para todo <span class="math inline">\(t\)</span>, esto implica que todos los conjuntos nulos están en cada <span class="math inline">\(\mathcal{F}_t\)</span>. En otras palabras, cada <span class="math inline">\(\mathcal{F}_t\)</span> es completa respecto a <span class="math inline">\(\mathbb{P}\)</span>.
+<p><span class="theorem-title"><strong>Definición 3.10</strong></span> Sea <span class="math inline">\((\Omega, \mathcal{F}, \mathbb{P})\)</span> un espacio de probabilidad y <span class="math inline">\(\{\mathcal{F}_t\}_{t \geq 0}\)</span> una filtración, es decir, una familia creciente de sub-<span class="math inline">\(\sigma\)</span>-álgebras de <span class="math inline">\(\mathcal{F}\)</span>: <span class="math display">\[\mathcal{F}_s \subseteq \mathcal{F}_t \subseteq \mathcal{F} \quad \text{para todo } 0 \leq s \leq t.\]</span> Se dice que la filtración satisface las hipótesis usuales si cumple las siguientes dos condiciones:</p>
+<p>Completitud: La <span class="math inline">\(\sigma\)</span>-álgebra inicial <span class="math inline">\(\mathcal{F}_0\)</span> contiene todos los conjuntos <span class="math inline">\(\mathbb{P}\)</span>-nulos. Es decir: <span class="math display">\[\text{Si } A \in \mathcal{F} \text{ y } \mathbb{P}(A) = 0, \quad \text{entonces } A \in \mathcal{F}_0.\]</span> Como <span class="math inline">\(\mathcal{F}_0 \subseteq \mathcal{F}_t\)</span> para todo <span class="math inline">\(t\)</span>, esto implica que todos los conjuntos nulos están en cada <span class="math inline">\(\mathcal{F}_t\)</span>. En otras palabras, cada <span class="math inline">\(\mathcal{F}_t\)</span> es completa respecto a <span class="math inline">\(\mathbb{P}\)</span>.</p>
 <p>Continuidad por la derecha: Para todo <span class="math inline">\(t \geq 0\)</span>, <span class="math display">\[\mathcal{F}_t = \bigcap_{s &gt; t} \mathcal{F}_s.\]</span></p>
 </div>
 <div id="def-Filtracion_natural" class="theorem definition">
@@ -727,21 +725,19 @@ Completitud: La <span class="math inline">\(\sigma\)</span>-álgebra inicial <sp
 <p><span class="theorem-title"><strong>Definición 3.13</strong></span> Un tiempo de paro <span class="math inline">\(\{\tau &lt; t\} \in \mathcal{F}_t\)</span> para todo <span class="math inline">\(t\)</span>. La continuidad por la derecha se deduce que <span class="math display">\[\{\tau &lt; t\} = \bigcup_{q \in \mathbb{Q}, q &lt; t} \{\tau \leq q\} \in \mathcal{F}_t.\]</span></p>
 </div>
 <div id="def-Semimartingalas_saltos" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.14</strong></span> &nbsp;</p>
-Un proceso <span class="math inline">\(Y = \{Y_t\}_{t \geq 0}\)</span> es una semimartingala si admite la descomposición canónica <span class="math display">\[Y_t = Y_0 + Y_t^c + \sum_{s \leq t} \Delta Y_s,\]</span> donde:
+<p><span class="theorem-title"><strong>Definición 3.14</strong></span> Un proceso <span class="math inline">\(Y = \{Y_t\}_{t \geq 0}\)</span> es una semimartingala si admite la descomposición canónica <span class="math display">\[Y_t = Y_0 + Y_t^c + \sum_{s \leq t} \Delta Y_s,\]</span> donde:</p>
 </div>
 <div id="def-Proceso_Wiener" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.15</strong></span> &nbsp;</p>
-Sea <span class="math inline">\((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t \geq 0}, \mathbb{P})\)</span> un espacio de probabilidad filtrado. Un proceso de Wiener es un proceso estocástico <span class="math inline">\(W = \{W(t)\}_{t \geq 0}\)</span> que satisface las siguientes propiedades:
+<p><span class="theorem-title"><strong>Definición 3.15</strong></span> Sea <span class="math inline">\((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t \geq 0}, \mathbb{P})\)</span> un espacio de probabilidad filtrado. Un proceso de Wiener es un proceso estocástico <span class="math inline">\(W = \{W(t)\}_{t \geq 0}\)</span> que satisface las siguientes propiedades:</p>
 <p>Condición inicial:<br>
 <span class="math display">\[ W(0) = 0 \quad \text{casi seguramente}.\]</span></p>
 <p>Trayectorias continuas:<br>
 Casi todas las trayectorias <span class="math inline">\(t \mapsto W(t,\omega)\)</span> son funciones continuas en <span class="math inline">\([0, \infty)\)</span>.</p>
 <p>Incrementos independientes: Para cualesquiera <span class="math inline">\(0 \leq t_0 &lt; t_1 &lt; \cdots &lt; t_n\)</span>, los incrementos<br>
 <span class="math display">\[W(t_1) - W(t_0), \; W(t_2) - W(t_1), \; \dots, \; W(t_n) - W(t_{n-1})\]</span> son independientes como variables aleatorias reales.</p>
-Incrementos estacionarios y gaussianos:<br>
+<p>Incrementos estacionarios y gaussianos:<br>
 Para todo <span class="math inline">\(0 \leq s &lt; t\)</span>, el incremento <span class="math inline">\(W(t) - W(s)\)</span> tiene distribución normal con media cero y varianza <span class="math inline">\(t - s\)</span>:<br>
-<span class="math display">\[W(t) - W(s) \sim \mathcal{N}(0, t - s).\]</span>
+<span class="math display">\[W(t) - W(s) \sim \mathcal{N}(0, t - s).\]</span></p>
 <p>Adaptación:<br>
 El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <span class="math inline">\(\{\mathcal{F}_t\}_{t \geq 0}\)</span>, es decir, <span class="math inline">\(W(t)\)</span> es <span class="math inline">\(\mathcal{F}_t\)</span>-medible para todo <span class="math inline">\(t \geq 0\)</span>.</p>
 </div>
@@ -749,8 +745,7 @@ El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <
 <section id="medida-aleatoria-de-poisson-y-su-compensación" class="level3" data-number="3.3.3">
 <h3 data-number="3.3.3" class="anchored" data-anchor-id="medida-aleatoria-de-poisson-y-su-compensación"><span class="header-section-number">3.3.3</span> Medida aleatoria de Poisson y su compensación</h3>
 <div id="def-Espacio_topológico_Hausdorff" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.16</strong></span> &nbsp;</p>
-Sea <span class="math inline">\((Z, \tau)\)</span> un espacio topológico, es decir, <span class="math inline">\(Z\)</span> es un conjunto no vacío y <span class="math inline">\(\tau \subseteq \mathcal{P}(Z)\)</span> es una colección de subconjuntos (llamados abiertos) que satisface
+<p><span class="theorem-title"><strong>Definición 3.16</strong></span> Sea <span class="math inline">\((Z, \tau)\)</span> un espacio topológico, es decir, <span class="math inline">\(Z\)</span> es un conjunto no vacío y <span class="math inline">\(\tau \subseteq \mathcal{P}(Z)\)</span> es una colección de subconjuntos (llamados abiertos) que satisface</p>
 <p>Se dice que <span class="math inline">\((Z, \tau)\)</span> es un espacio Hausdorff (o <span class="math inline">\(T_2\)</span>) si satisface la siguiente propiedad de separación: Para todo par de puntos distintos <span class="math inline">\(x, y \in Z\)</span>, con <span class="math inline">\(x \neq y\)</span>, existen abiertos <span class="math inline">\(U, V \in \tau\)</span> tales que: <span class="math display">\[x \in U,\quad y \in V,\quad \text{y} \quad U \cap V = \varnothing.\]</span></p>
 </div>
 <div class="callout callout-style-default callout-caution no-icon callout-titled" style="text-align: justify">
@@ -770,18 +765,16 @@ Sea <span class="math inline">\((Z, \tau)\)</span> un espacio topológico, es de
 </div>
 </div>
 <div id="def-Espacio_Lusin" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.17</strong></span> &nbsp;</p>
-n espacio de Lusin es un espacio topológico Hausdorff <span class="math inline">\(Z\)</span> que es imagen continua e inyectiva de un espacio polaco.
+<p><span class="theorem-title"><strong>Definición 3.17</strong></span> n espacio de Lusin es un espacio topológico Hausdorff <span class="math inline">\(Z\)</span> que es imagen continua e inyectiva de un espacio polaco.</p>
 </div>
 <div id="def-med_alea_poisson" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.18</strong></span> <span class="math inline">\(N(dt,dz)\)</span>: medida aleatoria de Poisson en <span class="math inline">\(\mathbb{R}_+ \times Z\)</span>, donde <span class="math inline">\(Z\)</span> es un espacio de Lusin (e.g., <span class="math inline">\(\mathbb{R}^d \setminus \{0\}\)</span>), con medida de intensidad <span class="math inline">\(\nu(dz)dt\)</span>, y <span class="math inline">\(\nu\)</span> es una medida de Lévy, i.e., <span class="math display">\[\int_Z (1 \wedge |z|^2)\,\nu(dz) &lt; \infty.\]</span> <span class="math inline">\(\tilde{N}(dt,dz) = N(dt,dz) - \nu(dz)dt\)</span>: medida de Poisson compensada. Se asume que <span class="math inline">\(W\)</span> y <span class="math inline">\(N\)</span> son independientes entre sí y de <span class="math inline">\(\mathcal{F}_0\)</span></p>
 </div>
 <div id="def-Proceso_cadlag" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.19</strong></span> &nbsp;</p>
-Sea <span class="math inline">\((\Omega, \mathcal{F}, \mathbb{P})\)</span> un espacio de probabilidad y sea <span class="math inline">\(X = \{X_t : t \geq 0\}\)</span> un proceso estocástico con valores en <span class="math inline">\(\mathbb{R}\)</span>, es decir, para cada <span class="math inline">\(t \geq 0\)</span>, <span class="math inline">\(X_t : \Omega \to \mathbb{R}\)</span> es una variable aleatoria. Se dice que el proceso <span class="math inline">\(X\)</span> es cádlág (o RCLL) si casi todas sus trayectorias son funciones cádlág; es decir, existe un conjunto <span class="math inline">\(\Omega_0 \in \mathcal{F}\)</span> con <span class="math inline">\(\mathbb{P}(\Omega_0) = 1\)</span> tal que, para todo <span class="math inline">\(\omega \in \Omega_0\)</span>, la función<br>
-<span class="math display">\[t \mapsto X_t(\omega)\]</span> satisface las siguientes dos propiedades:
-Continuidad por la derecha:<br>
-Para todo <span class="math inline">\(t \geq 0\)</span>, <span class="math display">\[\lim_{s \downarrow t} X_s(\omega) = X_t(\omega).\]</span>
+<p><span class="theorem-title"><strong>Definición 3.19</strong></span> Sea <span class="math inline">\((\Omega, \mathcal{F}, \mathbb{P})\)</span> un espacio de probabilidad y sea <span class="math inline">\(X = \{X_t : t \geq 0\}\)</span> un proceso estocástico con valores en <span class="math inline">\(\mathbb{R}\)</span>, es decir, para cada <span class="math inline">\(t \geq 0\)</span>, <span class="math inline">\(X_t : \Omega \to \mathbb{R}\)</span> es una variable aleatoria. Se dice que el proceso <span class="math inline">\(X\)</span> es cádlág (o RCLL) si casi todas sus trayectorias son funciones cádlág; es decir, existe un conjunto <span class="math inline">\(\Omega_0 \in \mathcal{F}\)</span> con <span class="math inline">\(\mathbb{P}(\Omega_0) = 1\)</span> tal que, para todo <span class="math inline">\(\omega \in \Omega_0\)</span>, la función<br>
+<span class="math display">\[t \mapsto X_t(\omega)\]</span> satisface las siguientes dos propiedades:</p>
+<p>Continuidad por la derecha:<br>
+Para todo <span class="math inline">\(t \geq 0\)</span>, <span class="math display">\[\lim_{s \downarrow t} X_s(\omega) = X_t(\omega).\]</span></p>
 <p>Existencia del límite por la izquierda:<br>
 Para todo <span class="math inline">\(t &gt; 0\)</span>, el límite<br>
 <span class="math display">\[\lim_{s \uparrow t} X_s(\omega)\]</span> existe en <span class="math inline">\(\mathbb{R}\)</span>. Este límite se denota por <span class="math inline">\(X_{t-}(\omega)\)</span>.</p>
