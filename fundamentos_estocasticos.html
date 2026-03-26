@@ -490,28 +490,28 @@ window.Quarto = {
 <p>En esta sección se presentan con detalle los resultados clave que sustentan la demostración del Teorema de Isometría de Itô para la parte de saltos. Se asume que <span class="math inline">\((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t\geq0}, \mathbb{P})\)</span> es un espacio de probabilidad filtrado que satisface las condiciones usuales, <span class="math inline">\(Z\)</span> es un espacio métrico separable completo, y <span class="math inline">\(\nu\)</span> es una medida <span class="math inline">\(\sigma\)</span>-finita sobre <span class="math inline">\((Z, \mathcal{B}(Z))\)</span>. Sea <span class="math inline">\(\widetilde{N}(ds,dz) = N(ds,dz) - \nu(dz)ds\)</span> la medida aleatoria compensada asociada a una medida de Poisson.</p>
 </div>
 <div id="thm-D_C_S" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.1</strong></span> <em>Para cualesquiera</em> <span class="math inline">\(x_1, x_2, \ldots, x_n \in \mathbb{R}\)</span>, se cumple:</p>
+<p><span class="theorem-title"><strong>Teorema 3.1</strong></span> <em>Para cualesquier</em> <span class="math inline">\(x_1, x_2, \ldots, x_n \in \mathbb{R}\)</span>, se cumple:</p>
 <p><span class="math display">\[\left(\sum_{i=1}^n x_i\right)^2 \leq n \sum_{i=1}^n x_i^2.\]</span></p>
 </div>
 <div class="proof">
-<p><span class="proof-title"><em>Demostración</em>. </span>Aplicando la desigualdad de Cauchy-Schwarz a los vectores <span class="math inline">\(\mathbf{x} = (x_1, \ldots, x_n)\)</span> y <span class="math inline">\(\mathbf{1} = (1, \ldots, 1)\)</span> en <span class="math inline">\(\mathbb{R}^n\)</span>:</p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Aplicando la desigualdad de Cauchy-Schwarz a los vectores <span class="math inline">\(\mathbf{x} = (x_1, \ldots, x_n)\)</span> y <span class="math inline">\(\mathbf{1} = (1, \ldots, 1)\)</span> en <span class="math inline">\(\mathbb{R}^n\)</span> se tiene:</p>
 <p><span class="math display">\[\left(\sum_{i=1}^n x_i \cdot 1\right)^2 \leq \left(\sum_{i=1}^n x_i^2\right)\left(\sum_{i=1}^n 1^2\right) = \left(\sum_{i=1}^n x_i^2\right) \cdot n.\]</span></p>
-<p>Alternativamente, usando la desigualdad de Jensen con <span class="math inline">\(\phi(x) = x^2\)</span> (convexa):</p>
+<p>Alternativamente, usando la <em>desigualdad de Jensen</em> con <span class="math inline">\(\phi(x) = x^2\)</span> (convexa) se da:</p>
 <p><span class="math display">\[\left(\frac{1}{n}\sum_{i=1}^n x_i\right)^2 \leq \frac{1}{n}\sum_{i=1}^n x_i^2 \implies \left(\sum_{i=1}^n x_i\right)^2 \leq n \sum_{i=1}^n x_i^2. \quad \square\]</span></p>
 </div>
 <p><strong>Observación 1.1.6.</strong> <em>Esta desigualdad es un caso particular de la desigualdad de Cauchy-Schwarz general en espacios de Hilbert. Para</em> <span class="math inline">\(X, Y \in L^2(\Omega)\)</span>:</p>
 <p><span class="math display">\[|\mathbb{E}[XY]|^2 \leq \mathbb{E}[X^2]\mathbb{E}[Y^2].\]</span></p>
 <div id="thm-D_Y_F_S" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.2</strong></span> <em>Para cualesquiera</em> <span class="math inline">\(a, b \in \mathbb{R}\)</span>, se cumple:</p>
+<p><span class="theorem-title"><strong>Teorema 3.2</strong></span> <em>Para cualesquier</em> <span class="math inline">\(a, b \in \mathbb{R}\)</span>, se cumple:</p>
 <p><span class="math display">\[2ab \leq a^2 + b^2.\]</span></p>
 <p><em>La igualdad se alcanza si y solo si</em> <span class="math inline">\(a = b\)</span>.</p>
 </div>
 <div class="proof">
-<p><span class="proof-title"><em>Demostración</em>. </span>Por la desigualdad aritmético-geométrica para números no negativos:</p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Por la desigualdad <em>aritmético-geométric</em>a para números no negativos:</p>
 <p><span class="math display">\[\sqrt{a^2 b^2} \leq \frac{a^2 + b^2}{2} \implies |ab| \leq \frac{a^2 + b^2}{2} \implies 2ab \leq a^2 + b^2. \quad \square\]</span></p>
 </div>
 <div id="lem-Fatou" class="theorem lemma">
-<p><span class="theorem-title"><strong>Lema 3.1</strong></span> Sea <span class="math inline">\(\{f_n\}_{n \in \mathbb{N}}\)</span> una sucesión de funciones medibles no negativas. Entonces:*</p>
+<p><span class="theorem-title"><strong>Lema 3.1</strong></span> Sea <span class="math inline">\(\{f_n\}_{n \in \mathbb{N}}\)</span> una sucesión de funciones medibles no negativas. Entonces:</p>
 <p><span class="math display">\[\liminf_{n \to \infty} \int_X f_n \, d\mu \geq \int_X \liminf_{n \to \infty} f_n \, d\mu.\]</span></p>
 </div>
 <div>
