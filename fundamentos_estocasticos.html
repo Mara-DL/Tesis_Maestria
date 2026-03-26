@@ -664,9 +664,31 @@ window.Quarto = {
 <div id="def-1" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.4</strong></span> Para cada realización <span class="math inline">\(\omega \in \Omega\)</span>, se define el conjunto de tiempos de salto como: <span class="math display">\[D_p(\omega) := \left\{ t &gt; 0 : p(t, \omega) \in Z \right\}.\]</span> Este conjunto recoge todos los instantes <span class="math inline">\(t &gt; 0\)</span> en los cuales el proceso puntual <span class="math inline">\(p\)</span> registra un salto con marca en el espacio de estados <span class="math inline">\(Z\)</span>.</p>
 </div>
-<div id="def-proceso_puntual" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.5</strong></span> Sea <span class="math inline">\((Z, \mathcal{B}(Z))\)</span> un espacio de Lusin (en particular, Hausdorff y con <span class="math inline">\(\sigma\)</span>-álgebra de Borel estándar). Un proceso puntual es una aplicación medible <span class="math inline">\(p : \Omega \times (0,\infty) \to Z \cup \{\partial\}\)</span> tal que, para casi toda <span class="math inline">\(\omega \in \Omega\)</span>, el conjunto <span class="math inline">\(\{ t \in (0,T] : p(t,\omega) \in Z \}\)</span> es finito para todo <span class="math inline">\(T &gt; 0\)</span>. Se asocia a <span class="math inline">\(p\)</span> su medida de conteo <span class="math inline">\(N_p\)</span>, definida en <span class="math inline">\((0,\infty) \times Z\)</span>. Donde <span class="math inline">\(\partial\)</span> es un punto absorbente fuera de <span class="math inline">\(Z\)</span>.</p>
+<div id="def-punto_absorbente" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 3.5</strong></span> Sea <span class="math inline">\((Z, \mathcal{B}(Z))\)</span> un espacio medible polaco o de Lusin. El punto absorbente es un elemento <span class="math inline">\(\partial \notin Z\)</span> que se añade al espacio de estados para formar:</p>
+<p><span class="math display">\[
+Z_\partial := Z \cup \{\partial\}.
+\]</span></p>
+<p>La <span class="math inline">\(\sigma\)</span>-álgebra en <span class="math inline">\(Z_\partial\)</span> se define como:</p>
+<p><span class="math display">\[
+\mathcal{B}(Z_\partial) := \sigma\left(\mathcal{B}(Z) \cup \{\{\partial\}\}\right).
+\]</span></p>
+<p>Un proceso estocástico <span class="math inline">\(\{X_t\}_{t \geq 0}\)</span> con valores en <span class="math inline">\(Z_\partial\)</span> se dice que:</p>
+<ol type="1">
+<li>Es absorbido en <span class="math inline">\(\partial\)</span> si <span class="math inline">\(X_t = \partial\)</span> para todo <span class="math inline">\(t \geq \tau\)</span>, donde <span class="math inline">\(\tau = \inf\{s &gt; 0 : X_s = \partial\}\)</span> es el tiempo de absorción,</li>
+<li>Permanece en <span class="math inline">\(\partial\)</span> una vez que llega: <span class="math inline">\(X_t = \partial \implies X_s = \partial\)</span> para todo <span class="math inline">\(s \geq t\)</span>.</li>
+</ol>
 </div>
+<p><strong>Observación:</strong> El punto absorbente se utiliza para:</p>
+<ul>
+<li>Manejar procesos que pueden “explotar” en tiempo finito,</li>
+<li>Definir procesos de Markov con muerte,</li>
+<li>Extender funciones medibles <span class="math inline">\(f: Z \to \mathbb{R}\)</span> a <span class="math inline">\(Z_\partial\)</span> mediante <span class="math inline">\(f(\partial) = 0\)</span>,</li>
+<li>Garantizar que el espacio sea compacto en la compactificación de Alexandroff.</li>
+</ul>
+<p><span class="math display">\[
+f(\partial) = 0, \quad \int_{\{\partial\}} g(z) \, \nu(dz) = 0, \quad \text{y} \quad \partial + z = \partial \quad \forall z \in Z_\partial.
+\]</span> ::: {#def-proceso_puntual} Sea <span class="math inline">\((Z, \mathcal{B}(Z))\)</span> un espacio de Lusin (en particular, Hausdorff y con <span class="math inline">\(\sigma\)</span>-álgebra de Borel estándar). Un proceso puntual es una aplicación medible <span class="math inline">\(p : \Omega \times (0,\infty) \to Z \cup \{\partial\}\)</span> tal que, para casi toda <span class="math inline">\(\omega \in \Omega\)</span>, el conjunto <span class="math inline">\(\{ t \in (0,T] : p(t,\omega) \in Z \}\)</span> es finito para todo <span class="math inline">\(T &gt; 0\)</span>. Se asocia a <span class="math inline">\(p\)</span> su medida de conteo <span class="math inline">\(N_p\)</span>, definida en <span class="math inline">\((0,\infty) \times Z\)</span>. Donde <span class="math inline">\(\partial\)</span> es un punto absorbente fuera de <span class="math inline">\(Z\)</span>. :::</p>
 <div id="def-2" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.6</strong></span> Sea <span class="math inline">\(p : \Omega \times (0,\infty) \to Z \cup {\partial}\)</span> un proceso puntual de clase (QL), donde <span class="math inline">\(Z\)</span> es un espacio de Lusin y <span class="math inline">\(\partial \notin Z\)</span> es el punto absorbente que indica ausencia de salto, entonces <span class="math display">\[p^{-1}(\partial) = \{ (\omega, t) \in \Omega \times (0,\infty) : p(t,\omega) = \partial \}\]</span> representa el conjunto de todos los pares <span class="math inline">\((\omega, t)\)</span> en los que la trayectoria del sistema no experimenta un salto en el instante <span class="math inline">\(t\)</span>.</p>
 </div>
@@ -844,7 +866,7 @@ Para todo <span class="math inline">\(t &gt; 0\)</span>, el límite<br>
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-applebaum2009levy" class="csl-entry" role="listitem">
-Applebaum, David. 2009. <em>L<span>é</span>vy processes and stochastic calculus</em>. Cambridge university press.
+Applebaum, David. 2009. <em>Lévy Processes and Stochastic Calculus</em>. 2nd ed. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511809781">https://doi.org/10.1017/CBO9780511809781</a>.
 </div>
 <div id="ref-folland1999real" class="csl-entry" role="listitem">
 Folland, Gerald B. 1999. <em>Real analysis: modern techniques and their applications</em>. John Wiley &amp; Sons.
