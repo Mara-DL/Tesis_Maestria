@@ -516,12 +516,10 @@ window.Quarto = {
 </div>
 <div id="thm-con_monotona" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.3</strong></span> Sea <span class="math inline">\(\{f_n\}_{n \in \mathbb{N}}\)</span> una sucesión de funciones medibles no negativas tales que <span class="math inline">\(0 \leq f_1 \leq f_2 \leq \cdots\)</span> y <span class="math inline">\(f_n \to f\)</span> puntualmente. Entonces:</p>
-<p><span class="math display">\[
-\lim_{n \to \infty} \int_X f_n \, d\mu = \int_X f \, d\mu.
-\]</span></p>
+<p><span class="math display">\[\lim_{n \to \infty} \int_X f_n \, d\mu = \int_X f \, d\mu.\]</span></p>
 </div>
-<div id="lem-Fatou" class="theorem lemma">
-<p><span class="theorem-title"><strong>Lema 3.2</strong></span> Sea <span class="math inline">\(\{f_n\}_{n \in \mathbb{N}}\)</span> una sucesión de funciones medibles no negativas. Entonces:</p>
+<div>
+<p>Sea <span class="math inline">\(\{f_n\}_{n \in \mathbb{N}}\)</span> una sucesión de funciones medibles no negativas. Entonces:</p>
 <p><span class="math display">\[\liminf_{n \to \infty} \int_X f_n \, d\mu \geq \int_X \liminf_{n \to \infty} f_n \, d\mu.\]</span></p>
 </div>
 <div id="thm-con_dom" class="theorem">
@@ -732,20 +730,12 @@ window.Quarto = {
 </div>
 <div id="def-saltos_aislados" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.9</strong></span> Sea <span class="math inline">\(p: \Omega \times (0, \infty) \to Z \cup \{\partial\}\)</span> un proceso puntual (<a href="#def-proceso_puntual" class="quarto-xref">Definición&nbsp;<span>3.8</span></a>). Decimos que <span class="math inline">\(p\)</span> tiene saltos aislados si para casi toda <span class="math inline">\(\omega \in \Omega\)</span> y todo <span class="math inline">\(T &gt; 0\)</span>, el conjunto de tiempos de salto:*</p>
-<p><span class="math display">\[
-\mathcal{T}(\omega) \cap (0, T] := \{t \in (0, T] : p(t, \omega) \in Z\}
-\]</span></p>
+<p><span class="math display">\[\mathcal{T}(\omega) \cap (0, T] := \{t \in (0, T] : p(t, \omega) \in Z\}\]</span></p>
 <p>es finito o, más generalmente, discreto sin puntos de acumulación en <span class="math inline">\((0, T]\)</span>. Esto significa que:</p>
 <ol type="1">
-<li><p>Para todo <span class="math inline">\(t \in \mathcal{T}(\omega)\)</span>, existe <span class="math inline">\(\varepsilon &gt; 0\)</span> tal que: <span class="math display">\[
-(t - \varepsilon, t + \varepsilon) \cap \mathcal{T}(\omega) = \{t\}.
-\]</span></p></li>
-<li><p>El ínfimo entre tiempos de salto consecutivos es positivo: <span class="math display">\[
-\inf\{t_{i+1} - t_i : t_i, t_{i+1} \in \mathcal{T}(\omega) \cap (0, T]\} &gt; 0 \quad \text{c.s.}
-\]</span></p></li>
-<li><p>La suma sobre saltos está bien definida: <span class="math display">\[
-\sum_{0 &lt; s \leq t} f(s, p(s)) = \sum_{t_i \in \mathcal{T}(\omega) \cap (0, t]} f(t_i, p(t_i)) &lt; \infty \quad \text{c.s.}
-\]</span></p></li>
+<li><p>Para todo <span class="math inline">\(t \in \mathcal{T}(\omega)\)</span>, existe <span class="math inline">\(\varepsilon &gt; 0\)</span> tal que: <span class="math display">\[(t - \varepsilon, t + \varepsilon) \cap \mathcal{T}(\omega) = \{t\}.\]</span></p></li>
+<li><p>El ínfimo entre tiempos de salto consecutivos es positivo: <span class="math display">\[\inf\{t_{i+1} - t_i : t_i, t_{i+1} \in \mathcal{T}(\omega) \cap (0, T]\} &gt; 0 \quad \text{c.s.}\]</span></p></li>
+<li><p>La suma sobre saltos está bien definida: <span class="math display">\[\sum_{0 &lt; s \leq t} f(s, p(s)) = \sum_{t_i \in \mathcal{T}(\omega) \cap (0, t]} f(t_i, p(t_i)) &lt; \infty \quad \text{c.s.}\]</span></p></li>
 </ol>
 </div>
 <div id="def-2" class="theorem definition">
@@ -821,6 +811,7 @@ Y_t^m = &amp;\ \delta^m
 <div id="thm-Modificacion_cadlag" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.21</strong></span> Toda martingala local en un espacio filtrado que satisface las hipótesis usuales admite una versión cádlág.</p>
 </div>
+<p>Por <span class="citation" data-cites="protter2005stochastic">Protter (<a href="references.html#ref-protter2005stochastic" role="doc-biblioref">2005, 73</a>, Thm. 6)</span>, toda martingala local admite una versión càdlàg bajo las hipótesis usuales.</p>
 <section id="herramientas-de-análisis-funcional" class="level3" data-number="3.3.1">
 <h3 data-number="3.3.1" class="anchored" data-anchor-id="herramientas-de-análisis-funcional"><span class="header-section-number">3.3.1</span> Herramientas de análisis funcional</h3>
 <div id="thm-Principio_contracción_Banach" class="theorem">
@@ -872,7 +863,7 @@ El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <
 <section id="medida-aleatoria-de-poisson-y-su-compensación" class="level3" data-number="3.3.3">
 <h3 data-number="3.3.3" class="anchored" data-anchor-id="medida-aleatoria-de-poisson-y-su-compensación"><span class="header-section-number">3.3.3</span> Medida aleatoria de Poisson y su compensación</h3>
 <div id="def-med_alea_poisson" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.20</strong></span> <span class="math inline">\(N(dt,dz)\)</span>: medida aleatoria de Poisson en <span class="math inline">\(\mathbb{R}_+ \times Z\)</span>, donde <span class="math inline">\(Z\)</span> es un espacio de Lusin(<span class="citation" data-cites="def_Espacio_Lusin">(<a href="references.html#ref-def_Espacio_Lusin" role="doc-biblioref"><strong>def_Espacio_Lusin?</strong></a>)</span>) (e.g., <span class="math inline">\(\mathbb{R}^d \setminus \{0\}\)</span>), con medida de intensidad <span class="math inline">\(\nu(dz)dt\)</span>, y <span class="math inline">\(\nu\)</span> es una medida de Lévy, i.e., <span class="math display">\[\int_Z (1 \wedge |z|^2)\,\nu(dz) &lt; \infty.\]</span> <span class="math inline">\(\tilde{N}(dt,dz) = N(dt,dz) - \nu(dz)dt\)</span>: medida de Poisson compensada. Se asume que <span class="math inline">\(W\)</span> y <span class="math inline">\(N\)</span> son independientes entre sí y de <span class="math inline">\(\mathcal{F}_0\)</span></p>
+<p><span class="theorem-title"><strong>Definición 3.20</strong></span> <span class="math inline">\(N(dt,dz)\)</span>: medida aleatoria de Poisson en <span class="math inline">\(\mathbb{R}_+ \times Z\)</span>, donde <span class="math inline">\(Z\)</span> es un espacio de Lusin(<a href="#def-Espacio_Lusin" class="quarto-xref">Definición&nbsp;<span>3.6</span></a>) (e.g., <span class="math inline">\(\mathbb{R}^d \setminus \{0\}\)</span>), con medida de intensidad <span class="math inline">\(\nu(dz)dt\)</span>, y <span class="math inline">\(\nu\)</span> es una medida de Lévy, i.e., <span class="math display">\[\int_Z (1 \wedge |z|^2)\,\nu(dz) &lt; \infty.\]</span> <span class="math inline">\(\tilde{N}(dt,dz) = N(dt,dz) - \nu(dz)dt\)</span>: medida de Poisson compensada. Se asume que <span class="math inline">\(W\)</span> y <span class="math inline">\(N\)</span> son independientes entre sí y de <span class="math inline">\(\mathcal{F}_0\)</span></p>
 </div>
 <div id="def-Proceso_cadlag" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.21</strong></span> Sea <span class="math inline">\((\Omega, \mathcal{F}, \mathbb{P})\)</span> un espacio de probabilidad y sea <span class="math inline">\(X = \{X_t : t \geq 0\}\)</span> un proceso estocástico con valores en <span class="math inline">\(\mathbb{R}\)</span>, es decir, para cada <span class="math inline">\(t \geq 0\)</span>, <span class="math inline">\(X_t : \Omega \to \mathbb{R}\)</span> es una variable aleatoria. Se dice que el proceso <span class="math inline">\(X\)</span> es cádlág (o RCLL) si casi todas sus trayectorias son funciones cádlág; es decir, existe un conjunto <span class="math inline">\(\Omega_0 \in \mathcal{F}\)</span> con <span class="math inline">\(\mathbb{P}(\Omega_0) = 1\)</span> tal que, para todo <span class="math inline">\(\omega \in \Omega_0\)</span>, la función<br>
@@ -900,6 +891,9 @@ Folland, Gerald B. 1999. <em>Real analysis: modern techniques and their applicat
 </div>
 <div id="ref-karatzas1991brownian" class="csl-entry" role="listitem">
 Karatzas, Ioannis, y Steven E. Shreve. 1991. <em>Brownian Motion and Stochastic Calculus</em>. 2nd ed. Vol. 113. Graduate Texts en Mathematics. Springer. <a href="https://doi.org/10.1007/978-1-4612-0949-2">https://doi.org/10.1007/978-1-4612-0949-2</a>.
+</div>
+<div id="ref-protter2005stochastic" class="csl-entry" role="listitem">
+Protter, Philip E. 2005. <em>Stochastic Integration and Differential Equations</em>. 2nd ed. Vol. 21. Stochastic Modelling y Applied Probability. Springer. <a href="https://doi.org/10.1007/978-3-662-10061-5">https://doi.org/10.1007/978-3-662-10061-5</a>.
 </div>
 <div id="ref-rudin1987real" class="csl-entry" role="listitem">
 Rudin, W. 1987. <em>Real and Complex Analysis Real &amp; Complex Analysis</em>. McGraw-Hill. <a href="https://books.google.com.mx/books?id=UGpaAQAACAAJ">https://books.google.com.mx/books?id=UGpaAQAACAAJ</a>.
