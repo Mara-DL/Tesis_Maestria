@@ -511,11 +511,11 @@ window.Quarto = {
 <p><span class="math display">\[\sqrt{a^2 b^2} \leq \frac{a^2 + b^2}{2} \implies |ab| \leq \frac{a^2 + b^2}{2} \implies 2ab \leq a^2 + b^2. \quad \square\]</span></p>
 </div>
 <div id="lem-Fatou" class="theorem lemma">
-<p><span class="theorem-title"><strong>Lema 3.1</strong></span> Sea <span class="math inline">\(\{f_n\}_{n \in \mathbb{N}}\)</span> una sucesión de funciones medibles no negativas. Entonces:</p>
+<p><span class="theorem-title"><strong>Lema 3.1</strong></span> <em>(Fatou).</em> Sea <span class="math inline">\(\{f_n\}_{n \in \mathbb{N}}\)</span> una sucesión de funciones medibles no negativas. Entonces:</p>
 <p><span class="math display">\[\liminf_{n \to \infty} \int_X f_n \, d\mu \geq \int_X \liminf_{n \to \infty} f_n \, d\mu.\]</span></p>
 </div>
 <div id="thm-con_monotona" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.3</strong></span> Sea <span class="math inline">\(\{f_n\}_{n \in \mathbb{N}}\)</span> una sucesión de funciones medibles no negativas tales que <span class="math inline">\(0 \leq f_1 \leq f_2 \leq \cdots\)</span> y <span class="math inline">\(f_n \to f\)</span> puntualmente. Entonces:</p>
+<p><span class="theorem-title"><strong>Teorema 3.3</strong></span> <em>(Convergencia Monotona).</em> Sea <span class="math inline">\(\{f_n\}_{n \in \mathbb{N}}\)</span> una sucesión de funciones medibles no negativas tales que <span class="math inline">\(0 \leq f_1 \leq f_2 \leq \cdots\)</span> y <span class="math inline">\(f_n \to f\)</span> puntualmente. Entonces:</p>
 <p><span class="math display">\[\lim_{n \to \infty} \int_X f_n \, d\mu = \int_X f \, d\mu.\]</span></p>
 </div>
 <div>
@@ -523,7 +523,7 @@ window.Quarto = {
 <p><span class="math display">\[\liminf_{n \to \infty} \int_X f_n \, d\mu \geq \int_X \liminf_{n \to \infty} f_n \, d\mu.\]</span></p>
 </div>
 <div id="thm-con_dom" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.4</strong></span> Sea <span class="math inline">\((X, \mathcal{A}, \mu)\)</span> un espacio de medida y <span class="math inline">\(\{f_n\}_{n\in\mathbb{N}}\)</span> una sucesión de funciones <span class="math inline">\(\mu\)</span>-medibles <span class="math inline">\(f_n : X \to \mathbb{R}\)</span>. Supongamos que:</p>
+<p><span class="theorem-title"><strong>Teorema 3.4</strong></span> (Convergencia Dominada). Sea <span class="math inline">\((X, \mathcal{A}, \mu)\)</span> un espacio de medida y <span class="math inline">\(\{f_n\}_{n\in\mathbb{N}}\)</span> una sucesión de funciones <span class="math inline">\(\mu\)</span>-medibles <span class="math inline">\(f_n : X \to \mathbb{R}\)</span>. Supongamos que:</p>
 <ol type="I">
 <li><p><span class="math inline">\(f_n(x) \to f(x)\)</span> <span class="math inline">\(\mu -\text{casi en todas partes,}\)</span></p></li>
 <li><p>existe una función <span class="math inline">\(g \in L^1(X, \mathcal{A}, \mu)\)</span> tal que <span class="math inline">\(|f_n(x)| \leq g(x)\)</span> para <span class="math inline">\(\mu\)</span>-casi todo <span class="math inline">\(x \in X\)</span> y todo <span class="math inline">\(n \in \mathbb{N}.\)</span></p></li>
