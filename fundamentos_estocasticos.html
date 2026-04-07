@@ -398,7 +398,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./edes_saltos.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas.</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -445,9 +445,9 @@ window.Quarto = {
   <li><a href="#resultados-de-teoría-de-la-medida-y-análisis-funcional" id="toc-resultados-de-teoría-de-la-medida-y-análisis-funcional" class="nav-link" data-scroll-target="#resultados-de-teoría-de-la-medida-y-análisis-funcional"><span class="header-section-number">3.2</span> Resultados de Teoría de la Medida y Análisis Funcional</a></li>
   <li><a href="#procesos-estocásticos-fundamentales" id="toc-procesos-estocásticos-fundamentales" class="nav-link" data-scroll-target="#procesos-estocásticos-fundamentales"><span class="header-section-number">3.3</span> Procesos Estocásticos Fundamentales</a></li>
   <li><a href="#desigualdades-y-lemmas-clásicos" id="toc-desigualdades-y-lemmas-clásicos" class="nav-link" data-scroll-target="#desigualdades-y-lemmas-clásicos"><span class="header-section-number">3.4</span> Desigualdades y Lemmas Clásicos</a></li>
-  <li><a href="#medidas-aleatorias-de-poisson" id="toc-medidas-aleatorias-de-poisson" class="nav-link" data-scroll-target="#medidas-aleatorias-de-poisson"><span class="header-section-number">3.5</span> Medidas Aleatorias de Poisson</a></li>
-  <li><a href="#espacios-funcionales-para-procesos-predecibles" id="toc-espacios-funcionales-para-procesos-predecibles" class="nav-link" data-scroll-target="#espacios-funcionales-para-procesos-predecibles"><span class="header-section-number">3.6</span> Espacios Funcionales para Procesos Predecibles</a></li>
-  <li><a href="#la-integral-de-itô-para-movimiento-browniano" id="toc-la-integral-de-itô-para-movimiento-browniano" class="nav-link" data-scroll-target="#la-integral-de-itô-para-movimiento-browniano"><span class="header-section-number">3.7</span> La Integral de Itô para Movimiento Browniano</a>
+  <li><a href="#sec-medida_aleatoria_poisson" id="toc-sec-medida_aleatoria_poisson" class="nav-link" data-scroll-target="#sec-medida_aleatoria_poisson"><span class="header-section-number">3.5</span> Medidas Aleatorias de Poisson.</a></li>
+  <li><a href="#sec-proc_predecibles" id="toc-sec-proc_predecibles" class="nav-link" data-scroll-target="#sec-proc_predecibles"><span class="header-section-number">3.6</span> Espacios Funcionales para Procesos Predecibles.</a></li>
+  <li><a href="#sec-Ito" id="toc-sec-Ito" class="nav-link" data-scroll-target="#sec-Ito"><span class="header-section-number">3.7</span> La Integral de Itô para Movimiento Browniano.</a>
   <ul class="collapse">
   <li><a href="#extensión-a-mathcalh2-por-densidad." id="toc-extensión-a-mathcalh2-por-densidad." class="nav-link" data-scroll-target="#extensión-a-mathcalh2-por-densidad."><span class="header-section-number">3.7.1</span> Extensión a <span class="math inline">\(\mathcal{H}^2\)</span> por densidad.</a></li>
   <li><a href="#integral-como-proceso-y-propiedades" id="toc-integral-como-proceso-y-propiedades" class="nav-link" data-scroll-target="#integral-como-proceso-y-propiedades"><span class="header-section-number">3.7.2</span> Integral como proceso y propiedades</a></li>
@@ -649,8 +649,8 @@ El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <
 = \alpha(t) \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right),\]</span> lo cual concluye la demostración. El caso <span class="math inline">\(\alpha \equiv 0\)</span> se deduce inmediatamente: la desigualdad implica <span class="math inline">\(u(t) \leq 0\)</span>. Si además <span class="math inline">\(u \geq 0\)</span>, entonces <span class="math inline">\(u \equiv 0\)</span> en <span class="math inline">\([0,T]\)</span>.</p>
 </div>
 </section>
-<section id="medidas-aleatorias-de-poisson" class="level2" data-number="3.5">
-<h2 data-number="3.5" class="anchored" data-anchor-id="medidas-aleatorias-de-poisson"><span class="header-section-number">3.5</span> Medidas Aleatorias de Poisson</h2>
+<section id="sec-medida_aleatoria_poisson" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="sec-medida_aleatoria_poisson"><span class="header-section-number">3.5</span> Medidas Aleatorias de Poisson.</h2>
 <div id="def-punto_absorbente" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.8</strong></span> Sea <span class="math inline">\((Z, \mathcal{B}(Z))\)</span> un espacio medible polaco o de Lusin. El punto absorbente es un elemento <span class="math inline">\(\partial \notin Z\)</span> que se añade al espacio de estados para formar:</p>
 <p><span class="math display">\[Z_\partial := Z \cup \{\partial\}.\]</span></p>
@@ -755,8 +755,8 @@ El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <
 <p>En la Isometría de Itô, el <a href="#thm-Fubinni_esperanzas" class="quarto-xref">Teorema&nbsp;<span>3.13</span></a> permite escribir <span class="math display">\[\mathbb{E}\left[ \int_0^t \int_Z R(s,z)^2 \, \nu(dz) ds \right] = \int_0^t \int_Z \mathbb{E}[R(s,z)^2] \, \nu(dz) ds,\]</span> lo cual facilita el análisis y la comparación con la varianza de la integral estocástica. También justifica que la norma en <span class="math inline">\(L^2_{\text{pred}}(\widetilde{N})\)</span> está bien definida.</p>
 </div>
 </section>
-<section id="espacios-funcionales-para-procesos-predecibles" class="level2" data-number="3.6">
-<h2 data-number="3.6" class="anchored" data-anchor-id="espacios-funcionales-para-procesos-predecibles"><span class="header-section-number">3.6</span> Espacios Funcionales para Procesos Predecibles</h2>
+<section id="sec-proc_predecibles" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="sec-proc_predecibles"><span class="header-section-number">3.6</span> Espacios Funcionales para Procesos Predecibles.</h2>
 <p>Definición del espacio <span class="math inline">\(L^2_{\text{pred}}(\widetilde{N})\)</span> y su norma</p>
 <div id="thm-den_esp_pro_simp_prede_L2" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.14</strong></span> El conjunto <span class="math inline">\(\mathcal{E}\)</span> de procesos elementales simples predecibles es denso en el espacio de Hilbert</p>
@@ -766,8 +766,8 @@ El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <
 <p><span class="proof-title"><em>Demostración</em>. </span>Sea <span class="math inline">\(R \in L^2_{\text{pred}}(\widetilde{N})\)</span>. Por el resultado anterior, existe una sucesión de funciones simples <span class="math inline">\(\phi_n\)</span> (no necesariamente predecibles) tal que <span class="math inline">\(\|\phi_n - R\| \to 0\)</span>. Cada <span class="math inline">\(\phi_n\)</span> es <span class="math inline">\(\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z)\)</span>-medible. Dado que la <span class="math inline">\(\sigma\)</span>-álgebra predecible <span class="math inline">\(\mathcal{P}\)</span> es generada por procesos adaptados y càglàd, y la filtración satisface las condiciones usuales, el espacio <span class="math inline">\(L^2(\mathcal{P} \otimes \mathcal{B}(Z))\)</span> es un subespacio cerrado de <span class="math inline">\(L^2(\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z))\)</span>. Existe, por tanto, una proyección ortogonal de <span class="math inline">\(\phi_n\)</span> sobre este subespacio, sin embargo, basta observar que cualquier función simple puede aproximarse por funciones simples <span class="math inline">\(\mathcal{P} \otimes \mathcal{B}(Z)\)</span>-medibles <span class="citation" data-cites="applebaum2009levy">(<a href="references.html#ref-applebaum2009levy" role="doc-biblioref">Applebaum 2009</a>)</span> Más explícitamente, uno puede refinar la partición de <span class="math inline">\([0,T]\)</span> y usar funciones constantes en intervalos <span class="math inline">\((t_{i-1}, t_i]\)</span> con coeficientes <span class="math inline">\(\mathcal{F}_{t_{i-1}}\)</span>-medibles. Esto define una sucesión <span class="math inline">\(\{R_n\} \subset \mathcal{E}\)</span> tal que <span class="math inline">\(\|R_n - R\| \to 0\)</span>.</p>
 </div>
 </section>
-<section id="la-integral-de-itô-para-movimiento-browniano" class="level2" data-number="3.7">
-<h2 data-number="3.7" class="anchored" data-anchor-id="la-integral-de-itô-para-movimiento-browniano"><span class="header-section-number">3.7</span> La Integral de Itô para Movimiento Browniano</h2>
+<section id="sec-Ito" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="sec-Ito"><span class="header-section-number">3.7</span> La Integral de Itô para Movimiento Browniano.</h2>
 <div id="def-procesp_Simple" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.18</strong></span> Sea <span class="math inline">\(0 = t_0 &lt; t_1 &lt; \cdots &lt; t_n = T\)</span> una partición finita de <span class="math inline">\([0,T]\)</span>. Un proceso simple es un proceso de la forma <span class="math display">\[X_t(\omega) = \sum_{k=0}^{n-1} X^{(k)}(\omega) \, \mathbf{1}_{[t_k, t_{k+1})}(t),\]</span> donde cada <span class="math inline">\(X^{(k)}\)</span> es una variable aleatoria <span class="math inline">\(\mathcal{F}_{t_k}\)</span>-medible y cuadrado integrable.</p>
 </div>
@@ -1315,8 +1315,8 @@ Tudor, Constantin. 2022. <em>Procesos estocásticos</em>. 1a. edición. Vol. 2. 
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./edes_saltos.html" class="pagination-link" aria-label="Ecuaciones diferenciales estocásticas">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./edes_saltos.html" class="pagination-link" aria-label="Ecuaciones diferenciales estocásticas.">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas.</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

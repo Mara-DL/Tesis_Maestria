@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>4&nbsp; Ecuaciones diferenciales estocásticas – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos</title>
+<title>4&nbsp; Ecuaciones diferenciales estocásticas. – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -131,10 +131,10 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="4&nbsp; Ecuaciones diferenciales estocásticas – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta property="og:title" content="4&nbsp; Ecuaciones diferenciales estocásticas. – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta property="og:image" content="assets/UNACH.png">
 <meta property="og:site_name" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
-<meta name="twitter:title" content="4&nbsp; Ecuaciones diferenciales estocásticas – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta name="twitter:title" content="4&nbsp; Ecuaciones diferenciales estocásticas. – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta name="twitter:image" content="assets/UNACH.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -308,7 +308,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./edes_saltos.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./edes_saltos.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas.</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
@@ -396,7 +396,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./edes_saltos.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas.</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -439,7 +439,16 @@ window.Quarto = {
     <h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-  <li><a href="#teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-sde-con-difusión-y-saltos" id="toc-teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-sde-con-difusión-y-saltos" class="nav-link active" data-scroll-target="#teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-sde-con-difusión-y-saltos"><span class="header-section-number">4.1</span> Teorema de existencia y unicidad global de una solución fuerte para la SDE con difusión y saltos</a></li>
+  <li><a href="#formulación-y-teoremas-de-existencia-y-unicidad" id="toc-formulación-y-teoremas-de-existencia-y-unicidad" class="nav-link active" data-scroll-target="#formulación-y-teoremas-de-existencia-y-unicidad"><span class="header-section-number">4.1</span> Formulación y Teoremas de Existencia y Unicidad</a>
+  <ul class="collapse">
+  <li><a href="#teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-ede-con-difusión-y-saltos" id="toc-teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-ede-con-difusión-y-saltos" class="nav-link" data-scroll-target="#teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-ede-con-difusión-y-saltos"><span class="header-section-number">4.1.1</span> Teorema de existencia y unicidad global de una solución fuerte para la EDE con difusión y saltos</a></li>
+  <li><a href="#teorema-de-existencia-y-unicidad-local-de-una-solución-fuerte-para-la-ede-con-difusión-y-saltos" id="toc-teorema-de-existencia-y-unicidad-local-de-una-solución-fuerte-para-la-ede-con-difusión-y-saltos" class="nav-link" data-scroll-target="#teorema-de-existencia-y-unicidad-local-de-una-solución-fuerte-para-la-ede-con-difusión-y-saltos"><span class="header-section-number">4.1.2</span> Teorema de existencia y unicidad local de una solución fuerte para la EDE con difusión y saltos</a></li>
+  </ul></li>
+  <li><a href="#modelo-de-cramérlundberg-extendido." id="toc-modelo-de-cramérlundberg-extendido." class="nav-link" data-scroll-target="#modelo-de-cramérlundberg-extendido."><span class="header-section-number">4.2</span> Modelo de Cramér–Lundberg Extendido.</a>
+  <ul class="collapse">
+  <li><a href="#formulación-del-modelo-base-c-l-clásico." id="toc-formulación-del-modelo-base-c-l-clásico." class="nav-link" data-scroll-target="#formulación-del-modelo-base-c-l-clásico."><span class="header-section-number">4.2.1</span> Formulación del modelo base (C-L clásico).</a></li>
+  <li><a href="#extensión-a-un-modelo-con-difusión-y-saltos." id="toc-extensión-a-un-modelo-con-difusión-y-saltos." class="nav-link" data-scroll-target="#extensión-a-un-modelo-con-difusión-y-saltos."><span class="header-section-number">4.2.2</span> Extensión a un modelo con difusión y saltos.</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/edes_saltos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/edes_saltos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
@@ -449,7 +458,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas</span></h1>
+<h1 class="title"><span id="sec-EDESJs" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas.</span></span></h1>
 </div>
 
 
@@ -466,6 +475,8 @@ window.Quarto = {
 </header>
 
 
+<section id="formulación-y-teoremas-de-existencia-y-unicidad" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="formulación-y-teoremas-de-existencia-y-unicidad"><span class="header-section-number">4.1</span> Formulación y Teoremas de Existencia y Unicidad</h2>
 <div id="def-Semimartingalas_saltos" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 4.1</strong></span> Un proceso <span class="math inline">\(Y = \{Y_t\}_{t \geq 0}\)</span> es una semimartingala si admite la descomposición canónica <span class="math display">\[Y_t = Y_0 + Y_t^c + \sum_{s \leq t} \Delta Y_s,\]</span> donde:</p>
 <ul>
@@ -475,8 +486,8 @@ window.Quarto = {
 <li><p><span class="math inline">\(\sum_{s \leq t} |{\Delta Y_s}|^2 &lt; \infty\)</span> c.s. en compactos ( <span class="citation" data-cites="protter2005stochastic">Protter (<a href="references.html#ref-protter2005stochastic" role="doc-biblioref">2005</a>)</span> Cap. II).</p></li>
 </ul>
 </div>
-<section id="teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-sde-con-difusión-y-saltos" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-sde-con-difusión-y-saltos"><span class="header-section-number">4.1</span> Teorema de existencia y unicidad global de una solución fuerte para la SDE con difusión y saltos</h2>
+<section id="teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-ede-con-difusión-y-saltos" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="teorema-de-existencia-y-unicidad-global-de-una-solución-fuerte-para-la-ede-con-difusión-y-saltos"><span class="header-section-number">4.1.1</span> Teorema de existencia y unicidad global de una solución fuerte para la EDE con difusión y saltos</h3>
 <div id="def-Solucion_fuerte" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 4.2</strong></span> <span class="math inline">\(\{x_t\}_{t\geq0}\)</span> es una solución <span class="math inline">\((\mathcal{F}_t-)\)</span> de<br>
 <span id="eq-1"><span class="math display">\[\begin{split}
@@ -563,6 +574,9 @@ x_t(\omega) = x'_t(\omega) \quad \text{para todo } t \in [0,T].
 <div id="def-Tiempos_paro_explosión" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 4.3</strong></span> <span class="math display">\[\tau^N := \inf\{ t \geq 0 : |x_t| &gt; N \}\]</span> Se demuestra que <span class="math inline">\(\tau^N \uparrow \infty\)</span> c.s. usando: - Estimaciones en <span class="math inline">\(S^{2,\mathrm{loc}}\)</span> vía BDG y Grönwall, - Cota uniforme en <span class="math inline">\(N\)</span>: <span class="math inline">\(\mathbb{E}[\sup_{t \leq T} |x_t^N|^2] \leq K_T &lt; \infty\)</span>, - Argumento de contradicción: <span class="math inline">\(N^2 \mathbb{P}(\tau^N \leq T) \leq K_T \Rightarrow \mathbb{P}(\tau^N \leq T) \to 0\)</span>.</p>
 </div>
+</section>
+<section id="teorema-de-existencia-y-unicidad-local-de-una-solución-fuerte-para-la-ede-con-difusión-y-saltos" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="teorema-de-existencia-y-unicidad-local-de-una-solución-fuerte-para-la-ede-con-difusión-y-saltos"><span class="header-section-number">4.1.2</span> Teorema de existencia y unicidad local de una solución fuerte para la EDE con difusión y saltos</h3>
 <div id="thm-exis_uni_local_fuerte_SDE" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 4.2</strong></span> Si la condición <span class="math inline">\(2°\)</span> del Teorema anterior se debilita a <span class="math inline">\(2°'\)</span> tal que para cada <span class="math inline">\(N = 1, 2,\cdots,\)</span> existe una función no aleatoria <span class="math inline">\(\widetilde{c}^N(t)\)</span> tal que para cada <span class="math inline">\(|x_1|, |x_2| \leq N\)</span>, <span class="math display">\[
 |b(t, x_1, \omega) - b(t, x_2, \omega)| \leq \widetilde{c}^N(t) |x_1 - x_2|,
@@ -650,6 +664,44 @@ N^2 \, \mathbb{P}(A) \leq \mathbb{E}\left[ \sup_{0 \leq t \leq \tau_N \wedge T_0
 \mathbb{P}\!\left( \lim_{N \to \infty} \tau_N = \infty \right) = 1.
 \]</span> Esto garantiza que el proceso <span class="math inline">\(x = \{x_t\}_{t \geq 0}\)</span> está definido para todo <span class="math inline">\(t \geq 0\)</span>, pertenece a <span class="math inline">\(S^{2,\mathrm{loc}}_{\mathcal{F}}(\mathbb{R})\)</span>, y es la única solución fuerte de la SDE <a href="#eq-1" class="quarto-xref">Ecuación&nbsp;<span>4.1</span></a>. La unicidad por trayectoria se sigue del argumento estándar usando densidad de <span class="math inline">\(\mathbb{Q} \cap [0,T]\)</span> y la propiedad cádlág de las soluciones, como se demostró en el Teorema <a href="#thm-exis_uni_glo_fuerte_SDE" class="quarto-xref">Teorema&nbsp;<span>4.1</span></a>.</p>
 </div>
+</section>
+</section>
+<section id="modelo-de-cramérlundberg-extendido." class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="modelo-de-cramérlundberg-extendido."><span class="header-section-number">4.2</span> Modelo de Cramér–Lundberg Extendido.</h2>
+<section id="formulación-del-modelo-base-c-l-clásico." class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="formulación-del-modelo-base-c-l-clásico."><span class="header-section-number">4.2.1</span> Formulación del modelo base (C-L clásico).</h3>
+<div style="text-align:justify">
+<p>El modelo clásico de Cramér-Lundberg (C-L) constituye un pilar fundamental en la teoría de riesgo actuarial, ofreciendo una representación matemáticamente rigurosa de la evolución del capital de una aseguradora a lo largo del tiempo. Formalmente, consideramos un proceso estocástico <span class="math inline">\(\{U(t)\}_{t \geq 0}\)</span> que representa la reserva de capital de la aseguradora en el instante <span class="math inline">\(t\)</span>. El modelo clásico de Cramér-Lundberg postula que esta reserva evoluciona mediante: <span id="eq-8"><span class="math display">\[U(t) = u + ct - \sum_{i=1}^{N(t)} Y_i, \tag{4.8}\]</span></span> donde: - <span class="math inline">\(U(t)\)</span>: Reserva o capital en el tiempo <span class="math inline">\(t\)</span>, - <span class="math inline">\(u\)</span>: Capital inicial, - <span class="math inline">\(c\)</span>: Tasa de entrada de primas (constante en el modelo clásico), - <span class="math inline">\(N(t)\)</span>: Proceso de conteo de siniestros, modelado como un proceso de Poisson homogéneo con intensidad <span class="math inline">\(\lambda &gt; 0\)</span>. Formalmente, <span class="math inline">\(N(t)\)</span> es un proceso y <span class="math inline">\(\mathbb{E}[N(t)] = \lambda t\)</span>. - <span class="math inline">\(\{Y_i\}_{i \geq 1}\)</span>: Secuencia de variables aleatorias independientes e idénticamente distribuidas (i.i.d.) que representan las magnitudes de los siniestros, con distribución <span class="math inline">\(F_Y\)</span> y función de densidad <span class="math inline">\(f_Y\)</span> (en caso de ser absolutamente continua). Se asume que <span class="math inline">\(\mathbb{E}[Y_1] = \mu &lt; \infty\)</span> y <span class="math inline">\(\text{Var}(Y_1) = \sigma^2 &lt; \infty\)</span> para garantizar la existencia de momentos necesarios en el análisis.</p>
+<p>La suposición de parámetros constantes (especialmente la tasa de primas <span class="math inline">\(c\)</span> y la intensidad del proceso de Poisson <span class="math inline">\(\lambda\)</span>) limita su aplicabilidad en entornos dinámicos donde las condiciones del mercado cambian con el tiempo, como es el caso del mercado asegurador mexicano que enfrenta variaciones estacionales en los siniestros catastróficos, cambios en las tasas de inversión y fluctuaciones en la estructura de primas debido a factores macroeconómicos como la inflación.</p>
+</div>
+</section>
+<section id="extensión-a-un-modelo-con-difusión-y-saltos." class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="extensión-a-un-modelo-con-difusión-y-saltos."><span class="header-section-number">4.2.2</span> Extensión a un modelo con difusión y saltos.</h3>
+<div style="text-align:justify">
+<p>Formalmente, extendemos el proceso de reservas <span class="math inline">\(\{U(t)\}_{t \geq 0}\)</span> del modelo (C-L) que sigue la dinámica estocástica de una ecuación diferencial con difusión y saltos (EDES).</p>
+<p>Las ecuaciones diferenciales estocásticas con saltos (EDES) constituyen una extensión natural del cálculo estocástico clásico de Itô,(<a href="fundamentos_estocasticos.html#sec-Ito" class="quarto-xref"><span>Sección 3.7</span></a>) permitiendo modelar dinámicas que combinan evolución continua con cambios abruptos discontinuos. Este marco teórico es esencial para representar fenómenos en los que coexisten tendencias suaves y eventos extremos, como es el caso de los mercados financieros y las carteras de seguros sujetas a siniestros catastróficos.</p>
+<p>Una ecuación diferencial estocástica con saltos y parámetros dependientes del tiempo toma la forma general (<a href="#sec-EDESJs" class="quarto-xref"><span>Capítulo 4</span></a>) <span id="eq-9"><span class="math display">\[
+dX(t) = a(t,X(t^-))dt + b(t,X(t^-))dW(t) + \int_{\mathbb{R}} R(t,X(t^-),x) \tilde{N}(dt,dx),
+\tag{4.9}\]</span></span> donde los coeficientes <span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span> y <span class="math inline">\(R\)</span> satisfacen condiciones de Lipschitz y crecimiento lineal que garantizan existencia y unicidad de soluciones fuertes. La notación <span class="math inline">\(X(t^-)\)</span> denota el valor del proceso predecible(<a href="fundamentos_estocasticos.html#sec-proc_predecibles" class="quarto-xref"><span>Sección 3.6</span></a>) inmediatamente antes del tiempo <span class="math inline">\(t\)</span>, crucial para manejar correctamente las discontinuidades inducidas por los saltos.(<a href="#thm-exis_uni_glo_fuerte_SDE" class="quarto-xref">Teorema&nbsp;<span>4.1</span></a>) <span class="math inline">\(N(dt,dx)\)</span> es una medida de Poisson aleatoria que cuenta los saltos de tamaño <span class="math inline">\(x\)</span> en el intervalo <span class="math inline">\(dt\)</span>, y <span class="math inline">\(\tilde{N}(dt,dx) = N(dt,dx) - \nu(dx)dt\)</span> es su compensador con <span class="math inline">\(\nu\)</span> siendo la medida de Poisson compensada. Esta descomposición separa explícitamente la componente difusiva continua (<span class="math inline">\(\sigma W(t)\)</span>) de los saltos de pequeña magnitud (integrado compensado) y los saltos de gran magnitud (integrado puro).(<a href="fundamentos_estocasticos.html#sec-medida_aleatoria_poisson" class="quarto-xref"><span>Sección 3.5</span></a>)</p>
+<p>Para capturar la dinámica real del mercado Mexicano, extendemos el modelo incorporando dependencia temporal en todos los parámetros.</p>
+<p>En el contexto actuarial, esta estructura matemática permite integrar de manera coherente tres elementos fundamentales:</p>
+<ul>
+<li><p>La acumulación determinista de primas,</p></li>
+<li><p>La evolución estocástica de las inversiones con volatilidad de mercado,</p></li>
+<li><p>La ocurrencia aleatoria de siniestros catastróficos modelados como saltos negativos. El uso de parámetros dependientes del tiempo <span class="math inline">\((c(t)\)</span>, <span class="math inline">\(r(t)\)</span>, <span class="math inline">\(\sigma(t))\)</span> refleja adecuadamente la estacionalidad en la frecuencia de siniestros, las fluctuaciones en las tasas de interés y la variabilidad de la volatilidad financiera observadas en mercados emergentes como el Mexicano. Incorporando los fundamentos teóricos al marco de la ecuación el proceso de reservas <span class="math inline">\(\{U(t)\}_{t \geq 0}\)</span> se presenta como la siguiente ecuación diferencial estocástica con saltos (<a href="#eq-9" class="quarto-xref">Ecuación&nbsp;<span>4.9</span></a>) <span id="eq-modelo_extendido"><span class="math display">\[
+dU(t) = \underbrace{c(t)\,dt}_{\text{Primas}} + \underbrace{U(t^-)r(t)\,dt}_{\text{Rendimientos}} + \underbrace{U(t^-)\sigma(t)\,dW(t)}_{\text{Volatilidad}} - \underbrace{dJ(t)}_{\text{Siniestros}},
+\tag{4.10}\]</span></span> donde</p></li>
+<li><p><span class="math inline">\(c(t) &gt; 0\)</span> es la tasa de prima neta tiempo-dependiente, ajustada por inflación y estacionalidad en la demanda (Sección~<span class="math inline">\(\ref{sec:ct}\)</span>);</p></li>
+<li><p><span class="math inline">\(r(t)\)</span> representa la tasa de interés instantánea de la cartera de inversiones, modelada como un proceso determinista que refleja la estructura de tasas de Banxico, los rendimientos de CETES y globales (ILS)(Sección~<span class="math inline">\(\ref{sec:rt}\)</span>) ;</p></li>
+<li><p><span class="math inline">\(\sigma(t) &gt; 0\)</span> es la volatilidad tiempo-dependiente de las inversiones, estimada mediante una combinación convexa de la volatilidad de activos locales (CETES) y globales (ILS), ponderada por la composición de la cartera según reportes de la CNSF (Sección~<span class="math inline">\(\ref{sec:sigmat}\)</span>);</p></li>
+<li><p><span class="math inline">\(W(t)\)</span> es un movimiento browniano estándar que modela el riesgo de mercado continuo;</p></li>
+<li><p><span class="math inline">\(J(t)\)</span>: Proceso de saltos compuesto que modela siniestros catastróficos. Por tanto las soluciones del proceso de reservas presentado por la ecuación (<a href="#eq-modelo_extendido" class="quarto-xref">Ecuación&nbsp;<span>4.10</span></a>) bajo las especificaciones del modelo (con tasas de prima, interés y volatilidad acotadas), cumple con las condiciones de Lipschitz y crecimiento lineal que garantizan existencia y unicidad de soluciones fuertes para el proceso de reservas.(<span class="quarto-unresolved-ref">?sec-normalidad</span>)</p></li>
+<li><p><span class="math inline">\(N_m(t)\)</span>: Proceso de Poisson no homogéneo para eventos meteorológicos con intensidad <span class="math inline">\(\lambda_m(t)\)</span>,</p></li>
+<li><p><span class="math inline">\(N_s(t)\)</span>: Proceso de Poisson para eventos sísmicos con intensidad constante <span class="math inline">\(\lambda_s\)</span>,</p></li>
+<li><p><span class="math inline">\(Y_k^{(m)} \sim \text{TruncNormal}(\mu_m, \sigma_m^2)\)</span>: Severidad de siniestros meteorológicos,</p></li>
+<li><p><span class="math inline">\(Y_\ell^{(s)} \sim \text{TruncNormal}(\mu_s, \sigma_s^2)\)</span>: Severidad de siniestros sísmicos.</p></li>
+</ul>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
@@ -657,6 +709,7 @@ N^2 \, \mathbb{P}(A) \leq \mathbb{E}\left[ \sup_{0 \leq t \leq \tau_N \wedge T_0
 Protter, Philip E. 2005. <em>Stochastic Integration and Differential Equations</em>. 2nd ed. Vol. 21. Stochastic Modelling y Applied Probability. Springer. <a href="https://doi.org/10.1007/978-3-662-10061-5">https://doi.org/10.1007/978-3-662-10061-5</a>.
 </div>
 </div>
+</section>
 </section>
 
 </main> <!-- /main -->
