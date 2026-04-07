@@ -449,6 +449,15 @@ window.Quarto = {
   <li><a href="#formulación-del-modelo-base-c-l-clásico." id="toc-formulación-del-modelo-base-c-l-clásico." class="nav-link" data-scroll-target="#formulación-del-modelo-base-c-l-clásico."><span class="header-section-number">4.2.1</span> Formulación del modelo base (C-L clásico).</a></li>
   <li><a href="#extensión-a-un-modelo-con-difusión-y-saltos." id="toc-extensión-a-un-modelo-con-difusión-y-saltos." class="nav-link" data-scroll-target="#extensión-a-un-modelo-con-difusión-y-saltos."><span class="header-section-number">4.2.2</span> Extensión a un modelo con difusión y saltos.</a></li>
   </ul></li>
+  <li><a href="#análisis-asintótico-y-estimación-de-parámetros" id="toc-análisis-asintótico-y-estimación-de-parámetros" class="nav-link" data-scroll-target="#análisis-asintótico-y-estimación-de-parámetros"><span class="header-section-number">4.3</span> Análisis Asintótico y Estimación de Parámetros</a>
+  <ul class="collapse">
+  <li><a href="#estimación-de-la-varianza-integrada" id="toc-estimación-de-la-varianza-integrada" class="nav-link" data-scroll-target="#estimación-de-la-varianza-integrada"><span class="header-section-number">4.3.1</span> Estimación de la Varianza Integrada</a></li>
+  <li><a href="#hipótesis-técnicas" id="toc-hipótesis-técnicas" class="nav-link" data-scroll-target="#hipótesis-técnicas"><span class="header-section-number">4.3.2</span> Hipótesis técnicas</a></li>
+  </ul></li>
+  <li><a href="#estimación-de-la-intensidad-de-saltos." id="toc-estimación-de-la-intensidad-de-saltos." class="nav-link" data-scroll-target="#estimación-de-la-intensidad-de-saltos."><span class="header-section-number">4.4</span> Estimación de la Intensidad de Saltos.</a>
+  <ul class="collapse">
+  <li><a href="#estimador-hatlambda_n-y-elección-del-umbral-tau_n-alpha-delta_nvarpi-." id="toc-estimador-hatlambda_n-y-elección-del-umbral-tau_n-alpha-delta_nvarpi-." class="nav-link" data-scroll-target="#estimador-hatlambda_n-y-elección-del-umbral-tau_n-alpha-delta_nvarpi-."><span class="header-section-number">4.4.1</span> Estimador <span class="math inline">\(\hat{\lambda}_n\)</span> y elección del umbral <span class="math inline">\(\tau_n = \alpha \Delta_n^{\varpi}\)</span> .</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/edes_saltos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/edes_saltos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
@@ -518,7 +527,10 @@ x_t = x_0 &amp;+ \int_0^t b(s,x_s,\omega)\,ds
 <p>Entonces, el espacio sobre el cual se aplica el principio de contracción es: <span class="math display">\[H = \left\{ \{x_t\} \in B :B \in L_{\mathfrak{F}}^{2}(\mathbb{R}), \  \| (x_{\cdot}) \|_M &lt; \infty \right\}.\]</span> Sea <span class="math inline">\(\Phi: H \to H\)</span> el operador definido por: <span class="math display">\[(\Phi(x))_t = x_0 + \int_0^t b(s, x_s, \omega)\,ds + \int_0^t \sigma(s, x_s, \omega)\,dW_s + \int_0^t \int_Z R(s, x_{s-}, z, \omega)\,\tilde{N}(ds, dz).\]</span> y sea <span class="math inline">\(X_t = x_t^{(1)} - x_t^{(2)}\)</span>, y <span class="math inline">\(Y_t = (\Phi(x^{(1)}))_t - (\Phi(x^{(2)}))_t\)</span>. Entonces para un <span class="math inline">\(\omega\)</span> fijo <span class="math display">\[Y_t = \int_0^t [b(s, x_s^{(1)}, \omega) - b(s, x_s^{(2)}, \omega)]\,ds + \int_0^t [\sigma(s, x_s^{(1)}, \omega) - \sigma(s, x_s^{(2)}, \omega)]\,dW_s\]</span> <span class="math display">\[+ \int_0^t \int_Z [R(s, x_{s-}^{(1)}, z, \omega) - R(s, x_{s-}^{(2)}, z, \omega)]\,\tilde{N}(ds, dz).\]</span> Por comodidad <span class="math display">\[Y_t = \int_0^t \Delta b_s\,ds + \int_0^t \Delta \sigma_s\,dW_s + \int_0^t \int_Z \Delta R_s(z)\,\tilde{N}(ds, dz),\]</span> donde <span class="math inline">\(\Delta b_s := b(s, x_s^{(1)}) - b(s, x_s^{(2)}), \Delta \sigma_s := \sigma(s, x_s^{(1)}) - \sigma(s, x_s^{(2)}), \Delta R_s(z) := R(s, x_{s-}^{(1)}, z) - R(s, x_{s-}^{(2)}, z)\)</span> Puesto que la función <span class="math inline">\(f(y) = y^2\)</span> tiene derivadas <span class="math inline">\(f'(y) = 2y, \ \ f''(y) = 2\)</span>, al aplicar la fórmula de Itô para semimartingalas con saltos, obtenemos <span class="math display">\[Y_t^2 = Y_0^2 + 2 \int_0^t Y_s \, dY_s^c + \int_0^t d\langle Y^c \rangle_s + \sum_{s \leq t} \left[ Y_s^2 - Y_{s-}^2 - 2 Y_{s-} \Delta Y_s \right],\]</span> donde: - <span class="math inline">\(dY_s^c = \Delta b_s \, ds + \Delta \sigma_s \, dW_s\)</span> es la parte continua, - <span class="math inline">\(d\langle Y^c \rangle_s = (\Delta \sigma_s)^2 \, ds\)</span> es la variación cuadrática de la parte continua, - <span class="math inline">\(\Delta Y_s = \int_Z \Delta R_s(z) \, N(\{s\}, dz)\)</span> es el tamaño del salto en el instante <span class="math inline">\(s\)</span>. Al reescribir a la versión integral ya desarrollada y aplicar la formula de itô para <span class="math inline">\(f(y) = y^2\)</span> aplicada a <span class="math inline">\(Y_t\)</span> <span class="math display">\[|Y_t|^2 = 2 \int_0^t Y_s \, \Delta b_s \, ds
 + 2 \int_0^t Y_s \, \Delta \sigma_s \, dW_s
 + \int_0^t |\Delta \sigma_s|^2 \, ds
-+ 2 \int_0^t \int_Z Y_s \, \Delta R_s(z) \, \tilde{N}(ds, dz)\]</span> <span class="math display">\[+ \int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz).\]</span> Aplicando valor esperado y sus propiedades <span class="math display">\[\mathbb{E}[
++ 2 \int_0^t \int_Z Y_s \, \Delta R_s(z) \, \tilde{N}(ds, dz)
+\]</span> <span class="math display">\[
++ \int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz).\]</span> Aplicando valor esperado y sus propiedades <span class="math display">\[
+\mathbb{E}[
 |Y_t|^2] = \mathbb{E}\left[2 \int_0^t Y_s \, \Delta b_s \, ds \right]
 +\mathbb{E}\left[ 2 \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right]
 +\mathbb{E}\left[ \int_0^t |\Delta \sigma_s|^2 \, ds
@@ -702,8 +714,160 @@ dU(t) = \underbrace{c(t)\,dt}_{\text{Primas}} + \underbrace{U(t^-)r(t)\,dt}_{\te
 <li><p><span class="math inline">\(Y_\ell^{(s)} \sim \text{TruncNormal}(\mu_s, \sigma_s^2)\)</span>: Severidad de siniestros sísmicos.</p></li>
 </ul>
 </div>
+</section>
+</section>
+<section id="análisis-asintótico-y-estimación-de-parámetros" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="análisis-asintótico-y-estimación-de-parámetros"><span class="header-section-number">4.3</span> Análisis Asintótico y Estimación de Parámetros</h2>
+<section id="estimación-de-la-varianza-integrada" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="estimación-de-la-varianza-integrada"><span class="header-section-number">4.3.1</span> Estimación de la Varianza Integrada</h3>
+<div id="thm-VB" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 4.3</strong></span> Definamos la variación de bipotencia con retardo <span class="math inline">\(h = 1\)</span>, <span class="math display">\[
+BV_n := \frac{1}{\mu_1^2} \sum_{i=2}^{n} \bigl|r_{i-1,n}\bigr| \cdot \bigl|r_{i,n}\bigr|, \quad \mu_1 = \sqrt{\frac{2}{\pi}},
+\]</span> se quiere demostrar que es un estimador consistente en probabilidad de la varianza integrada <span class="math display">\[
+IV := \int_0^1 \sigma^2(t)\,dt,
+\]</span> es decir, <span class="math display">\[
+BV_n \xrightarrow[n\to\infty]{\mathbb{P}} IV.
+\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Demostración</em>. </span>Cada retorno se descompone en su parte continua y su parte por saltos <span class="math display">\[
+r_{i,n} = C_{i,n} + S_{i,n},
+\]</span> donde <span class="math display">\[
+C_{i,n} = \int_{(i-1)\Delta}^{i\Delta} \sigma(t)\,dW(t), \quad
+S_{i,n} = \sum_{(i-1)\Delta &lt; t \leq i\Delta} \Delta J_t.
+\]</span> Por la hipótesis de actividad finita de los saltos, se tiene que <span class="math display">\[
+\mathbb{P}\bigl(S_{i-1,n} \neq 0 \text{ y } S_{i,n} \neq 0\bigr) \xrightarrow[n\to\infty]{} 0.
+\]</span> Por lo tanto, con probabilidad <span class="math inline">\(1\)</span>, <span class="math display">\[
+|r_{i-1,n}| \cdot |r_{i,n}| = |C_{i-1,n}| \cdot |C_{i,n}| + o_p(n^{-1}).
+\]</span> Dado que <span class="math inline">\(\sigma(t)\)</span> es cádlág, es localmente constante en el límite. Así, condicionalmente, <span class="math display">\[
+\mathbb{E}\bigl[|C_{i-1,n}| \cdot |C_{i,n}| \mid \mathcal{F}_{(i-1)\Delta}\bigr]
+= \mu_1^2 \cdot \sigma^2((i-1)\Delta) \cdot \frac{1}{n} + o(n^{-1}),
+\]</span> donde <span class="math inline">\(\mu_1 = \mathbb{E}[|Z|] = \sqrt{2/\pi}\)</span>, <span class="math inline">\(Z \sim N(0,1)\)</span>. Sumando sobre <span class="math inline">\(i = 2,\dots,n\)</span>, obtenemos <span class="math display">\[
+\mathbb{E}[BV_n] = \frac{1}{\mu_1^2} \sum_{i=2}^n \mathbb{E}\bigl[|r_{i-1,n}| \cdot |r_{i,n}|\bigr]
+= \sum_{i=2}^n \sigma^2((i-1)\Delta) \cdot \frac{1}{n} + o(1).
+\]</span></p>
+</div>
+</section>
+<section id="hipótesis-técnicas" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="hipótesis-técnicas"><span class="header-section-number">4.3.2</span> Hipótesis técnicas</h3>
+<div style="text-align:justify">
+<p><strong>Hipotesis 1</strong> <em>(Cádlág y previsibilidad)</em> El proceso <span class="math inline">\(\sigma^2(t)\)</span> es cádlág (continuo por la derecha con límites por la izquierda) y predecible. <strong>Hipótesis 2</strong> <em>(Acotamiento local)</em> Existe una sucesión creciente de tiempos de parada <span class="math inline">\((\tau_m)_{m \geq 1}\)</span>, con <span class="math inline">\(\tau_m \uparrow \infty\)</span> casi seguramente, tal que <span class="math display">\[
+\sup_{t \leq \tau_m} \sigma^2(t) &lt; \infty \quad \text{c.s.}
+\]</span> <strong>Hipótesis 3</strong> <em>(Integrabilidad)</em> <span class="math display">\[
+\int_0^1 \sigma^2(t)\,dt &lt; \infty \quad \text{casi seguramente}.\]</span></p>
+</div>
+<div id="thm-Cons_variacion_bipotencia" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 4.4</strong></span> Bajo las Hipótesis <span class="math inline">\(1\)</span>–<span class="math inline">\(3\)</span> y la condición de actividad finita de los saltos, se cumple: <span class="math display">\[
+BV_n \xrightarrow[n\to\infty]{\mathbb{P}} \int_0^1 \sigma^2(t)\,dt.
+\]</span> Es decir, la variación de bipotencia es un estimador consistente en probabilidad de la varianza integrada. Sea <span class="math inline">\((\Omega, \mathcal{F}, (\mathcal{F}_t)_{t \in [0,1]}, \mathbb{P})\)</span> un espacio de probabilidad filtrado que satisface las (completo y continuo por la derecha). Supongamos que <span class="math inline">\(\sigma^2 = (\sigma^2(t))_{t \in [0,1]}\)</span> es un proceso estocástico. Definimos la partición regular del intervalo <span class="math inline">\([0,1]\)</span> como <span class="math inline">\(t_i^n := \frac{i}{n}, \quad i = 0,1,\dots,n.\)</span> La suma de Riemann izquierda asociada a <span class="math inline">\(\sigma^2\)</span> es <span class="math display">\[
+S_n := \frac{1}{n} \sum_{i=1}^n \sigma^2\!\left(t_{i-1}^n\right) = \frac{1}{n} \sum_{i=1}^n \sigma^2\!\left(\frac{i-1}{n}\right).
+\]</span> Denotamos el límite objetivo como la varianza integrada <span class="math display">\[
+IV := \int_0^1 \sigma^2(t)\,dt.
+\]</span> se busca demostrar que, para todo <span class="math inline">\(\varepsilon &gt; 0\)</span>, <span class="math display">\[
+\lim_{n \to \infty} \mathbb{P}\bigl( |S_n - IV| &gt; \varepsilon \bigr) = 0,
+\]</span> es decir, <span class="math inline">\(S_n \xrightarrow[n \to \infty]{\mathbb{P}} IV\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Demostración</em>. </span>Supongamos que existe una constante <span class="math inline">\(M &lt; \infty\)</span> tal que <span class="math display">\[
+\sigma^2(t, \omega) \leq M \quad \text{para todo } t \in [0,1], \text{ c.s.}
+\]</span> Como <span class="math inline">\(\sigma^2(\cdot, \omega)\)</span> es cádlág, para cada trayectoria fija <span class="math inline">\(\omega\)</span>, la función <span class="math inline">\(t \mapsto \sigma^2(t,\omega)\)</span> es Lebesgue-integrable y Riemann-integrable en <span class="math inline">\([0,1]\)</span> (pues las funciones cádlág tienen a lo sumo un número numerable de discontinuidades). Por resultados clásicos del análisis real, para cada <span class="math inline">\(\omega\)</span> fijo, <span class="math display">\[
+S_n(\omega) \xrightarrow[n \to \infty]{} IV(\omega).
+\]</span> Es decir, la convergencia es casi segura. La convergencia casi segura implica convergencia en probabilidad: <span class="math display">\[
+S_n \xrightarrow{\mathbb{P}} IV \quad \text{cuando } \sigma^2 \text{ está uniformemente acotado}.
+\]</span> Dado que <span class="math inline">\(\sigma^2\)</span> es localmente acotado, existe una sucesión creciente de tiempos de parada <span class="math inline">\((\tau_m)_{m \geq 1}\)</span> tal que <span class="math inline">\(\tau_m \uparrow \infty\)</span> c.s. cuando <span class="math inline">\(m \to \infty\)</span> y <span class="math inline">\(\displaystyle \sup_{t \leq \tau_m} \sigma^2(t) \leq m \quad \text{c.s.}\)</span></p>
+<p>Definimos el proceso truncado <span class="math display">\[
+\sigma_m^2(t) := \sigma^2(t) \cdot \mathbf{1}_{\{t \leq \tau_m\}} + m \cdot \mathbf{1}_{\{t &gt; \tau_m\}}.
+\]</span></p>
+<p>Entonces: - _m^2$ es uniformemente acotado por <span class="math inline">\(m\)</span>, - <span class="math inline">\(\sigma_m^2(t) \to \sigma^2(t)\)</span> c.s. para cada <span class="math inline">\(t\)</span>, cuando <span class="math inline">\(m \to \infty\)</span>, - <span class="math inline">\(IV_m := \int_0^1 \sigma_m^2(t)\,dt \to IV\)</span> c.s. por el teorema de convergencia monótona.</p>
+<p>Definimos la suma de Riemann asociada al proceso truncado: <span class="math display">\[
+S_n^{(m)} := \frac{1}{n} \sum_{i=1}^n \sigma_m^2\!\left(\frac{i-1}{n}\right).
+\]</span> Del Paso 1, para cada <span class="math inline">\(m\)</span> fijo, <span class="math display">\[
+S_n^{(m)} \xrightarrow[n \to \infty]{\mathbb{P}} IV_m.
+\]</span> Además, como <span class="math inline">\(\sigma_m^2 \to \sigma^2\)</span> c.s. y ambas son acotadas por una función integrable (<span class="math inline">\(\sigma^2\)</span>), se tiene: <span class="math display">\[
+|S_n^{(m)} - S_n| \leq \frac{1}{n} \sum_{i=1}^n |\sigma_m^2(t_{i-1}^n) - \sigma^2(t_{i-1}^n)| \xrightarrow[m \to \infty]{} 0 \quad \text{c.s.}
+\]</span> Fijemos <span class="math inline">\(\varepsilon &gt; 0\)</span>. Queremos mostrar: <span class="math display">\[
+\lim_{n \to \infty} \mathbb{P}(|S_n - IV| &gt; \varepsilon) = 0.
+\]</span> Por la desigualdad triangular, <span class="math display">\[
+|S_n - IV| \leq |S_n - S_n^{(m)}| + |S_n^{(m)} - IV_m| + |IV_m - IV|.
+\]</span> Luego, para cualquier <span class="math inline">\(m\)</span>, <span id="eq-10"><span class="math display">\[
+\mathbb{P}(|S_n - IV| &gt; \varepsilon) \leq
+\mathbb{P}(|S_n - S_n^{(m)}| &gt; \varepsilon/3) +
+\mathbb{P}(|S_n^{(m)} - IV_m| &gt; \varepsilon/3) +
+\mathbb{P}(|IV_m - IV| &gt; \varepsilon/3). \tag{2}
+\tag{4.11}\]</span></span> Por construcción, <span class="math inline">\(\sigma_m^2(t) \to \sigma^2(t)\)</span> c.s. para cada <span class="math inline">\(t \in [0,1]\)</span> cuando <span class="math inline">\(m \to \infty\)</span>. Además, como <span class="math inline">\(\sigma^2\)</span> es localmente acotado y <span class="math inline">\(\int_0^1 \sigma^2(t)\,dt &lt; \infty\)</span> c.s., existe una variable integrable que domina la secuencia <span class="math inline">\((\sigma_m^2)_{m \geq 1}\)</span>. En efecto, para todo <span class="math inline">\(m\)</span>, <span class="math display">\[
+0 \leq \sigma_m^2(t) \leq \sigma^2(t) + m \cdot \mathbf{1}_{\{t &gt; \tau_m\}} \leq \sigma^2(t) + C,
+\]</span> para alguna constante <span class="math inline">\(C\)</span>, y <span class="math inline">\(\sigma^2\)</span> es integrable c.s., luego <span class="math inline">\(\sigma^2 + C \in L^1(\Omega \times [0,1])\)</span>. Por el teorema de convergencia dominada <span class="math display">\[
+IV_m = \int_0^1 \sigma_m^2(t)\,dt \xrightarrow[m \to \infty]{\text{c.s.}} \int_0^1 \sigma^2(t)\,dt = IV.
+\]</span> La convergencia casi segura implica convergencia en probabilidad, por lo que <span class="math display">\[
+\mathbb{P}(|IV_m - IV| &gt; \varepsilon/3) \xrightarrow[m \to \infty]{} 0.
+\]</span> Por lo tanto, existe <span class="math inline">\(m_0\)</span> tal que para todo <span class="math inline">\(m \geq m_0\)</span>, <span class="math display">\[
+\mathbb{P}(|IV_m - IV| &gt; \varepsilon/3) &lt; \frac{\varepsilon}{3}.
+\]</span> Para el segundo termino se tiene que <span class="math display">\[
+|S_n - S_n^{(m)}| \leq \frac{1}{n} \sum_{i=1}^n \left| \sigma^2\!\left(\frac{i-1}{n}\right) - \sigma_m^2\!\left(\frac{i-1}{n}\right) \right|.
+\]</span> Tomando esperanza y usando la linealidad <span class="math display">\[
+\mathbb{E}[|S_n - S_n^{(m)}|] \leq \frac{1}{n} \sum_{i=1}^n \mathbb{E}\left[ \left| \sigma^2\!\left(\frac{i-1}{n}\right) - \sigma_m^2\!\left(\frac{i-1}{n}\right) \right| \right].
+\]</span> Dado que la partición es fina y la función <span class="math inline">\(t \mapsto |\sigma^2(t) - \sigma_m^2(t)|\)</span> es no negativa, la suma de Riemann está acotada por la integral <span class="math display">\[
+\frac{1}{n} \sum_{i=1}^n \mathbb{E}\left[ \left| \sigma^2\!\left(\frac{i-1}{n}\right) - \sigma_m^2\!\left(\frac{i-1}{n}\right) \right| \right]
+\leq \mathbb{E}\left[ \int_0^1 |\sigma^2(t) - \sigma_m^2(t)|\,dt \right].
+\]</span> Nuevamente, por el teorema de convergencia dominada, el lado derecho tiende a 0 cuando <span class="math inline">\(m \to \infty\)</span>, y esta cota no depende de <span class="math inline">\(n\)</span>. Por lo tanto <span class="math display">\[
+\sup_{n \geq 1} \mathbb{E}[|S_n - S_n^{(m)}|] \xrightarrow[m \to \infty]{} 0.
+\]</span> Aplicando la desigualdad de Markov(citar) <span class="math display">\[
+\mathbb{P}(|S_n - S_n^{(m)}| &gt; \varepsilon/3) \leq \frac{\mathbb{E}[|S_n - S_n^{(m)}|]}{\varepsilon/3} \leq \frac{\sup_n \mathbb{E}[|S_n - S_n^{(m)}|]}{\varepsilon/3}.
+\]</span> Como el numerador tiende a <span class="math inline">\(0\)</span> uniformemente en <span class="math inline">\(n\)</span>, se concluye <span class="math display">\[
+\sup_{n \geq 1} \mathbb{P}(|S_n - S_n^{(m)}| &gt; \varepsilon/3) \xrightarrow[m \to \infty]{} 0.
+\]</span> Así, para el mismo para <span class="math inline">\(m_0\)</span> <span class="math display">\[
+\mathbb{P}(|S_n - S_n^{(m)}| &gt; \varepsilon/3) &lt; \frac{\varepsilon}{3} \quad \text{para todo } n
+\]</span> Ahora para <span class="math inline">\(m\)</span> fijo, <span class="math inline">\(\sigma_m^2\)</span> es uniformemente acotado por <span class="math inline">\(m\)</span>, cádlág y predecible. Por lo tanto, para cada <span class="math inline">\(\omega \in \Omega\)</span>, la función <span class="math inline">\(t \mapsto \sigma_m^2(t,\omega)\)</span> es Riemann-integrable en <span class="math inline">\([0,1]\)</span>, pues posee a lo sumo un número numerable de discontinuidades. Por lo que para cada <span class="math inline">\(\omega\)</span>, la suma de Riemann izquierda converge a la integral <span class="math display">\[
+S_n^{(m)}(\omega) \xrightarrow[n \to \infty]{} IV_m(\omega).
+\]</span> Esto implica <span class="math inline">\(S_n^{(m)} \xrightarrow{\text{c.s.}} IV_m\)</span>. Dado que la convergencia casi segura implica convergencia en probabilidad, luego <span class="math display">\[
+\mathbb{P}(|S_n^{(m)} - IV_m| &gt; \varepsilon/3) \xrightarrow[n \to \infty]{} 0.
+\]</span> Para el <span class="math inline">\(m_0\)</span> elegido anteriormente, existe <span class="math inline">\(N \in \mathbb{N}\)</span> tal que <span class="math inline">\(\forall n \geq N\)</span>, <span class="math display">\[
+\mathbb{P}(|S_n^{(m_0)} - IV_{m_0}| &gt; \varepsilon/3) &lt; \varepsilon/3.
+\]</span> Sustituyendo en (2), para todo <span class="math inline">\(n \geq N\)</span>, <span class="math display">\[
+\mathbb{P}(|S_n - IV| &gt; \varepsilon) &lt; \frac{\varepsilon}{3} + \frac{\varepsilon}{3} + \frac{\varepsilon}{3} = \varepsilon.
+\]</span> Como <span class="math inline">\(\varepsilon &gt; 0\)</span> fue arbitrario, concluimos <span class="math display">\[
+\lim_{n \to \infty} \mathbb{P}(|S_n - IV| &gt; \varepsilon) = 0.
+\]</span> es decir, <span class="math inline">\(S_n \xrightarrow{\mathbb{P}} IV\)</span>.</p>
+</div>
+</section>
+</section>
+<section id="estimación-de-la-intensidad-de-saltos." class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="estimación-de-la-intensidad-de-saltos."><span class="header-section-number">4.4</span> Estimación de la Intensidad de Saltos.</h2>
+<section id="estimador-hatlambda_n-y-elección-del-umbral-tau_n-alpha-delta_nvarpi-." class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="estimador-hatlambda_n-y-elección-del-umbral-tau_n-alpha-delta_nvarpi-."><span class="header-section-number">4.4.1</span> Estimador <span class="math inline">\(\hat{\lambda}_n\)</span> y elección del umbral <span class="math inline">\(\tau_n = \alpha \Delta_n^{\varpi}\)</span> .</h3>
+<div style="text-align:justify">
+<p>Definimos el estimador de intensidad de saltos mediante el método de conteo con umbral: <span id="eq-umbral"><span class="math display">\[
+\hat{\lambda}_n := \frac{1}{T} \sum_{i=1}^n \mathbf{1}_{\{ |\Delta_i^n X| &gt; \tau_n \}},
+\tag{4.12}\]</span></span></p>
+<p>donde <span class="math inline">\(\tau_n &gt; 0\)</span> es un umbral determinista que depende de <span class="math inline">\(n\)</span>. Siguiendo la metodología de (ver Sección 4.3 y la ecuación (24)), elegimos el umbral de la forma <span id="eq-estimador"><span class="math display">\[
+\tau_n = \alpha \Delta_n^{\varpi}, \quad \alpha &gt; 0, \quad \varpi \in \left(0, \frac{1}{2}\right).
+  \tag{4.13}\]</span></span> Esta elección es crucial y satisface dos propiedades asintóticas fundamentales: (I) <strong>Detección de saltos:</strong> <span class="math inline">\(\tau_n \to 0\)</span> cuando <span class="math inline">\(n \to \infty\)</span>. Esto asegura que, asintóticamente, cualquier salto de tamaño fijo (no nulo) será detectado, ya que su magnitud superará al umbral. (II) <strong>Eliminación del ruido difusivo:</strong> <span class="math inline">\(\tau_n / \sqrt{\Delta_n} = \alpha \Delta_n^{\varpi - 1/2} \to \infty\)</span>. Esto asegura que los incrementos correspondientes a la parte continua del proceso (de orden estocástico <span class="math inline">\(\sqrt{\Delta_n}\)</span>) rara vez superarán el umbral, controlando así los falsos positivos.</p>
+</div>
+<div id="thm-Consistencia_estimador_intensidad" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 4.5</strong></span> (Consistencia del estimador de intensidad). Supongamos que el proceso <span class="math inline">\(X\)</span> satisface el modelo <span class="math inline">\(\eqref{eq:sdej}\)</span> bajo el Assumption 1 de y tiene actividad finita de saltos, <span class="math inline">\(\lambda = \int_E \lambda(dx) &lt; \infty\)</span>. Supongamos que el proceso <span class="math inline">\(X\)</span> satisface el modelo <span class="math inline">\(\eqref{eq:sdej}\)</span> bajo el Assumption 1 de y tiene actividad finita de saltos, <span class="math inline">\(\lambda = \int_E \lambda(dx) &lt; \infty\)</span>. Considérese un régimen asintótico de alta frecuencia en el que <span class="math inline">\(\Delta_n \to 0\)</span> y <span class="math inline">\(T = n \Delta_n \to \infty\)</span> cuando <span class="math inline">\(n \to \infty\)</span>. Entonces, bajo la elección del umbral (<a href="#eq-umbral" class="quarto-xref">Ecuación&nbsp;<span>4.12</span></a>) con <span class="math inline">\(\varpi \in (0, 1/2)\)</span>, el estimador (<a href="#eq-estimador" class="quarto-xref">Ecuación&nbsp;<span>4.13</span></a>) es consistente en probabilidad para <span class="math inline">\(\lambda\)</span>, es decir, <span class="math display">\[
+\hat{\lambda}_n \xrightarrow{\mathbb{P}} \lambda.
+\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Demostración</em>. </span>Un falso positivo ocurre cuando un incremento <span class="math inline">\(\Delta_i^n X\)</span> sin salto (es decir, generado únicamente por la parte continua del proceso) excede el umbral <span class="math inline">\(\tau_n\)</span>. Para controlar este fenómeno, debemos analizar la magnitud de la parte continua. La herramienta fundamental es la cota proporcionada en la de (Sección 8.1), derivada bajo el Assumption 1. Para cualquier <span class="math inline">\(\eta &gt; 0\)</span> y <span class="math inline">\(\theta \in (0,1)\)</span>, se cumple <span id="eq-cota_46"><span class="math display">\[
+\mathbb{E}_{i-1}^n \left( |\Delta_i^n X - \delta_i^n|^2 \wedge \eta^2 \right) \leq K \Delta_n (\eta^2 + \Delta_n^{\theta} + \epsilon(\theta))
+  \tag{4.14}\]</span></span> donde - <span class="math inline">\(\mathbb{E}_{i-1}^n(\cdot) = \mathbb{E}(\cdot \mid \mathcal{F}_{(i-1)\Delta_n})\)</span>, - <span class="math inline">\(\delta_i^n = \sigma_{(i-1)\Delta_n} (W_{i\Delta_n} - W_{(i-1)\Delta_n})\)</span> es la aproximación gaussiana de la parte continua, - <span class="math inline">\(\epsilon(\theta) \to 0\)</span> cuando <span class="math inline">\(\theta \to 0\)</span>, - <span class="math inline">\(K\)</span> es una constante que depende de los coeficientes del modelo.</p>
+<p>Esta desigualdad implica que la parte continua del incremento es de orden <span class="math inline">\(O_p(\sqrt{\Delta_n})\)</span>. Ahora, utilizando la desigualdad de Chebyshev o argumentos de cola gaussiana, la probabilidad de que un incremento puramente difusivo exceda <span class="math inline">\(\tau_n\)</span> se puede acotar por <span class="math display">\[
+\mathbb{P}(|\Delta_i^n X| &gt; \tau_n \mid \text{no hay salto en } [(i-1)\Delta_n, i\Delta_n]) \leq C \exp\left( -c \frac{\tau_n^2}{\Delta_n} \right).
+\]</span> Dado que <span class="math inline">\(\tau_n^2 / \Delta_n = \alpha^2 \Delta_n^{2\varpi-1} \to \infty\)</span> (porque <span class="math inline">\(\varpi &lt; 1/2\)</span>), el término exponencial decae a cero más rápido que cualquier potencia de <span class="math inline">\(\Delta_n\)</span>. Por lo tanto, el número esperado de falsos positivos, <span class="math inline">\(\mathrm{FP}_n\)</span>, satisface <span class="math display">\[
+\mathbb{E}[\mathrm{FP}_n] = \sum_{i=1}^n \mathbb{P}(\text{falso positivo en } i) \leq n \cdot o(\Delta_n) = o(T).
+\]</span> En consecuencia, <span class="math inline">\(\mathrm{FP}_n / T \xrightarrow{\mathbb{P}} 0\)</span>. Un falso negativo ocurre cuando un salto real <span class="math inline">\(J\)</span> ocurre en un intervalo de muestreo, pero su magnitud <span class="math inline">\(|J|\)</span> es menor o igual que <span class="math inline">\(\tau_n\)</span>, por lo que no se detecta. Sin embargo, dado que el proceso tiene actividad finita, el número de saltos en <span class="math inline">\([0,T]\)</span> es finito c.s., y cada salto tiene tamaño <span class="math inline">\(|J_k| &gt; 0\)</span> c.s. Dado que <span class="math inline">\(\tau_n \to 0\)</span> por construcción, existe un <span class="math inline">\(n_0(\omega)\)</span> (aleatorio pero finito) tal que para todo <span class="math inline">\(n \geq n_0(\omega)\)</span>, se cumple <span class="math inline">\(\tau_n &lt; \min_{k=1,\dots,N_T} |J_k|(\omega)\)</span>. Por lo tanto, asintóticamente, todos los saltos son detectados y el número de falsos negativos, <span class="math inline">\(\mathrm{FN}_n\)</span>, satisface <span class="math inline">\(\mathbb{E}[\mathrm{FN}_n] \to 0\)</span>, lo que implica <span class="math inline">\(\mathrm{FN}_n / T \xrightarrow{\mathbb{P}} 0\)</span>. Sea <span class="math inline">\(N_T\)</span> el número real (y finito) de saltos en <span class="math inline">\([0,T]\)</span>. De los pasos anteriores, se deduce que el número de saltos detectados por el estimador coincide asintóticamente con <span class="math inline">\(N_T\)</span>: <span id="eq-12"><span class="math display">\[\sum_{i=1}^n \mathbf{1}_{\{ |\Delta_i^n X| &gt; \tau_n \}} = N_T + \mathrm{FP}_n - \mathrm{FN}_n = N_T + o_{\mathbb{P}}(T).
+\tag{4.15}\]</span></span> Dividiendo por <span class="math inline">\(T\)</span>, obtenemos <span id="eq-13"><span class="math display">\[
+\hat{\lambda}_n = \frac{N_T}{T} + o_{\mathbb{P}}(1).
+\tag{4.16}\]</span></span> Finalmente, dado que la actividad de saltos es finita y la intensidad es constante <span class="math inline">\(\lambda\)</span>, el proceso de conteo <span class="math inline">\(N_T\)</span> es un proceso de Poisson con media <span class="math inline">\(\mathbb{E}[N_T] = \lambda T\)</span> y varianza <span class="math inline">\(\mathrm{Var}(N_T) = \lambda T\)</span>. Por la ley de los grandes números para procesos de Poisson, se tiene que cuando <span class="math inline">\(T \to \infty\)</span>, <span class="math display">\[
+\frac{N_T}{T} \xrightarrow{\mathbb{P}} \lambda.
+\]</span></p>
+<p>Combinando las dos últimas convergencias, concluimos que <span class="math display">\[
+\hat{\lambda}_n \xrightarrow{\mathbb{P}} \lambda,
+\]</span> lo cual demuestra el <a href="#thm-Consistencia_estimador_intensidad" class="quarto-xref">Teorema&nbsp;<span>4.5</span></a> :::</p>
 
 
+</div>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-protter2005stochastic" class="csl-entry" role="listitem">
 Protter, Philip E. 2005. <em>Stochastic Integration and Differential Equations</em>. 2nd ed. Vol. 21. Stochastic Modelling y Applied Probability. Springer. <a href="https://doi.org/10.1007/978-3-662-10061-5">https://doi.org/10.1007/978-3-662-10061-5</a>.
