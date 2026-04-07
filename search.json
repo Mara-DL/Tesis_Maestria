@@ -170,6 +170,26 @@
     ]
   },
   {
+    "objectID": "metodos-numericos.html",
+    "href": "metodos-numericos.html",
+    "title": "5  Métodos Numéricos para EDES",
+    "section": "",
+    "text": "5.1 Introducción a la Discretización de EDESJs",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Métodos Numéricos para EDES</span>"
+    ]
+  },
+  {
+    "objectID": "metodos-numericos.html#introducción-a-la-discretización-de-edesjs",
+    "href": "metodos-numericos.html#introducción-a-la-discretización-de-edesjs",
+    "title": "5  Métodos Numéricos para EDES",
+    "section": "",
+    "text": "Las Ecuaciones Diferenciales Estocásticas (EDE) constituyen una herramienta fundamental en la modelización matemática de fenómenos dinámicos sometidos a incertidumbre. En particular, las ecuaciones diferenciales estocásticas con saltos, por sus siglas en inglés Jump-Diffusion Stochastic Differential Equations que denotaremos de ahora en adelante por (EDSEJ) extienden el marco clásico de difusión (gobernado por el movimiento browniano) al incorporar procesos de Lévy o procesos de Poisson compuestos, lo que permite capturar discontinuidades abruptas, eventos extremos o choques externos.\nA pesar del sólido desarrollo teórico existente en torno a la existencia, unicidad y propiedades cualitativas de soluciones de EDSEJs, la obtención de soluciones explícitas es usual. Por ello, los métodos numéricos se vuelven indispensables tanto para la simulación como para el análisis cuantitativo de estos modelos. Sin embargo, la presencia simultánea de componentes de difusión continua y saltos discontinuos introduce desafíos computacionales y teóricos sustanciales que no están presentes en el caso puramente difusivo.\nLas ecuaciones diferenciales estocásticas (SDEs) con saltos constituyen una clase fundamental de modelos en finanzas matemáticas, teoría de seguros y dinámica de poblaciones. La forma general de una SDE con saltos en \\(\\mathbb{R}^d\\) es:\n\\[\nX_t = X_0 + \\int_0^t a(s,X_s)\\,d s + \\int_0^t b(s,X_s)\\,d W_s\n+ \\int_0^t \\int_E R(s,X_{s-},v)\\,\\tilde{p}_\\phi(d v, ds) + \\int_0^t \\int_E R(s,X_{s-},v)\\,\\nu(d v)\\,ds,\n\\tag{5.1}\\] donde: - \\(a: [0,T] \\times \\mathbb{R} \\to \\mathbb{R}\\) es el coeficiente de deriva (drift), - \\(b: [0,T] \\times \\mathbb{R} \\to \\mathbb{R}\\) es el coeficiente de difusión, - \\(W = \\{W_t\\}_{t \\geq 0}\\) es un proceso de Wiener, - \\(p_\\phi\\) es una medida aleatoria de Poisson con intensidad \\(\\nu(dv) dt\\), - \\(\\tilde{p}_\\phi(dv, ds) = p_\\phi(dv, ds) - \\nu(dv) ds\\) es la medida de Poisson compensada, - \\(R: [0,T] \\times \\mathbb{R} \\times E \\to \\mathbb{R}\\) describe la magnitud de los saltos, - \\(E \\subseteq \\mathbb{R}^k \\setminus \\{0\\}\\) es el espacio de marcas (marks).\nLa SDE con saltos compensados es: \\[\ndX_t = \\underbrace{a(t, X_t)\\,dt}_{\\text{drift original}} + \\underbrace{b(t, X_t)\\,dW_t}_{\\text{difusión}} + \\underbrace{\\int_E R(t, X_{t-}, v)\\,\\tilde{p}_\\phi(dv, dt)}_{\\text{saltos compensados}}\n\\] donde la medida compensada es: \\[\n\\tilde{p}_\\phi(dv, dt) = p_\\phi(dv, dt) - \\phi(dv)\\,dt\n\\] Al expandir la integral con la medida compensada, obtenemos: \\[\n\\int_E R(t, X_{t-}, v)\\,\\tilde{p}_\\phi(dv, dt) = \\underbrace{\\int_E R(t, X_{t-}, v)\\,p_\\phi(dv, dt)}_{\\text{saltos brutos}} - \\underbrace{\\int_E R(t, X_{t-}, v)\\,\\phi(dv)\\,dt}_{\\text{compensación}}\n\\] Por lo tanto, la SDE completa se puede escribir como: \\[\ndX_t = a(t, X_t)\\,dt + b(t, X_t)\\,dW_t + \\int_E R(t, X_{t-}, v)\\,p_\\phi(dv, dt) - \\int_E R(t, X_{t-}, v)\\,\\phi(dv)\\,dt\n\\] Para discretizar esta ecuación, reorganizamos los términos de la siguiente manera: \\[\ndX_t = \\underbrace{\\left[a(t, X_t) - \\int_E R(t, X_{t-}, v)\\,\\phi(dv)\\right]}_{\\text{drift compensado}} dt + b(t, X_t)\\,dW_t + \\int_E R(t, X_{t-}, v)\\,p_\\phi(dv, dt)\n\\] El término de compensación cambia de signo al moverse al drift, porque: \\[\na(t, X_t)\\,dt - \\int_E R(t, X_{t-}, v)\\,\\phi(dv)\\,dt = \\left[a(t, X_t) - \\int_E c(t, X_{t-}, v)\\,\\phi(dv)\\right] dt\n\\]",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Métodos Numéricos para EDES</span>"
+    ]
+  },
+  {
     "objectID": "references.html",
     "href": "references.html",
     "title": "Referencias",
