@@ -789,12 +789,11 @@ S_n^{(m)} \xrightarrow[n \to \infty]{\mathbb{P}} IV_m.
 \lim_{n \to \infty} \mathbb{P}(|S_n - IV| &gt; \varepsilon) = 0.
 \]</span> Por la desigualdad triangular, <span class="math display">\[
 |S_n - IV| \leq |S_n - S_n^{(m)}| + |S_n^{(m)} - IV_m| + |IV_m - IV|.
-\]</span> Luego, para cualquier <span class="math inline">\(m\)</span>, <span id="eq-10"><span class="math display">\[
-\mathbb{P}(|S_n - IV| &gt; \varepsilon) \leq
-\mathbb{P}(|S_n - S_n^{(m)}| &gt; \varepsilon/3) +
-\mathbb{P}(|S_n^{(m)} - IV_m| &gt; \varepsilon/3) +
-\mathbb{P}(|IV_m - IV| &gt; \varepsilon/3). \tag{2}
-\tag{4.11}\]</span></span> Por construcción, <span class="math inline">\(\sigma_m^2(t) \to \sigma^2(t)\)</span> c.s. para cada <span class="math inline">\(t \in [0,1]\)</span> cuando <span class="math inline">\(m \to \infty\)</span>. Además, como <span class="math inline">\(\sigma^2\)</span> es localmente acotado y <span class="math inline">\(\int_0^1 \sigma^2(t)\,dt &lt; \infty\)</span> c.s., existe una variable integrable que domina la secuencia <span class="math inline">\((\sigma_m^2)_{m \geq 1}\)</span>. En efecto, para todo <span class="math inline">\(m\)</span>, <span class="math display">\[
+\]</span> Luego, para cualquier <span class="math inline">\(m\)</span>, <span id="eq-10"><span class="math display">\[\mathbb{P}(|S_n - IV| &gt; \varepsilon) \leq
+\mathbb{P}(|S_n - S_n^{(m)}| &gt; \varepsilon /3) +
+\mathbb{P}(|S_n^{(m)} - IV_m| &gt; \varepsilon /3) +
+\mathbb{P}(|IV_m - IV| &gt; \varepsilon /3). \tag{4.11}\]</span></span></p>
+<p>Por construcción, <span class="math inline">\(\sigma_m^2(t) \to \sigma^2(t)\)</span> c.s. para cada <span class="math inline">\(t \in [0,1]\)</span> cuando <span class="math inline">\(m \to \infty\)</span>. Además, como <span class="math inline">\(\sigma^2\)</span> es localmente acotado y <span class="math inline">\(\int_0^1 \sigma^2(t)\,dt &lt; \infty\)</span> c.s., existe una variable integrable que domina la secuencia <span class="math inline">\((\sigma_m^2)_{m \geq 1}\)</span>. En efecto, para todo <span class="math inline">\(m\)</span>, <span class="math display">\[
 0 \leq \sigma_m^2(t) \leq \sigma^2(t) + m \cdot \mathbf{1}_{\{t &gt; \tau_m\}} \leq \sigma^2(t) + C,
 \]</span> para alguna constante <span class="math inline">\(C\)</span>, y <span class="math inline">\(\sigma^2\)</span> es integrable c.s., luego <span class="math inline">\(\sigma^2 + C \in L^1(\Omega \times [0,1])\)</span>. Por el teorema de convergencia dominada <span class="math display">\[
 IV_m = \int_0^1 \sigma_m^2(t)\,dt \xrightarrow[m \to \infty]{\text{c.s.}} \int_0^1 \sigma^2(t)\,dt = IV.
