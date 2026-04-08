@@ -522,7 +522,7 @@ x_t = x_0 &amp;+ \int_0^t b(s,x_s,\omega)\,ds
 </ol>
 <p>En el caso en que <span class="math inline">\(b(t,x,\omega)\)</span> y <span class="math inline">\(\sigma(t,x,\omega)\)</span> sean <span class="math inline">\(\mathcal{F}_t^{w,\tilde{N}}\)</span>-adaptadas, y <span class="math inline">\(R(t,x,z,\omega)\)</span> sea <span class="math inline">\(\mathcal{F}_t^{w,\tilde{N}}\)</span>-predecible, entonces la solución también es <span class="math inline">\(\mathcal{F}_t^{w,\tilde{N}}\)</span>-adaptada, es decir, es una solución fuerte.</p>
 </div>
-<div class="proof">
+<div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>Para algún <span class="math inline">\(T &lt; \infty\)</span> fijo, se define la norma: <span class="math display">\[\| (x_{\cdot}) \|_M^2 = \sup_{t \in [0,T]} e^{-b_0 A(t)} \mathbb{E}[|x_t|^2],\]</span> donde: - <span class="math inline">\(A(t) := \int_0^t 4\widetilde{c}(s) ds\)</span>, - <span class="math inline">\(b_0 \geq 0\)</span> es una constante que se elegirá más adelante para hacer que el operador sea contractivo, - <span class="math inline">\(\widetilde{c}(s)\)</span> es la función no aleatoria que aparece en las hipótesis <span class="math inline">\(1\)</span> y <span class="math inline">\(2\)</span> (crecimiento lineal y Lipschitz)</p>
 <p>Entonces, el espacio sobre el cual se aplica el principio de contracción es: <span class="math display">\[H = \left\{ \{x_t\} \in B :B \in L_{\mathfrak{F}}^{2}(\mathbb{R}), \  \| (x_{\cdot}) \|_M &lt; \infty \right\}.\]</span> Sea <span class="math inline">\(\Phi: H \to H\)</span> el operador definido por: <span class="math display">\[(\Phi(x))_t = x_0 + \int_0^t b(s, x_s, \omega)\,ds + \int_0^t \sigma(s, x_s, \omega)\,dW_s + \int_0^t \int_Z R(s, x_{s-}, z, \omega)\,\tilde{N}(ds, dz).\]</span> y sea <span class="math inline">\(X_t = x_t^{(1)} - x_t^{(2)}\)</span>, y <span class="math inline">\(Y_t = (\Phi(x^{(1)}))_t - (\Phi(x^{(2)}))_t\)</span>. Entonces para un <span class="math inline">\(\omega\)</span> fijo <span class="math display">\[Y_t = \int_0^t [b(s, x_s^{(1)}, \omega) - b(s, x_s^{(2)}, \omega)]\,ds + \int_0^t [\sigma(s, x_s^{(1)}, \omega) - \sigma(s, x_s^{(2)}, \omega)]\,dW_s\]</span> <span class="math display">\[+ \int_0^t \int_Z [R(s, x_{s-}^{(1)}, z, \omega) - R(s, x_{s-}^{(2)}, z, \omega)]\,\tilde{N}(ds, dz).\]</span> Por comodidad <span class="math display">\[Y_t = \int_0^t \Delta b_s\,ds + \int_0^t \Delta \sigma_s\,dW_s + \int_0^t \int_Z \Delta R_s(z)\,\tilde{N}(ds, dz),\]</span> donde <span class="math inline">\(\Delta b_s := b(s, x_s^{(1)}) - b(s, x_s^{(2)}), \Delta \sigma_s := \sigma(s, x_s^{(1)}) - \sigma(s, x_s^{(2)}), \Delta R_s(z) := R(s, x_{s-}^{(1)}, z) - R(s, x_{s-}^{(2)}, z)\)</span> Puesto que la función <span class="math inline">\(f(y) = y^2\)</span> tiene derivadas <span class="math inline">\(f'(y) = 2y, \ \ f''(y) = 2\)</span>, al aplicar la fórmula de Itô para semimartingalas con saltos, obtenemos <span class="math display">\[Y_t^2 = Y_0^2 + 2 \int_0^t Y_s \, dY_s^c + \int_0^t d\langle Y^c \rangle_s + \sum_{s \leq t} \left[ Y_s^2 - Y_{s-}^2 - 2 Y_{s-} \Delta Y_s \right],\]</span> donde: - <span class="math inline">\(dY_s^c = \Delta b_s \, ds + \Delta \sigma_s \, dW_s\)</span> es la parte continua, - <span class="math inline">\(d\langle Y^c \rangle_s = (\Delta \sigma_s)^2 \, ds\)</span> es la variación cuadrática de la parte continua, - <span class="math inline">\(\Delta Y_s = \int_Z \Delta R_s(z) \, N(\{s\}, dz)\)</span> es el tamaño del salto en el instante <span class="math inline">\(s\)</span>. Al reescribir a la versión integral ya desarrollada y aplicar la formula de itô para <span class="math inline">\(f(y) = y^2\)</span> aplicada a <span class="math inline">\(Y_t\)</span> <span class="math display">\[|Y_t|^2 = 2 \int_0^t Y_s \, \Delta b_s \, ds
 + 2 \int_0^t Y_s \, \Delta \sigma_s \, dW_s
@@ -530,11 +530,16 @@ x_t = x_0 &amp;+ \int_0^t b(s,x_s,\omega)\,ds
 + 2 \int_0^t \int_Z Y_s \, \Delta R_s(z) \, \tilde{N}(ds, dz)
 \]</span> <span class="math display">\[
 + \int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz).\]</span> Aplicando valor esperado y sus propiedades <span class="math display">\[
+\begin{aligned}
 \mathbb{E}[
-|Y_t|^2] = \mathbb{E}\left[2 \int_0^t Y_s \, \Delta b_s \, ds \right]
-+\mathbb{E}\left[ 2 \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right]
-+\mathbb{E}\left[ \int_0^t |\Delta \sigma_s|^2 \, ds
-+ 2 \int_0^t \int_Z Y_s \, \Delta R_s(s,z) \, \tilde{N}(ds, dz)\right]\]</span> <span class="math display">\[\mathbb{E}\left[\int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz)\right]\]</span> Dado que los valores esperados de las integrales respecto a <span class="math inline">\(dW_s\)</span> y <span class="math inline">\(\widetilde{N}\)</span> son martingalas, <span class="math display">\[\mathbb{E}\left[ \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right] = 0,\]</span> <span class="math display">\[\mathbb{E} \left[  \int_0^t \int_Z Y_s \, \Delta R_s(z) \, \tilde{N}(ds, dz)\right]  = 0,\]</span> y puesto que <span class="math inline">\(\mathbb{E}[N(ds,dz)] = \pi(dz)ds,\)</span> se reduce a <span class="math display">\[\mathbb{E}[|Y_t|^2] = \mathbb{E}\left[\int_0^t \left(2Y_s \, \Delta b(s) \, + |\Delta \sigma(s)|^2 \ + \int_Z |\Delta R_s(s,z)|^2 \, \pi ( dz)\right) ds\right].\]</span> Nótese que para el primer término, al aplicar la desigualdad de Cauchy-Schwarz <span class="math inline">\(2Y_s\Delta b(s)\leq 2|Y_s||\Delta b(s)|,\)</span> y por las hipótesis de Lipschitz</p>
+|Y_t|^2] = {}&amp; \mathbb{E}\left[2 \int_0^t Y_s \, \Delta b_s \, ds \right]
++\mathbb{E}\left[ 2 \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right] \\
+&amp; +\mathbb{E}\left[ \int_0^t |\Delta \sigma_s|^2 \, ds
++ 2 \int_0^t \int_Z Y_s \, \Delta R_s(s,z) \tilde{N}(ds, dz)\right]
+\end{aligned}
+\]</span> <span class="math display">\[\mathbb{E}\left[\int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz)\right]\]</span> Dado que los valores esperados de las integrales respecto a <span class="math inline">\(dW_s\)</span> y <span class="math inline">\(\widetilde{N}\)</span> son martingalas, <span class="math display">\[
+\mathbb{E}\left[ \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right] = 0,\]</span> <span class="math display">\[\mathbb{E} \left[  \int_0^t \int_Z Y_s \, \Delta R_s(z) \, \tilde{N}(ds, dz)\right]  = 0,\]</span> y puesto que <span class="math inline">\(\mathbb{E}[N(ds,dz)] = \pi(dz)ds,\)</span> se reduce a <span class="math display">\[\mathbb{E}[|Y_t|^2] = \mathbb{E}\left[\int_0^t \left(2Y_s \, \Delta b(s) \, + |\Delta \sigma(s)|^2 + \int_Z |\Delta R_s(s,z)|^2 \, \pi ( dz)\right) ds\right].
+\]</span> Nótese que para el primer término, al aplicar la desigualdad de Cauchy-Schwarz <span class="math inline">\(2Y_s\Delta b(s)\leq 2|Y_s||\Delta b(s)|,\)</span> y por las hipótesis de Lipschitz</p>
 <p><span class="math display">\[|\Delta b(s) |\leq \widetilde{c}(s)|X_s|, \ \ |\Delta \sigma(s)|^2 + \int_z |\Delta R(s.z)|^2 \pi(dz) \leq \widetilde{c}(s)|X_s|^2.\]</span> Además usando la desigualdad <span class="math inline">\(2ab \leq a^2 + b^2\)</span>, se tiene que <span class="math display">\[2Y_s\Delta b(s) \leq 2|Y_s |\widetilde{c}(s)|X_s| \leq \widetilde{c}(s)(|Y_s|^2 + |X_s|^2),\]</span> aplicando valor esperado y tomando el supremo <span class="math display">\[\mathbb{E}[|{Y_t}|^2] \leq \int_0^t \widetilde{c}(s) \left( \mathbb{E}[|{Y_s}|^2] + \mathbb{E}[|{X_s}|^2] \right) ds.\]</span> <span id="eq-3"><span class="math display">\[\mathbb{E}\!\left[ \sup_{0 \leq r \leq t} |{Y_r}|^2 \right] \leq \int_0^t \widetilde{c}(s) \left( \mathbb{E}\!\left[ \sup_{0 \leq r \leq s} |{Y_r}|^2 \right] + \!\left[ \sup_{0 \leq r \leq s} |{X_r}|^2 \right] \right) ds. \tag{4.3}\]</span></span></p>
 <p>Como se ha eliminado la parte estocástica al tomar el valor esperado anteriormente, se procederá a obtener un acotamiento determinista.</p>
 <p>Sea</p>
@@ -600,7 +605,7 @@ x_t(\omega) = x'_t(\omega) \quad \text{para todo } t \in [0,T].
     |\sigma(t,x,\omega)|^2 + \int_Z |R(t,x,z,\omega)|^2 \, \nu(dz) &amp;\leq \tilde{c}(t)(1 + |x|^2),
 \end{align*}\]</span> con <span class="math inline">\(\tilde{c}(t) \geq 0\)</span> no aleatoria y <span class="math inline">\(\int_0^T \tilde{c}(t)\,dt &lt; \infty\)</span> para todo <span class="math inline">\(T &gt; 0\)</span>, y todas las demás hipótesis del Teorema anterior siguen siendo válidas. Entonces la conclusión del Teorema anterior sigue siendo cierta.</p>
 </div>
-<div class="proof">
+<div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>Sea <span class="math inline">\(b^{N}(t,x,\omega)\)</span> definida de la siguiente manera <span id="eq-6"><span class="math display">\[
 \begin{split}
       b^{N}(t,x,\omega) = \left\lbrace\begin{array}{c}b(t,x,\omega), \quad \text{si }|x|\leq N,
@@ -736,7 +741,7 @@ IV := \int_0^1 \sigma^2(t)\,dt,
 BV_n \xrightarrow[n\to\infty]{\mathbb{P}} IV.
 \]</span></p>
 </div>
-<div class="proof">
+<div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>Cada retorno se descompone en su parte continua y su parte por saltos <span class="math display">\[
 r_{i,n} = C_{i,n} + S_{i,n},
 \]</span> donde <span class="math display">\[
@@ -778,7 +783,7 @@ IV := \int_0^1 \sigma^2(t)\,dt.
 \lim_{n \to \infty} \mathbb{P}\bigl( |S_n - IV| &gt; \varepsilon \bigr) = 0,
 \]</span> es decir, <span class="math inline">\(S_n \xrightarrow[n \to \infty]{\mathbb{P}} IV\)</span>.</p>
 </div>
-<div class="proof">
+<div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>Supongamos que existe una constante <span class="math inline">\(M &lt; \infty\)</span> tal que <span class="math display">\[
 \sigma^2(t, \omega) \leq M \quad \text{para todo } t \in [0,1], \text{ c.s.}
 \]</span> Como <span class="math inline">\(\sigma^2(\cdot, \omega)\)</span> es cádlág, para cada trayectoria fija <span class="math inline">\(\omega\)</span>, la función <span class="math inline">\(t \mapsto \sigma^2(t,\omega)\)</span> es Lebesgue-integrable y Riemann-integrable en <span class="math inline">\([0,1]\)</span> (pues las funciones cádlág tienen a lo sumo un número numerable de discontinuidades). Por resultados clásicos del análisis real, para cada <span class="math inline">\(\omega\)</span> fijo, <span class="math display">\[
@@ -862,7 +867,7 @@ S_n^{(m)}(\omega) \xrightarrow[n \to \infty]{} IV_m(\omega).
 \hat{\lambda}_n \xrightarrow{\mathbb{P}} \lambda.
 \]</span></p>
 </div>
-<div class="proof">
+<div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>Un falso positivo ocurre cuando un incremento <span class="math inline">\(\Delta_i^n X\)</span> sin salto (es decir, generado únicamente por la parte continua del proceso) excede el umbral <span class="math inline">\(\tau_n\)</span>. Para controlar este fenómeno, debemos analizar la magnitud de la parte continua. La herramienta fundamental es la cota proporcionada en la de (Sección 8.1), derivada bajo el Assumption 1. Para cualquier <span class="math inline">\(\eta &gt; 0\)</span> y <span class="math inline">\(\theta \in (0,1)\)</span>, se cumple <span id="eq-cota_46"><span class="math display">\[
 \mathbb{E}_{i-1}^n \left( |\Delta_i^n X - \delta_i^n|^2 \wedge \eta^2 \right) \leq K \Delta_n (\eta^2 + \Delta_n^{\theta} + \epsilon(\theta))
   \tag{4.14}\]</span></span> donde - <span class="math inline">\(\mathbb{E}_{i-1}^n(\cdot) = \mathbb{E}(\cdot \mid \mathcal{F}_{(i-1)\Delta_n})\)</span>, - <span class="math inline">\(\delta_i^n = \sigma_{(i-1)\Delta_n} (W_{i\Delta_n} - W_{(i-1)\Delta_n})\)</span> es la aproximación gaussiana de la parte continua, - <span class="math inline">\(\epsilon(\theta) \to 0\)</span> cuando <span class="math inline">\(\theta \to 0\)</span>, - <span class="math inline">\(K\)</span> es una constante que depende de los coeficientes del modelo.</p>
