@@ -830,7 +830,10 @@ El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <
 <section id="fórmula-de-itô" class="level2" data-number="3.9">
 <h2 data-number="3.9" class="anchored" data-anchor-id="fórmula-de-itô"><span class="header-section-number">3.9</span> Fórmula de Itô</h2>
 <div id="thm-Formula_ito_unidimen" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.18</strong></span> (Fórmula de Itô multidimencional). Sea <span class="math inline">\(f \in C^2(\mathbb{R})\)</span> y <span class="math inline">\(\{B_t\}_{t \geq 0}\)</span> un movimiento Browniano. Entonces, para todo <span class="math inline">\(t \geq 0\)</span>, <span class="math display">\[f(B_t) = f(B_0) + \int_0^t f'(B_s) \, dB_s + \frac{1}{2} \int_0^t f''(B_s) \, ds.\]</span> En notación diferencial: <span class="math display">\[df(B_t) = f'(B_t) \, dB_t + \frac{1}{2} f''(B_t) \, dt.\]</span></p>
+<p><span class="theorem-title"><strong>Teorema 3.18</strong></span> (Fórmula de Itô unidimencional). Sea <span class="math inline">\(f \in C^2(\mathbb{R})\)</span> y <span class="math inline">\(\{B_t\}_{t \geq 0}\)</span> un movimiento Browniano. Entonces, para todo <span class="math inline">\(t \geq 0\)</span>, <span class="math display">\[f(B_t) = f(B_0) + \int_0^t f'(B_s) \, dB_s + \frac{1}{2} \int_0^t f''(B_s) \, ds.\]</span> En notación diferencial: <span class="math display">\[df(B_t) = f'(B_t) \, dB_t + \frac{1}{2} f''(B_t) dt.\]</span></p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Demostración</em>. </span>Ver <span class="citation" data-cites="castaneda2012introduction">Castañeda et&nbsp;al. (<a href="references.html#ref-castaneda2012introduction" role="doc-biblioref">2012</a>)</span> Teorema 11.9</p>
 </div>
 <div id="thm-Formula_ito_general" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.19</strong></span> Sea <span class="math inline">\(\{X_t\}_{0 \leq t \leq T}\)</span> un proceso de Itô que satisface <span class="math display">\[dX_t = b(t, X_t) \, dt + \sigma(t, X_t) \, dB_t,\]</span> con <span class="math inline">\(b, \sigma\)</span> medibles y tales que las integrales están bien definidas. Sea <span class="math inline">\(f \in C^{1,2}([0,T] \times \mathbb{R})\)</span>. Entonces el proceso <span class="math inline">\(Y_t = f(t, X_t)\)</span> satisface <span class="math display">\[dY_t = \left( \frac{\partial f}{\partial t} + b \frac{\partial f}{\partial x} + \frac{1}{2} \sigma^2 \frac{\partial^2 f}{\partial x^2} \right)(t, X_t) \, dt + \sigma(t, X_t) \frac{\partial f}{\partial x}(t, X_t) \, dB_t.\]</span></p>
@@ -885,6 +888,9 @@ Y_t^m = &amp;\ \delta^m
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-applebaum2009levy" class="csl-entry" role="listitem">
 Applebaum, David. 2009. <em>Lévy Processes and Stochastic Calculus</em>. 2nd ed. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511809781">https://doi.org/10.1017/CBO9780511809781</a>.
+</div>
+<div id="ref-castaneda2012introduction" class="csl-entry" role="listitem">
+Castañeda, Liliana Blanco, Viswanathan Arunachalam, y Selvamuthu Dharmaraja. 2012. <em>Introduction to probability and stochastic processes with applications</em>. John Wiley &amp; Sons.
 </div>
 <div id="ref-folland1999real" class="csl-entry" role="listitem">
 Folland, Gerald B. 1999. <em>Real analysis: modern techniques and their applications</em>. John Wiley &amp; Sons.
