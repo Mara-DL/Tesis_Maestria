@@ -113,15 +113,26 @@
 
 
  
+\usepackage[]{biblatex}
+\addbibresource{references.bib}
 
 
-% packa.tex - Paquetes LaTeX personalizados
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath, amssymb, amsthm}
-\usepackage{hyperref}
-\usepackage{booktabs}
-\usepackage{float}
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{acacac}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
+\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
+\makeatother
 \makeatletter
 \@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
 \makeatother
@@ -159,6 +170,19 @@
 \@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
 \floatname{codelisting}{Listado}
 \newcommand*\listoflistings{\listof{codelisting}{Listado de Listados}}
+\usepackage{amsthm}
+\theoremstyle{plain}
+\newtheorem{lemma}{Lema}[chapter]
+\theoremstyle{definition}
+\newtheorem{definition}{Definición}[chapter]
+\theoremstyle{plain}
+\newtheorem{theorem}{Teorema}[chapter]
+\theoremstyle{remark}
+\AtBeginDocument{\renewcommand*{\proofname}{Demostración}}
+\newtheorem*{remark}{Observación}
+\newtheorem*{solution}{Solución}
+\newtheorem{refremark}{Observación}[chapter]
+\newtheorem{refsolution}{Solución}[chapter]
 \makeatother
 \makeatletter
 \makeatother
@@ -170,7 +194,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
-  pdftitle={Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos},
+  pdftitle={Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos},
   pdflang={es},
   colorlinks=true,
   linkcolor={blue},
@@ -180,7 +204,7 @@
   pdfcreator={LaTeX via pandoc}}
 
 
-\title{Aproximación numerica de la solucion para ecuaciones
+\title{Aproximación numérica de la solución para ecuaciones
 diferenciales estocasticas con saltos}
 \author{}
 \date{2026-09-03}
@@ -199,26 +223,19 @@ diferenciales estocasticas con saltos}
 
 \bookmarksetup{startatroot}
 
-\chapter*{}\label{section}
-\addcontentsline{toc}{chapter}{}
-
-\markboth{}{}
+\chapter{Inicio}\label{inicio}
 
 \bookmarksetup{startatroot}
 
 \chapter{Introducción}\label{introducciuxf3n}
 
-\bookmarksetup{startatroot}
-
-\chapter{Introduction}\label{introduction}
-
 La Ciudad de México (CDMX) representa uno de los mercados más relevantes
 para el sector asegurador mexicano. Según el Censo de Población y
-Vivienda 2020 del INEGI negi2020censo, la CDMX contaba con \(2330816\)
-viviendas particulares habitadas. Ajustando por un crecimiento
-demográfico estimado del \(SI{0.5}\) anual, para el periodo 2024--2025
-se proyecta un parque habitacional de aproximadamente \(2378000\)
-unidadesssion of literate programming.
+Vivienda 2020 del INEGI(\autocite{inegi2020censo}), la CDMX contaba con
+\(2330816\) viviendas particulares habitadas. Ajustando por un
+crecimiento demográfico estimado del \(SI{0.5}\) anual, para el periodo
+2024--2025 se proyecta un parque habitacional de aproximadamente
+\(2378000\) unidadesssion of literate programming.
 
 De acuerdo con el Panorama Analítico del Sector de Seguros y Fianzas
 2024 publicado por la Comisión Nacional de Seguros y Fianzas (CNSF), el
@@ -230,26 +247,1946 @@ corresponde a seguros de vivienda, lo que equivale a primas del orden de
 Estudios de la Asociación Mexicana de Instituciones de Seguros (AMIS) y
 consultoras especializadas (Marsh, AON) indican que la CDMX concentra
 entre el SI 22 del mercado nacional de seguros de vivienda, debido a su
-alta densidad poblacional y valor patrimonial de los inmuebles .
+alta densidad poblacional y valor patrimonial de los inmuebles.
 
 \bookmarksetup{startatroot}
 
-\chapter{Resultados Técnicos
-Fundamentales}\label{resultados-tuxe9cnicos-fundamentales}
+\chapter{Resultados técnicos
+fundamentales}\label{resultados-tuxe9cnicos-fundamentales}
+
+\section{Espacios de Probabilidad y
+Filtraciones}\label{espacios-de-probabilidad-y-filtraciones}
 
 En esta sección se presentan con detalle los resultados clave que
-sustentan la demostración del teorema de isometría de Itô para la parte
+sustentan la demostración del Teorema de Isometría de Itô para la parte
 de saltos. Se asume que
 \((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t\geq0}, \mathbb{P})\) es un
 espacio de probabilidad filtrado que satisface las condiciones usuales,
 \(Z\) es un espacio métrico separable completo, y \(\nu\) es una medida
 \(\sigma\)-finita sobre \((Z, \mathcal{B}(Z))\). Sea
 \(\widetilde{N}(ds,dz) = N(ds,dz) - \nu(dz)ds\) la medida aleatoria
-compensada asociada a una medida de Poisson.\}
-\textbackslash begin\{teorema\}{[}Teorema de Convergencia
-Dominada{]}\label{thm:dct} Sea \((X, \mathcal{A}, \mu)\) un espacio de
+compensada asociada a una medida de Poisson.
+
+\begin{definition}[]\protect\hypertarget{def-Espacio_probabilidad_filtrado}{}\label{def-Espacio_probabilidad_filtrado}
+
+(Espacio de probabilidad filtrado). Sea
+\((\Omega, \mathcal{F}, \mathbb{P})\) un espacio de probabilidad y
+\(\{\mathcal{F}_t\}_{t \geq 0}\) una filtración, es decir, una familia
+creciente de sub-\(\sigma\)-álgebras de \(\mathcal{F}\):
+\[\mathcal{F}_s \subseteq \mathcal{F}_t \subseteq \mathcal{F} \quad \text{para todo } 0 \leq s \leq t.
+\] Se dice que la filtración satisface las hipótesis usuales si cumple
+las siguientes dos condiciones:
+
+\begin{enumerate}
+\def\labelenumi{\roman{enumi})}
+\tightlist
+\item
+  Completitud: La \(\sigma\)-álgebra inicial \(\mathcal{F}_0\) contiene
+  todos los conjuntos \(\mathbb{P}\)-nulos. Es decir: \[
+  \text{Si } A \in \mathcal{F} \text{ y } \mathbb{P}(A) = 0, \quad \text{entonces } A \in \mathcal{F}_0.
+  \] Como \(\mathcal{F}_0 \subseteq \mathcal{F}_t\) para todo \(t\),
+  esto implica que todos los conjuntos nulos están en cada
+  \(\mathcal{F}_t\). En otras palabras, cada \(\mathcal{F}_t\) es
+  completa respecto a \(\mathbb{P}\).
+\item
+  Continuidad por la derecha: Para todo \(t \geq 0\) \[
+  \mathcal{F}_t = \bigcap_{s > t} \mathcal{F}_s.
+  \]
+\end{enumerate}
+
+\end{definition}
+
+\begin{definition}[]\protect\hypertarget{def-filtracion_natural}{}\label{def-filtracion_natural}
+
+(Filtración natural). Sea \(W = \{W_t\}_{t \geq 0}\) un movimiento
+browniano. La \emph{filtración natural} es
+\(\mathcal{F}_t^W = \sigma(W_s : s \leq t)\). La filtración \emph{usual}
+asociada es \[
+\mathcal{F}_t = \bigcap_{s > t} \sigma(\mathcal{F}_s^W \cup \mathcal{N}),
+\] donde \(\mathcal{N}\) es la colección de todos los conjuntos
+\(\mathbb{P}\)-nulos.
+
+\end{definition}
+
+\begin{definition}[]\protect\hypertarget{def-tiempo_paro}{}\label{def-tiempo_paro}
+
+(Tiempo de paro). Una variable aleatoria
+\(\tau : \Omega \to [0,\infty]\) es un \emph{tiempo de paro} respecto a
+\(\{\ \mathcal{F} \}\) si \(\{\tau \leq t\} \in \mathcal{F}_t\) para
+todo \(t \geq 0\).
+
+\end{definition}
+
+\begin{definition}[]\protect\hypertarget{def-Tiempos_paro_controlados}{}\label{def-Tiempos_paro_controlados}
+
+(Tiempos de paro controlados). Un tiempo de paro
+\(\{\tau < t\} \in \mathcal{F}_t\) para todo \(t\). La continuidad por
+la derecha se deduce que \[
+\{\tau < t\} = \bigcup_{q \in \mathbb{Q}, q < t} \{\tau \leq q\} \in \mathcal{F}_t,
+\]
+
+\end{definition}
+
+\section{Resultados de Teoría de la Medida y Análisis
+Funcional}\label{resultados-de-teoruxeda-de-la-medida-y-anuxe1lisis-funcional}
+
+\begin{lemma}[]\protect\hypertarget{lem-Fatou}{}\label{lem-Fatou}
+
+\emph{(Fatou).} Sea \(\{f_n\}_{n \in \mathbb{N}}\) una sucesión de
+funciones medibles no negativas. Entonces:
+
+\[\liminf_{n \to \infty} \int_X f_n \, d\mu \geq \int_X \liminf_{n \to \infty} f_n \, d\mu.\]
+
+\end{lemma}
+
+\begin{proof}
+Ver demostración completa \textcite{applebaum2009levy} Corolario 1.1.2.
+\end{proof}
+
+\begin{theorem}[]\protect\hypertarget{thm-con_monotona}{}\label{thm-con_monotona}
+
+\emph{(Convergencia Monotona).} Sea \(\{f_n\}_{n \in \mathbb{N}}\) una
+sucesión de funciones medibles no negativas tales que
+\(0 \leq f_1 \leq f_2 \leq \cdots\) y \(f_n \to f\) puntualmente.
+Entonces:
+
+\[\lim_{n \to \infty} \int_X f_n \, d\mu = \int_X f \, d\mu.\]
+
+\end{theorem}
+
+\begin{proof}
+Ver demostración completa \textcite{applebaum2009levy} Teorema 1.1.1
+\end{proof}
+
+\begin{theorem}[]\protect\hypertarget{thm-con_dom}{}\label{thm-con_dom}
+
+(Convergencia Dominada). Sea \((X, \mathcal{A}, \mu)\) un espacio de
 medida y \(\{f_n\}_{n\in\mathbb{N}}\) una sucesión de funciones
 \(\mu\)-medibles \(f_n : X \to \mathbb{R}\). Supongamos que:
+
+\begin{enumerate}
+\def\labelenumi{\Roman{enumi}.}
+\item
+  \(f_n(x) \to f(x)\) \(\mu -\text{casi en todas partes,}\)
+\item
+  existe una función \(g \in L^1(X, \mathcal{A}, \mu)\) tal que
+  \(|f_n(x)| \leq g(x)\) para \(\mu\)-casi todo \(x \in X\) y todo
+  \(n \in \mathbb{N}.\)
+\end{enumerate}
+
+Entonces \(f \in L^1(\mu)\) y
+
+\[\lim_{n \to \infty} \int_X f_n \, d\mu = \int_X f \, d\mu.\]
+
+\end{theorem}
+
+\begin{proof}
+Ver demostración completa Teorema 1.34 \autocite{rudin1987real} La idea
+central consiste en aplicar el Lema de Fatou a la sucesión
+\(2g - |f_n - f| \geq 0\).
+\end{proof}
+
+\begin{theorem}[]\protect\hypertarget{thm-aprox_fun_simp}{}\label{thm-aprox_fun_simp}
+
+Sea \((X, \mathcal{A}, \mu)\) un espacio de medida \(\sigma\)-finito.
+Entonces, el conjunto de funciones simples integrables es denso en
+\(L^2(X, \mathcal{A}, \mu)\). Es decir, para toda \(f \in L^2(\mu)\)
+existe una sucesión de funciones simples \(\{\phi_n\}\) tal que
+\(\|\phi_n - f\|_{L^2(\mu)} \to 0.\)
+
+\end{theorem}
+
+\begin{proof}
+Sea \(f \in L^2(\mu)\). Como \(f\) es medible, existen funciones simples
+\(\psi_n\) tales que \(\psi_n \to f\) puntualmente y
+\(|\psi_n| \leq |f|\) para todo \(n\) (ver \autocite{folland1999real},
+Prop. 2.20). Entonces,
+
+\[|\psi_n - f|^2 \leq 4|f|^2 \in L^1(\mu).\]
+
+Por el Teorema~\ref{thm-con_dom},
+
+\[\int_X |\psi_n - f|^2 \, d\mu \to 0.\]
+
+Luego, \(\|\psi_n - f\|_{L^2(\mu)} \to 0\). Además, al truncar
+\(\psi_n\) en conjuntos de medida finita (posible por ser \(\mu\)
+\(\sigma\)-finita), podemos asumir que cada \(\psi_n\) es integrable.
+\end{proof}
+
+En el contexto estocástico, aplicamos este resultado al espacio de
+medida
+\[(\Omega \times [0,T] \times Z, \; \mathcal{P} \otimes \mathcal{B}(Z), \; \mathbb{P} \otimes ds \otimes \nu),\]
+que es \(\sigma\)-finito si \(\nu\) lo es. Esto garantiza que cualquier
+proceso predecible cuadrado integrable puede aproximarse en \(L^2\) por
+procesos simples.
+
+\begin{theorem}[]\protect\hypertarget{thm-cont_norm_esp_Hil}{}\label{thm-cont_norm_esp_Hil}
+
+Sea \(H\) un espacio de Hilbert y \(\{x_n\} \subset H\) una sucesión tal
+que \(x_n \to x\) en norma. Entonces \(\|x_n\| \to \|x\|\)
+
+\end{theorem}
+
+\begin{proof}
+Por la desigualdad triangular inversa,
+\[\big| \|x_n\| - \|x\| \big| \leq \|x_n - x\| \to 0.\]
+\end{proof}
+
+\begin{theorem}[]\protect\hypertarget{thm-principio_contraccion_banach}{}\label{thm-principio_contraccion_banach}
+
+(Principio de contracción de Banach). Sea \((H, \|\cdot\|)\) un espacio
+de Banach y \(\Phi: H \to H\) una contracción, es decir, existe
+\(\kappa < 1\) tal que \(\|\Phi(x) - \Phi(y)\| \leq \kappa \|x - y\|\)
+para todo \(x, y \in H\). Entonces \(\Phi\) tiene un único punto fijo en
+\(H\).
+
+\end{theorem}
+
+\begin{proof}
+Ver \textcite{Istratescu2001a}, Capítulo 3, Sección 3.1
+\end{proof}
+
+\section{Procesos Estocásticos
+Fundamentales}\label{procesos-estocuxe1sticos-fundamentales}
+
+\begin{definition}[]\protect\hypertarget{def-Proceso_Wiener}{}\label{def-Proceso_Wiener}
+
+Sea \((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t \geq 0}, \mathbb{P})\)
+un espacio de probabilidad filtrado. Un proceso de Wiener es un proceso
+estocástico \(W = \{W(t)\}_{t \geq 0}\) que satisface las siguientes
+propiedades:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Condición inicial:\\
+  \[ W(0) = 0 \quad \text{casi seguramente}.\]
+\item
+  Trayectorias continuas:\\
+  Casi todas las trayectorias \(t \mapsto W(t,\omega)\) son funciones
+  continuas en \([0, \infty)\).
+\item
+  Incrementos independientes: Para cualesquir partición
+  \(0 \leq t_0 < t_1 < \cdots < t_n\), los incrementos\\
+  \[W(t_1) - W(t_0), \; W(t_2) - W(t_1), \; \dots, \; W(t_n) - W(t_{n-1})\]
+  son independientes como variables aleatorias reales.
+\item
+  Incrementos estacionarios y gaussianos:\\
+  Para todo \(0 \leq s < t\), el incremento \(W(t) - W(s)\) tiene
+  distribución normal con media cero y varianza \(t - s\):\\
+  \[W(t) - W(s) \sim \mathcal{N}(0, t - s).\]
+\item
+  Adaptación:\\
+  El proceso \(W\) es adaptado a la filtración
+  \(\{\mathcal{F}_t\}_{t \geq 0}\), es decir, \(W(t)\) es
+  \(\mathcal{F}_t\)-medible para todo \(t \geq 0\).
+\end{enumerate}
+
+\end{definition}
+
+\begin{definition}[]\protect\hypertarget{def-Proceso_cadlag}{}\label{def-Proceso_cadlag}
+
+Sea \((\Omega, \mathcal{F}, \mathbb{P})\) un espacio de probabilidad y
+sea \(X = \{X_t : t \geq 0\}\) un proceso estocástico con valores en
+\(\mathbb{R}\), es decir, para cada \(t \geq 0\),
+\(X_t : \Omega \to \mathbb{R}\) es una variable aleatoria. Se dice que
+el proceso \(X\) es cádlág (o RCLL) si casi todas sus trayectorias son
+funciones cádlág; es decir, existe un conjunto
+\(\Omega_0 \in \mathcal{F}\) con \(\mathbb{P}(\Omega_0) = 1\) tal que,
+para todo \(\omega \in \Omega_0\), la función\\
+\[t \mapsto X_t(\omega)\] satisface las siguientes dos propiedades:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Continuidad por la derecha: Para todo \(t \geq 0\),
+  \[\lim_{s \downarrow t} X_s(\omega) = X_t(\omega).\]
+\item
+  Existencia del límite por la izquierda: Para todo \(t > 0\), el
+  límite\\
+  \[\lim_{s \uparrow t} X_s(\omega)\] existe en \(\mathbb{R}\). Este
+  límite se denota por \(X_{t-}(\omega)\).
+\end{enumerate}
+
+\end{definition}
+
+\begin{definition}[]\protect\hypertarget{def-Unicidad_trayectorias}{}\label{def-Unicidad_trayectorias}
+
+Se dice que una EDE tiene solución única por trayectorias si para
+cualquier par de soluciones \(\{x_t^i\}_{t\geq0}, i = 1,2,\) satisface
+la Ecuación~\ref{eq-1} sobre el mismo espacio de probabilidad con el
+mismo movimiento browniano \(\{W_t\}_{t\geq0}\) y una medida de Poisson
+\(\widetilde{N}_t(dt,dz)\), \(P(sup_{t\geq0} |x_t^1 - x_t^2|=0) =1\)
+
+\end{definition}
+
+\begin{theorem}[]\protect\hypertarget{thm-Modificacion_cadlag}{}\label{thm-Modificacion_cadlag}
+
+Toda martingala local en un espacio filtrado que satisface las hipótesis
+usuales admite una versión cádlág.
+
+\end{theorem}
+
+\section{Desigualdades y Lemmas
+Clásicos}\label{desigualdades-y-lemmas-cluxe1sicos}
+
+\begin{theorem}[]\protect\hypertarget{thm-des_Cauchy_Sch}{}\label{thm-des_Cauchy_Sch}
+
+Sean \(X, Y \in L^2(\Omega, \mathcal{F}, \mathbb{P})\). Entonces
+\[\bigl| \mathbb{E}[XY] \bigr|^2 \leq \mathbb{E}[X^2] \, \mathbb{E}[Y^2].\]
+Además, la igualdad se da si y solo si existen \(a, b \in \mathbb{R}\),
+no ambos nulos, tales que \[\mathbb{P}(aX = bY) = 1.\]
+
+\end{theorem}
+
+\begin{proof}
+Observemos que si \(\mathbb{E}[Y^2] = 0\), entonces \(Y = 0\) casi
+seguramente (c.s.), y ambas partes de la desigualdad son cero. Lo mismo
+ocurre si \(\mathbb{E}[X^2] = 0\). Por lo tanto, nos resta probar que
+\[\mathbb{E}[X^2] > 0 \quad \text{y} \quad \mathbb{E}[Y^2] > 0\] Para
+cualquier \(\lambda \in \mathbb{R}\), consideremos la variable aleatoria
+\(X - \lambda Y\). Como \((X - \lambda Y)^2 \geq 0\) c.s., se tiene
+\[\mathbb{E}[(X - \lambda Y)^2] \geq 0\] Expandiendo la expresión:
+\[\mathbb{E}[(X - \lambda Y)^2] = \mathbb{E}[X^2] - 2\lambda \mathbb{E}[XY] + \lambda^2 \mathbb{E}[Y^2].\]
+Definimos la función cuadrática
+\[f(\lambda) := \mathbb{E}[Y^2]\,\lambda^2 - 2\mathbb{E}[XY]\,\lambda + \mathbb{E}[X^2].\]
+Entonces \(f(\lambda) \geq 0\) para todo \(\lambda \in \mathbb{R}\).
+Dado que \(\mathbb{E}[Y^2] > 0\), el coeficiente principal es positivo.
+Un polinomio cuadrático \(a\lambda^2 + b\lambda + c\) con \(a > 0\) es
+no negativo en todo \(\mathbb{R}\) si y solo si su discriminante es no
+positivo: \[\Delta = b^2 - 4ac \leq 0.\] Aplicando esto con
+\(a = \mathbb{E}[Y^2]\), \(b = -2\mathbb{E}[XY]\),
+\(c = \mathbb{E}[X^2]\), obtenemos:
+\[(-2\mathbb{E}[XY])^2 - 4\,\mathbb{E}[Y^2]\,\mathbb{E}[X^2] \leq 0
+\quad \Longrightarrow \quad
+4\,\mathbb{E}[XY]^2 \leq 4\,\mathbb{E}[X^2]\,\mathbb{E}[Y^2]\]
+Dividiendo por \(4\) y tomando valor absoluto (pues \(\mathbb{E}[XY]\)
+puede ser negativo), concluimos:
+\[\bigl| \mathbb{E}[XY] \bigr|^2 \leq \mathbb{E}[X^2] \, \mathbb{E}[Y^2].\]
+Ahora analizamos cuándo se cumple
+\[\bigl| \mathbb{E}[XY] \bigr|^2 = \mathbb{E}[X^2] \, \mathbb{E}[Y^2].\]
+Esto equivale a que el discriminante sea exactamente cero, es decir,
+\(\Delta = 0\). En tal caso, el polinomio \(f(\lambda)\) tiene una raíz
+doble; es decir, existe tal que \(\lambda_0 \in \mathbb{R}\)
+\[f(\lambda_0) = \mathbb{E}[(X - \lambda_0 Y)^2] = 0.\] Pero
+\(\mathbb{E}[Z^2] = 0\) implica \(Z = 0\) c.s. Por lo tanto,
+\[ X - \lambda_0 Y = 0 \quad \text{c.s.} \quad \Longrightarrow \quad \mathbb{P}(X = \lambda_0 Y) = 1.\]
+Esto muestra que existen constantes \(a = 1\), \(b = \lambda_0\) (no
+ambos nulos) tales que \(\mathbb{P}(aX = bY) = 1\). Si en cambio
+\(Y = 0\) c.s., tomamos \(a = 0\), \(b = 1\), y claramente
+\(\mathbb{P}(0 \cdot X = 1 \cdot Y) = 1\).
+
+Recíprocamente, supongamos que existen \(a, b \in \mathbb{R}\), no ambos
+nulos, tales que \(\mathbb{P}(aX = bY) = 1.\) Si \(a \neq 0\), entonces
+\(X = \frac{b}{a} Y\) c.s., y entonces
+\[\mathbb{E}[XY] = \frac{b}{a} \mathbb{E}[Y^2], \qquad \mathbb{E}[X^2] = \left( \frac{b}{a} \right)^2 \mathbb{E}[Y^2],\]
+de donde
+\[\mathbb{E}[X^2] \mathbb{E}[Y^2] = \left( \frac{b}{a} \right)^2 \mathbb{E}[Y^2]^2 = \bigl( \mathbb{E}[XY] \bigr)^2\]
+Si \(b \neq 0\), entonces \(Y = \frac{a}{b} X\) c.s., y un cálculo
+análogo lleva a la misma conclusión. En ambos casos, se tiene igualdad
+en la desigualdad de Cauchy--Schwarz.
+\end{proof}
+
+\begin{theorem}[]\protect\hypertarget{thm-D_C_S}{}\label{thm-D_C_S}
+
+\emph{Para cualesquier} \(x_1, x_2, \ldots, x_n \in \mathbb{R}\), se
+cumple:
+
+\[\left(\sum_{i=1}^n x_i\right)^2 \leq n \sum_{i=1}^n x_i^2.\]
+
+\end{theorem}
+
+\begin{proof}
+Aplicando la desigualdad de Cauchy-Schwarz a los vectores
+\(\mathbf{x} = (x_1, \ldots, x_n)\) y \(\mathbf{1} = (1, \ldots, 1)\) en
+\(\mathbb{R}^n\) se tiene:
+
+\[\left(\sum_{i=1}^n x_i \cdot 1\right)^2 \leq \left(\sum_{i=1}^n x_i^2\right)\left(\sum_{i=1}^n 1^2\right) = \left(\sum_{i=1}^n x_i^2\right) \cdot n.\]
+
+Alternativamente, usando la \emph{desigualdad de Jensen} con
+\(\phi(x) = x^2\) (convexa) se da:
+
+\[
+\left(\frac{1}{n}\sum_{i=1}^n x_i\right)^2 \leq \frac{1}{n}\sum_{i=1}^n x_i^2 \implies \left(\sum_{i=1}^n x_i\right)^2 \leq n \sum_{i=1}^n x_i^2.
+\]
+\end{proof}
+
+\textbf{Observación} \emph{Esta desigualdad es un caso particular de la
+desigualdad de Cauchy-Schwarz general en espacios de Hilbert. Para}
+\(X, Y \in L^2(\Omega)\):
+
+\[|\mathbb{E}[XY]|^2 \leq \mathbb{E}[X^2]\mathbb{E}[Y^2].\]
+
+\begin{theorem}[]\protect\hypertarget{thm-D_Y_F_S}{}\label{thm-D_Y_F_S}
+
+\emph{Para cualesquier} \(a, b \in \mathbb{R}\), se cumple:
+
+\[2ab \leq a^2 + b^2.\]
+
+\emph{La igualdad se alcanza si y solo si} \(a = b\).
+
+\end{theorem}
+
+\begin{proof}
+Por la desigualdad \emph{aritmético-geométric}a para números no
+negativos:
+
+\[\sqrt{a^2 b^2} \leq \frac{a^2 + b^2}{2} \implies |ab| \leq \frac{a^2 + b^2}{2} \implies 2ab \leq a^2 + b^2.\]
+\end{proof}
+
+\begin{lemma}[]\protect\hypertarget{lem-Borel_cantelli}{}\label{lem-Borel_cantelli}
+
+(Borel--Cantelli). Si \(\sum_{n=1}^\infty \mathbb{P}(A_n) < \infty\),
+entonces \(\mathbb{P}(A_n \text{ i.o.}) = 0\).
+
+\end{lemma}
+
+\begin{theorem}[]\protect\hypertarget{thm-Des_Doob}{}\label{thm-Des_Doob}
+
+Si \(M\) es una martingala en \(L^2\), entonces
+\[\mathbb{E}\left[ \sup_{0 \leq s \leq t} M_s^2 \right] \leq 4 \mathbb{E}[M_t^2].\]
+
+\end{theorem}
+
+\begin{theorem}[]\protect\hypertarget{thm-Desigualdad_Grönwall}{}\label{thm-Desigualdad_Grönwall}
+
+Sea \(u, \alpha: [0,T] \to \mathbb{R}_{+}\) funciones continuas,
+\(\beta \in L^1([0,T])\), con \(\beta \geq 0\), tales que
+\[u(t) \leq \alpha(t) + \int_0^t \beta(s) u(s) ds, \quad \forall t \in [0,T].\]
+Entonces,
+\[u(t) \leq \alpha(t) \exp\left( \int_0^t \beta(s) ds \right).\] En
+particular, si \(\alpha \equiv 0\), entonces \(u \equiv 0\).
+
+\end{theorem}
+
+\begin{proof}
+Definimos la función auxiliar
+\[v(t) := \int_{0}^{t} \beta(s) u(s) \, ds, \quad t \in [0,T].\] Dado
+que \(\beta \in L^{1}([0,T])\) y \(u \in C([0,T])\), el producto
+\(\beta u\) pertenece a \(L^{1}([0,T])\), y por lo tanto
+\(v \in C([0,T])\). Además, \(v\) es absolutamente continua y satisface
+\(v(0) = 0\) y
+\[v'(t) = \beta(t) u(t) \quad \text{para casi todo } t \in [0,T].\] Por
+hipótesis, \[u(t) \leq \alpha(t) + v(t), \quad \forall t \in [0,T],\] y,
+sustituyendo en la derivada de \(v\), obtenemos
+\[v'(t) \leq \beta(t) \bigl( \alpha(t) + v(t) \bigr) \quad \text{casi en todas partes en } [0,T].\]
+Consideremos ahora la función
+\[w(t) := v(t) \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right), \quad t \in [0,T].\]
+La función \(w\) es absolutamente continua (pues \(v\) y la exponencial
+lo son), y diferenciable casi en todas partes. Derivando se obtiene
+\[w'(t) = \Bigl[ v'(t) - \beta(t) v(t) \Bigr] \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right)
+\leq \beta(t) \alpha(t) \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right) \quad \text{c.t.p.}
+\] Integrando desde \(0\) hasta \(t\) y usando que \(w(0) = 0\), resulta
+\[w(t) \leq \int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds.\]
+Multiplicando ambos lados por
+\(\exp\bigl(\int_{0}^{t} \beta(s) \, ds \bigr)\) obtenemos
+\[v(t) \leq \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right) \int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds.\]
+Dado que \(\alpha\) es no decreciente, para todo \(s \in [0,t]\) se
+tiene \(\alpha(s) \leq \alpha(t)\). Por lo tanto, \begin{align*}
+\int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds
+\leq \alpha(t) \int_{0}^{t} \beta(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds\\
+=\alpha(t) \Bigl( 1 - \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right) \Bigr).
+\end{align*} Sustituyendo en la expresión anterior para \(v(t)\), se
+sigue que
+\[v(t) \leq \alpha(t) \Bigl( \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right) - 1 \Bigr).\]
+Finalmente, combinando con la desigualdad
+\(u(t) \leq \alpha(t) + v(t)\), obtenemos
+\[u(t) \leq \alpha(t) + \alpha(t) \Bigl( \exp \left( \int_{0}^{t} \beta(s) \, ds \right) - 1 \Bigr)
+= \alpha(t) \exp \left( \int_{0}^{t} \beta(s), ds \right)\], lo cual
+concluye la demostración. El caso \(\alpha \equiv 0\) se deduce
+inmediatamente: la desigualdad implica \(u(t) \leq 0\). Si además
+\(u \geq 0\), entonces \(u \equiv 0\) en \([0,T].\)
+\end{proof}
+
+\section{Medidas Aleatorias de
+Poisson.}\label{sec-medida_aleatoria_poisson}
+
+\begin{definition}[]\protect\hypertarget{def-punto_absorbente}{}\label{def-punto_absorbente}
+
+Sea \((Z, \mathcal{B}(Z))\) un espacio medible polaco o de Lusin. El
+punto absorbente es un elemento \(\partial \notin Z\) que se añade al
+espacio de estados para formar:
+
+\[Z_\partial := Z \cup \{\partial\}.\]
+
+La \(\sigma\)-álgebra en \(Z_\partial\) se define como:
+
+\[\mathcal{B}(Z_\partial) := \sigma\left(\mathcal{B}(Z) \cup \{\{\partial\}\}\right).\]
+
+Un proceso estocástico \(\{X_t\}_{t \geq 0}\) con valores en
+\(Z_\partial\) se dice que:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Es absorbido en \(\partial\) si \(X_t = \partial\) para todo
+  \(t \geq \tau\), donde \(\tau = \inf\{s > 0 : X_s = \partial\}\) es el
+  tiempo de absorción,
+\item
+  Permanece en \(\partial\) una vez que llega:
+  \(X_t = \partial \implies X_s = \partial\) para todo \(s \geq t\).
+\end{enumerate}
+
+\end{definition}
+
+\textbf{Observación:} El punto absorbente se utiliza para:
+
+\begin{itemize}
+\tightlist
+\item
+  Manejar procesos que pueden ``explotar'' en tiempo finito.
+\item
+  Definir procesos de Markov con muerte.
+\item
+  Extender funciones medibles \(f: Z \to \mathbb{R}\) a \(Z_\partial\)
+  mediante \(f(\partial) = 0\).
+\end{itemize}
+
+\[f(\partial) = 0, \quad \int_{\{\partial\}} g(z) \, \nu(dz) = 0, \quad \text{y} \quad \partial + z = \partial \quad \forall z \in Z_\partial.\]
+
+\begin{definition}[]\protect\hypertarget{def-proceso_puntual}{}\label{def-proceso_puntual}
+
+(Proceso puntual). Sea \((Z, \mathcal{B}(Z))\) un espacio de Lusin (en
+particular, Hausdorff y con \(\sigma\)-álgebra de Borel estándar). Un
+proceso puntual es una aplicación medible
+\(p : \Omega \times (0,\infty) \to Z \cup \{\partial\}\) tal que, para
+casi toda \(\omega \in \Omega\), el conjunto
+\(\{ t \in (0,T] : p(t,\omega) \in Z \}\) es finito para todo \(T > 0\).
+Se asocia a \(p\) su medida de conteo \(N_p\), definida en
+\((0,\infty) \times Z\). Donde \(\partial\) es un punto absorbente
+(Definición~\ref{def-punto_absorbente}) fuera de \(Z\).
+
+\end{definition}
+
+\begin{definition}[]\protect\hypertarget{def-saltos_aislados}{}\label{def-saltos_aislados}
+
+(Saltos aislados). Sea
+\(p: \Omega \times (0, \infty) \to Z \cup \{\partial\}\) un proceso
+puntual (Definición~\ref{def-proceso_puntual}). Decimos que \(p\) tiene
+saltos aislados si para casi toda \(\omega \in \Omega\) y todo
+\(T > 0\), el conjunto de tiempos de salto:*
+
+\[\mathcal{T}(\omega) \cap (0, T] := \{t \in (0, T] : p(t, \omega) \in Z\}\]
+
+es finito o, más generalmente, discreto sin puntos de acumulación en
+\((0, T]\). Esto significa que:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Para todo \(t \in \mathcal{T}(\omega)\), existe \(\varepsilon > 0\)
+  tal que:
+  \[(t - \varepsilon, t + \varepsilon) \cap \mathcal{T}(\omega) = \{t\}.\]
+\item
+  El ínfimo entre tiempos de salto consecutivos es positivo:
+  \[\inf\{t_{i+1} - t_i : t_i, t_{i+1} \in \mathcal{T}(\omega) \cap (0, T]\} > 0 \quad \text{c.s.}\]
+\item
+  La suma sobre saltos está bien definida:
+  \[\sum_{0 < s \leq t} f(s, p(s)) = \sum_{t_i \in \mathcal{T}(\omega) \cap (0, t]} f(t_i, p(t_i)) < \infty \quad \text{c.s.}\]
+\end{enumerate}
+
+\end{definition}
+
+\begin{definition}[]\protect\hypertarget{def-2}{}\label{def-2}
+
+(Conjunto de no salto \(p^{-1}(\partial)\)). Sea
+\(p : \Omega \times (0,\infty) \to Z \cup {\partial}\) un proceso
+puntual de clase (QL), donde \(Z\) es un espacio de Lusin y
+\(\partial \notin Z\) es el punto absorbente
+(Definición~\ref{def-punto_absorbente}) que indica ausencia de salto,
+entonces
+\[p^{-1}(\partial) = \{ (\omega, t) \in \Omega \times (0,\infty) : p(t,\omega) = \partial \}\]
+representa el conjunto de todos los pares \((\omega, t)\) en los que la
+trayectoria del sistema no experimenta un salto en el instante \(t\).
+
+\end{definition}
+
+\begin{definition}[]\protect\hypertarget{def-3}{}\label{def-3}
+
+(Medida de conteo aleatoria \(N_p\)). La medida de conteo aleatoria
+asociada a \(p\), denotada \(N_p\), es una medida aleatoria sobre el
+espacio producto \((0,\infty) \times Z\), definida por
+\[N_p((0,t] \times U) := \sum_{0 < s \leq t} \mathbf{1}_U(p(s)), \quad \text{para todo } U \in \mathcal{B}(Z),  t > 0.
+\]
+
+\end{definition}
+
+En la anterior expresión la suma \(\sum_{0 < s \leq t}\) recorre todos
+los instantes \(s\) en el intervalo \((0,t]\). Aunque hay infinitos
+\(s\) en principio, sólo en los tiempos donde ocurre un salto (es decir,
+cuando \(p(s) \in Z\) el término \(\mathbf{1}_U(p(s))\)) puede ser
+distinto de cero. Gracias a la propiedad de que los saltos son aislados
+(Definición~\ref{def-saltos_aislados}), la suma es finita c.s. en cada
+intervalo \((0,t]\). El indicador \(\mathbf{1}_U(p(s))\), evalúa si el
+tamaño (o tipo) del salto en el instante \(s\), que es \(p(s) \in Z\),
+cae dentro del conjunto \(U \subset Z\). Si \(p(s) \in U\), el salto
+cuenta para \(N_p((0,t] \times U)\); si no, no se cuenta. La medida
+\(N_p((0,t] \times U)\) es simplemente el número de saltos del proceso
+\(p\) que ocurren hasta el tiempo \(t\) y cuyo valor (localización en
+\(Z\)) está en el conjunto \(U\).
+
+Un caso particular y muy importante de proceso puntual es el proceso
+puntual de Poisson estacionario.
+
+\begin{definition}[]\protect\hypertarget{def-Proc_pun_poiss_esta}{}\label{def-Proc_pun_poiss_esta}
+
+(Proceso puntual de Poisson estacionario). Un proceso puntual de Poisson
+estacionario \(k:\Omega\times(0,\infty) \rightarrow Z\cup\{\partial\}\)
+es un proceso puntual \(\mathcal{F}_t\)-adaptado, \(\sigma\) -finito y
+de clase (QL) (cuasi-continuo por la izquierda).
+
+\end{definition}
+
+El proceso de Poisson estacionario \(k\) es un caso específico de
+proceso puntual que satisface propiedades adicionales (independencia,
+estacionariedad, distribución de Poisson). Por lo tanto, en este
+contexto, el proceso puntual \(p\) del que hablamos en general se
+especializa al proceso \(k\).
+
+\begin{definition}[]\protect\hypertarget{def-Espacio_topológico_Hausdorff}{}\label{def-Espacio_topológico_Hausdorff}
+
+(Espacio topológico Hausdorff). Sea \((Z, \tau)\) un espacio topológico,
+es decir, \(Z\) es un conjunto no vacío y
+\(\tau \subseteq \mathcal{P}(Z)\) es una colección de subconjuntos
+(llamados abiertos) que satisface
+
+\begin{itemize}
+\item
+  \(\varnothing, Z \in \tau\),
+\item
+  La unión arbitraria de elementos de \(\tau\) pertenece a \(\tau\),
+\item
+  La intersección finita de elementos de \(\tau\) pertenece a \(\tau\).
+\end{itemize}
+
+Se dice que \((Z, \tau)\) es un espacio Hausdorff (o \(T_2\)) si
+satisface la siguiente propiedad de separación: Para todo par de puntos
+distintos \(x, y \in Z\), con \(x \neq y\), existen abiertos
+\(U, V \in \tau\) tales que:
+\[x \in U,\quad y \in V,\quad \text{y} \quad U \cap V = \varnothing.\]
+
+\end{definition}
+
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, bottomrule=.15mm, bottomtitle=1mm, breakable, colback=white, colbacktitle=quarto-callout-caution-color!10!white, colframe=quarto-callout-caution-color-frame, coltitle=black, left=2mm, leftrule=.75mm, opacityback=0, opacitybacktitle=0.6, rightrule=.15mm, title={Ejemplo (\textbf{\emph{Espacio topológicoHausdorff}})}, titlerule=0mm, toprule=.15mm, toptitle=1mm]
+
+El espacio \(Z= \mathbb{R}\) con topología euclidiana. Es métrico, y
+todo espacio métrico es Hausdorff.
+
+\end{tcolorbox}
+
+\begin{definition}[]\protect\hypertarget{def-Espacio_Lusin}{}\label{def-Espacio_Lusin}
+
+Un espacio de Lusin es un espacio topológico Hausdorff \(Z\) que es
+imagen continua e inyectiva de un espacio polaco.
+
+\begin{itemize}
+\item
+  Su \(\sigma\)-álgebra de Borel es estándar (isomorfa a la de un
+  espacio polaco).
+\item
+  Permite la aplicación de teoremas de selección medible, teoremas de
+  convergencia, y garantiza regularidad de medidas.
+\end{itemize}
+
+\end{definition}
+
+\begin{definition}[]\protect\hypertarget{def-med_alea_poisson}{}\label{def-med_alea_poisson}
+
+\(N(dt,dz)\): medida aleatoria de Poisson en \(\mathbb{R}_+ \times Z\),
+donde \(Z\) es un espacio de Lusin(Definición~\ref{def-Espacio_Lusin})
+(e.g., \(\mathbb{R}^d \setminus \{0\}\)), con medida de intensidad
+\(\nu(dz)dt\), y \(\nu\) es una medida de Lévy, i.e.,
+\[\int_Z (1 \wedge |z|^2)\,\nu(dz) < \infty.\]
+\(\tilde{N}(dt,dz) = N(dt,dz) - \nu(dz)dt\): medida de Poisson
+compensada. Se asume que \(W\) y \(N\) son independientes entre sí y de
+\(\mathcal{F}_0\)
+
+\end{definition}
+
+\begin{definition}[]\protect\hypertarget{def-1}{}\label{def-1}
+
+(Conjunto de tiempos de salto \(D_p(\omega)\)). Para cada realización
+\(\omega \in \Omega\), se define el conjunto de tiempos de salto como:
+\[D_p(\omega) := \left\{ t > 0 : p(t, \omega) \in Z \right\}.\] Este
+conjunto recoge todos los instantes \(t > 0\) en los cuales el proceso
+puntual \(p\) registra un salto con marca en el espacio de estados
+\(Z\).
+
+\end{definition}
+
+\begin{theorem}[]\protect\hypertarget{thm-orto_mo_corre}{}\label{thm-orto_mo_corre}
+
+Sean \(A, B \in \mathcal{B}([0,T]) \otimes \mathcal{B}(Z)\) con
+\(A \cap B = \emptyset\). Entonces
+\[\mathbb{E}\big[ \widetilde{N}(A) \, \widetilde{N}(B) \big] = 0.\]
+
+\end{theorem}
+
+\begin{proof}
+Por definición de la medida compensada,
+\[\widetilde{N}(A) = N(A) - \mu(A), \quad \widetilde{N}(B) = N(B) - \mu(B),\]
+donde \(\mu = ds \otimes \nu\). Como \(A \cap B = \emptyset\), los
+incrementos \(N(A)\) y \(N(B)\) son independientes (propiedad de la
+medida de Poisson). Luego,
+\[\mathbb{E}[N(A) N(B)] = \mathbb{E}[N(A)] \, \mathbb{E}[N(B)] = \mu(A) \mu(B).\]
+Por lo tanto,
+\[\mathbb{E}[\widetilde{N}(A) \widetilde{N}(B)] = \mathbb{E}[N(A)N(B)] - \mu(A)\mu(B) - \mu(B)\mathbb{E}[N(A)] + \mu(A)\mu(B) = 0.\]
+\end{proof}
+
+\begin{theorem}[]\protect\hypertarget{thm-Fubinni_esperanzas}{}\label{thm-Fubinni_esperanzas}
+
+Sea \(f : \Omega \times [0,T] \times Z \to \mathbb{R}\) una función
+\(\mathbb{P} \otimes ds \otimes \nu\)-medible. Si \(f \geq 0\) ,o
+\(\mathbb{E}\!\left[ \int_0^T \int_Z |f(\omega,s,z)| \, \nu(dz) ds \right] < \infty\),
+entonces
+\[\mathbb{E}\!\left[ \int_0^T \int_Z f(\omega,s,z) \, \nu(dz) ds \right] = \int_0^T \int_Z \mathbb{E}[f(\cdot,s,z)] \, \nu(dz) ds.\]
+
+\end{theorem}
+
+\begin{proof}
+Es una consecuencia directa del Teorema de Fubini para espacios de
+medida producto. Como \(\mathbb{P}, \ ds\) y \(\nu\) son
+\(\sigma\)-finitas, la medida producto
+\(\mathbb{P} \otimes ds \otimes \nu\) es \(\sigma\)-finita, y el
+resultado se aplica.
+\end{proof}
+
+En la Isometría de Itô, el Teorema~\ref{thm-Fubinni_esperanzas} permite
+escribir
+\[\mathbb{E}\left[ \int_0^t \int_Z R(s,z)^2 \, \nu(dz) ds \right] = \int_0^t \int_Z \mathbb{E}[R(s,z)^2] \, \nu(dz) ds,\]
+lo cual facilita el análisis y la comparación con la varianza de la
+integral estocástica. También justifica que la norma en
+\(L^2_{\text{pred}}(\widetilde{N})\) está bien definida.
+
+\section{Espacios Funcionales para Procesos
+Predecibles.}\label{sec-proc_predecibles}
+
+Definición del espacio \(L^2_{\text{pred}}(\widetilde{N})\) y su norma
+
+\begin{theorem}[]\protect\hypertarget{thm-den_esp_pro_simp_prede_L2}{}\label{thm-den_esp_pro_simp_prede_L2}
+
+El conjunto \(\mathcal{E}\) de procesos elementales simples predecibles
+es denso en el espacio de Hilbert
+
+\[L^2_{\text{pred}}(\widetilde{N}) := \left\{ R : \mathbb{E}\!\left[ \int_0^T \int_Z R(s,z)^2 \, \nu(dz) ds \right] < \infty \right\}\]
+dotado de la norma
+\[\|R\| := \left( \mathbb{E}\!\left[ \int_0^T \int_Z R(s,z)^2 \, \nu(dz) ds \right] \right)^{1/2}.\]
+
+\end{theorem}
+
+\begin{proof}
+Sea \(R \in L^2_{\text{pred}}(\widetilde{N})\). Por el resultado
+anterior, existe una sucesión de funciones simples \(\phi_n\) (no
+necesariamente predecibles) tal que \(\|\phi_n - R\| \to 0\). Cada
+\(\phi_n\) es
+\(\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z)\)-medible.
+Dado que la \(\sigma\)-álgebra predecible \(\mathcal{P}\) es generada
+por procesos adaptados y càglàd, y la filtración satisface las
+condiciones usuales, el espacio
+\(L^2(\mathcal{P} \otimes \mathcal{B}(Z))\) es un subespacio cerrado de
+\(L^2(\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z))\).
+Existe, por tanto, una proyección ortogonal de \(\phi_n\) sobre este
+subespacio, sin embargo, basta observar que cualquier función simple
+puede aproximarse por funciones simples
+\(\mathcal{P} \otimes \mathcal{B}(Z)\)-medibles
+\autocite{applebaum2009levy} Más explícitamente, uno puede refinar la
+partición de \([0,T]\) y usar funciones constantes en intervalos
+\((t_{i-1}, t_i]\) con coeficientes \(\mathcal{F}_{t_{i-1}}\)-medibles.
+Esto define una sucesión \(\{R_n\} \subset \mathcal{E}\) tal que
+\(\|R_n - R\| \to 0.\)
+\end{proof}
+
+\section{La Integral de Itô para Movimiento Browniano.}\label{sec-Ito}
+
+\begin{definition}[]\protect\hypertarget{def-procesp_Simple}{}\label{def-procesp_Simple}
+
+Sea \(0 = t_0 < t_1 < \cdots < t_n = T\) una partición finita de
+\([0,T]\). Un proceso simple es un proceso de la forma
+\[X_t(\omega) = \sum_{k=0}^{n-1} X^{(k)}(\omega) \, \mathbf{1}_{[t_k, t_{k+1})}(t),\]
+donde cada \(X^{(k)}\) es una variable aleatoria
+\(\mathcal{F}_{t_k}\)-medible y cuadrado integrable.
+
+\end{definition}
+
+Denotaremos por \(\mathcal{H}_{\text{simple}}\) al espacio de todos los
+procesos simples
+
+\begin{definition}[]\protect\hypertarget{def-int_ito_proc_simples}{}\label{def-int_ito_proc_simples}
+
+Sea \(X\) un proceso simple. La integral estocástica de Itô de \(X\)
+respecto a \(\{B_t\}\) se define como
+\[\int_0^T X_s \, dB_s := \sum_{k=0}^{n-1} X^{(k)} \bigl( B_{t_{k+1}} - B_{t_k} \bigr).\]
+
+\end{definition}
+
+\begin{theorem}[]\protect\hypertarget{thm-isometria_ito_proc_simples}{}\label{thm-isometria_ito_proc_simples}
+
+(Isometría de Itô para procesos simples). Para todo
+\(X \in \mathcal{H}_{\text{simple}}\) se cumple
+\[\mathbb{E} \left[ \left( \int_0^T X_s \, dB_s \right)^2 \right] = \mathbb{E} \left[ \int_0^T X_s^2 \, ds \right].\]
+
+\end{theorem}
+
+Espacios \(H^2\) y \(L^2(\mathbb{P} \otimes \lambda)\).
+
+\subsection{\texorpdfstring{Extensión a \(\mathcal{H}^2\) por
+densidad.}{Extensión a \textbackslash mathcal\{H\}\^{}2 por densidad.}}\label{extensiuxf3n-a-mathcalh2-por-densidad.}
+
+Dado que \(\mathcal{H}_{\text{simple}}\) es denso en \(\mathcal{H}^2\),
+para cualquier \(X \in \mathcal{H}^2\) existe una sucesión
+\(\{X^{(n)}\} \subset \mathcal{H}_{\text{simple}}\) tal que
+\[\|X^{(n)} - X\|_{L^2(\mathbb{P} \times dt)} \xrightarrow[n \to \infty]{} 0.\]
+La Isometría de Itô implica que \(\{I(X^{(n)})\}\) es una sucesión de
+Cauchy en \(L^2(\mathbb{P})\), y por la completitud de este espacio,
+converge en media cuadrática.
+
+\begin{definition}[]\protect\hypertarget{def-integral_ito_H2}{}\label{def-integral_ito_H2}
+
+Sea \(X \in \mathcal{H}^2\) y
+\(\{X^{(n)}\} \subset \mathcal{H}_{\text{simple}}\) tal que
+\(X^{(n)} \to X\) en \(L^2(\mathbb{P} \times dt)\). Se define
+\[\int_0^T X_s \, dB_s := \lim_{n \to \infty} \int_0^T X^{(n)}_s \, dB_s,\]
+donde el límite se entiende en \(L^2(\mathbb{P})\). Esta definición es
+independiente de la sucesión aproximante.
+
+\end{definition}
+
+\begin{theorem}[]\protect\hypertarget{thm-isometria_ito_H2}{}\label{thm-isometria_ito_H2}
+
+Para todo \(X \in \mathcal{H}^2\) se cumple
+\[ \mathbb{E} \left[ \left( \int_0^T X_s \, dB_s \right)^2 \right] = \mathbb{E} \left[ \int_0^T X_s^2 \, ds \right].\]
+Además, \[ \mathbb{E} \left[ \int_0^T X_s \, dB_s \right] = 0.\]
+
+\end{theorem}
+
+\subsection{Integral como proceso y
+propiedades}\label{integral-como-proceso-y-propiedades}
+
+Para cada \(t \in [0,T]\), definimos el proceso integral
+\[I_t(X) := \int_0^t X_s \, dB_s := \int_0^T X_s \mathbf{1}_{[0,t]}(s) \, dB_s.\]
+Este proceso admite una versión continua y constituye una martingala
+respecto a \(\{\mathcal{F}_t\}\).La integral de Itô satisface las
+siguientes propiedades
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\item
+  Linealidad: Para \(X, Y \in \mathcal{H}^2\) y
+  \(\alpha, \beta \in \mathbb{R}\),
+  \[ \int_0^T (\alpha X_s + \beta Y_s) \, dB_s = \alpha \int_0^T X_s \, dB_s + \beta \int_0^T Y_s \, dB_s.\]
+\item
+  Martingala: El proceso \(\{I_t(X)\}_{0 \leq t \leq T}\) es una
+  martingala en \(L^2(\mathbb{P})\).
+\item
+  Versión continua: Existe una versión de \(\{I_t(X)\}\) con
+  trayectorias continuas.
+\end{enumerate}
+
+\subsection{Extensión por
+localización}\label{extensiuxf3n-por-localizaciuxf3n}
+
+Denotamos por \(\mathcal{L}^2_{\mathrm{loc}}\) al espacio de procesos
+medibles y adaptados tales que\}
+\[ \mathbb{P}\left( \int_0^T X_s^2 \, ds < \infty \right) = 1.\] Para
+\(X \in \mathcal{L}^2_{\mathrm{loc}}\), existen tiempos de paro
+\(\{\tau_n\}\) con \(\tau_n \uparrow T\) c.s. tales que
+\(X \mathbf{1}_{[0,\tau_n]} \in \mathcal{H}^2\). Se define entonces
+\[\int_0^t X_s \, dB_s := \lim_{n \to \infty} \int_0^t X_s \mathbf{1}_{\{s \leq \tau_n\}} \, dB_s,\]
+donde el límite es en probabilidad. En este caso, la integral es una
+martingala local, pero la Isometría de Itô ya no se satisface en
+general.
+
+\section{La Integral de Itô para la Parte de
+Saltos.}\label{la-integral-de-ituxf4-para-la-parte-de-saltos.}
+
+\begin{theorem}[]\protect\hypertarget{thm-Iso_Ito_saltos}{}\label{thm-Iso_Ito_saltos}
+
+Sea \(R = R(t,z,\omega)\) un proceso previsible tal que
+\[\mathbb{E}\left[ \int_0^T \int_Z R(s,z)^2 \nu(dz) ds \right] < \infty.\]
+Entonces
+\[\mathbb{E}\left[ \left( \int_0^t \int_Z R(s,z) \widetilde{N}(ds,dz) \right)^2 \right] = \mathbb{E}\left[ \int_0^t \int_Z R(s,z)^2 \nu(dz) ds \right].\]
+
+\end{theorem}
+
+\begin{proof}
+Consideramos el caso en que \(R\) es un proceso elemental simple de la
+forma
+\[R(s,z,\omega) = \sum_{i=1}^{n} \sum_{j=1}^{m} a_{ij} \mathbf{1}_{(t_{i-1}, t_i]}(s) \mathbf{1}_{A_j}(z),\]
+con \(a_{ij} \in \mathbb{R}, \mathcal{F}_{t_{i-1}}\text{-medible}\), y
+\(A_j \subset Z\) medibles disjuntos con \(nu(A_j) < \infty\). En este
+caso, la integral estocástica es
+\[I_t = \sum_{i=1}^{n} \sum_{j=1}^{m} a_{ij} \left[ N((t_{i-1} \wedge t, t_i \wedge t] \times A_j) - \nu(A_j)(t_i \wedge t - t_{i-1} \wedge t) \right].\]
+Dado que los incrementos de \(\widetilde{N}\) sobre rectángulos
+disjuntos son no correlacionados y
+\(\mathrm{Var}(N((a,b] \times A)) = \nu(A)(b-a)\), se tiene
+\[\mathbb{E}[I_t^2] = \sum_{i=1}^{n} \sum_{j=1}^{m} a_{ij}^2 \nu(A_j)(t_i \wedge t - t_{i-1} \wedge t) = \mathbb{E}\left[ \int_0^t \int_Z R(s,z)^2 \, \nu(dz) \, ds \right].\]
+Ahora para el caso general, sea \(R\) un proceso predecible en
+\(L^2_{\text{pred}}(\widetilde{N})\). Existe una sucesión de procesos
+elementales simples \(\{R_n\}\) tal que
+\[\lim_{n\to\infty} \mathbb{E}\left[ \int_0^T \int_Z |R_n(s,z) - R(s,z)|^2 \, \nu(dz) \, ds \right] = 0.\]
+Definiendo \(I_t^n = \int_0^t \int_Z R_n(s,z) \, \widetilde{N}(ds,dz)\),
+\(I_t = \int_0^t \int_Z R(s,z) \, \widetilde{N}(ds,dz)\) se tiene
+\(I_t^n \to I_t\) en \(L^2(\Omega)\) uniformemente en \(t\in[0,T]\). Por
+continuidad de la norma \(L^2\) y el caso anterior para un proceso
+elemental simple,
+\[\mathbb{E}[(I_t^n)^2] = \mathbb{E}\left[ \int_0^t \int_Z R_n(s,z)^2 \, \nu(dz) \, ds \right] \to \mathbb{E}\left[ \int_0^t \int_Z R(s,z)^2 \, \nu(dz) \, ds \right],\]
+y también \(\mathbb{E}[(I_t^n)^2] \to \mathbb{E}[I_t^2]\). Por unicidad
+del límite, se concluye la igualdad.
+\end{proof}
+
+\section{Fórmula de Itô}\label{fuxf3rmula-de-ituxf4}
+
+\begin{theorem}[]\protect\hypertarget{thm-Formula_ito_unidimen}{}\label{thm-Formula_ito_unidimen}
+
+(Fórmula de Itô unidimencional). Sea \(f \in C^2(\mathbb{R})\) y
+\(\{B_t\}_{t \geq 0}\) un movimiento Browniano. Entonces, para todo
+\(t \geq 0\),
+\[f(B_t) = f(B_0) + \int_0^t f'(B_s) \, dB_s + \frac{1}{2} \int_0^t f''(B_s) \, ds.\]
+En notación diferencial:
+\[df(B_t) = f'(B_t) \, dB_t + \frac{1}{2} f''(B_t) dt.\]
+
+\end{theorem}
+
+\begin{proof}
+Ver \textcite{castaneda2012introduction} Teorema 11.9
+\end{proof}
+
+\begin{theorem}[]\protect\hypertarget{thm-Formula_ito_general}{}\label{thm-Formula_ito_general}
+
+Sea \(\{X_t\}_{0 \leq t \leq T}\) un proceso de Itô que satisface
+\[dX_t = b(t, X_t) \, dt + \sigma(t, X_t) \, dB_t,\] con \(b, \sigma\)
+medibles y tales que las integrales están bien definidas. Sea
+\(f \in C^{1,2}([0,T] \times \mathbb{R})\). Entonces el proceso
+\(Y_t = f(t, X_t)\) satisface
+\[dY_t = \left( \frac{\partial f}{\partial t} + b \frac{\partial f}{\partial x} + \frac{1}{2} \sigma^2 \frac{\partial^2 f}{\partial x^2} \right)(t, X_t) \, dt + \sigma(t, X_t) \frac{\partial f}{\partial x}(t, X_t) \, dB_t.\]
+
+\end{theorem}
+
+Esta fórmula se deriva formalmente usando la tabla de multiplicación de
+Itô: \[(dt)^2 = 0, \quad dt\,dB_t = 0, \quad (dB_t)^2 = dt.\]
+
+\begin{theorem}[]\protect\hypertarget{thm-Iso_Ito_continua}{}\label{thm-Iso_Ito_continua}
+
+Sea \(\sigma = \{\sigma_t\}\) un proceso progresivamente medible con
+\(\mathbb{E}[\int_0^T \sigma_s^2 ds] < \infty\). Entonces,
+\[\mathbb{E}\left[ \left( \int_0^t \sigma_s dW_s \right)^2 \right] = \mathbb{E}\left[ \int_0^t \sigma_s^2 ds \right], \quad \forall t \in [0,T].\]
+
+\end{theorem}
+
+\begin{proof}
+Ver \textcite{karatzas1991brownian} Teorema 3.2.1.
+\end{proof}
+
+\section{Variación Cuadrática y Desigualdades de
+Martingalas}\label{variaciuxf3n-cuadruxe1tica-y-desigualdades-de-martingalas}
+
+\begin{definition}[]\protect\hypertarget{def-variacion_cuadratica}{}\label{def-variacion_cuadratica}
+
+Sean \(M = \{M_t\}_{t \geq 0}\) una martingala local continua (como se
+asume en la desigualdad Burkholder-Davis-Gundy). La variación cuadrática
+se denota \([M]_t\) y se define como el límite en probabilidad de sumas
+de cuadrados de incrementos sobre particiones que se refinan
+\[[M]_t = \lim_{|\Pi| \to 0} \sum_{i} (M_{t_{i+1}} - M_{t_i})^2,\] donde
+\(\Pi = \{0 = t_0 < t_1 < \cdots < t_n = t\}\). Cuando \(M\) es una
+martingala local continua, se tiene que \([M]\) es un proceso continuo,
+creciente y adaptado, pero no necesariamente previsible. La variación
+cuadrática previsible, denotada \(\langle M \rangle\), es el único
+proceso creciente, continuo y previsible tal que
+\[M_t^2 - \langle M \rangle_{t}\] es una martingala local.
+
+\end{definition}
+
+\begin{theorem}[]\protect\hypertarget{thm-des_martingalas_espacios_hilbert}{}\label{thm-des_martingalas_espacios_hilbert}
+
+Sea \(M = \{M_t\}_{t \geq 0}\) una martingala continua en un espacio de
+Hilbert separable \(H\), tal que \(M \in \mathcal{M}_c^2(H)\), es decir,
+\(M_0 = 0\) casi seguramente y \(\mathbb{E}[\|M_T\|^2] < \infty\) para
+todo \(T > 0\). Entonces, para todo \(T > 0\), se cumple la desigualdad
+\[\mathbb{E}\left[ \sup_{0 \leq t \leq T} \|M_t\| \right] \leq 3 \, \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right].\]
+
+\end{theorem}
+
+\begin{proof}
+Para cada \(c > 0\), definimos el tiempo de paro
+\[T_c := \inf \left\{ t \geq 0 : \langle M \rangle_t \geq c^2 \right\}.\]
+Como \(\langle M \rangle_t\) es un proceso creciente y continuo, \(T_c\)
+es un tiempo de paro válido. Consideremos el proceso
+\(\|M_{t \wedge T \wedge T_c}|^2\). Dado que \(M\) es una martingala
+continua, \(\|M_t\|^2\) es una submartingala no negativa. Por lo tanto,
+\(\|M_{t \wedge T \wedge T_c}|^2\) también lo es. Aplicando la
+desigualdad de Doob para submartingalas reales no negativas, se tiene
+\[\mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right) \leq \frac{1}{c^2} \, \mathbb{E}\left[ \|M_{T \wedge T_c}\|^2 \right].\]
+Por la propiedad de la variación cuadrática,
+\(\mathbb{E}[\|M_t\|^2] = \mathbb{E}[\langle M \rangle_t]\), y por la
+definición de \(T_c\),
+\(\mathbb{E}[\|M_{T \wedge T_c}\|^2] = \mathbb{E}[\langle M \rangle_{T \wedge T_c}] \leq \mathbb{E}[c^2 \wedge \langle M \rangle_T]\).
+Por lo tanto
+\[\mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right) \leq \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right].\]
+Además, se puede escribir
+\[\left\{ \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right\} \subseteq \left\{ T_c < T \right\} \cup \left\{ \sup_{0 \leq t \leq T \wedge T_c} \|M_t\|^2 \geq c^2 \right\},\]
+lo que implica
+\[\mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right) \leq \mathbb{P}\left( \langle M \rangle_T \geq c^2 \right) + \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right].\]
+Ahora, usando la representación del valor esperado como integral de la
+función de distribución
+\[ \mathbb{E}\left[ \sup_{0 \leq t \leq T} \|M_t\| \right] = \int_0^\infty \mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\| \geq c \right) \, dc = \int_0^\infty \mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right) \, dc.\]
+Sustituyendo la desigualdad anterior
+\[\mathbb{E}\left[ \sup_{0 \leq t \leq T} \|M_t\| \right] \leq \int_0^\infty \left[ \mathbb{P}\left( \langle M \rangle_T \geq c^2 \right) + \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right] \right] \, dc.\]
+Calculamos las dos integrales por separado. Primero
+\[\int_0^\infty \mathbb{P}\left( \langle M \rangle_T \geq c^2 \right) \, dc = \int_0^\infty \mathbb{P}\left( \langle M \rangle_T^{1/2} \geq c \right) \, dc = \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right].\]
+Después
+\[ \int_0^\infty \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right] \, dc = \mathbb{E}\left[ \int_0^\infty \frac{1}{c^2} (c^2 \wedge \langle M \rangle_T) \, dc \right].\]
+Para un valor fijo \(x = \langle M \rangle_T\), la integral interna es
+\[ \int_0^\infty \frac{1}{c^2} (c^2 \wedge x) \, dc = \int_0^{\sqrt{x}} 1 \, dc + x \int_{\sqrt{x}}^\infty \frac{1}{c^2} \, dc = \sqrt{x} + \sqrt{x} = 2 \sqrt{x}.\]
+Por lo tanto
+\[\int_0^\infty \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right] \, dc = \mathbb{E}\left[ 2 \langle M \rangle_T^{1/2} \right].\]
+Sumando ambos términos
+\[\mathbb{E}\left[ \sup_{0 \leq t \leq T} \|M_t\| \right] \leq \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right] + 2 \, \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right] = 3 \, \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right]\]
+Esto concluye la demostración.
+\end{proof}
+
+\begin{theorem}[]\protect\hypertarget{thm-Desigualdad_Burkholder_Davis_Gundy}{}\label{thm-Desigualdad_Burkholder_Davis_Gundy}
+
+Sea \(M = \{M_t\}_{t \geq 0}\) una martingala local continua en
+\(L^2(\mathbb{P})\), y sea \(\tau\) un tiempo de paro respecto a la
+filtración \(\{\mathcal{F}_t\}\). Entonces, para cualquier
+\(m \geq \tfrac{1}{2}\), se cumplen las siguientes desigualdades:
+
+(a). Para \(m \geq \tfrac{1}{2}\),
+\[ \mathbb{E}\left[ \sup_{0 \leq t \leq \tau} |M_t|^{2m} \right] \leq B_m \, \mathbb{E}\left[ \langle M \rangle_\tau^m \right],\]
+donde \[ B_m =
+        \begin{cases}
+            3, & \text{si } m = \tfrac{1}{2}, \\
+            \bigl[ q^{2m} m (2m - 1) \bigr]^m, & \text{si } m > \tfrac{1}{2},\ \text{con } \frac{1}{2m} + \frac{1}{q} = 1.
+        \end{cases}\]
+
+(b). Para \(m > \tfrac{1}{2}\),
+\[\mathbb{E}\left[ \sup_{0 \leq t \leq \tau} |M_t|^{2m} \right] \geq C_m \, \mathbb{E}\left[ \langle M \rangle_\tau^m \right],\]
+donde \[C_m =
+        \begin{cases}
+            \varepsilon^m \left[ \dfrac{(1+\varepsilon)2^{1-m}}{2m-1} - 1 \right]^{-1}, & \text{si } \tfrac{1}{2} < m \leq 1,\ \varepsilon > 0, \\
+            \varepsilon^{m-1} \left( \dfrac{1-\varepsilon}{2^{m-1}} - \varepsilon \right), & \text{si } m > 1,\ \varepsilon \in \left(0, \dfrac{1}{2^{m-1}-1} \right).
+        \end{cases}\]
+
+\end{theorem}
+
+\begin{proof}
+Sin pérdida de generalidad, podemos suponer que tanto \(M\) como su
+variación cuadrática previsible \(\langle M \rangle\) son procesos
+acotados. Esto se justifica mediante un argumento de localización:
+existe una sucesión creciente de tiempos de paro \(\{\tau_n\}\) tal que
+\(\tau_n \uparrow \infty\) c.s. y los procesos detenidos \(M^{\tau_n}\)
+y \(\langle M \rangle^{\tau_n}\) son acotados. Las desigualdades se
+obtienen para cada \(n\) y luego se extienden al caso general mediante
+el teorema de convergencia monótona(Teorema~\ref{thm-con_monotona}).
+
+El caso \(m = \tfrac{1}{2}\) se deduce directamente del Teorema 2.5.17
+de \autocite{tudor2022procesos} que establece
+\[\mathbb{E}\left[ \sup_{0 \leq t \leq \tau} |M_t| \right] \leq 3 \, \mathbb{E}\left[ \langle M \rangle_\tau^{1/2} \right].\]
+Ahora asumimos \(m > \tfrac{1}{2}\) y que \(M\), \(\langle M \rangle\)
+son acotados. Denotemos
+\[ M_t^* := \sup_{0 \leq s \leq t} |M_s|, \quad Y_t := \delta + \varepsilon \langle M \rangle_t + M_t^2,\]
+donde \(\delta > 0\) y \(\varepsilon \geq 0\) son constantes a elegir
+posteriormente. Obsérvese que \(Y_t > 0\) y es continuo. Aplicamos la
+fórmula de Itô a la función \(f(x) = x^m\), \(x > 0\)
+\[Y_t^m = \delta^m + m \int_0^t Y_s^{m-1} \, dY_s + \frac{m(m-1)}{2} \int_0^t Y_s^{m-2} \, d\langle Y \rangle_s.\]
+Como
+\(dY_s = (\varepsilon + 1) \, d\langle M \rangle_s + 2 M_s \, dM_s\) y
+\(d\langle Y \rangle_s = 4 M_s^2 \, d\langle M \rangle_s\), sustituimos
+y obtenemos \[\begin{aligned}
+Y_t^m = &\ \delta^m 
++ m(1+\varepsilon) \int_0^t Y_s^{m-1} \, d\langle M \rangle_s 
++ 2m \int_0^t Y_s^{m-1} M_s \, dM_s \\
+&+ 2m(m-1) \int_0^t Y_s^{m-2} M_s^2 \, d\langle M \rangle_s.
+\end{aligned}\] Al tomar esperanza matemática, el término de la integral
+estocástica desaparece (es una martingala de media cero por acotación),
+y obtenemos
+\[\mathbb{E}[Y_t^m] = \delta^m + m(1+\varepsilon) \, \mathbb{E}\!\left[ \int_0^t Y_s^{m-1} \, d\langle M \rangle_s \right] + 2m(m-1) \, \mathbb{E}\!\left[ \int_0^t Y_s^{m-2} M_s^2 \, d\langle M \rangle_s \right].\]
+
+\paragraph{Cota superior (parte (a)).}
+
+Consideramos ahora la desigualdad de Doob para martingalas: para
+\(p = 2m > 1\),
+\[ \mathbb{E}[(M_t^*)^{2m}] \leq q^{2m} \, \mathbb{E}[|M_t|^{2m}], \quad \text{donde } \frac{1}{p} + \frac{1}{q} = 1.\]
+Aplicando la fórmula de Itô a \(|M_t|^{2m}\) (con segunda derivada
+\(2m(2m-1)|M_t|^{2m-2}\)) y tomando esperanza
+\[\mathbb{E}[|M_t|^{2m}] = m(2m-1) \, \mathbb{E}\!\left[ \int_0^t |M_s|^{2(m-1)} \, d\langle M \rangle_s \right].\]
+Combinando ambas expresiones y aplicando la desigualdad de Hölder, se
+obtiene
+\[ \mathbb{E}[(M_t^*)^{2m}] \leq \bigl[ q^{2m} m (2m - 1) \bigr]^m \, \mathbb{E}[\langle M \rangle_t^m].\]
+
+\paragraph{Cota inferior (parte (b)).}
+
+Retomamos la expresión de \(\mathbb{E}[Y_t^m]\). Como
+\(Y_t \geq M_t^2\), se tiene \(Y_t^m \geq |M_t|^{2m}\). Además,
+\(Y_s \geq \delta\), por lo que
+\[\mathbb{E}[|M_t|^{2m}] \geq m(1+\varepsilon) \, \mathbb{E}\!\left[ \int_0^t Y_s^{m-1} \, d\langle M \rangle_s \right].\]
+Usando la desigualdad \((x+y)^m \leq 2^{m-1}(x^m + y^m)\) para
+\(m \geq 1\), y un argumento de paso al límite \(\delta \downarrow 0\),
+se deduce
+\[\mathbb{E}[(M_t^*)^{2m}] \geq C_m \, \mathbb{E}[\langle M \rangle_t^m],\]
+con \(C_m\) como en el enunciado (obtenido mediante optimización sobre
+\(\varepsilon\)). Finalmente, al considerar \(\tau\) en lugar de \(t\),
+basta observar que \(M^\tau\) es también una martingala local continua y
+\(\langle M^\tau \rangle = \langle M \rangle^\tau\), con lo que las
+desigualdades se mantienen reemplazando \(t\) por \(\tau\). Esto
+concluye la demostración.
+\end{proof}
+
+\bookmarksetup{startatroot}
+
+\chapter{Ecuaciones diferenciales estocásticas.}\label{sec-EDESJs}
+
+\section{Formulación y Teoremas de Existencia y
+Unicidad}\label{formulaciuxf3n-y-teoremas-de-existencia-y-unicidad}
+
+\begin{definition}[]\protect\hypertarget{def-Semimartingalas_saltos}{}\label{def-Semimartingalas_saltos}
+
+Un proceso \(Y = \{Y_t\}_{t \geq 0}\) es una semimartingala si admite la
+descomposición canónica
+\[Y_t = Y_0 + Y_t^c + \sum_{s \leq t} \Delta Y_s,\] donde:
+
+\begin{itemize}
+\item
+  \(Y_0\) es \(\mathcal{F}_0\)-medible.
+\item
+  \(Y^c = (Y_t^c)_{t \geq 0}\) es decir, la parte continua de la
+  descomposición de Itô.
+\item
+  \(\Delta Y_s := Y_s - Y_{s-}\) es el salto de \(Y\) en el instante
+  \(s\); por convención, \(Y_{s-} = \lim_{r \uparrow s} Y_r\).
+\item
+  \(\sum_{s \leq t} |{\Delta Y_s}|^2 < \infty\) c.s. en compactos (
+  \textcite{protter2005stochastic} Cap. II).
+\end{itemize}
+
+\end{definition}
+
+\subsection{Teorema de existencia y unicidad global de una solución
+fuerte para la EDE con difusión y
+saltos}\label{teorema-de-existencia-y-unicidad-global-de-una-soluciuxf3n-fuerte-para-la-ede-con-difusiuxf3n-y-saltos}
+
+\begin{definition}[]\protect\hypertarget{def-Solucion_fuerte}{}\label{def-Solucion_fuerte}
+
+\(\{x_t\}_{t\geq0}\) es una solución \((\mathcal{F}_t-)\) de\\
+\begin{equation}\protect\phantomsection\label{eq-1}{\begin{split}
+x_t = x_0 &+ \int_0^t b(s,x_s,\omega)\,ds 
+           + \int_0^t \sigma(s,x_s,\omega)\,dw_s \\
+          & \ \ \ \ \ \ \ \ \ \ \ +  \int_0^t\int_Z R(s,x_{s-},z,\omega)\,\tilde{N}_t(ds,dz),
+          \qquad t\geq 0
+\end{split}}\end{equation} si y solo si \(\{x_t\}_{t\geq}0\) satisface
+la Ecuación~\ref{eq-1}. en el caso que
+\(x_t\in \mathcal{F}_t^{\omega_s}, \forall t \geq 0,\) donde
+\(\mathcal{F}_t^{\omega_s}\) es la \(\sigma\)-álgebra generada por
+\(\omega_s, s\leq t\), es una solución fuerte
+
+\end{definition}
+
+Consideramos el espacio:
+\begin{equation}\protect\phantomsection\label{eq-2}{\begin{split}
+      \small S_{\mathcal{F}}^{2,loc}(R) = \left\lbrace\begin{array}{c}f(t,\omega):f(t,\omega) \text{\ es \ } \mathcal{F}_t- \text{adaptada, de valor real, tal que}
+       \\
+     \mathbb{E} [sup_{t\in[0,T]} |f(t,\omega)|]^2 < \infty, \forall T < \infty  \end{array}\right\rbrace
+\end{split}}\end{equation}
+
+\begin{theorem}[]\protect\hypertarget{thm-exis_uni_glo_fuerte_SDE}{}\label{thm-exis_uni_glo_fuerte_SDE}
+
+( Existencia y unicidad global de una solución fuerte (condiciones de
+Lipschitz y crecimiento lineal global).). Suponga que:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \(b\) y
+  \(\sigma : [0,\infty) \times \mathbb{R} \times \Omega \to \mathbb{R}\),\(R : [0,\infty) \times \mathbb{R}\times Z \times \Omega \to \mathbb{R}\)
+  son conjuntamente medibles y \(\mathcal{F}_t\) -adaptadas, donde
+  además \(R\) es \(\mathcal{F}_t\)-predecible, tales que \(P\)-c.s.:
+  \[|b(t,x,\omega)| \leq \widetilde{c} (t)(1 + |x|),\]
+  \[|\sigma(t,x,\omega)|^2 + \int_Z |R(t,x,z,\omega)|^2 \pi(dz) \leq \widetilde{c}(t)(1 + |x|^2),\]
+\item
+  \[|b(t,x_1,\omega) - b(t,x_2,\omega)| \leq \widetilde{c}(t) |x_1 - x_2|,\]
+  \[|\sigma(t,x_1,\omega) - \sigma(t,x_2,\omega)|^2 + \int_Z |R(t,x_1,z,\omega) - R(t,x_2,z,\omega)|^2 \pi(dz) \leq \widetilde{c}(t) |x_1 - x_2|^2,\]
+  donde \(\widetilde{c}(t)\) satisface las mismas condiciones que en 1°;
+\item
+  \[x_0 \in \mathcal{F}_0, \quad E|x_0|^2 < \infty.\] Entonces la
+  Ecuación~\ref{eq-1} tiene una solución única por trayectoria,
+  \(\mathcal{F}_t\)-adaptada,
+  \(\{x_t\}_{t \geq 0} \in S_{\mathcal{F}}^{2,\text{loc}}(\mathbb{R}^d)\).
+\end{enumerate}
+
+En el caso en que \(b(t,x,\omega)\) y \(\sigma(t,x,\omega)\) sean
+\(\mathcal{F}_t^{w,\tilde{N}}\)-adaptadas, y \(R(t,x,z,\omega)\) sea
+\(\mathcal{F}_t^{w,\tilde{N}}\)-predecible, entonces la solución también
+es \(\mathcal{F}_t^{w,\tilde{N}}\)-adaptada, es decir, es una solución
+fuerte.
+
+\end{theorem}
+
+\begin{proof}
+Para algún \(T < \infty\) fijo, se define la norma:
+\[\| (x_{\cdot}) \|_M^2 = \sup_{t \in [0,T]} e^{-b_0 A(t)} \mathbb{E}[|x_t|^2],\]
+donde: - \(A(t) := \int_0^t 4\widetilde{c}(s) ds\), - \(b_0 \geq 0\) es
+una constante que se elegirá más adelante para hacer que el operador sea
+contractivo, - \(\widetilde{c}(s)\) es la función no aleatoria que
+aparece en las hipótesis \(1\) y \(2\) (crecimiento lineal y Lipschitz)
+
+Entonces, el espacio sobre el cual se aplica el principio de contracción
+es:
+\[H = \left\{ \{x_t\} \in B :B \in L_{\mathfrak{F}}^{2}(\mathbb{R}), \  \| (x_{\cdot}) \|_M < \infty \right\}.\]
+Sea \(\Phi: H \to H\) el operador definido por:
+\[(\Phi(x))_t = x_0 + \int_0^t b(s, x_s, \omega)\,ds + \int_0^t \sigma(s, x_s, \omega)\,dW_s + \int_0^t \int_Z R(s, x_{s-}, z, \omega)\,\tilde{N}(ds, dz).\]
+y sea \(X_t = x_t^{(1)} - x_t^{(2)}\), y
+\(Y_t = (\Phi(x^{(1)}))_t - (\Phi(x^{(2)}))_t\). Entonces para un
+\(\omega\) fijo
+\[Y_t = \int_0^t [b(s, x_s^{(1)}, \omega) - b(s, x_s^{(2)}, \omega)]\,ds + \int_0^t [\sigma(s, x_s^{(1)}, \omega) - \sigma(s, x_s^{(2)}, \omega)]\,dW_s\]
+\[+ \int_0^t \int_Z [R(s, x_{s-}^{(1)}, z, \omega) - R(s, x_{s-}^{(2)}, z, \omega)]\,\tilde{N}(ds, dz).\]
+Por comodidad
+\[Y_t = \int_0^t \Delta b_s\,ds + \int_0^t \Delta \sigma_s\,dW_s + \int_0^t \int_Z \Delta R_s(z)\,\tilde{N}(ds, dz),\]
+donde
+\(\Delta b_s := b(s, x_s^{(1)}) - b(s, x_s^{(2)}), \Delta \sigma_s := \sigma(s, x_s^{(1)}) - \sigma(s, x_s^{(2)}), \Delta R_s(z) := R(s, x_{s-}^{(1)}, z) - R(s, x_{s-}^{(2)}, z)\)
+Puesto que la función \(f(y) = y^2\) tiene derivadas
+\(f'(y) = 2y, \ \ f''(y) = 2\), al aplicar la fórmula de Itô para
+semimartingalas con saltos, obtenemos
+\[Y_t^2 = Y_0^2 + 2 \int_0^t Y_s \, dY_s^c + \int_0^t d\langle Y^c \rangle_s + \sum_{s \leq t} \left[ Y_s^2 - Y_{s-}^2 - 2 Y_{s-} \Delta Y_s \right],\]
+donde: - \(dY_s^c = \Delta b_s \, ds + \Delta \sigma_s \, dW_s\) es la
+parte continua, - \(d\langle Y^c \rangle_s = (\Delta \sigma_s)^2 \, ds\)
+es la variación cuadrática de la parte continua, -
+\(\Delta Y_s = \int_Z \Delta R_s(z) \, N(\{s\}, dz)\) es el tamaño del
+salto en el instante \(s\). Al reescribir a la versión integral ya
+desarrollada y aplicar la formula de itô para \(f(y) = y^2\) aplicada a
+\(Y_t\) \[|Y_t|^2 = 2 \int_0^t Y_s \, \Delta b_s \, ds 
++ 2 \int_0^t Y_s \, \Delta \sigma_s \, dW_s 
++ \int_0^t |\Delta \sigma_s|^2 \, ds
++ 2 \int_0^t \int_Z Y_s \, \Delta R_s(z) \, \tilde{N}(ds, dz)
+\] \[
++ \int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz).\] Aplicando valor
+esperado y sus propiedades \[
+\begin{aligned}
+\mathbb{E}[
+|Y_t|^2] = {}& \mathbb{E}\left[2 \int_0^t Y_s \, \Delta b_s \, ds \right]
++\mathbb{E}\left[ 2 \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right] \\
+& +\mathbb{E}\left[ \int_0^t |\Delta \sigma_s|^2 \, ds
++ 2 \int_0^t \int_Z Y_s \, \Delta R_s(s,z) \tilde{N}(ds, dz)\right]
+\end{aligned}
+\]
+\[\mathbb{E}\left[\int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz)\right]\]
+Dado que los valores esperados de las integrales respecto a \(dW_s\) y
+\(\widetilde{N}\) son martingalas, \[
+\mathbb{E}\left[ \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right] = 0,\]
+\[\mathbb{E} \left[  \int_0^t \int_Z Y_s \, \Delta R_s(z) \, \tilde{N}(ds, dz)\right]  = 0,\]
+y puesto que \(\mathbb{E}[N(ds,dz)] = \pi(dz)ds,\) se reduce a
+\[\mathbb{E}[|Y_t|^2] = \mathbb{E}\left[\int_0^t \left(2Y_s \, \Delta b(s) \, + |\Delta \sigma(s)|^2 + \int_Z |\Delta R_s(s,z)|^2 \, \pi ( dz)\right) ds\right].
+\] Nótese que para el primer término, al aplicar la desigualdad de
+Cauchy-Schwarz \(2Y_s\Delta b(s)\leq 2|Y_s||\Delta b(s)|,\) y por las
+hipótesis de Lipschitz
+
+\[|\Delta b(s) |\leq \widetilde{c}(s)|X_s|, \ \ |\Delta \sigma(s)|^2 + \int_z |\Delta R(s.z)|^2 \pi(dz) \leq \widetilde{c}(s)|X_s|^2.\]
+Además usando la desigualdad \(2ab \leq a^2 + b^2\), se tiene que
+\[2Y_s\Delta b(s) \leq 2|Y_s |\widetilde{c}(s)|X_s| \leq \widetilde{c}(s)(|Y_s|^2 + |X_s|^2),\]
+aplicando valor esperado y tomando el supremo
+\[\mathbb{E}[|{Y_t}|^2] \leq \int_0^t \widetilde{c}(s) \left( \mathbb{E}[|{Y_s}|^2] + \mathbb{E}[|{X_s}|^2] \right) ds.\]
+\begin{equation}\protect\phantomsection\label{eq-3}{\mathbb{E}\!\left[ \sup_{0 \leq r \leq t} |{Y_r}|^2 \right] \leq \int_0^t \widetilde{c}(s) \left( \mathbb{E}\!\left[ \sup_{0 \leq r \leq s} |{Y_r}|^2 \right] + \!\left[ \sup_{0 \leq r \leq s} |{X_r}|^2 \right] \right) ds.}\end{equation}
+
+Como se ha eliminado la parte estocástica al tomar el valor esperado
+anteriormente, se procederá a obtener un acotamiento determinista.
+
+Sea
+
+\[u(t) := \mathbb{E}\!\left[ \sup_{0 \leq r \leq t} |{Y_r}|^2 \right], \qquad v(t) := \mathbb{E}\!\left[ \sup_{0 \leq r \leq t} |{X_r}|^2 \right],\]
+
+entonces podemos reescribir Ecuación~\ref{eq-3} como
+
+\[u(t) \leq \int_0^t \widetilde{c}(s) \bigl( u(s) + v(s) \bigr) ds,\]
+
+aplicando la desigualdad de Gronwall
+
+\[u(t) \leq \int_0^t \widetilde{c}(s) v(s) \exp\!\left( \int_s^t \widetilde{c}(r) \, dr \right) ds.\]
+
+Multiplicamos ambos lados por \(e^{-b_0 A(t)}\), donde
+\(A(t) = \int_0^t 4\widetilde{c}(r),dr,\) entonces
+
+\[e^{-b_0 A(t)}u(t) \leq e^{-b_0 A(t)}\int_0^t \widetilde{c}(s) v(s) \exp\!\left( \int_s^t \widetilde{c}(r) \, dr \right) ds.\]
+
+Notemos que
+
+\[\int_s^t \widetilde{c}(r) \, dr = \frac{1}{4} \bigl( A(t) - A(s) \bigr),\]
+
+y por lo tanto,
+
+\begin{align*}e^{-b_0 A(t)} u(t)&\leq \int_0^t \widetilde{c}(s)v(s)\exp\!\left( \frac{1}{4}\bigl( A(t) - A(s) \bigr) -b_0 A(t)\right) ds \\  & = \int_0^t \widetilde{c}(s)v(s)exp\left(-\left(b_0-\frac{1}{4}\right)A(t) - \frac{1}{4}A(s)\right)ds.\end{align*}
+
+Como \(v(s) \leq e^{b_0A(s)}\|{X}\|_M^2\), se tiene
+
+\begin{align*}e^{-b_0 A(t)} u(t)&\leq \|{X}\|_M^2  \int_0^t \widetilde{c}(s)exp\left(-\left(b_0-\frac{1}{4}\right)A(t) - \frac{1}{4}A(s)\right)ds\end{align*}
+
+simplificando lo que esta dentro de la exponencial
+
+\[\left(-\left(b_0-\frac{1}{4}\right)A(t) - \frac{1}{4}A(s)\right) = \left(b_0-\frac{1}{4}\right)(A(s) -A(t)),\]
+
+se reduce a \begin{align*}
+e^{-b_0 A(t)} u(t)
+&\leq \|{X}\|_M^2  \int_0^t \widetilde{c}(s)exp \left(\left(b_0-\frac{1}{4}\right)(A(s) -A(t))\right) ds.
+\end{align*} Dado que \(A(s)-A(t)\leq 0\), el término exponencial es
+menor que uno si \(b_0\geq\frac{1}{4}.\) Por lo que haciendo un cambio
+de variable \(U = A(s)\), \(dU=\widetilde{c}(s)ds,\) y
+\(A(t)= \int_0^t \widetilde{c}(s)ds\) \begin{align*}
+\int_0^t \widetilde{c}(s) exp\left(\left(b_0 - \frac{1}{4}\right)(A(s(-A(t))))\right)ds & = \int_0^{A(t)}exp\left(\left( b_0 - \frac{1}{4}\right)(U-A(t))\right)dU\\
+& = exp\left(-\left( b_0 - \frac{1}{4}\right)A(t)\right)\int_0^{A(t)}exp\left(\left( b_0 - \frac{1}{4}\right)U\right)dU,
+\end{align*} Si \(b_0>\frac{1}4{}\)
+
+\[\int_0^{A(t)}exp\left(\left( b_0 - \frac{1}{4}\right)U\right)dU = \frac{1}{b_0 - \frac{1}{4}}\left[exp\left(\left(b_0-\frac{1}{4}\right)A(t)\right)-1\right],\]
+entonces
+\[e^{-b_0A(t)} u(t) \leq \|{X}\|_M^2 \frac{1}{b_0-\frac{1}{4}}\left[1-exp\left(-\left(b_0-\frac{1}{4}\right)A(t)\right)\right]\leq\|{X}\|_M^2\frac{1}{b_0-\frac{1}{4}},\]
+por lo tanto
+\[\|{Y}\|_M^2 = \sup_{t\in[0,T]}e^{-b_0A(t)}u(t)\leq\frac{1}{b_0-\frac{1}{4}} \|{X}\|_M^2.\]
+Elegimos apropiadamente a \(b_0>\frac{5}{4}\), para que
+\(\frac{1}{b_0-\frac{1}{4}}<1\), en consecuencia \(\Phi\) es
+contractivo. Por el principio de contracción de Banach, \(\Phi\)tiene un
+único punto fijo en \(H\) , que es la solución única de la SDE.
+
+Ahora se demostrará que la solución es única por trayectoria. Sea
+\(x^{\prime}_{t}\), una versión
+RCLL(Definición~\ref{def-Proceso_cadlag}) del proceso \(x_t\) que es
+solución de Ecuación~\ref{eq-1}, es decir para cada \(t \in [0,T]\),
+\(P(x^{\prime}_{t} \neq x_t) = 0\), \(x^{\prime}_{t}\) es solución de
+Ecuación~\ref{eq-1} y es un proceso continuo por la derecha y con limite
+por la izquierda en \(t.\)
+
+Denotemos \(x^{\prime\prime}_{t}\) y \(y_t\) como \begin{align*}
+x^{\prime\prime}_t = x_0 &+ \int_0^t b(s,x_s,\omega)\,ds 
+           + \int_0^t \sigma(s,x_s,\omega)\,dw_s \\
+          & \ \ \ \ \ \ \ \ \ \ \ +  \int_0^t\!\int_Z R(s,x_{s-},z,\omega)\,\tilde{N}_t(ds,dz),
+          \qquad t\ \in [0,T]
+\end{align*} \begin{align*}
+y_t = x_0 &+ \int_0^t b(s,x^{\prime}_s,\omega)\,ds 
+           + \int_0^t \sigma(s,x^{\prime}_s,\omega)\,dw_s \\
+          & \ \ \ \ \ \ \ \ \ \ \ +  \int_0^t\!\int_Z R(s,x^{\prime}_{s-},z,\omega)\,\tilde{N}_t(ds,dz),
+          \qquad t\in [0,T].
+\end{align*} Dado que \(x^{\prime}\) es una versión RCLL de un proceso
+adaptado, por el teorema (\emph{)} \(x^{\prime}\) es adaptado.
+\textbackslash{} Puesto que \(x_t \in L^2(\Omega \times [0,T])\) y
+ademas ambos procesos son medibles como funciones
+\((t,\omega) \mapsto x_t(\omega)\) con respecto a la \(\sigma-\)álgebra
+producto \(\mathcal{B}([0,T])\bigotimes\mathcal{F}.\) Entonces para cada
+\(t\), \(|x^{\prime}_t - x_t|^2 =0\) casi seguramente, es decir
+\[\mathbb{E}[|x^{\prime}_t - x_t|^2] = 0, \quad \text{para todo } t \in [0,T]. \]
+Ahora, bajo la suposición de medibilidad conjunta (que se cumple si, por
+ejemplo, los procesos son progresivamente medibles, lo cual es cierto
+para soluciones de SDEs con coeficientes medibles), podemos aplicar el
+(teorema de Fubini),
+\begin{equation}\protect\phantomsection\label{eq-4}{\mathbb{E}[\int_0^T|x^{\prime}_t - x_t|^2dt] = \int_0^T\mathbb{E}[|x^{\prime}_t - x_t|^2]dt =0.}\end{equation}
+Consideremos el conjunto donde los procesos no coinciden
+\[N := \{(t,\omega) \in [0,T]\times \Omega : x^{\prime}_t(\omega)\neq x_t(\omega)\},\]
+este conjunto es medible en \(\mathcal{B}([0,T])\bigotimes\mathcal{F}\)
+ya que \(x^{\prime}_t(\omega) - x_t(\omega)\) es una función medible y
+además es equivalente a
+\(N = \{(t,\omega) : |x^{\prime}_t(\omega)- x_t(\omega)|^2>0\}.\)
+
+De la Ecuación~\ref{eq-4} se sigue que
+\begin{equation}\protect\phantomsection\label{eq-5}{(dt\bigotimes\mathbb{P})(N) = \int_0^T \mathbb{P}(x^{\prime}_t\neq x_t)dt = \mathbb{E} \left[\int_0^T 1_N(t,\omega)dt\right]= 0.}\end{equation}
+
+Como \(N\) tiene medida cero se puede decir que \(x^\prime_t = x_t\)
+para \((dt\bigotimes\mathbb{P})\)- casi todo \((t,\omega)\).
+
+Ahora, consideremos el conjunto denso \(D:=\mathbb{Q}\cap[0,T]\) .
+Definimos el evento \[
+\Omega_0 := \bigcap_{t \in D} \left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \right\}.
+\] Dado que \(D\) es numerable y \(\mathbb{P}(x_t = x'_t) = 1\) para
+cada \(t \in D\), se tiene \(\mathbb{P}(\Omega_0) = 1\). Fijemos
+\(\omega \in \Omega_0\), como ambas trayectorias
+\(t \mapsto x_t(\omega)\) y \(t \mapsto x'_t(\omega)\) son RCLL
+(continuas por la derecha con límites por la izquierda) y coinciden en
+el conjunto denso \(D\), se sigue que \[
+x_t(\omega) = x'_t(\omega) \quad \text{para todo } t \in [0,T].
+\] Por lo tanto, el conjunto \[
+\left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \text{ para todo } t \in [0,T] \right\}
+\] contiene a \(\Omega_0\), y en consecuencia tiene probabilidad uno.
+Por lo tanto, coinciden para todo \$ t \in [0,T].\$ Por lo que se
+concluye que la solución de la ecuación estocástica diferencial con
+saltos es única por trayectoria. Además, como los coeficientes \(b\),
+\(\sigma\) y \(R\) son \(\mathcal{F}_t^{W,\widetilde{N}}\)-adaptados, se
+sigue la solución es fuerte.
+\end{proof}
+
+\begin{definition}[]\protect\hypertarget{def-Tiempos_paro_explosión}{}\label{def-Tiempos_paro_explosión}
+
+\[\tau^N := \inf\{ t \geq 0 : |x_t| > N \}\] Se demuestra que
+\(\tau^N \uparrow \infty\) c.s. usando: - Estimaciones en
+\(S^{2,\mathrm{loc}}\) vía BDG y Grönwall, - Cota uniforme en \(N\):
+\(\mathbb{E}[\sup_{t \leq T} |x_t^N|^2] \leq K_T < \infty\), - Argumento
+de contradicción:
+\(N^2 \mathbb{P}(\tau^N \leq T) \leq K_T \Rightarrow \mathbb{P}(\tau^N \leq T) \to 0\).
+
+\end{definition}
+
+\subsection{Teorema de existencia y unicidad local de una solución
+fuerte para la EDE con difusión y
+saltos}\label{teorema-de-existencia-y-unicidad-local-de-una-soluciuxf3n-fuerte-para-la-ede-con-difusiuxf3n-y-saltos}
+
+\begin{theorem}[]\protect\hypertarget{thm-exis_uni_local_fuerte_SDE}{}\label{thm-exis_uni_local_fuerte_SDE}
+
+Si la condición \(2°\) del Teorema anterior se debilita a \(2°'\) tal
+que para cada \(N = 1, 2,\cdots,\) existe una función no aleatoria
+\(\widetilde{c}^N(t)\) tal que para cada \(|x_1|, |x_2| \leq N\), \[
+|b(t, x_1, \omega) - b(t, x_2, \omega)| \leq \widetilde{c}^N(t) |x_1 - x_2|,
+\]
+\[|\sigma(t, x_1, \omega) - \sigma(t, x_2, \omega)|^2 + \int_Z |R(t, x_1, z, \omega) - R(t, x_2, z, \omega)|^2 \pi(dz)
+        \leq \widetilde{c}^N(t) |x_1 - x_2|^2,\] donde
+\(\widetilde{c}^N(t) \geq 0\) satisface \[
+\int_0^T \widetilde{c}^N(t)\,dt < \infty \quad \text{para cada } T < \infty,
+\] manteniendo la condición de crecimiento lineal global (independiente
+de \(N\)): \begin{align*}
+    |b(t,x,\omega)| &\leq \tilde{c}(t)(1 + |x|), \\
+    |\sigma(t,x,\omega)|^2 + \int_Z |R(t,x,z,\omega)|^2 \, \nu(dz) &\leq \tilde{c}(t)(1 + |x|^2),
+\end{align*} con \(\tilde{c}(t) \geq 0\) no aleatoria y
+\(\int_0^T \tilde{c}(t)\,dt < \infty\) para todo \(T > 0\), y todas las
+demás hipótesis del Teorema anterior siguen siendo válidas. Entonces la
+conclusión del Teorema anterior sigue siendo cierta.
+
+\end{theorem}
+
+\begin{proof}
+Sea \(b^{N}(t,x,\omega)\) definida de la siguiente manera
+\begin{equation}\protect\phantomsection\label{eq-6}{
+\begin{split}
+      b^{N}(t,x,\omega) = \left\lbrace\begin{array}{c}b(t,x,\omega), \quad \text{si }|x|\leq N,
+       \\
+       b(t,N_{\frac{x}{|x|}},\omega), \quad
+       \text{si } |x| > N.\end{array}\right.
+\end{split}}\end{equation} De igual manera se hace para
+\(\sigma^{N}(t,x,\omega)\) y \(R^{N}(t,x,z,\omega),\) consideramos
+\begin{equation}\protect\phantomsection\label{eq-7}{\begin{split}
+x_t = x_0 &+ \int_0^t b_N(s,x^N_s,\omega)\,ds 
+           + \int_0^t \sigma^N(s,x^N_s,\omega)\,dw_s \\
+          & \ \ \ \ \ \ \ \ \ \ \ +  \int_0^t\!\int_Z R^N(s,x^N_{s-},z,\omega)\,\tilde{N}_t(ds,dz),
+          \qquad t\geq 0
+\end{split}}\end{equation} Como \(b^N, \sigma^N, R^N\) son globalmente
+Lipschitz en \(x\) y satisfacen las condiciones de medibilidad y
+crecimiento del Teorema anterior, se deduce inmediatamente la existencia
+y unicidad de una solución fuerte
+\(\{x^N_t\}_{t\geq 0}\in S^{2,loc}_{\mathcal{F}}(\mathbb{R})\).
+Definimos el tiempo de paro \(\tau^N:=inf\{t\geq0:|x^N_t|> N\}\), en el
+intervalo estocástico \([0, \tau^N),\) se tiene \(x^N_t=x_t,\) donde
+\(x_t\) es una solución de la ecuación original(Ecuación~\ref{eq-1}).
+Para \$ t \textless{} \tau\^{}N\$, se tiene \(|x_t^N| \leq N\). Por la
+definición de los coeficientes truncados, esto implica
+
+\[
+b^N(t,x_t^N,\omega) = b(t,x_t^N,\omega), \quad \sigma^N(t,x_t^N,\omega) = \sigma(t,x_t^N,\omega),
+\]
+
+\[
+R^N(t,x_{t-}^N,z,\omega) = R(t,x_{t-}^N,z,\omega).
+\] Por lo tanto, en \([0, \tau^N)\), la ecuación (7) coincide
+exactamente con la ecuación (1). Así, la restricción de \(x^N\) a
+\([0, \tau^N)\) es una solución local de (1).
+
+Sea \$ N \textless{} M\$, entonces, en el intervalo \([0, \tau^N)\),
+ambas soluciones \(x^N\) y \(x^M\) satisfacen la misma SDE, por la
+unicidad del Teorema anterior aplicada a la ecuación original en el
+intervalo estocástico, se concluye que \[
+x_t^N = x_t^M \quad \text{para todo } t < \tau^N, \quad \text{c.s.}
+\] lo que permite definir un proceso \$ x = \{x\_t\}\_\{t \geq 0\}\$
+mediante \[
+x_t := x_t^N \quad \text{para } t \in [0, \tau^N).
+\] Gracias a la compatibilidad entre las soluciones truncadas , esta
+definición es independiente de \(N\), por lo tanto \(x\) está bien
+definido en todo \([0, \infty)\), siempre que \(\tau^N \to \infty\) casi
+seguramente cuando \(N \to \infty\). Supongamos ahora por contradicción
+que existe ( T\_0 \textgreater{} 0 ) tal que \[
+\mathbb{P}\left( \lim_{N \to \infty} \tau^N \leq T_0 \right) > 0.\]
+
+Definamos \(\tau := \lim_{N \to \infty} \tau^N\). Entonces, para el
+evento \(A := \{ \tau \leq T_0 \}\), se tiene \(\mathbb{P}(A) > 0\), y
+para todo \(N\), \(\tau^N \leq T_0\) en \(A\), con
+\(|x_{\tau^N}^N| = N.\) Aplicando la desigualdad de Itô a la solución
+truncada \(x^N\) \[
+|x_t^N|^2 = |x_0|^2 + 2\int_0^t x_s^N \cdot b^N(s,x_s^N) ds + 2\int_0^t x_s^N \cdot \sigma^N(s,x_s^N) dw_s
+\] \[
++ \int_0^t \|\sigma^N(s,x_s^N)\|^2 ds + \int_0^t \int_Z |c^N(s,x_{s-}^N,z)|^2 N(ds,dz)
+\] \[
++ 2\int_0^t \int_Z x_{s-}^N \cdot c^N(s,x_{s-}^N,z) \tilde{N}(ds,dz).
+\] Tomando supremo en \([0, T_0]\) y esperanza, y usando la desigualdad
+\((a+b+c)^2 \leq 3(a^2 + b^2 + c^2)\), obtenemos
+\[\mathbb{E}\left[ \sup_{0 \leq t \leq T_0} \|x_t^N\|^2 \right] \leq C\Bigg( 
+\mathbb{E}[\|x_0\|^2] 
++ \mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t x_s^N \cdot b^N(s,x_s^N)\,ds \right| \right] \]
+\[+ \mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t x_s^N \cdot \sigma^N(s,x_s^N)\,dW_s \right|^2 \right]
++ \mathbb{E}\left[ \int_0^{T_0} \|\sigma^N(s,x_s^N)\|^2 ds \right]\]
+\[+ \mathbb{E}\left[ \int_0^{T_0} \int_Z \|R^N(s,x_{s-}^N,z)\|^2 \nu(dz) ds \right]
++ \mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t \int_Z x_{s-}^N \cdot R^N(s,x_{s-}^N,z)\,\tilde{N}(ds,dz) \right|^2 \right]
+\Bigg).\] Ahora acotamos cada término usando la condición de crecimiento
+lineal global y la desigualdad de Burkholder--Davis--Gundy (BDG). Para
+el termino con drift aplicamos Cauchy--Schwarz y crecimiento lineal:
+\[\left| x_s^N \cdot b^N(s,x_s^N) \right| \leq \|x_s^N\| \cdot \tilde{c}(s)(1 + \|x_s^N\|)
+\leq \tilde{c}(s)\bigl(\|x_s^N\| + \|x_s^N\|^2\bigr)
+\leq \tilde{c}(s)\bigl(1 + 2\|x_s^N\|^2\bigr).\] Luego
+\[\mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t x_s^N \cdot b^N(s,x_s^N)\,ds \right| \right]
+\leq \int_0^{T_0} \tilde{c}(s)\bigl(1 + 2\mathbb{E}[\|x_s^N\|^2]\bigr) ds
+\leq C\left(1 + \int_0^{T_0} \tilde{c}(s) \mathbb{E}\left[ \sup_{r \leq s} \|x_r^N\|^2 \right] ds\right).\]
+Ahora para el término browniano por la desigualdad de BDG con \(p=2\),
+existe una constante universal \(C_{\mathrm{BDG}} > 0\) tal que
+\[\mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t x_s^N \cdot \sigma^N(s,x_s^N)\,dW_s \right|^2 \right]
+\leq C_{\mathrm{BDG}} \, \mathbb{E}\left[ \int_0^{T_0} \|x_s^N \cdot \sigma^N(s,x_s^N)\|^2 ds \right].\]
+Usando Cauchy--Schwarz y crecimiento lineal: \[
+\|x_s^N \cdot \sigma^N(s,x_s^N)\|^2 \leq \|x_s^N\|^2 \cdot \|\sigma^N(s,x_s^N)\|^2
+\leq \|x_s^N\|^2 \cdot \tilde{c}(s)(1 + \|x_s^N\|^2)
+\leq \tilde{c}(s)\bigl(\|x_s^N\|^2 + \|x_s^N\|^4\bigr).
+\] Sin embargo, al trabajar con cotas en \(L^2\), es estándar usar
+directamente:
+\[\|\sigma^N(s,x_s^N)\|^2 \leq \tilde{c}(s)(1 + \|x_s^N\|^2),\] y por lo
+tanto:
+
+\begin{align*}
+\mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t x_s^N \cdot \sigma^N(s,x_s^N)\,dW_s \right|^2 \right]
+\leq C_{\mathrm{BDG}} \int_0^{T_0} \tilde{c}(s)\left(1 + \mathbb{E}[\|x_s^N\|^2]\right) ds\\
+\leq C\left(1 + \int_0^{T_0} \tilde{c}(s) \mathbb{E}\left[ \sup_{r \leq s} \|x_r^N\|^2 \right] ds\right).
+\end{align*}
+
+Análogamente para el término de saltos, por la versión con saltos de
+BDG, se tiene \[
+\mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t \int_Z x_{s-}^N \cdot R^N(s,x_{s-}^N,z)\,\tilde{N}(ds,dz) \right|^2 \right]
+\leq C \, \mathbb{E}\left[ \int_0^{T_0} \int_Z \|x_{s-}^N \cdot R^N(s,x_{s-}^N,z)\|^2 \nu(dz) ds \right]
+\] \[
+\leq C \int_0^{T_0} \tilde{c}(s)\left(1 + \mathbb{E}[\|x_s^N\|^2]\right) ds
+\leq C\left(1 + \int_0^{T_0} \tilde{c}(s) \mathbb{E}\left[ \sup_{r \leq s} \|x_r^N\|^2 \right] ds\right).
+\] Por crecimiento lineal global se acotan los términos de variación
+cuadrática \[
+\mathbb{E}\left[ \int_0^{T_0} \|\sigma^N(s,x_s^N)\|^2 ds \right] + \mathbb{E}\left[ \int_0^{T_0} \int_Z \|R^N(s,x_{s-}^N,z)\|^2 \nu(dz) ds \right]
+\leq C \int_0^{T_0} \tilde{c}(s)\left(1 + \mathbb{E}[\|x_s^N\|^2]\right) ds.
+\] Reuniendo todas las estimaciones, definimos \[
+u(t) := \mathbb{E}\left[ \sup_{0 \leq r \leq t} \|x_r^N\|^2 \right],
+\] y obtenemos \[
+u(t) \leq C \left( 1 + \mathbb{E}[\|x_0\|^2] + \int_0^t \tilde{c}(s) u(s) ds \right).
+\] Por la desigualdad de Grönwall, se deduce \[
+u(T_0) \leq C\left(1 + \mathbb{E}[\|x_0\|^2]\right) \exp\!\left( C \int_0^{T_0} \tilde{c}(s) ds \right) =: K_{T_0}.
+\] \(K_{T_0}\) no depende de \(N\), ya que \(\tilde{c}(t)\) es
+independiente de \(N\) por hipótesis.\textbackslash{} Ahora, observamos
+que en el evento \(A\) se tiene \(\tau_N \leq T_0\) y
+\(\|x^N_{\tau_N}\| = N\), luego \[
+N^2 \, \mathbb{P}(A) \leq \mathbb{E}\left[ \sup_{0 \leq t \leq \tau_N \wedge T_0} \|x^N_t\|^2 \right] \leq K_{T_0}.
+\] Esto implica \[
+\mathbb{P}(A) \leq \frac{K_{T_0}}{N^2} \xrightarrow{N \to \infty} 0,
+\] lo cual contradice \(\mathbb{P}(A) > 0\). Por lo tanto,
+\(\mathbb{P}(A) = 0\) para todo \(T_0 > 0\), y en consecuencia, \[
+\mathbb{P}\!\left( \lim_{N \to \infty} \tau_N = \infty \right) = 1.
+\] Esto garantiza que el proceso \(x = \{x_t\}_{t \geq 0}\) está
+definido para todo \(t \geq 0\), pertenece a
+\(S^{2,\mathrm{loc}}_{\mathcal{F}}(\mathbb{R})\), y es la única solución
+fuerte de la SDE Ecuación~\ref{eq-1}. La unicidad por trayectoria se
+sigue del argumento estándar usando densidad de
+\(\mathbb{Q} \cap [0,T]\) y la propiedad cádlág de las soluciones, como
+se demostró en el Teorema Teorema~\ref{thm-exis_uni_glo_fuerte_SDE}.
+\end{proof}
+
+\section{Modelo de Cramér--Lundberg
+Extendido.}\label{modelo-de-cramuxe9rlundberg-extendido.}
+
+\subsection{Formulación del modelo base (C-L
+clásico).}\label{formulaciuxf3n-del-modelo-base-c-l-cluxe1sico.}
+
+El modelo clásico de Cramér-Lundberg (C-L) constituye un pilar
+fundamental en la teoría de riesgo actuarial, ofreciendo una
+representación matemáticamente rigurosa de la evolución del capital de
+una aseguradora a lo largo del tiempo. Formalmente, consideramos un
+proceso estocástico \(\{U(t)\}_{t \geq 0}\) que representa la reserva de
+capital de la aseguradora en el instante \(t\). El modelo clásico de
+Cramér-Lundberg (\textcite{Lundberg1903}) postula que esta reserva
+evoluciona mediante:
+\begin{equation}\protect\phantomsection\label{eq-8}{U(t) = u + ct - \sum_{i=1}^{N(t)} Y_i,}\end{equation}
+donde:
+
+\begin{itemize}
+\item
+  \(U(t)\): Reserva o capital en el tiempo \(t\),
+\item
+  \(u\): Capital inicial,
+\item
+  \(c\): Tasa de entrada de primas (constante en el modelo clásico),
+\item
+  \(N(t)\): Proceso de conteo de siniestros, modelado como un proceso de
+  Poisson homogéneo con intensidad \(\lambda > 0\). Formalmente,
+  \(N(t)\) es un proceso y \(\mathbb{E}[N(t)] = \lambda t\).
+\item
+  \(\{Y_i\}_{i \geq 1}\): Secuencia de variables aleatorias
+  independientes e idénticamente distribuidas (i.i.d.) que representan
+  las magnitudes de los siniestros, con distribución \(F_Y\) y función
+  de densidad \(f_Y\) (en caso de ser absolutamente continua). Se asume
+  que \(\mathbb{E}[Y_1] = \mu < \infty\) y
+  \(\text{Var}(Y_1) = \sigma^2 < \infty\) para garantizar la existencia
+  de momentos necesarios en el análisis.
+\end{itemize}
+
+La suposición de parámetros constantes (especialmente la tasa de primas
+\(c\) y la intensidad del proceso de Poisson \(\lambda\)) limita su
+aplicabilidad en entornos dinámicos donde las condiciones del mercado
+cambian con el tiempo, como es el caso del mercado asegurador mexicano
+que enfrenta variaciones estacionales en los siniestros catastróficos,
+cambios en las tasas de inversión y fluctuaciones en la estructura de
+primas debido a factores macroeconómicos como la inflación.
+
+\subsection{Extensión a un modelo con difusión y
+saltos.}\label{extensiuxf3n-a-un-modelo-con-difusiuxf3n-y-saltos.}
+
+Formalmente, extendemos el proceso de reservas \(\{U(t)\}_{t \geq 0}\)
+del modelo (C-L) que sigue la dinámica estocástica de una ecuación
+diferencial con difusión y saltos (EDES).
+
+Las ecuaciones diferenciales estocásticas con saltos (EDES) constituyen
+una extensión natural del cálculo estocástico clásico de
+Itô,(Sección~\ref{sec-Ito}) permitiendo modelar dinámicas que combinan
+evolución continua con cambios abruptos discontinuos. Este marco teórico
+es esencial para representar fenómenos en los que coexisten tendencias
+suaves y eventos extremos, como es el caso de los mercados financieros y
+las carteras de seguros sujetas a siniestros catastróficos.
+
+Una ecuación diferencial estocástica con saltos y parámetros
+dependientes del tiempo toma la forma general
+(Capítulo~\ref{sec-EDESJs})
+\begin{equation}\protect\phantomsection\label{eq-9}{
+dX(t) = a(t,X(t^-))dt + b(t,X(t^-))dW(t) + \int_{\mathbb{R}} R(t,X(t^-),x) \tilde{N}(dt,dx),
+}\end{equation} donde los coeficientes \(a\), \(b\) y \(R\) satisfacen
+condiciones de Lipschitz y crecimiento lineal que garantizan existencia
+y unicidad de soluciones fuertes. La notación \(X(t^-)\) denota el valor
+del proceso predecible(Sección~\ref{sec-proc_predecibles})
+inmediatamente antes del tiempo \(t\), crucial para manejar
+correctamente las discontinuidades inducidas por los
+saltos.(Teorema~\ref{thm-exis_uni_glo_fuerte_SDE}) \(N(dt,dx)\) es una
+medida de Poisson aleatoria que cuenta los saltos de tamaño \(x\) en el
+intervalo \(dt\), y \(\tilde{N}(dt,dx) = N(dt,dx) - \nu(dx)dt\) es su
+compensador con \(\nu\) siendo la medida de Poisson compensada. Esta
+descomposición separa explícitamente la componente difusiva continua
+(\(\sigma W(t)\)) de los saltos de pequeña magnitud (integrado
+compensado) y los saltos de gran magnitud (integrado
+puro).(Sección~\ref{sec-medida_aleatoria_poisson})
+
+Para capturar la dinámica real del mercado Mexicano, extendemos el
+modelo incorporando dependencia temporal en todos los parámetros.
+
+En el contexto actuarial, esta estructura matemática permite integrar de
+manera coherente tres elementos fundamentales:
+
+\begin{itemize}
+\item
+  La acumulación determinista de primas,
+\item
+  La evolución estocástica de las inversiones con volatilidad de
+  mercado,
+\item
+  La ocurrencia aleatoria de siniestros catastróficos modelados como
+  saltos negativos. El uso de parámetros dependientes del tiempo
+  \((c(t)\), \(r(t)\), \(\sigma(t))\) refleja adecuadamente la
+  estacionalidad en la frecuencia de siniestros, las fluctuaciones en
+  las tasas de interés y la variabilidad de la volatilidad financiera
+  observadas en mercados emergentes como el Mexicano. Incorporando los
+  fundamentos teóricos al marco de la ecuación el proceso de reservas
+  \(\{U(t)\}_{t \geq 0}\) se presenta como la siguiente ecuación
+  diferencial estocástica con saltos (Ecuación~\ref{eq-9})
+  \begin{equation}\protect\phantomsection\label{eq-modelo_extendido}{
+  dU(t) = \underbrace{c(t)\,dt}_{\text{Primas}} + \underbrace{U(t^-)r(t)\,dt}_{\text{Rendimientos}} + \underbrace{U(t^-)\sigma(t)\,dW(t)}_{\text{Volatilidad}} - \underbrace{dJ(t)}_{\text{Siniestros}},
+  }\end{equation} donde
+\item
+  \(c(t) > 0\) es la tasa de prima neta tiempo-dependiente, ajustada por
+  inflación y estacionalidad en la demanda
+  (Sección\textasciitilde{}\ref{sec:ct});
+\item
+  \(r(t)\) representa la tasa de interés instantánea de la cartera de
+  inversiones, modelada como un proceso determinista que refleja la
+  estructura de tasas de Banxico, los rendimientos de CETES y globales
+  (ILS)(Sección\textasciitilde{}\ref{sec:rt}) ;
+\item
+  \(\sigma(t) > 0\) es la volatilidad tiempo-dependiente de las
+  inversiones, estimada mediante una combinación convexa de la
+  volatilidad de activos locales (CETES) y globales (ILS), ponderada por
+  la composición de la cartera según reportes de la CNSF
+  (Sección\textasciitilde{}\ref{sec:sigmat});
+\item
+  \(W(t)\) es un movimiento browniano estándar que modela el riesgo de
+  mercado continuo;
+\item
+  \(J(t)\): Proceso de saltos compuesto que modela siniestros
+  catastróficos. Por tanto las soluciones del proceso de reservas
+  presentado por la ecuación (Ecuación~\ref{eq-modelo_extendido}) bajo
+  las especificaciones del modelo (con tasas de prima, interés y
+  volatilidad acotadas), cumple con las condiciones de Lipschitz y
+  crecimiento lineal que garantizan existencia y unicidad de soluciones
+  fuertes para el proceso de reservas.(\textbf{?@sec-normalidad})
+\item
+  \(N_m(t)\): Proceso de Poisson no homogéneo para eventos
+  meteorológicos con intensidad \(\lambda_m(t)\),
+\item
+  \(N_s(t)\): Proceso de Poisson para eventos sísmicos con intensidad
+  constante \(\lambda_s\),
+\item
+  \(Y_k^{(m)} \sim \text{TruncNormal}(\mu_m, \sigma_m^2)\): Severidad de
+  siniestros meteorológicos,
+\item
+  \(Y_\ell^{(s)} \sim \text{TruncNormal}(\mu_s, \sigma_s^2)\): Severidad
+  de siniestros sísmicos.
+\end{itemize}
+
+\section{Análisis Asintótico y Estimación de
+Parámetros}\label{anuxe1lisis-asintuxf3tico-y-estimaciuxf3n-de-paruxe1metros}
+
+\subsection{Estimación de la Varianza
+Integrada}\label{estimaciuxf3n-de-la-varianza-integrada}
+
+\begin{theorem}[]\protect\hypertarget{thm-VB}{}\label{thm-VB}
+
+Definamos la variación de bipotencia con retardo \(h = 1\), \[
+BV_n := \frac{1}{\mu_1^2} \sum_{i=2}^{n} \bigl|r_{i-1,n}\bigr| \cdot \bigl|r_{i,n}\bigr|, \quad \mu_1 = \sqrt{\frac{2}{\pi}},
+\] se quiere demostrar que es un estimador consistente en probabilidad
+de la varianza integrada \[
+IV := \int_0^1 \sigma^2(t)\,dt,
+\] es decir, \[
+BV_n \xrightarrow[n\to\infty]{\mathbb{P}} IV.
+\]
+
+\end{theorem}
+
+\begin{proof}
+Cada retorno se descompone en su parte continua y su parte por saltos \[
+r_{i,n} = C_{i,n} + S_{i,n},
+\] donde \[
+C_{i,n} = \int_{(i-1)\Delta}^{i\Delta} \sigma(t)\,dW(t), \quad 
+S_{i,n} = \sum_{(i-1)\Delta < t \leq i\Delta} \Delta J_t.
+\] Por la hipótesis de actividad finita de los saltos, se tiene que \[
+\mathbb{P}\bigl(S_{i-1,n} \neq 0 \text{ y } S_{i,n} \neq 0\bigr) \xrightarrow[n\to\infty]{} 0.
+\] Por lo tanto, con probabilidad \(1\), \[
+|r_{i-1,n}| \cdot |r_{i,n}| = |C_{i-1,n}| \cdot |C_{i,n}| + o_p(n^{-1}).
+\] Dado que \(\sigma(t)\) es cádlág, es localmente constante en el
+límite. Así, condicionalmente, \[
+\mathbb{E}\bigl[|C_{i-1,n}| \cdot |C_{i,n}| \mid \mathcal{F}_{(i-1)\Delta}\bigr] 
+= \mu_1^2 \cdot \sigma^2((i-1)\Delta) \cdot \frac{1}{n} + o(n^{-1}),
+\] donde \(\mu_1 = \mathbb{E}[|Z|] = \sqrt{2/\pi}\), \(Z \sim N(0,1)\).
+Sumando sobre \(i = 2,\dots,n\), obtenemos \[
+\mathbb{E}[BV_n] = \frac{1}{\mu_1^2} \sum_{i=2}^n \mathbb{E}\bigl[|r_{i-1,n}| \cdot |r_{i,n}|\bigr]
+= \sum_{i=2}^n \sigma^2((i-1)\Delta) \cdot \frac{1}{n} + o(1).
+\]
+\end{proof}
+
+\subsection{Hipótesis técnicas}\label{hipuxf3tesis-tuxe9cnicas}
+
+\begin{itemize}
+\item
+  \textbf{Hipotesis 1} \emph{(Cádlág y previsibilidad)} El proceso
+  \(\sigma^2(t)\) es cádlág (continuo por la derecha con límites por la
+  izquierda) y predecible.
+\item
+  \textbf{Hipótesis 2} \emph{(Acotamiento local)} Existe una sucesión
+  creciente de tiempos de parada \((\tau_m)_{m \geq 1}\), con
+  \(\tau_m \uparrow \infty\) casi seguramente, tal que \[
+  \sup_{t \leq \tau_m} \sigma^2(t) < \infty \quad \text{c.s.}
+  \]
+\item
+  \textbf{Hipótesis 3} \emph{(Integrabilidad)} \[
+  \int_0^1 \sigma^2(t)\,dt < \infty \quad \text{casi seguramente}.\]
+\end{itemize}
+
+\begin{theorem}[]\protect\hypertarget{thm-Cons_variacion_bipotencia}{}\label{thm-Cons_variacion_bipotencia}
+
+Bajo las Hipótesis \(1\)--\(3\) y la condición de actividad finita de
+los saltos, se cumple: \[
+BV_n \xrightarrow[n\to\infty]{\mathbb{P}} \int_0^1 \sigma^2(t)\,dt.
+\] Es decir, la variación de bipotencia es un estimador consistente en
+probabilidad de la varianza integrada. Sea
+\((\Omega, \mathcal{F}, (\mathcal{F}_t)_{t \in [0,1]}, \mathbb{P})\) un
+espacio de probabilidad filtrado que satisface las
+\textit{condiciones usuales} (completo y continuo por la derecha).
+Supongamos que \(\sigma^2 = (\sigma^2(t))_{t \in [0,1]}\) es un proceso
+estocástico. Definimos la partición regular del intervalo \([0,1]\) como
+\(t_i^n := \frac{i}{n}, \quad i = 0,1,\dots,n.\) La suma de Riemann
+izquierda asociada a \(\sigma^2\) es \[
+S_n := \frac{1}{n} \sum_{i=1}^n \sigma^2\!\left(t_{i-1}^n\right) = \frac{1}{n} \sum_{i=1}^n \sigma^2\!\left(\frac{i-1}{n}\right).
+\] Denotamos el límite objetivo como la varianza integrada \[
+IV := \int_0^1 \sigma^2(t)\,dt.
+\] se busca demostrar que, para todo \(\varepsilon > 0\), \[
+\lim_{n \to \infty} \mathbb{P}\bigl( |S_n - IV| > \varepsilon \bigr) = 0,
+\] es decir, \(S_n \xrightarrow[n \to \infty]{\mathbb{P}} IV\).
+
+\end{theorem}
+
+\section{Estimación de la Intensidad de
+Saltos.}\label{estimaciuxf3n-de-la-intensidad-de-saltos.}
+
+\subsection{\texorpdfstring{Estimador \(\hat{\lambda}_n\) y elección del
+umbral \(\tau_n = \alpha \Delta_n^{\varpi}\)
+.}{Estimador \textbackslash hat\{\textbackslash lambda\}\_n y elección del umbral \textbackslash tau\_n = \textbackslash alpha \textbackslash Delta\_n\^{}\{\textbackslash varpi\} .}}\label{estimador-hatlambda_n-y-elecciuxf3n-del-umbral-tau_n-alpha-delta_nvarpi-.}
+
+Definimos el estimador de intensidad de saltos mediante el método de
+conteo con umbral:
+\begin{equation}\protect\phantomsection\label{eq-umbral}{
+\hat{\lambda}_n := \frac{1}{T} \sum_{i=1}^n \mathbf{1}_{\{ |\Delta_i^n X| > \tau_n \}},
+}\end{equation}
+
+donde \(\tau_n > 0\) es un umbral determinista que depende de \(n\).
+Siguiendo la metodología de \cite{ait2009testing} (ver Sección 4.3 y la
+ecuación (24)), elegimos el umbral de la forma
+\begin{equation}\protect\phantomsection\label{eq-estimador}{
+ \tau_n = \alpha \Delta_n^{\varpi}, \quad \alpha > 0, \quad \varpi \in \left(0, \frac{1}{2}\right).
+ }\end{equation} Esta elección es crucial y satisface dos propiedades
+asintóticas fundamentales: (I) \textbf{Detección de saltos:}
+\(\tau_n \to 0\) cuando \(n \to \infty\). Esto asegura que,
+asintóticamente, cualquier salto de tamaño fijo (no nulo) será
+detectado, ya que su magnitud superará al umbral. (II)
+\textbf{Eliminación del ruido difusivo:}
+\(\tau_n / \sqrt{\Delta_n} = \alpha \Delta_n^{\varpi - 1/2} \to \infty\).
+Esto asegura que los incrementos correspondientes a la parte continua
+del proceso (de orden estocástico \(\sqrt{\Delta_n}\)) rara vez
+superarán el umbral, controlando así los falsos positivos.
+
+\begin{theorem}[]\protect\hypertarget{thm-Consistencia_estimador_intensidad}{}\label{thm-Consistencia_estimador_intensidad}
+
+(Consistencia del estimador de intensidad). Supongamos que el proceso
+\(X\) satisface el modelo \eqref{eq:sdej} bajo el Assumption 1 de
+\cite{ait2009testing} y tiene actividad finita de saltos,
+\(\lambda = \int_E \lambda(dx) < \infty\). Supongamos que el proceso
+\(X\) satisface el modelo \eqref{eq:sdej} bajo el Assumption 1 de
+\cite{ait2009testing} y tiene actividad finita de saltos,
+\(\lambda = \int_E \lambda(dx) < \infty\). Considérese un régimen
+asintótico de alta frecuencia en el que \(\Delta_n \to 0\) y
+\(T = n \Delta_n \to \infty\) cuando \(n \to \infty\). Entonces, bajo la
+elección del umbral (Ecuación~\ref{eq-umbral}) con
+\(\varpi \in (0, 1/2)\), el estimador (Ecuación~\ref{eq-estimador}) es
+consistente en probabilidad para \(\lambda\), es decir, \[
+\hat{\lambda}_n \xrightarrow{\mathbb{P}} \lambda.
+\]
+
+\end{theorem}
+
+\begin{proof}
+Un falso positivo ocurre cuando un incremento \(\Delta_i^n X\) sin salto
+(es decir, generado únicamente por la parte continua del proceso) excede
+el umbral \(\tau_n\). Para controlar este fenómeno, debemos analizar la
+magnitud de la parte continua. La herramienta fundamental es la cota
+proporcionada en la \textbf{ecuación (46)} de \cite{ait2009testing}
+(Sección 8.1), derivada bajo el Assumption 1. Para cualquier
+\(\eta > 0\) y \(\theta \in (0,1)\), se cumple
+\begin{equation}\protect\phantomsection\label{eq-cota_46}{
+ \mathbb{E}_{i-1}^n \left( |\Delta_i^n X - \delta_i^n|^2 \wedge \eta^2 \right) \leq K \Delta_n (\eta^2 + \Delta_n^{\theta} + \epsilon(\theta))
+ }\end{equation} donde -
+\(\mathbb{E}_{i-1}^n(\cdot) = \mathbb{E}(\cdot \mid \mathcal{F}_{(i-1)\Delta_n})\),
+-
+\(\delta_i^n = \sigma_{(i-1)\Delta_n} (W_{i\Delta_n} - W_{(i-1)\Delta_n})\)
+es la aproximación gaussiana de la parte continua, -
+\(\epsilon(\theta) \to 0\) cuando \(\theta \to 0\), - \(K\) es una
+constante que depende de los coeficientes del modelo.
+
+Esta desigualdad implica que la parte continua del incremento es de
+orden \(O_p(\sqrt{\Delta_n})\). Ahora, utilizando la desigualdad de
+Chebyshev o argumentos de cola gaussiana, la probabilidad de que un
+incremento puramente difusivo exceda \(\tau_n\) se puede acotar por \[
+\mathbb{P}(|\Delta_i^n X| > \tau_n \mid \text{no hay salto en } [(i-1)\Delta_n, i\Delta_n]) \leq C \exp\left( -c \frac{\tau_n^2}{\Delta_n} \right).
+\] Dado que
+\(\tau_n^2 / \Delta_n = \alpha^2 \Delta_n^{2\varpi-1} \to \infty\)
+(porque \(\varpi < 1/2\)), el término exponencial decae a cero más
+rápido que cualquier potencia de \(\Delta_n\). Por lo tanto, el número
+esperado de falsos positivos, \(\mathrm{FP}_n\), satisface \[
+\mathbb{E}[\mathrm{FP}_n] = \sum_{i=1}^n \mathbb{P}(\text{falso positivo en } i) \leq n \cdot o(\Delta_n) = o(T).
+\] En consecuencia, \(\mathrm{FP}_n / T \xrightarrow{\mathbb{P}} 0\). Un
+falso negativo ocurre cuando un salto real \(J\) ocurre en un intervalo
+de muestreo, pero su magnitud \(|J|\) es menor o igual que \(\tau_n\),
+por lo que no se detecta. Sin embargo, dado que el proceso tiene
+actividad finita, el número de saltos en \([0,T]\) es finito c.s., y
+cada salto tiene tamaño \(|J_k| > 0\) c.s. Dado que \(\tau_n \to 0\) por
+construcción, existe un \(n_0(\omega)\) (aleatorio pero finito) tal que
+para todo \(n \geq n_0(\omega)\), se cumple
+\(\tau_n < \min_{k=1,\dots,N_T} |J_k|(\omega)\). Por lo tanto,
+asintóticamente, todos los saltos son detectados y el número de falsos
+negativos, \(\mathrm{FN}_n\), satisface
+\(\mathbb{E}[\mathrm{FN}_n] \to 0\), lo que implica
+\(\mathrm{FN}_n / T \xrightarrow{\mathbb{P}} 0\). Sea \(N_T\) el número
+real (y finito) de saltos en \([0,T]\). De los pasos anteriores, se
+deduce que el número de saltos detectados por el estimador coincide
+asintóticamente con \(N_T\):
+\begin{equation}\protect\phantomsection\label{eq-12}{\sum_{i=1}^n \mathbf{1}_{\{ |\Delta_i^n X| > \tau_n \}} = N_T + \mathrm{FP}_n - \mathrm{FN}_n = N_T + o_{\mathbb{P}}(T).
+}\end{equation} Dividiendo por \(T\), obtenemos
+\begin{equation}\protect\phantomsection\label{eq-13}{
+\hat{\lambda}_n = \frac{N_T}{T} + o_{\mathbb{P}}(1).
+}\end{equation} Finalmente, dado que la actividad de saltos es finita y
+la intensidad es constante \(\lambda\), el proceso de conteo \(N_T\) es
+un proceso de Poisson con media \(\mathbb{E}[N_T] = \lambda T\) y
+varianza \(\mathrm{Var}(N_T) = \lambda T\). Por la ley de los grandes
+números para procesos de Poisson, se tiene que cuando \(T \to \infty\),
+\[
+\frac{N_T}{T} \xrightarrow{\mathbb{P}} \lambda.
+\]
+
+Combinando las dos últimas convergencias, concluimos que \[
+\hat{\lambda}_n \xrightarrow{\mathbb{P}} \lambda,
+\] lo cual demuestra el
+Teorema~\ref{thm-Consistencia_estimador_intensidad}.
+\end{proof}
+
+\bookmarksetup{startatroot}
+
+\chapter{Métodos Numéricos para
+EDES}\label{muxe9todos-numuxe9ricos-para-edes}
+
+\section{Introducción a la Discretización de
+EDESJs}\label{introducciuxf3n-a-la-discretizaciuxf3n-de-edesjs}
+
+Las Ecuaciones Diferenciales Estocásticas (EDE) constituyen una
+herramienta fundamental en la modelización matemática de fenómenos
+dinámicos sometidos a incertidumbre. En particular, las ecuaciones
+diferenciales estocásticas con saltos, por sus siglas en inglés
+Jump-Diffusion Stochastic Differential Equations que denotaremos de
+ahora en adelante por (EDSEJ) extienden el marco clásico de difusión
+(gobernado por el movimiento browniano) al incorporar procesos de Lévy o
+procesos de Poisson compuestos, lo que permite capturar discontinuidades
+abruptas, eventos extremos o choques externos.
+
+A pesar del sólido desarrollo teórico existente en torno a la
+existencia, unicidad y propiedades cualitativas de soluciones de EDSEJs,
+la obtención de soluciones explícitas es usual. Por ello, los métodos
+numéricos se vuelven indispensables tanto para la simulación como para
+el análisis cuantitativo de estos modelos. Sin embargo, la presencia
+simultánea de componentes de difusión continua y saltos discontinuos
+introduce desafíos computacionales y teóricos sustanciales que no están
+presentes en el caso puramente difusivo.
+
+Las ecuaciones diferenciales estocásticas (SDEs) con saltos constituyen
+una clase fundamental de modelos en finanzas matemáticas, teoría de
+seguros y dinámica de poblaciones. La forma general de una SDE con
+saltos en \(\mathbb{R}^d\) es:
+
+\begin{equation}\protect\phantomsection\label{eq-sde_jumps_general}{
+\begin{aligned}
+X_t = {}& X_0 + \int_0^t a(s,X_s)\,d s + \int_0^t b(s,X_s)\,d W_s
++ \int_0^t \int_E R(s,X_{s-},v)\,\tilde{p}_\phi(d v, ds) \\
+& + \int_0^t \int_E R(s,X_{s-},v)\,\nu(d v)\,ds,
+\end{aligned}
+}\end{equation} donde: - \(a: [0,T] \times \mathbb{R} \to \mathbb{R}\)
+es el coeficiente de deriva (drift), -
+\(b: [0,T] \times \mathbb{R} \to \mathbb{R}\) es el coeficiente de
+difusión, - \(W = \{W_t\}_{t \geq 0}\) es un proceso de Wiener, -
+\(p_\phi\) es una medida aleatoria de Poisson con intensidad
+\(\nu(dv) dt\), -
+\(\tilde{p}_\phi(dv, ds) = p_\phi(dv, ds) - \nu(dv) ds\) es la medida de
+Poisson compensada, -
+\(R: [0,T] \times \mathbb{R} \times E \to \mathbb{R}\) describe la
+magnitud de los saltos, - \(E \subseteq \mathbb{R}^k \setminus \{0\}\)
+es el espacio de marcas (marks).
+
+La SDE con saltos compensados es: \[
+dX_t = \underbrace{a(t, X_t)\,dt}_{\text{drift original}} + \underbrace{b(t, X_t)\,dW_t}_{\text{difusión}} + \underbrace{\int_E R(t, X_{t-}, v)\,\tilde{p}_\phi(dv, dt)}_{\text{saltos compensados}}
+\] donde la medida compensada es: \[
+\tilde{p}_\phi(dv, dt) = p_\phi(dv, dt) - \phi(dv)\,dt
+\] Al expandir la integral con la medida compensada, obtenemos: \[
+\int_E R(t, X_{t-}, v)\,\tilde{p}_\phi(dv, dt) = \underbrace{\int_E R(t, X_{t-}, v)\,p_\phi(dv, dt)}_{\text{saltos brutos}} - \underbrace{\int_E R(t, X_{t-}, v)\,\phi(dv)\,dt}_{\text{compensación}}
+\] Por lo tanto, la SDE completa se puede escribir como: \[
+dX_t = a(t, X_t)\,dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\,p_\phi(dv, dt) - \int_E R(t, X_{t-}, v)\,\phi(dv)\,dt
+\] Para discretizar esta ecuación, reorganizamos los términos de la
+siguiente manera: \[
+dX_t = \underbrace{\left[a(t, X_t) - \int_E R(t, X_{t-}, v)\,\phi(dv)\right]}_{\text{drift compensado}} dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\,p_\phi(dv, dt)
+\] El término de compensación cambia de signo al moverse al drift,
+porque: \[
+a(t, X_t)\,dt - \int_E R(t, X_{t-}, v)\,\phi(dv)\,dt = \left[a(t, X_t) - \int_E c(t, X_{t-}, v)\,\phi(dv)\right] dt
+\]
+
+\bookmarksetup{startatroot}
+
+\chapter{}\label{section}
 
 \bookmarksetup{startatroot}
 
@@ -261,24 +2198,13 @@ medida y \(\{f_n\}_{n\in\mathbb{N}}\) una sucesión de funciones
 
 \bookmarksetup{startatroot}
 
-\chapter{}\label{section-3}
+\chapter*{Referencias}\label{referencias}
+\addcontentsline{toc}{chapter}{Referencias}
 
-\bookmarksetup{startatroot}
+\markboth{Referencias}{Referencias}
 
-\chapter{}\label{section-4}
+\printbibliography[heading=none]
 
-\bookmarksetup{startatroot}
-
-\chapter{}\label{section-5}
-
-\bookmarksetup{startatroot}
-
-\chapter*{References}\label{references}
-\addcontentsline{toc}{chapter}{References}
-
-\markboth{References}{References}
-
-\protect\phantomsection\label{refs}
 
 
 

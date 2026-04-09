@@ -12,7 +12,7 @@ website:
     hypothesis: true
 
 book:
-  title: "Aproximación numerica de la solucion para ecuaciones diferenciales estocasticas con saltos"
+  title: "Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos"
   language: es
   date: "09/03/2026"
   output-file: "Tesis_Maestria_MDL"
@@ -73,6 +73,7 @@ format:
       - before-body.tex
     documentclass: scrreprt
     papersize: us-letter
+    latex-engine: lualatex
     titlegraphic: assets/UNACH.png
     institution: Universidad Autónoma de Chiapas
     email: x180099@unach.mx

@@ -1,8 +1,9 @@
 ---
-title: "Untitled"
-format: html
+lang: es
+format:
+  html: default
+  pdf: default  
 ---
-
 
 # Resultados técnicos fundamentales
 
@@ -18,7 +19,7 @@ $$
 Se dice que la filtración satisface las hipótesis usuales si cumple las siguientes dos condiciones:
 
 i) Completitud:
-La $\sigma$-álgebra inicial \(\mathcal{F}_0\) contiene todos los conjuntos \(\mathbb{P}\)-nulos. Es decir:
+La $\sigma$-álgebra inicial $\mathcal{F}_0$ contiene todos los conjuntos $\mathbb{P}$-nulos. Es decir:
 $$
 \text{Si } A \in \mathcal{F} \text{ y } \mathbb{P}(A) = 0, \quad \text{entonces } A \in \mathcal{F}_0.
 $$
@@ -39,7 +40,7 @@ donde $\mathcal{N}$ es la colección de todos los conjuntos $\mathbb{P}$-nulos.
 :::
 
 ::: {#def-tiempo_paro}
-(Tiempo de paro). Una variable aleatoria $\tau : \Omega \to [0,\infty]$ es un \emph{tiempo de paro} respecto a $\{\ \mathcal{F} \}$ si $\{\tau \leq t\} \in \F_t$ para todo $t \geq 0$.
+(Tiempo de paro). Una variable aleatoria $\tau : \Omega \to [0,\infty]$ es un \emph{tiempo de paro} respecto a $\{\ \mathcal{F} \}$ si $\{\tau \leq t\} \in \mathcal{F}_t$ para todo $t \geq 0$.
 :::
 
 ::: {#def-Tiempos_paro_controlados}
@@ -57,9 +58,17 @@ $$
 $$\liminf_{n \to \infty} \int_X f_n \, d\mu \geq \int_X \liminf_{n \to \infty} f_n \, d\mu.$$
 :::
 
+:::: {.content-visible when-format="html"}
+::: proof
+Ver demostración completa @applebaum2009levy Corolario 1.1.2.$\quad \square$
+:::
+::::
+
+:::: {.content-visible when-format="pdf"}
 ::: proof
 Ver demostración completa @applebaum2009levy Corolario 1.1.2.
 :::
+::::
 
 ::: {#thm-con_monotona}
 *(Convergencia Monotona).* Sea $\{f_n\}_{n \in \mathbb{N}}$ una sucesión de funciones medibles no negativas tales que $0 \leq f_1 \leq f_2 \leq \cdots$ y $f_n \to f$ puntualmente. Entonces:
@@ -67,9 +76,17 @@ Ver demostración completa @applebaum2009levy Corolario 1.1.2.
 $$\lim_{n \to \infty} \int_X f_n \, d\mu = \int_X f \, d\mu.$$
 :::
 
-::: proof
-Ver demostración completa @applebaum2009levy Teorema 1.1.1
+:::: {.content-visible when-format="html"}
+::: {.proof style="text-align:justify"}
+Ver demostración completa @applebaum2009levy Teorema 1.1.1      $\quad \square$
 :::
+::::
+
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
+Ver demostración completa @applebaum2009levy Teorema 1.1.1 
+:::
+::::
 
 ::: {#thm-con_dom}
 (Convergencia Dominada). Sea $(X, \mathcal{A}, \mu)$ un espacio de medida y $\{f_n\}_{n\in\mathbb{N}}$ una sucesión de funciones $\mu$-medibles $f_n : X \to \mathbb{R}$. Supongamos que:
@@ -82,16 +99,36 @@ Entonces $f \in L^1(\mu)$ y
 
 $$\lim_{n \to \infty} \int_X f_n \, d\mu = \int_X f \, d\mu.$$
 :::
-
+:::: {.content-visible when-format="html"}
 ::: proof
-Ver demostración completa Teorema 1.34 [@rudin1987real] La idea central consiste en aplicar el Lema de Fatou a la sucesión $2g - |f_n - f| \geq 0$.
+Ver demostración completa Teorema 1.34 [@rudin1987real] La idea central consiste en aplicar el Lema de Fatou a la sucesión $2g - |f_n - f| \geq 0$.     $\quad \square$
 :::
+::::
+:::: {.content-visible when-format="pdf"}
+::: proof
+Ver demostración completa Teorema 1.34 [@rudin1987real] La idea central consiste en aplicar el Lema de Fatou a la sucesión $2g - |f_n - f| \geq 0$. 
+:::
+::::
 
 ::: {#thm-aprox_fun_simp}
 Sea $(X, \mathcal{A}, \mu)$ un espacio de medida $\sigma$-finito. Entonces, el conjunto de funciones simples integrables es denso en $L^2(X, \mathcal{A}, \mu)$. Es decir, para toda $f \in L^2(\mu)$ existe una sucesión de funciones simples $\{\phi_n\}$ tal que $\|\phi_n - f\|_{L^2(\mu)} \to 0.$
 :::
 
-::: proof
+:::: {.content-visible when-format="html"}
+::: {.proof style="text-align:justify"}
+Sea $f \in L^2(\mu)$. Como $f$ es medible, existen funciones simples $\psi_n$ tales que $\psi_n \to f$ puntualmente y $|\psi_n| \leq |f|$ para todo $n$ (ver [@folland1999real], Prop. 2.20). Entonces,
+
+$$|\psi_n - f|^2 \leq 4|f|^2 \in L^1(\mu).$$
+
+Por el @thm-con_dom,
+
+$$\int_X |\psi_n - f|^2 \, d\mu \to 0.$$
+
+Luego, $\|\psi_n - f\|_{L^2(\mu)} \to 0$. Además, al truncar $\psi_n$ en conjuntos de medida finita (posible por ser $\mu$ $\sigma$-finita), podemos asumir que cada $\psi_n$ es integrable.$\quad \square$
+:::
+::::
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
 Sea $f \in L^2(\mu)$. Como $f$ es medible, existen funciones simples $\psi_n$ tales que $\psi_n \to f$ puntualmente y $|\psi_n| \leq |f|$ para todo $n$ (ver [@folland1999real], Prop. 2.20). Entonces,
 
 $$|\psi_n - f|^2 \leq 4|f|^2 \in L^1(\mu).$$
@@ -102,6 +139,8 @@ $$\int_X |\psi_n - f|^2 \, d\mu \to 0.$$
 
 Luego, $\|\psi_n - f\|_{L^2(\mu)} \to 0$. Además, al truncar $\psi_n$ en conjuntos de medida finita (posible por ser $\mu$ $\sigma$-finita), podemos asumir que cada $\psi_n$ es integrable.
 :::
+::::
+
 ::: {style="text-align:justify"}
 En el contexto estocástico, aplicamos este resultado al espacio de medida $$(\Omega \times [0,T] \times Z, \; \mathcal{P} \otimes \mathcal{B}(Z), \; \mathbb{P} \otimes ds \otimes \nu),$$ que es $\sigma$-finito si $\nu$ lo es. Esto garantiza que cualquier proceso predecible cuadrado integrable puede aproximarse en $L^2$ por procesos simples.
 :::
@@ -109,14 +148,31 @@ En el contexto estocástico, aplicamos este resultado al espacio de medida $$(\O
 Sea $H$ un espacio de Hilbert y $\{x_n\} \subset H$ una sucesión tal que $x_n \to x$ en norma. Entonces $\|x_n\| \to \|x\|$
 :::
 
-::: proof
+:::: {.content-visible when-format="html"}
+::: {.proof style="text-align:justify"}
+Por la desigualdad triangular inversa, $$\big| \|x_n\| - \|x\| \big| \leq \|x_n - x\| \to 0.$$ $\quad \square$
+:::
+::::
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
 Por la desigualdad triangular inversa, $$\big| \|x_n\| - \|x\| \big| \leq \|x_n - x\| \to 0.$$
 :::
+::::
 
 ::: {#thm-principio_contraccion_banach}
 (Principio de contracción de Banach). Sea $(H, \|\cdot\|)$ un espacio de Banach y $\Phi: H \to H$ una contracción, es decir, existe $\kappa < 1$ tal que $\|\Phi(x) - \Phi(y)\| \leq \kappa \|x - y\|$ para todo $x, y \in H$. Entonces $\Phi$ tiene un único punto fijo en $H$.
 :::
 
+:::: {.content-visible when-format="html"}
+::: {.proof style="text-align:justify"}
+Ver @Istratescu2001a, Capítulo 3, Sección 3.1 $\square$
+:::
+::::
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
+Ver @Istratescu2001a, Capítulo 3, Sección 3.1
+:::
+::::
 ## Procesos Estocásticos Fundamentales
 
 
@@ -159,6 +215,17 @@ Se dice que una EDE tiene solución única por trayectorias si para cualquier pa
 ::: {#thm-Modificacion_cadlag}
 Toda martingala local en un espacio filtrado que satisface las hipótesis usuales admite una versión cádlág.
 :::
+:::: {.content-visible when-format="html"}
+::: proof
+
+:::
+::::
+
+:::: {.content-visible when-format="pdf"}
+::: proof
+
+:::
+::::
 
 ## Desigualdades y Lemmas Clásicos
 
@@ -166,13 +233,25 @@ Toda martingala local en un espacio filtrado que satisface las hipótesis usuale
 Sean $X, Y \in L^2(\Omega, \mathcal{F}, \mathbb{P})$. Entonces $$\bigl| \mathbb{E}[XY] \bigr|^2 \leq \mathbb{E}[X^2] \, \mathbb{E}[Y^2].$$ Además, la igualdad se da si y solo si existen $a, b \in \mathbb{R}$, no ambos nulos, tales que $$\mathbb{P}(aX = bY) = 1.$$
 :::
 
-::: proof
+
+:::: {.content-visible when-format="html"}
+::: {.proof style="text-align:justify"}
 Observemos que si $\mathbb{E}[Y^2] = 0$, entonces $Y = 0$ casi seguramente (c.s.), y ambas partes de la desigualdad son cero. Lo mismo ocurre si $\mathbb{E}[X^2] = 0$. Por lo tanto, nos resta probar que $$\mathbb{E}[X^2] > 0 \quad \text{y} \quad \mathbb{E}[Y^2] > 0$$ Para cualquier $\lambda \in \mathbb{R}$, consideremos la variable aleatoria $X - \lambda Y$. Como $(X - \lambda Y)^2 \geq 0$ c.s., se tiene $$\mathbb{E}[(X - \lambda Y)^2] \geq 0$$ Expandiendo la expresión: $$\mathbb{E}[(X - \lambda Y)^2] = \mathbb{E}[X^2] - 2\lambda \mathbb{E}[XY] + \lambda^2 \mathbb{E}[Y^2].$$ Definimos la función cuadrática $$f(\lambda) := \mathbb{E}[Y^2]\,\lambda^2 - 2\mathbb{E}[XY]\,\lambda + \mathbb{E}[X^2].$$ Entonces $f(\lambda) \geq 0$ para todo $\lambda \in \mathbb{R}$. Dado que $\mathbb{E}[Y^2] > 0$, el coeficiente principal es positivo. Un polinomio cuadrático $a\lambda^2 + b\lambda + c$ con $a > 0$ es no negativo en todo $\mathbb{R}$ si y solo si su discriminante es no positivo: $$\Delta = b^2 - 4ac \leq 0.$$ Aplicando esto con $a = \mathbb{E}[Y^2]$, $b = -2\mathbb{E}[XY]$, $c = \mathbb{E}[X^2]$, obtenemos: $$(-2\mathbb{E}[XY])^2 - 4\,\mathbb{E}[Y^2]\,\mathbb{E}[X^2] \leq 0
 \quad \Longrightarrow \quad
 4\,\mathbb{E}[XY]^2 \leq 4\,\mathbb{E}[X^2]\,\mathbb{E}[Y^2]$$ Dividiendo por $4$ y tomando valor absoluto (pues $\mathbb{E}[XY]$ puede ser negativo), concluimos: $$\bigl| \mathbb{E}[XY] \bigr|^2 \leq \mathbb{E}[X^2] \, \mathbb{E}[Y^2].$$ Ahora analizamos cuándo se cumple $$\bigl| \mathbb{E}[XY] \bigr|^2 = \mathbb{E}[X^2] \, \mathbb{E}[Y^2].$$ Esto equivale a que el discriminante sea exactamente cero, es decir, $\Delta = 0$. En tal caso, el polinomio $f(\lambda)$ tiene una raíz doble; es decir, existe tal que $\lambda_0 \in \mathbb{R}$ $$f(\lambda_0) = \mathbb{E}[(X - \lambda_0 Y)^2] = 0.$$ Pero $\mathbb{E}[Z^2] = 0$ implica $Z = 0$ c.s. Por lo tanto, $$ X - \lambda_0 Y = 0 \quad \text{c.s.} \quad \Longrightarrow \quad \mathbb{P}(X = \lambda_0 Y) = 1.$$ Esto muestra que existen constantes $a = 1$, $b = \lambda_0$ (no ambos nulos) tales que $\mathbb{P}(aX = bY) = 1$. Si en cambio $Y = 0$ c.s., tomamos $a = 0$, $b = 1$, y claramente $\mathbb{P}(0 \cdot X = 1 \cdot Y) = 1$.
 
-Recíprocamente, supongamos que existen $a, b \in \mathbb{R}$, no ambos nulos, tales que $\mathbb{P}(aX = bY) = 1.$ Si $a \neq 0$, entonces $X = \frac{b}{a} Y$ c.s., y entonces $$\mathbb{E}[XY] = \frac{b}{a} \mathbb{E}[Y^2], \qquad \mathbb{E}[X^2] = \left( \frac{b}{a} \right)^2 \mathbb{E}[Y^2],$$ de donde $$\mathbb{E}[X^2] \mathbb{E}[Y^2] = \left( \frac{b}{a} \right)^2 \mathbb{E}[Y^2]^2 = \bigl( \mathbb{E}[XY] \bigr)^2$$ Si $b \neq 0$, entonces $Y = \frac{a}{b} X$ c.s., y un cálculo análogo lleva a la misma conclusión. En ambos casos, se tiene igualdad en la desigualdad de Cauchy--Schwarz.
+Recíprocamente, supongamos que existen $a, b \in \mathbb{R}$, no ambos nulos, tales que $\mathbb{P}(aX = bY) = 1.$ Si $a \neq 0$, entonces $X = \frac{b}{a} Y$ c.s., y entonces $$\mathbb{E}[XY] = \frac{b}{a} \mathbb{E}[Y^2], \qquad \mathbb{E}[X^2] = \left( \frac{b}{a} \right)^2 \mathbb{E}[Y^2],$$ de donde $$\mathbb{E}[X^2] \mathbb{E}[Y^2] = \left( \frac{b}{a} \right)^2 \mathbb{E}[Y^2]^2 = \bigl( \mathbb{E}[XY] \bigr)^2$$ Si $b \neq 0$, entonces $Y = \frac{a}{b} X$ c.s., y un cálculo análogo lleva a la misma conclusión. En ambos casos, se tiene igualdad en la desigualdad de Cauchy--Schwarz. $\quad \square$
 :::
+::::
+
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
+Observemos que si $\mathbb{E}[Y^2] = 0$, entonces $Y = 0$ casi seguramente (c.s.), y ambas partes de la desigualdad son cero. Lo mismo ocurre si $\mathbb{E}[X^2] = 0$. Por lo tanto, nos resta probar que $$\mathbb{E}[X^2] > 0 \quad \text{y} \quad \mathbb{E}[Y^2] > 0$$ Para cualquier $\lambda \in \mathbb{R}$, consideremos la variable aleatoria $X - \lambda Y$. Como $(X - \lambda Y)^2 \geq 0$ c.s., se tiene $$\mathbb{E}[(X - \lambda Y)^2] \geq 0$$ Expandiendo la expresión: $$\mathbb{E}[(X - \lambda Y)^2] = \mathbb{E}[X^2] - 2\lambda \mathbb{E}[XY] + \lambda^2 \mathbb{E}[Y^2].$$ Definimos la función cuadrática $$f(\lambda) := \mathbb{E}[Y^2]\,\lambda^2 - 2\mathbb{E}[XY]\,\lambda + \mathbb{E}[X^2].$$ Entonces $f(\lambda) \geq 0$ para todo $\lambda \in \mathbb{R}$. Dado que $\mathbb{E}[Y^2] > 0$, el coeficiente principal es positivo. Un polinomio cuadrático $a\lambda^2 + b\lambda + c$ con $a > 0$ es no negativo en todo $\mathbb{R}$ si y solo si su discriminante es no positivo: $$\Delta = b^2 - 4ac \leq 0.$$ Aplicando esto con $a = \mathbb{E}[Y^2]$, $b = -2\mathbb{E}[XY]$, $c = \mathbb{E}[X^2]$, obtenemos: $$(-2\mathbb{E}[XY])^2 - 4\,\mathbb{E}[Y^2]\,\mathbb{E}[X^2] \leq 0
+\quad \Longrightarrow \quad
+4\,\mathbb{E}[XY]^2 \leq 4\,\mathbb{E}[X^2]\,\mathbb{E}[Y^2]$$ Dividiendo por $4$ y tomando valor absoluto (pues $\mathbb{E}[XY]$ puede ser negativo), concluimos: $$\bigl| \mathbb{E}[XY] \bigr|^2 \leq \mathbb{E}[X^2] \, \mathbb{E}[Y^2].$$ Ahora analizamos cuándo se cumple $$\bigl| \mathbb{E}[XY] \bigr|^2 = \mathbb{E}[X^2] \, \mathbb{E}[Y^2].$$ Esto equivale a que el discriminante sea exactamente cero, es decir, $\Delta = 0$. En tal caso, el polinomio $f(\lambda)$ tiene una raíz doble; es decir, existe tal que $\lambda_0 \in \mathbb{R}$ $$f(\lambda_0) = \mathbb{E}[(X - \lambda_0 Y)^2] = 0.$$ Pero $\mathbb{E}[Z^2] = 0$ implica $Z = 0$ c.s. Por lo tanto, $$ X - \lambda_0 Y = 0 \quad \text{c.s.} \quad \Longrightarrow \quad \mathbb{P}(X = \lambda_0 Y) = 1.$$ Esto muestra que existen constantes $a = 1$, $b = \lambda_0$ (no ambos nulos) tales que $\mathbb{P}(aX = bY) = 1$. Si en cambio $Y = 0$ c.s., tomamos $a = 0$, $b = 1$, y claramente $\mathbb{P}(0 \cdot X = 1 \cdot Y) = 1$.
+
+Recíprocamente, supongamos que existen $a, b \in \mathbb{R}$, no ambos nulos, tales que $\mathbb{P}(aX = bY) = 1.$ Si $a \neq 0$, entonces $X = \frac{b}{a} Y$ c.s., y entonces $$\mathbb{E}[XY] = \frac{b}{a} \mathbb{E}[Y^2], \qquad \mathbb{E}[X^2] = \left( \frac{b}{a} \right)^2 \mathbb{E}[Y^2],$$ de donde $$\mathbb{E}[X^2] \mathbb{E}[Y^2] = \left( \frac{b}{a} \right)^2 \mathbb{E}[Y^2]^2 = \bigl( \mathbb{E}[XY] \bigr)^2$$ Si $b \neq 0$, entonces $Y = \frac{a}{b} X$ c.s., y un cálculo análogo lleva a la misma conclusión. En ambos casos, se tiene igualdad en la desigualdad de Cauchy--Schwarz. 
+::::
 
 ::: {#thm-D_C_S}
 *Para cualesquier* $x_1, x_2, \ldots, x_n \in \mathbb{R}$, se cumple:
@@ -180,15 +259,33 @@ Recíprocamente, supongamos que existen $a, b \in \mathbb{R}$, no ambos nulos, t
 $$\left(\sum_{i=1}^n x_i\right)^2 \leq n \sum_{i=1}^n x_i^2.$$
 :::
 
-::: proof
+:::: {.content-visible when-format="html"}
+::: {.proof style="text-align:justify"}
 Aplicando la desigualdad de Cauchy-Schwarz a los vectores $\mathbf{x} = (x_1, \ldots, x_n)$ y $\mathbf{1} = (1, \ldots, 1)$ en $\mathbb{R}^n$ se tiene:
 
 $$\left(\sum_{i=1}^n x_i \cdot 1\right)^2 \leq \left(\sum_{i=1}^n x_i^2\right)\left(\sum_{i=1}^n 1^2\right) = \left(\sum_{i=1}^n x_i^2\right) \cdot n.$$
 
 Alternativamente, usando la *desigualdad de Jensen* con $\phi(x) = x^2$ (convexa) se da:
 
-$$\left(\frac{1}{n}\sum_{i=1}^n x_i\right)^2 \leq \frac{1}{n}\sum_{i=1}^n x_i^2 \implies \left(\sum_{i=1}^n x_i\right)^2 \leq n \sum_{i=1}^n x_i^2. \quad \square$$
+$$
+\left(\frac{1}{n}\sum_{i=1}^n x_i\right)^2 \leq \frac{1}{n}\sum_{i=1}^n x_i^2 \implies \left(\sum_{i=1}^n x_i\right)^2 \leq n \sum_{i=1}^n x_i^2. \quad \square 
+$$
 :::
+::::
+
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
+Aplicando la desigualdad de Cauchy-Schwarz a los vectores $\mathbf{x} = (x_1, \ldots, x_n)$ y $\mathbf{1} = (1, \ldots, 1)$ en $\mathbb{R}^n$ se tiene:
+
+$$\left(\sum_{i=1}^n x_i \cdot 1\right)^2 \leq \left(\sum_{i=1}^n x_i^2\right)\left(\sum_{i=1}^n 1^2\right) = \left(\sum_{i=1}^n x_i^2\right) \cdot n.$$
+
+Alternativamente, usando la *desigualdad de Jensen* con $\phi(x) = x^2$ (convexa) se da:
+
+$$
+\left(\frac{1}{n}\sum_{i=1}^n x_i\right)^2 \leq \frac{1}{n}\sum_{i=1}^n x_i^2 \implies \left(\sum_{i=1}^n x_i\right)^2 \leq n \sum_{i=1}^n x_i^2.
+$$
+:::
+::::
 
 **Observación** *Esta desigualdad es un caso particular de la desigualdad de Cauchy-Schwarz general en espacios de Hilbert. Para* $X, Y \in L^2(\Omega)$:
 
@@ -202,11 +299,20 @@ $$2ab \leq a^2 + b^2.$$
 *La igualdad se alcanza si y solo si* $a = b$.
 :::
 
-::: proof
+:::: {.content-visible when-format="html"}
+::: {.proof style="text-align:justify"}
 Por la desigualdad *aritmético-geométric*a para números no negativos:
 
 $$\sqrt{a^2 b^2} \leq \frac{a^2 + b^2}{2} \implies |ab| \leq \frac{a^2 + b^2}{2} \implies 2ab \leq a^2 + b^2. \quad \square$$
 :::
+::::
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
+Por la desigualdad *aritmético-geométric*a para números no negativos:
+
+$$\sqrt{a^2 b^2} \leq \frac{a^2 + b^2}{2} \implies |ab| \leq \frac{a^2 + b^2}{2} \implies 2ab \leq a^2 + b^2.$$
+:::
+::::
 
 ::: {#lem-Borel_cantelli}
 (Borel–Cantelli). Si $\sum_{n=1}^\infty \mathbb{P}(A_n) < \infty$, entonces $\mathbb{P}(A_n \text{ i.o.}) = 0$.
@@ -220,17 +326,45 @@ Si $M$ es una martingala en $L^2$, entonces $$\mathbb{E}\left[ \sup_{0 \leq s \l
 Sea $u, \alpha: [0,T] \to \mathbb{R}_{+}$ funciones continuas, $\beta \in L^1([0,T])$, con $\beta \geq 0$, tales que $$u(t) \leq \alpha(t) + \int_0^t \beta(s) u(s) ds, \quad \forall t \in [0,T].$$ Entonces, $$u(t) \leq \alpha(t) \exp\left( \int_0^t \beta(s) ds \right).$$ En particular, si $\alpha \equiv 0$, entonces $u \equiv 0$.
 :::
 
-::: proof
-Definimos la función auxiliar $$v(t) := \int_{0}^{t} \beta(s) u(s) \, ds, \quad t \in [0,T].$$ Dado que $\beta \in L^{1}([0,T])$ y $u \in C([0,T])$, el producto $\beta u$ pertenece a $L^{1}([0,T])$, y por lo tanto $v \in C([0,T])$. Además, $v$ es absolutamente continua y satisface $v(0) = 0$ y $$v'(t) = \beta(t) u(t) \quad \text{para casi todo } t \in [0,T].$$ Por hipótesis, $$u(t) \leq \alpha(t) + v(t), \quad \forall t \in [0,T],$$ y, sustituyendo en la derivada de $v$, obtenemos $$v'(t) \leq \beta(t) \bigl( \alpha(t) + v(t) \bigr) \quad \text{casi en todas partes en } [0,T].$$ Consideremos ahora la función $$w(t) := v(t) \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right), \quad t \in [0,T].$$ La función $w$ es absolutamente continua (pues $v$ y la exponencial lo son), y diferenciable casi en todas partes. Derivando se obtiene $$w'(t) = \Bigl[ v'(t) - \beta(t) v(t) \Bigr] \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right)
-\leq \beta(t) \alpha(t) \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right) \quad \text{c.t.p.}$$ Integrando desde $0$ hasta $t$ y usando que $w(0) = 0$, resulta $$w(t) \leq \int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds.$$ Multiplicando ambos lados por $\exp\bigl(\int_{0}^{t} \beta(s) \, ds \bigr)$ obtenemos $$v(t) \leq \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right) \int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds.$$ Dado que $\alpha$ es no decreciente, para todo $s \in [0,t]$ se tiene $\alpha(s) \leq \alpha(t)$. Por lo tanto, \begin{align*}
+:::: {.content-visible when-format="html"}
+::: {.proof style="text-align:justify"}
+Definimos la función auxiliar $$v(t) := \int_{0}^{t} \beta(s) u(s) \, ds, \quad t \in [0,T].$$ Dado que $\beta \in L^{1}([0,T])$ y $u \in C([0,T])$, el producto $\beta u$ pertenece a $L^{1}([0,T])$, y por lo tanto $v \in C([0,T])$. Además, $v$ es absolutamente continua y satisface $v(0) = 0$ y $$v'(t) = \beta(t) u(t) \quad \text{para casi todo } t \in [0,T].$$ Por hipótesis, $$u(t) \leq \alpha(t) + v(t), \quad \forall t \in [0,T],$$ y, sustituyendo en la derivada de $v$, obtenemos $$v'(t) \leq \beta(t) \bigl( \alpha(t) + v(t) \bigr) \quad \text{casi en todas partes en } [0,T].$$ Consideremos ahora la función $$w(t) := v(t) \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right), \quad t \in [0,T].$$ La función $w$ es absolutamente continua (pues $v$ y la exponencial lo son), y diferenciable casi en todas partes. Derivando se obtiene 
+$$w'(t) = \Bigl[ v'(t) - \beta(t) v(t) \Bigr] \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right)
+\leq \beta(t) \alpha(t) \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right) \quad \text{c.t.p.}
+$$ 
+Integrando desde $0$ hasta $t$ y usando que $w(0) = 0$, resulta $$w(t) \leq \int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds.$$ Multiplicando ambos lados por $\exp\bigl(\int_{0}^{t} \beta(s) \, ds \bigr)$ obtenemos $$v(t) \leq \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right) \int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds.$$ Dado que $\alpha$ es no decreciente, para todo $s \in [0,t]$ se tiene $\alpha(s) \leq \alpha(t)$. Por lo tanto, 
+$$\begin{align*}
 \int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds
 \leq \alpha(t) \int_{0}^{t} \beta(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds\\
 =\alpha(t) \Bigl( 1 - \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right) \Bigr).
-\end{align*} Sustituyendo en la expresión anterior para $v(t)$, se sigue que $$v(t) \leq \alpha(t) \Bigl( \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right) - 1 \Bigr).$$ Finalmente, combinando con la desigualdad $u(t) \leq \alpha(t) + v(t)$, obtenemos $$u(t) \leq \alpha(t) + \alpha(t) \Bigl( \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right) - 1 \Bigr)
-= \alpha(t) \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right),$$ lo cual concluye la demostración. El caso $\alpha \equiv 0$ se deduce inmediatamente: la desigualdad implica $u(t) \leq 0$. Si además $u \geq 0$, entonces $u \equiv 0$ en $[0,T]$.
+\end{align*}$$
+Sustituyendo en la expresión anterior para $v(t)$, se sigue que $$v(t) \leq \alpha(t) \Bigl( \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right) - 1 \Bigr).$$ Finalmente, combinando con la desigualdad $u(t) \leq \alpha(t) + v(t)$, obtenemos 
+$$u(t) \leq \alpha(t) + \alpha(t) \Bigl( \exp \left( \int_{0}^{t} \beta(s) \, ds \right) - 1 \Bigr)
+= \alpha(t) \exp \left( \int_{0}^{t} \beta(s), ds \right)$$, 
+lo cual concluye la demostración. El caso $\alpha \equiv 0$ se deduce inmediatamente: la desigualdad implica $u(t) \leq 0$. Si además $u \geq 0$, entonces $u \equiv 0$ en $[0,T]. \quad \square $
 :::
+::::
 
-## Medidas Aleatorias de Poisson
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
+Definimos la función auxiliar $$v(t) := \int_{0}^{t} \beta(s) u(s) \, ds, \quad t \in [0,T].$$ Dado que $\beta \in L^{1}([0,T])$ y $u \in C([0,T])$, el producto $\beta u$ pertenece a $L^{1}([0,T])$, y por lo tanto $v \in C([0,T])$. Además, $v$ es absolutamente continua y satisface $v(0) = 0$ y $$v'(t) = \beta(t) u(t) \quad \text{para casi todo } t \in [0,T].$$ Por hipótesis, $$u(t) \leq \alpha(t) + v(t), \quad \forall t \in [0,T],$$ y, sustituyendo en la derivada de $v$, obtenemos $$v'(t) \leq \beta(t) \bigl( \alpha(t) + v(t) \bigr) \quad \text{casi en todas partes en } [0,T].$$ Consideremos ahora la función $$w(t) := v(t) \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right), \quad t \in [0,T].$$ La función $w$ es absolutamente continua (pues $v$ y la exponencial lo son), y diferenciable casi en todas partes. Derivando se obtiene 
+$$w'(t) = \Bigl[ v'(t) - \beta(t) v(t) \Bigr] \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right)
+\leq \beta(t) \alpha(t) \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right) \quad \text{c.t.p.}
+$$ 
+Integrando desde $0$ hasta $t$ y usando que $w(0) = 0$, resulta $$w(t) \leq \int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds.$$ Multiplicando ambos lados por $\exp\bigl(\int_{0}^{t} \beta(s) \, ds \bigr)$ obtenemos $$v(t) \leq \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right) \int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds.$$ Dado que $\alpha$ es no decreciente, para todo $s \in [0,t]$ se tiene $\alpha(s) \leq \alpha(t)$. Por lo tanto, 
+$$\begin{align*}
+\int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds
+\leq \alpha(t) \int_{0}^{t} \beta(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds\\
+=\alpha(t) \Bigl( 1 - \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right) \Bigr).
+\end{align*}$$
+Sustituyendo en la expresión anterior para $v(t)$, se sigue que $$v(t) \leq \alpha(t) \Bigl( \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right) - 1 \Bigr).$$ Finalmente, combinando con la desigualdad $u(t) \leq \alpha(t) + v(t)$, obtenemos 
+$$u(t) \leq \alpha(t) + \alpha(t) \Bigl( \exp \left( \int_{0}^{t} \beta(s) \, ds \right) - 1 \Bigr)
+= \alpha(t) \exp \left( \int_{0}^{t} \beta(s), ds \right)$$, 
+lo cual concluye la demostración. El caso $\alpha \equiv 0$ se deduce inmediatamente: la desigualdad implica $u(t) \leq 0$. Si además $u \geq 0$, entonces $u \equiv 0$ en $[0,T].$
+:::
+::::
+
+## Medidas Aleatorias de Poisson. {#sec-medida_aleatoria_poisson}
 
 ::: {#def-punto_absorbente}
 Sea $(Z, \mathcal{B}(Z))$ un espacio medible polaco o de Lusin. El punto absorbente es un elemento $\partial \notin Z$ que se añade al espacio de estados para formar:
@@ -301,7 +435,7 @@ El proceso de Poisson estacionario $k$ es un caso específico de proceso puntual
 :::
 
 ::: {#def-Espacio_topológico_Hausdorff}
-(Espacio topol´ogico Hausdorff). Sea $(Z, \tau)$ un espacio topológico, es decir, $Z$ es un conjunto no vacío y $\tau \subseteq \mathcal{P}(Z)$ es una colección de subconjuntos (llamados abiertos) que satisface
+(Espacio topológico Hausdorff). Sea $(Z, \tau)$ un espacio topológico, es decir, $Z$ es un conjunto no vacío y $\tau \subseteq \mathcal{P}(Z)$ es una colección de subconjuntos (llamados abiertos) que satisface
 
 - $\varnothing, Z \in \tau$,
 
@@ -330,30 +464,44 @@ $N(dt,dz)$: medida aleatoria de Poisson en $\mathbb{R}_+ \times Z$, donde $Z$ es
 :::
 
 ::: {#def-1}
-(Conjunto de tiempos de salto $D_p(\omega)). Para cada realización $\omega \in \Omega$, se define el conjunto de tiempos de salto como: $$D_p(\omega) := \left\{ t > 0 : p(t, \omega) \in Z \right\}.$$ Este conjunto recoge todos los instantes $t > 0$ en los cuales el proceso puntual $p$ registra un salto con marca en el espacio de estados $Z$.
+(Conjunto de tiempos de salto $D_p(\omega)$). Para cada realización $\omega \in \Omega$, se define el conjunto de tiempos de salto como: $$D_p(\omega) := \left\{ t > 0 : p(t, \omega) \in Z \right\}.$$ Este conjunto recoge todos los instantes $t > 0$ en los cuales el proceso puntual $p$ registra un salto con marca en el espacio de estados $Z$.
 :::
 
 ::: {#thm-orto_mo_corre}
 Sean $A, B \in \mathcal{B}([0,T]) \otimes \mathcal{B}(Z)$ con $A \cap B = \emptyset$. Entonces $$\mathbb{E}\big[ \widetilde{N}(A) \, \widetilde{N}(B) \big] = 0.$$
 :::
 
-::: proof
+:::: {.content-visible when-format="html"}
+::: {.proof style="text-align:justify"}
+Por definición de la medida compensada, $$\widetilde{N}(A) = N(A) - \mu(A), \quad \widetilde{N}(B) = N(B) - \mu(B),$$ donde $\mu = ds \otimes \nu$. Como $A \cap B = \emptyset$, los incrementos $N(A)$ y $N(B)$ son independientes (propiedad de la medida de Poisson). Luego, $$\mathbb{E}[N(A) N(B)] = \mathbb{E}[N(A)] \, \mathbb{E}[N(B)] = \mu(A) \mu(B).$$ Por lo tanto, $$\mathbb{E}[\widetilde{N}(A) \widetilde{N}(B)] = \mathbb{E}[N(A)N(B)] - \mu(A)\mu(B) - \mu(B)\mathbb{E}[N(A)] + \mu(A)\mu(B) = 0. \quad \square$$
+:::
+::::
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
 Por definición de la medida compensada, $$\widetilde{N}(A) = N(A) - \mu(A), \quad \widetilde{N}(B) = N(B) - \mu(B),$$ donde $\mu = ds \otimes \nu$. Como $A \cap B = \emptyset$, los incrementos $N(A)$ y $N(B)$ son independientes (propiedad de la medida de Poisson). Luego, $$\mathbb{E}[N(A) N(B)] = \mathbb{E}[N(A)] \, \mathbb{E}[N(B)] = \mu(A) \mu(B).$$ Por lo tanto, $$\mathbb{E}[\widetilde{N}(A) \widetilde{N}(B)] = \mathbb{E}[N(A)N(B)] - \mu(A)\mu(B) - \mu(B)\mathbb{E}[N(A)] + \mu(A)\mu(B) = 0.$$
 :::
+::::
 
 ::: {#thm-Fubinni_esperanzas}
 Sea $f : \Omega \times [0,T] \times Z \to \mathbb{R}$ una función $\mathbb{P} \otimes ds \otimes \nu$-medible. Si $f \geq 0$ ,o $\mathbb{E}\!\left[ \int_0^T \int_Z |f(\omega,s,z)| \, \nu(dz) ds \right] < \infty$, entonces $$\mathbb{E}\!\left[ \int_0^T \int_Z f(\omega,s,z) \, \nu(dz) ds \right] = \int_0^T \int_Z \mathbb{E}[f(\cdot,s,z)] \, \nu(dz) ds.$$
 :::
 
+:::: {.content-visible when-format="html"}
+::: proof
+Es una consecuencia directa del Teorema de Fubini para espacios de medida producto. Como $\mathbb{P}, \ ds$ y $\nu$ son $\sigma$-finitas, la medida producto $\mathbb{P} \otimes ds \otimes \nu$ es $\sigma$-finita, y el resultado se aplica. $\quad \square$
+:::
+::::
+:::: {.content-visible when-format="pdf"}
 ::: proof
 Es una consecuencia directa del Teorema de Fubini para espacios de medida producto. Como $\mathbb{P}, \ ds$ y $\nu$ son $\sigma$-finitas, la medida producto $\mathbb{P} \otimes ds \otimes \nu$ es $\sigma$-finita, y el resultado se aplica.
 :::
+::::
 
 ::: {style="text-align:justify"}
 En la Isometría de Itô, el @thm-Fubinni_esperanzas permite escribir $$\mathbb{E}\left[ \int_0^t \int_Z R(s,z)^2 \, \nu(dz) ds \right] = \int_0^t \int_Z \mathbb{E}[R(s,z)^2] \, \nu(dz) ds,$$ lo cual facilita el análisis y la comparación con la varianza de la integral estocástica. También justifica que la norma en $L^2_{\text{pred}}(\widetilde{N})$ está bien definida.
 :::
 
-## Espacios Funcionales para Procesos Predecibles
+## Espacios Funcionales para Procesos Predecibles. {#sec-proc_predecibles}
 
 Definición del espacio $L^2_{\text{pred}}(\widetilde{N})$ y su norma
 
@@ -363,11 +511,18 @@ El conjunto $\mathcal{E}$ de procesos elementales simples predecibles es denso e
 $$L^2_{\text{pred}}(\widetilde{N}) := \left\{ R : \mathbb{E}\!\left[ \int_0^T \int_Z R(s,z)^2 \, \nu(dz) ds \right] < \infty \right\}$$ dotado de la norma $$\|R\| := \left( \mathbb{E}\!\left[ \int_0^T \int_Z R(s,z)^2 \, \nu(dz) ds \right] \right)^{1/2}.$$
 :::
 
+:::: {.content-visible when-format="html"}
 ::: {.proof style="text-align:justify"}
-Sea $R \in L^2_{\text{pred}}(\widetilde{N})$. Por el resultado anterior, existe una sucesión de funciones simples $\phi_n$ (no necesariamente predecibles) tal que $\|\phi_n - R\| \to 0$. Cada $\phi_n$ es $\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z)$-medible. Dado que la $\sigma$-álgebra predecible $\mathcal{P}$ es generada por procesos adaptados y càglàd, y la filtración satisface las condiciones usuales, el espacio $L^2(\mathcal{P} \otimes \mathcal{B}(Z))$ es un subespacio cerrado de $L^2(\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z))$. Existe, por tanto, una proyección ortogonal de $\phi_n$ sobre este subespacio, sin embargo, basta observar que cualquier función simple puede aproximarse por funciones simples $\mathcal{P} \otimes \mathcal{B}(Z)$-medibles [@applebaum2009levy] Más explícitamente, uno puede refinar la partición de $[0,T]$ y usar funciones constantes en intervalos $(t_{i-1}, t_i]$ con coeficientes $\mathcal{F}_{t_{i-1}}$-medibles. Esto define una sucesión $\{R_n\} \subset \mathcal{E}$ tal que $\|R_n - R\| \to 0$.
+Sea $R \in L^2_{\text{pred}}(\widetilde{N})$. Por el resultado anterior, existe una sucesión de funciones simples $\phi_n$ (no necesariamente predecibles) tal que $\|\phi_n - R\| \to 0$. Cada $\phi_n$ es $\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z)$-medible. Dado que la $\sigma$-álgebra predecible $\mathcal{P}$ es generada por procesos adaptados y càglàd, y la filtración satisface las condiciones usuales, el espacio $L^2(\mathcal{P} \otimes \mathcal{B}(Z))$ es un subespacio cerrado de $L^2(\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z))$. Existe, por tanto, una proyección ortogonal de $\phi_n$ sobre este subespacio, sin embargo, basta observar que cualquier función simple puede aproximarse por funciones simples $\mathcal{P} \otimes \mathcal{B}(Z)$-medibles [@applebaum2009levy] Más explícitamente, uno puede refinar la partición de $[0,T]$ y usar funciones constantes en intervalos $(t_{i-1}, t_i]$ con coeficientes $\mathcal{F}_{t_{i-1}}$-medibles. Esto define una sucesión $\{R_n\} \subset \mathcal{E}$ tal que $\|R_n - R\| \to 0. \quad \square$
 :::
+::::
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
+Sea $R \in L^2_{\text{pred}}(\widetilde{N})$. Por el resultado anterior, existe una sucesión de funciones simples $\phi_n$ (no necesariamente predecibles) tal que $\|\phi_n - R\| \to 0$. Cada $\phi_n$ es $\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z)$-medible. Dado que la $\sigma$-álgebra predecible $\mathcal{P}$ es generada por procesos adaptados y càglàd, y la filtración satisface las condiciones usuales, el espacio $L^2(\mathcal{P} \otimes \mathcal{B}(Z))$ es un subespacio cerrado de $L^2(\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z))$. Existe, por tanto, una proyección ortogonal de $\phi_n$ sobre este subespacio, sin embargo, basta observar que cualquier función simple puede aproximarse por funciones simples $\mathcal{P} \otimes \mathcal{B}(Z)$-medibles [@applebaum2009levy] Más explícitamente, uno puede refinar la partición de $[0,T]$ y usar funciones constantes en intervalos $(t_{i-1}, t_i]$ con coeficientes $\mathcal{F}_{t_{i-1}}$-medibles. Esto define una sucesión $\{R_n\} \subset \mathcal{E}$ tal que $\|R_n - R\| \to 0.$
+:::
+::::
 
-## La Integral de Itô para Movimiento Browniano
+## La Integral de Itô para Movimiento Browniano. {#sec-Ito}
 
 ::: {#def-procesp_Simple}
 Sea $0 = t_0 < t_1 < \cdots < t_n = T$ una partición finita de $[0,T]$. Un proceso simple es un proceso de la forma $$X_t(\omega) = \sum_{k=0}^{n-1} X^{(k)}(\omega) \, \mathbf{1}_{[t_k, t_{k+1})}(t),$$ donde cada $X^{(k)}$ es una variable aleatoria $\mathcal{F}_{t_k}$-medible y cuadrado integrable.
@@ -425,16 +580,34 @@ Denotamos por $\mathcal{L}^2_{\mathrm{loc}}$ al espacio de procesos medibles y a
 Sea $R = R(t,z,\omega)$ un proceso previsible tal que $$\mathbb{E}\left[ \int_0^T \int_Z R(s,z)^2 \nu(dz) ds \right] < \infty.$$ Entonces $$\mathbb{E}\left[ \left( \int_0^t \int_Z R(s,z) \widetilde{N}(ds,dz) \right)^2 \right] = \mathbb{E}\left[ \int_0^t \int_Z R(s,z)^2 \nu(dz) ds \right].$$
 :::
 
-::: proof
+:::: {.content-visible when-format="htnl"}
+::: {.proof style="text-align:justify"}
+Consideramos el caso en que $R$ es un proceso elemental simple de la forma $$R(s,z,\omega) = \sum_{i=1}^{n} \sum_{j=1}^{m} a_{ij} \mathbf{1}_{(t_{i-1}, t_i]}(s) \mathbf{1}_{A_j}(z),$$ con $a_{ij} \in \mathbb{R}, \mathcal{F}_{t_{i-1}}\text{-medible}$, y $A_j \subset Z$ medibles disjuntos con $nu(A_j) < \infty$. En este caso, la integral estocástica es $$I_t = \sum_{i=1}^{n} \sum_{j=1}^{m} a_{ij} \left[ N((t_{i-1} \wedge t, t_i \wedge t] \times A_j) - \nu(A_j)(t_i \wedge t - t_{i-1} \wedge t) \right].$$ Dado que los incrementos de $\widetilde{N}$ sobre rectángulos disjuntos son no correlacionados y $\mathrm{Var}(N((a,b] \times A)) = \nu(A)(b-a)$, se tiene $$\mathbb{E}[I_t^2] = \sum_{i=1}^{n} \sum_{j=1}^{m} a_{ij}^2 \nu(A_j)(t_i \wedge t - t_{i-1} \wedge t) = \mathbb{E}\left[ \int_0^t \int_Z R(s,z)^2 \, \nu(dz) \, ds \right].$$ Ahora para el caso general, sea $R$ un proceso predecible en $L^2_{\text{pred}}(\widetilde{N})$. Existe una sucesión de procesos elementales simples $\{R_n\}$ tal que $$\lim_{n\to\infty} \mathbb{E}\left[ \int_0^T \int_Z |R_n(s,z) - R(s,z)|^2 \, \nu(dz) \, ds \right] = 0.$$ Definiendo $I_t^n = \int_0^t \int_Z R_n(s,z) \, \widetilde{N}(ds,dz)$, $I_t = \int_0^t \int_Z R(s,z) \, \widetilde{N}(ds,dz)$ se tiene $I_t^n \to I_t$ en $L^2(\Omega)$ uniformemente en $t\in[0,T]$. Por continuidad de la norma $L^2$ y el caso anterior para un proceso elemental simple, $$\mathbb{E}[(I_t^n)^2] = \mathbb{E}\left[ \int_0^t \int_Z R_n(s,z)^2 \, \nu(dz) \, ds \right] \to \mathbb{E}\left[ \int_0^t \int_Z R(s,z)^2 \, \nu(dz) \, ds \right],$$ y también $\mathbb{E}[(I_t^n)^2] \to \mathbb{E}[I_t^2]$. Por unicidad del límite, se concluye la igualdad. $\quad \square$
+:::
+::::
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
 Consideramos el caso en que $R$ es un proceso elemental simple de la forma $$R(s,z,\omega) = \sum_{i=1}^{n} \sum_{j=1}^{m} a_{ij} \mathbf{1}_{(t_{i-1}, t_i]}(s) \mathbf{1}_{A_j}(z),$$ con $a_{ij} \in \mathbb{R}, \mathcal{F}_{t_{i-1}}\text{-medible}$, y $A_j \subset Z$ medibles disjuntos con $nu(A_j) < \infty$. En este caso, la integral estocástica es $$I_t = \sum_{i=1}^{n} \sum_{j=1}^{m} a_{ij} \left[ N((t_{i-1} \wedge t, t_i \wedge t] \times A_j) - \nu(A_j)(t_i \wedge t - t_{i-1} \wedge t) \right].$$ Dado que los incrementos de $\widetilde{N}$ sobre rectángulos disjuntos son no correlacionados y $\mathrm{Var}(N((a,b] \times A)) = \nu(A)(b-a)$, se tiene $$\mathbb{E}[I_t^2] = \sum_{i=1}^{n} \sum_{j=1}^{m} a_{ij}^2 \nu(A_j)(t_i \wedge t - t_{i-1} \wedge t) = \mathbb{E}\left[ \int_0^t \int_Z R(s,z)^2 \, \nu(dz) \, ds \right].$$ Ahora para el caso general, sea $R$ un proceso predecible en $L^2_{\text{pred}}(\widetilde{N})$. Existe una sucesión de procesos elementales simples $\{R_n\}$ tal que $$\lim_{n\to\infty} \mathbb{E}\left[ \int_0^T \int_Z |R_n(s,z) - R(s,z)|^2 \, \nu(dz) \, ds \right] = 0.$$ Definiendo $I_t^n = \int_0^t \int_Z R_n(s,z) \, \widetilde{N}(ds,dz)$, $I_t = \int_0^t \int_Z R(s,z) \, \widetilde{N}(ds,dz)$ se tiene $I_t^n \to I_t$ en $L^2(\Omega)$ uniformemente en $t\in[0,T]$. Por continuidad de la norma $L^2$ y el caso anterior para un proceso elemental simple, $$\mathbb{E}[(I_t^n)^2] = \mathbb{E}\left[ \int_0^t \int_Z R_n(s,z)^2 \, \nu(dz) \, ds \right] \to \mathbb{E}\left[ \int_0^t \int_Z R(s,z)^2 \, \nu(dz) \, ds \right],$$ y también $\mathbb{E}[(I_t^n)^2] \to \mathbb{E}[I_t^2]$. Por unicidad del límite, se concluye la igualdad.
 :::
+::::
 
 ## Fórmula de Itô
 
 
 ::: {#thm-Formula_ito_unidimen}
-Sea $f \in C^2(\mathbb{R})$ y $\{B_t\}_{t \geq 0}$ un movimiento Browniano. Entonces, para todo $t \geq 0$, $$f(B_t) = f(B_0) + \int_0^t f'(B_s) \, dB_s + \frac{1}{2} \int_0^t f''(B_s) \, ds.$$ En notación diferencial: $$df(B_t) = f'(B_t) \, dB_t + \frac{1}{2} f''(B_t) \, dt.$$
+(Fórmula de Itô unidimencional). Sea $f \in C^2(\mathbb{R})$ y $\{B_t\}_{t \geq 0}$ un movimiento Browniano. Entonces, para todo $t \geq 0$, $$f(B_t) = f(B_0) + \int_0^t f'(B_s) \, dB_s + \frac{1}{2} \int_0^t f''(B_s) \, ds.$$ En notación diferencial: $$df(B_t) = f'(B_t) \, dB_t + \frac{1}{2} f''(B_t) dt.$$
 :::
+
+:::: {.content-visible when-format="html"}
+::: proof
+Ver @castaneda2012introduction Teorema 11.9 $\quad \square$
+:::
+::::
+:::: {.content-visible when-format="pdf"}
+::: proof
+Ver @castaneda2012introduction Teorema 11.9 
+:::
+::::
 
 ::: {#thm-Formula_ito_general}
 Sea $\{X_t\}_{0 \leq t \leq T}$ un proceso de Itô que satisface $$dX_t = b(t, X_t) \, dt + \sigma(t, X_t) \, dB_t,$$ con $b, \sigma$ medibles y tales que las integrales están bien definidas. Sea $f \in C^{1,2}([0,T] \times \mathbb{R})$. Entonces el proceso $Y_t = f(t, X_t)$ satisface $$dY_t = \left( \frac{\partial f}{\partial t} + b \frac{\partial f}{\partial x} + \frac{1}{2} \sigma^2 \frac{\partial^2 f}{\partial x^2} \right)(t, X_t) \, dt + \sigma(t, X_t) \frac{\partial f}{\partial x}(t, X_t) \, dB_t.$$
@@ -447,9 +620,16 @@ Esta fórmula se deriva formalmente usando la tabla de multiplicación de Itô: 
 Sea $\sigma = \{\sigma_t\}$ un proceso progresivamente medible con $\mathbb{E}[\int_0^T \sigma_s^2 ds] < \infty$. Entonces, $$\mathbb{E}\left[ \left( \int_0^t \sigma_s dW_s \right)^2 \right] = \mathbb{E}\left[ \int_0^t \sigma_s^2 ds \right], \quad \forall t \in [0,T].$$
 :::
 
+:::: {.content-visible when-format="html"}
+::: proof
+Ver @karatzas1991brownian Teorema 3.2.1. $\quad \square$
+:::
+::::
+:::: {.content-visible when-format="pdf"}
 ::: proof
 Ver @karatzas1991brownian Teorema 3.2.1.
 :::
+::::
 
 ## Variación Cuadrática y Desigualdades de Martingalas
 
@@ -462,9 +642,16 @@ Sean $M = \{M_t\}_{t \geq 0}$ una martingala local continua (como se asume en la
 Sea $M = \{M_t\}_{t \geq 0}$ una martingala continua en un espacio de Hilbert separable $H$, tal que $M \in \mathcal{M}_c^2(H)$, es decir, $M_0 = 0$ casi seguramente y $\mathbb{E}[\|M_T\|^2] < \infty$ para todo $T > 0$. Entonces, para todo $T > 0$, se cumple la desigualdad $$\mathbb{E}\left[ \sup_{0 \leq t \leq T} \|M_t\| \right] \leq 3 \, \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right].$$
 :::
 
-::: proof
+:::: {.content-visible when-format="html"}
+::: {.proof style="text-align:justify"}
+Para cada $c > 0$, definimos el tiempo de paro $$T_c := \inf \left\{ t \geq 0 : \langle M \rangle_t \geq c^2 \right\}.$$ Como $\langle M \rangle_t$ es un proceso creciente y continuo, $T_c$ es un tiempo de paro válido. Consideremos el proceso $\|M_{t \wedge T \wedge T_c}|^2$. Dado que $M$ es una martingala continua, $\|M_t\|^2$ es una submartingala no negativa. Por lo tanto, $\|M_{t \wedge T \wedge T_c}|^2$ también lo es. Aplicando la desigualdad de Doob para submartingalas reales no negativas, se tiene $$\mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right) \leq \frac{1}{c^2} \, \mathbb{E}\left[ \|M_{T \wedge T_c}\|^2 \right].$$ Por la propiedad de la variación cuadrática, $\mathbb{E}[\|M_t\|^2] = \mathbb{E}[\langle M \rangle_t]$, y por la definición de $T_c$, $\mathbb{E}[\|M_{T \wedge T_c}\|^2] = \mathbb{E}[\langle M \rangle_{T \wedge T_c}] \leq \mathbb{E}[c^2 \wedge \langle M \rangle_T]$. Por lo tanto $$\mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right) \leq \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right].$$ Además, se puede escribir $$\left\{ \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right\} \subseteq \left\{ T_c < T \right\} \cup \left\{ \sup_{0 \leq t \leq T \wedge T_c} \|M_t\|^2 \geq c^2 \right\},$$ lo que implica $$\mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right) \leq \mathbb{P}\left( \langle M \rangle_T \geq c^2 \right) + \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right].$$ Ahora, usando la representación del valor esperado como integral de la función de distribución $$ \mathbb{E}\left[ \sup_{0 \leq t \leq T} \|M_t\| \right] = \int_0^\infty \mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\| \geq c \right) \, dc = \int_0^\infty \mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right) \, dc.$$ Sustituyendo la desigualdad anterior $$\mathbb{E}\left[ \sup_{0 \leq t \leq T} \|M_t\| \right] \leq \int_0^\infty \left[ \mathbb{P}\left( \langle M \rangle_T \geq c^2 \right) + \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right] \right] \, dc.$$ Calculamos las dos integrales por separado. Primero $$\int_0^\infty \mathbb{P}\left( \langle M \rangle_T \geq c^2 \right) \, dc = \int_0^\infty \mathbb{P}\left( \langle M \rangle_T^{1/2} \geq c \right) \, dc = \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right].$$ Después $$ \int_0^\infty \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right] \, dc = \mathbb{E}\left[ \int_0^\infty \frac{1}{c^2} (c^2 \wedge \langle M \rangle_T) \, dc \right].$$ Para un valor fijo $x = \langle M \rangle_T$, la integral interna es $$ \int_0^\infty \frac{1}{c^2} (c^2 \wedge x) \, dc = \int_0^{\sqrt{x}} 1 \, dc + x \int_{\sqrt{x}}^\infty \frac{1}{c^2} \, dc = \sqrt{x} + \sqrt{x} = 2 \sqrt{x}.$$ Por lo tanto $$\int_0^\infty \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right] \, dc = \mathbb{E}\left[ 2 \langle M \rangle_T^{1/2} \right].$$ Sumando ambos términos $$\mathbb{E}\left[ \sup_{0 \leq t \leq T} \|M_t\| \right] \leq \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right] + 2 \, \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right] = 3 \, \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right]$$ Esto concluye la demostración. $\quad \square$
+:::
+::::
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
 Para cada $c > 0$, definimos el tiempo de paro $$T_c := \inf \left\{ t \geq 0 : \langle M \rangle_t \geq c^2 \right\}.$$ Como $\langle M \rangle_t$ es un proceso creciente y continuo, $T_c$ es un tiempo de paro válido. Consideremos el proceso $\|M_{t \wedge T \wedge T_c}|^2$. Dado que $M$ es una martingala continua, $\|M_t\|^2$ es una submartingala no negativa. Por lo tanto, $\|M_{t \wedge T \wedge T_c}|^2$ también lo es. Aplicando la desigualdad de Doob para submartingalas reales no negativas, se tiene $$\mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right) \leq \frac{1}{c^2} \, \mathbb{E}\left[ \|M_{T \wedge T_c}\|^2 \right].$$ Por la propiedad de la variación cuadrática, $\mathbb{E}[\|M_t\|^2] = \mathbb{E}[\langle M \rangle_t]$, y por la definición de $T_c$, $\mathbb{E}[\|M_{T \wedge T_c}\|^2] = \mathbb{E}[\langle M \rangle_{T \wedge T_c}] \leq \mathbb{E}[c^2 \wedge \langle M \rangle_T]$. Por lo tanto $$\mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right) \leq \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right].$$ Además, se puede escribir $$\left\{ \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right\} \subseteq \left\{ T_c < T \right\} \cup \left\{ \sup_{0 \leq t \leq T \wedge T_c} \|M_t\|^2 \geq c^2 \right\},$$ lo que implica $$\mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right) \leq \mathbb{P}\left( \langle M \rangle_T \geq c^2 \right) + \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right].$$ Ahora, usando la representación del valor esperado como integral de la función de distribución $$ \mathbb{E}\left[ \sup_{0 \leq t \leq T} \|M_t\| \right] = \int_0^\infty \mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\| \geq c \right) \, dc = \int_0^\infty \mathbb{P}\left( \sup_{0 \leq t \leq T} \|M_t\|^2 \geq c^2 \right) \, dc.$$ Sustituyendo la desigualdad anterior $$\mathbb{E}\left[ \sup_{0 \leq t \leq T} \|M_t\| \right] \leq \int_0^\infty \left[ \mathbb{P}\left( \langle M \rangle_T \geq c^2 \right) + \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right] \right] \, dc.$$ Calculamos las dos integrales por separado. Primero $$\int_0^\infty \mathbb{P}\left( \langle M \rangle_T \geq c^2 \right) \, dc = \int_0^\infty \mathbb{P}\left( \langle M \rangle_T^{1/2} \geq c \right) \, dc = \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right].$$ Después $$ \int_0^\infty \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right] \, dc = \mathbb{E}\left[ \int_0^\infty \frac{1}{c^2} (c^2 \wedge \langle M \rangle_T) \, dc \right].$$ Para un valor fijo $x = \langle M \rangle_T$, la integral interna es $$ \int_0^\infty \frac{1}{c^2} (c^2 \wedge x) \, dc = \int_0^{\sqrt{x}} 1 \, dc + x \int_{\sqrt{x}}^\infty \frac{1}{c^2} \, dc = \sqrt{x} + \sqrt{x} = 2 \sqrt{x}.$$ Por lo tanto $$\int_0^\infty \frac{1}{c^2} \, \mathbb{E}\left[ c^2 \wedge \langle M \rangle_T \right] \, dc = \mathbb{E}\left[ 2 \langle M \rangle_T^{1/2} \right].$$ Sumando ambos términos $$\mathbb{E}\left[ \sup_{0 \leq t \leq T} \|M_t\| \right] \leq \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right] + 2 \, \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right] = 3 \, \mathbb{E}\left[ \langle M \rangle_T^{1/2} \right]$$ Esto concluye la demostración.
 :::
+::::
 
 ::: {#thm-Desigualdad_Burkholder_Davis_Gundy}
 Sea $M = \{M_t\}_{t \geq 0}$ una martingala local continua en $L^2(\mathbb{P})$, y sea $\tau$ un tiempo de paro respecto a la filtración $\{\mathcal{F}_t\}$. Entonces, para cualquier $m \geq \tfrac{1}{2}$, se cumplen las siguientes desigualdades:
@@ -482,7 +669,29 @@ Sea $M = \{M_t\}_{t \geq 0}$ una martingala local continua en $L^2(\mathbb{P})$,
         \end{cases}$$
 :::
 
-::: proof
+:::: {.content-visible when-format="html"}
+::: {.proof style="text-align:justify"}
+Sin pérdida de generalidad, podemos suponer que tanto $M$ como su variación cuadrática previsible $\langle M \rangle$ son procesos acotados. Esto se justifica mediante un argumento de localización: existe una sucesión creciente de tiempos de paro $\{\tau_n\}$ tal que $\tau_n \uparrow \infty$ c.s. y los procesos detenidos $M^{\tau_n}$ y $\langle M \rangle^{\tau_n}$ son acotados. Las desigualdades se obtienen para cada $n$ y luego se extienden al caso general mediante el teorema de convergencia monótona(@thm-con_monotona).
+
+El caso $m = \tfrac{1}{2}$ se deduce directamente del Teorema 2.5.17 de [@tudor2022procesos] que establece $$\mathbb{E}\left[ \sup_{0 \leq t \leq \tau} |M_t| \right] \leq 3 \, \mathbb{E}\left[ \langle M \rangle_\tau^{1/2} \right].$$ Ahora asumimos $m > \tfrac{1}{2}$ y que $M$, $\langle M \rangle$ son acotados. Denotemos $$ M_t^* := \sup_{0 \leq s \leq t} |M_s|, \quad Y_t := \delta + \varepsilon \langle M \rangle_t + M_t^2,$$ donde $\delta > 0$ y $\varepsilon \geq 0$ son constantes a elegir posteriormente. Obsérvese que $Y_t > 0$ y es continuo. Aplicamos la fórmula de Itô a la función $f(x) = x^m$, $x > 0$ $$Y_t^m = \delta^m + m \int_0^t Y_s^{m-1} \, dY_s + \frac{m(m-1)}{2} \int_0^t Y_s^{m-2} \, d\langle Y \rangle_s.$$ Como $dY_s = (\varepsilon + 1) \, d\langle M \rangle_s + 2 M_s \, dM_s$ y $d\langle Y \rangle_s = 4 M_s^2 \, d\langle M \rangle_s$, sustituimos y obtenemos $$\begin{aligned}
+Y_t^m = &\ \delta^m 
++ m(1+\varepsilon) \int_0^t Y_s^{m-1} \, d\langle M \rangle_s 
++ 2m \int_0^t Y_s^{m-1} M_s \, dM_s \\
+&+ 2m(m-1) \int_0^t Y_s^{m-2} M_s^2 \, d\langle M \rangle_s.
+\end{aligned}$$ Al tomar esperanza matemática, el término de la integral estocástica desaparece (es una martingala de media cero por acotación), y obtenemos $$\mathbb{E}[Y_t^m] = \delta^m + m(1+\varepsilon) \, \mathbb{E}\!\left[ \int_0^t Y_s^{m-1} \, d\langle M \rangle_s \right] + 2m(m-1) \, \mathbb{E}\!\left[ \int_0^t Y_s^{m-2} M_s^2 \, d\langle M \rangle_s \right].$$
+
+\paragraph{Cota superior (parte (a)).}
+
+Consideramos ahora la desigualdad de Doob para martingalas: para $p = 2m > 1$, $$ \mathbb{E}[(M_t^*)^{2m}] \leq q^{2m} \, \mathbb{E}[|M_t|^{2m}], \quad \text{donde } \frac{1}{p} + \frac{1}{q} = 1.$$ Aplicando la fórmula de Itô a $|M_t|^{2m}$ (con segunda derivada $2m(2m-1)|M_t|^{2m-2}$) y tomando esperanza $$\mathbb{E}[|M_t|^{2m}] = m(2m-1) \, \mathbb{E}\!\left[ \int_0^t |M_s|^{2(m-1)} \, d\langle M \rangle_s \right].$$ Combinando ambas expresiones y aplicando la desigualdad de Hölder, se obtiene $$ \mathbb{E}[(M_t^*)^{2m}] \leq \bigl[ q^{2m} m (2m - 1) \bigr]^m \, \mathbb{E}[\langle M \rangle_t^m].$$
+
+\paragraph{Cota inferior (parte (b)).}
+
+Retomamos la expresión de $\mathbb{E}[Y_t^m]$. Como $Y_t \geq M_t^2$, se tiene $Y_t^m \geq |M_t|^{2m}$. Además, $Y_s \geq \delta$, por lo que $$\mathbb{E}[|M_t|^{2m}] \geq m(1+\varepsilon) \, \mathbb{E}\!\left[ \int_0^t Y_s^{m-1} \, d\langle M \rangle_s \right].$$ Usando la desigualdad $(x+y)^m \leq 2^{m-1}(x^m + y^m)$ para $m \geq 1$, y un argumento de paso al límite $\delta \downarrow 0$, se deduce $$\mathbb{E}[(M_t^*)^{2m}] \geq C_m \, \mathbb{E}[\langle M \rangle_t^m],$$ con $C_m$ como en el enunciado (obtenido mediante optimización sobre $\varepsilon$). Finalmente, al considerar $\tau$ en lugar de $t$, basta observar que $M^\tau$ es también una martingala local continua y $\langle M^\tau \rangle = \langle M \rangle^\tau$, con lo que las desigualdades se mantienen reemplazando $t$ por $\tau$. Esto concluye la demostración. $\quad \square$
+:::
+::::
+
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
 Sin pérdida de generalidad, podemos suponer que tanto $M$ como su variación cuadrática previsible $\langle M \rangle$ son procesos acotados. Esto se justifica mediante un argumento de localización: existe una sucesión creciente de tiempos de paro $\{\tau_n\}$ tal que $\tau_n \uparrow \infty$ c.s. y los procesos detenidos $M^{\tau_n}$ y $\langle M \rangle^{\tau_n}$ son acotados. Las desigualdades se obtienen para cada $n$ y luego se extienden al caso general mediante el teorema de convergencia monótona(@thm-con_monotona).
 
 El caso $m = \tfrac{1}{2}$ se deduce directamente del Teorema 2.5.17 de [@tudor2022procesos] que establece $$\mathbb{E}\left[ \sup_{0 \leq t \leq \tau} |M_t| \right] \leq 3 \, \mathbb{E}\left[ \langle M \rangle_\tau^{1/2} \right].$$ Ahora asumimos $m > \tfrac{1}{2}$ y que $M$, $\langle M \rangle$ son acotados. Denotemos $$ M_t^* := \sup_{0 \leq s \leq t} |M_s|, \quad Y_t := \delta + \varepsilon \langle M \rangle_t + M_t^2,$$ donde $\delta > 0$ y $\varepsilon \geq 0$ son constantes a elegir posteriormente. Obsérvese que $Y_t > 0$ y es continuo. Aplicamos la fórmula de Itô a la función $f(x) = x^m$, $x > 0$ $$Y_t^m = \delta^m + m \int_0^t Y_s^{m-1} \, dY_s + \frac{m(m-1)}{2} \int_0^t Y_s^{m-2} \, d\langle Y \rangle_s.$$ Como $dY_s = (\varepsilon + 1) \, d\langle M \rangle_s + 2 M_s \, dM_s$ y $d\langle Y \rangle_s = 4 M_s^2 \, d\langle M \rangle_s$, sustituimos y obtenemos $$\begin{aligned}
@@ -499,6 +708,5 @@ Consideramos ahora la desigualdad de Doob para martingalas: para $p = 2m > 1$, $
 \paragraph{Cota inferior (parte (b)).}
 
 Retomamos la expresión de $\mathbb{E}[Y_t^m]$. Como $Y_t \geq M_t^2$, se tiene $Y_t^m \geq |M_t|^{2m}$. Además, $Y_s \geq \delta$, por lo que $$\mathbb{E}[|M_t|^{2m}] \geq m(1+\varepsilon) \, \mathbb{E}\!\left[ \int_0^t Y_s^{m-1} \, d\langle M \rangle_s \right].$$ Usando la desigualdad $(x+y)^m \leq 2^{m-1}(x^m + y^m)$ para $m \geq 1$, y un argumento de paso al límite $\delta \downarrow 0$, se deduce $$\mathbb{E}[(M_t^*)^{2m}] \geq C_m \, \mathbb{E}[\langle M \rangle_t^m],$$ con $C_m$ como en el enunciado (obtenido mediante optimización sobre $\varepsilon$). Finalmente, al considerar $\tau$ en lugar de $t$, basta observar que $M^\tau$ es también una martingala local continua y $\langle M^\tau \rangle = \langle M \rangle^\tau$, con lo que las desigualdades se mantienen reemplazando $t$ por $\tau$. Esto concluye la demostración.
-:::
-
+::::
 
