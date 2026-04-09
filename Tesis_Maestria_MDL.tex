@@ -173,10 +173,10 @@
 \usepackage{amsthm}
 \theoremstyle{plain}
 \newtheorem{theorem}{Teorema}[chapter]
-\theoremstyle{definition}
-\newtheorem{definition}{Definición}[chapter]
 \theoremstyle{plain}
 \newtheorem{lemma}{Lema}[chapter]
+\theoremstyle{definition}
+\newtheorem{definition}{Definición}[chapter]
 \theoremstyle{remark}
 \AtBeginDocument{\renewcommand*{\proofname}{Demostración}}
 \newtheorem*{remark}{Observación}
@@ -1337,8 +1337,8 @@ concluye la demostración.
 
 \chapter{Ecuaciones diferenciales estocásticas.}\label{sec-EDESJs}
 
-\section{Formulación y Teoremas de Existencia y
-Unicidad}\label{formulaciuxf3n-y-teoremas-de-existencia-y-unicidad}
+\section{Formulación y Teoremas dpoe Existencia y
+Unicidad}\label{formulaciuxf3n-y-teoremas-dpoe-existencia-y-unicidad}
 
 \begin{definition}[]\protect\hypertarget{def-Semimartingalas_saltos}{}\label{def-Semimartingalas_saltos}
 
@@ -1528,7 +1528,7 @@ e^{-b_0 A(t)} u(t)
 menor que uno si \(b_0\geq\frac{1}{4}.\) Por lo que haciendo un cambio
 de variable \(U = A(s)\), \(dU=\widetilde{c}(s)ds,\) y
 \(A(t)= \int_0^t \widetilde{c}(s)ds\) \begin{align*}
-\int_0^t \widetilde{c}(s) exp\left(\left(b_0 - \frac{1}{4}\right) \cdot A(s(-A(t)))\right)ds & = \int_0^{A(t)}exp\left(\left( b_0 - \frac{1}{4}\right)(U-A(t))\right)dU\\
+\int_0^t \widetilde{c}(s) exp\left(\left(b_0 - \frac{1}{4}\right)(A(s(-A(t))))\right)ds & = \int_0^{A(t)}exp\left(\left( b_0 - \frac{1}{4}\right)(U-A(t))\right)dU\\
 & = exp\left(-\left( b_0 - \frac{1}{4}\right)A(t)\right)\int_0^{A(t)}exp\left(\left( b_0 - \frac{1}{4}\right)U\right)dU,
 \end{align*} Si \(b_0>\frac{1}4{}\)
 
@@ -1599,11 +1599,11 @@ el conjunto denso \(D\), se sigue que
 lo tanto, el conjunto
 \[\left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \text{ para todo } t \in [0,T] \right\}\]
 contiene a \(\Omega_0\), y en consecuencia tiene probabilidad uno. Por
-lo tanto, coinciden para todo \$ t \in [0,T].\$ Por lo que se concluye
-que la solución de la ecuación estocástica diferencial con saltos es
-única por trayectoria. Además, como los coeficientes \(b\), \(\sigma\) y
-\(R\) son \(\mathcal{F}_t^{W,\widetilde{N}}\)-adaptados, se sigue la
-solución es fuerte.
+lo tanto, coinciden para todo \$ t \in {[}0,T{]}.\$ Por lo que se
+concluye que la solución de la ecuación estocástica diferencial con
+saltos es única por trayectoria. Además, como los coeficientes \(b\),
+\(\sigma\) y \(R\) son \(\mathcal{F}_t^{W,\widetilde{N}}\)-adaptados, se
+sigue la solución es fuerte.
 \end{proof}
 
 \begin{definition}[]\protect\hypertarget{def-Tiempos_paro_explosión}{}\label{def-Tiempos_paro_explosión}
