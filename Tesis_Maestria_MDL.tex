@@ -1457,26 +1457,24 @@ desarrollada y aplicar la formula de itô para \(f(y) = y^2\) aplicada a
 \(Y_t\) \[|Y_t|^2 = 2 \int_0^t Y_s \, \Delta b_s \, ds 
 + 2 \int_0^t Y_s \, \Delta \sigma_s \, dW_s 
 + \int_0^t |\Delta \sigma_s|^2 \, ds
-+ 2 \int_0^t \int_Z Y_s \, \Delta R_s(z) \, \tilde{N}(ds, dz)
-\] \[
-+ \int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz).\] Aplicando valor
-esperado y sus propiedades \[
-\begin{aligned}
++ 2 \int_0^t \int_Z Y_s \, \Delta R_s(z) \, \tilde{N}(ds, dz)\]
+
+\[+ \int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz).\] Aplicando valor
+esperado y sus propiedades \[\begin{aligned}
 \mathbb{E}[
 |Y_t|^2] = {}& \mathbb{E}\left[2 \int_0^t Y_s \, \Delta b_s \, ds \right]
-+\mathbb{E}\left[ 2 \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right] \\
++\mathbb{E}\left[ 2 \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right]  {}& \\
 & +\mathbb{E}\left[ \int_0^t |\Delta \sigma_s|^2 \, ds
 + 2 \int_0^t \int_Z Y_s \, \Delta R_s(s,z) \tilde{N}(ds, dz)\right]
-\end{aligned}
-\]
+\end{aligned}\]
 \[\mathbb{E}\left[\int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz)\right]\]
 Dado que los valores esperados de las integrales respecto a \(dW_s\) y
-\(\widetilde{N}\) son martingalas, \[
-\mathbb{E}\left[ \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right] = 0,\]
+\(\widetilde{N}\) son martingalas,
+\[\mathbb{E}\left[ \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right] = 0,\]
 \[\mathbb{E} \left[  \int_0^t \int_Z Y_s \, \Delta R_s(z) \, \tilde{N}(ds, dz)\right]  = 0,\]
 y puesto que \(\mathbb{E}[N(ds,dz)] = \pi(dz)ds,\) se reduce a
-\[\mathbb{E}[|Y_t|^2] = \mathbb{E}\left[\int_0^t \left(2Y_s \, \Delta b(s) \, + |\Delta \sigma(s)|^2 + \int_Z |\Delta R_s(s,z)|^2 \, \pi ( dz)\right) ds\right].
-\] Nótese que para el primer término, al aplicar la desigualdad de
+\[\mathbb{E}[|Y_t|^2] = \mathbb{E}\left[\int_0^t \left(2Y_s \, \Delta b(s) \, + |\Delta \sigma(s)|^2 + \int_Z |\Delta R_s(s,z)|^2 \, \pi ( dz)\right) ds\right].\]
+Nótese que para el primer término, al aplicar la desigualdad de
 Cauchy-Schwarz \(2Y_s\Delta b(s)\leq 2|Y_s||\Delta b(s)|,\) y por las
 hipótesis de Lipschitz
 
@@ -1485,7 +1483,7 @@ Además usando la desigualdad \(2ab \leq a^2 + b^2\), se tiene que
 \[2Y_s\Delta b(s) \leq 2|Y_s |\widetilde{c}(s)|X_s| \leq \widetilde{c}(s)(|Y_s|^2 + |X_s|^2),\]
 aplicando valor esperado y tomando el supremo
 \[\mathbb{E}[|{Y_t}|^2] \leq \int_0^t \widetilde{c}(s) \left( \mathbb{E}[|{Y_s}|^2] + \mathbb{E}[|{X_s}|^2] \right) ds.\]
-\begin{equation}\protect\phantomsection\label{eq-3}{\mathbb{E}\!\left[ \sup_{0 \leq r \leq t} |{Y_r}|^2 \right] \leq \int_0^t \widetilde{c}(s) \left( \mathbb{E}\!\left[ \sup_{0 \leq r \leq s} |{Y_r}|^2 \right] + \!\left[ \sup_{0 \leq r \leq s} |{X_r}|^2 \right] \right) ds.}\end{equation}
+\[\mathbb{E}\!\left[ \sup_{0 \leq r \leq t} |{Y_r}|^2 \right] \leq \int_0^t \widetilde{c}(s) \left( \mathbb{E}\!\left[ \sup_{0 \leq r \leq s} |{Y_r}|^2 \right] + \!\left[ \sup_{0 \leq r \leq s} |{X_r}|^2 \right] \right) ds.\]
 
 Como se ha eliminado la parte estocástica al tomar el valor esperado
 anteriormente, se procederá a obtener un acotamiento determinista.
@@ -1494,7 +1492,7 @@ Sea
 
 \[u(t) := \mathbb{E}\!\left[ \sup_{0 \leq r \leq t} |{Y_r}|^2 \right], \qquad v(t) := \mathbb{E}\!\left[ \sup_{0 \leq r \leq t} |{X_r}|^2 \right],\]
 
-entonces podemos reescribir Ecuación~\ref{eq-3} como
+entonces podemos reescribir \textbf{?@eq-3} como
 
 \[u(t) \leq \int_0^t \widetilde{c}(s) \bigl( u(s) + v(s) \bigr) ds,\]
 
@@ -1574,7 +1572,7 @@ Ahora, bajo la suposición de medibilidad conjunta (que se cumple si, por
 ejemplo, los procesos son progresivamente medibles, lo cual es cierto
 para soluciones de SDEs con coeficientes medibles), podemos aplicar el
 (teorema de Fubini),
-\begin{equation}\protect\phantomsection\label{eq-4}{\mathbb{E}[\int_0^T|x^{\prime}_t - x_t|^2dt] = \int_0^T\mathbb{E}[|x^{\prime}_t - x_t|^2]dt =0.}\end{equation}
+\[\mathbb{E}[\int_0^T|x^{\prime}_t - x_t|^2dt] = \int_0^T\mathbb{E}[|x^{\prime}_t - x_t|^2]dt =0.\]
 Consideremos el conjunto donde los procesos no coinciden
 \[N := \{(t,\omega) \in [0,T]\times \Omega : x^{\prime}_t(\omega)\neq x_t(\omega)\},\]
 este conjunto es medible en \(\mathcal{B}([0,T])\bigotimes\mathcal{F}\)
@@ -1582,30 +1580,30 @@ ya que \(x^{\prime}_t(\omega) - x_t(\omega)\) es una función medible y
 además es equivalente a
 \(N = \{(t,\omega) : |x^{\prime}_t(\omega)- x_t(\omega)|^2>0\}.\)
 
-De la Ecuación~\ref{eq-4} se sigue que
-\begin{equation}\protect\phantomsection\label{eq-5}{(dt\bigotimes\mathbb{P})(N) = \int_0^T \mathbb{P}(x^{\prime}_t\neq x_t)dt = \mathbb{E} \left[\int_0^T 1_N(t,\omega)dt\right]= 0.}\end{equation}
+De la \textbf{?@eq-4} se sigue que
+\[(dt\bigotimes\mathbb{P})(N) = \int_0^T \mathbb{P}(x^{\prime}_t\neq x_t)dt = \mathbb{E} \left[\int_0^T 1_N(t,\omega)dt\right]= 0.\]
 
 Como \(N\) tiene medida cero se puede decir que \(x^\prime_t = x_t\)
 para \((dt\bigotimes\mathbb{P})\)- casi todo \((t,\omega)\).
 
 Ahora, consideremos el conjunto denso \(D:=\mathbb{Q}\cap[0,T]\) .
-Definimos el evento \[
-\Omega_0 := \bigcap_{t \in D} \left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \right\}.
-\] Dado que \(D\) es numerable y \(\mathbb{P}(x_t = x'_t) = 1\) para
-cada \(t \in D\), se tiene \(\mathbb{P}(\Omega_0) = 1\). Fijemos
+Definimos el evento
+\[\Omega_0 := \bigcap_{t \in D} \left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \right\}.\]
+Dado que \(D\) es numerable y \(\mathbb{P}(x_t = x'_t) = 1\) para cada
+\(t \in D\), se tiene \(\mathbb{P}(\Omega_0) = 1\). Fijemos
 \(\omega \in \Omega_0\), como ambas trayectorias
 \(t \mapsto x_t(\omega)\) y \(t \mapsto x'_t(\omega)\) son RCLL
 (continuas por la derecha con límites por la izquierda) y coinciden en
-el conjunto denso \(D\), se sigue que \[
-x_t(\omega) = x'_t(\omega) \quad \text{para todo } t \in [0,T].
-\] Por lo tanto, el conjunto \[
-\left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \text{ para todo } t \in [0,T] \right\}
-\] contiene a \(\Omega_0\), y en consecuencia tiene probabilidad uno.
-Por lo tanto, coinciden para todo \$ t \in [0,T].\$ Por lo que se
-concluye que la solución de la ecuación estocástica diferencial con
-saltos es única por trayectoria. Además, como los coeficientes \(b\),
-\(\sigma\) y \(R\) son \(\mathcal{F}_t^{W,\widetilde{N}}\)-adaptados, se
-sigue la solución es fuerte.
+el conjunto denso \(D\), se sigue que
+\[x_t(\omega) = x'_t(\omega) \quad \text{para todo } t \in [0,T].\] Por
+lo tanto, el conjunto
+\[\left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \text{ para todo } t \in [0,T] \right\}\]
+contiene a \(\Omega_0\), y en consecuencia tiene probabilidad uno. Por
+lo tanto, coinciden para todo \$ t \in [0,T].\$ Por lo que se concluye
+que la solución de la ecuación estocástica diferencial con saltos es
+única por trayectoria. Además, como los coeficientes \(b\), \(\sigma\) y
+\(R\) son \(\mathcal{F}_t^{W,\widetilde{N}}\)-adaptados, se sigue la
+solución es fuerte.
 \end{proof}
 
 \begin{definition}[]\protect\hypertarget{def-Tiempos_paro_explosión}{}\label{def-Tiempos_paro_explosión}
@@ -1627,15 +1625,14 @@ saltos}\label{teorema-de-existencia-y-unicidad-local-de-una-soluciuxf3n-fuerte-p
 
 Si la condición \(2°\) del Teorema anterior se debilita a \(2°'\) tal
 que para cada \(N = 1, 2,\cdots,\) existe una función no aleatoria
-\(\widetilde{c}^N(t)\) tal que para cada \(|x_1|, |x_2| \leq N\), \[
-|b(t, x_1, \omega) - b(t, x_2, \omega)| \leq \widetilde{c}^N(t) |x_1 - x_2|,
-\]
+\(\widetilde{c}^N(t)\) tal que para cada \(|x_1|, |x_2| \leq N\),
+\[|b(t, x_1, \omega) - b(t, x_2, \omega)| \leq \widetilde{c}^N(t) |x_1 - x_2|,\]
 \[|\sigma(t, x_1, \omega) - \sigma(t, x_2, \omega)|^2 + \int_Z |R(t, x_1, z, \omega) - R(t, x_2, z, \omega)|^2 \pi(dz)
         \leq \widetilde{c}^N(t) |x_1 - x_2|^2,\] donde
-\(\widetilde{c}^N(t) \geq 0\) satisface \[
-\int_0^T \widetilde{c}^N(t)\,dt < \infty \quad \text{para cada } T < \infty,
-\] manteniendo la condición de crecimiento lineal global (independiente
-de \(N\)): \begin{align*}
+\(\widetilde{c}^N(t) \geq 0\) satisface
+\[\int_0^T \widetilde{c}^N(t)\,dt < \infty \quad \text{para cada } T < \infty,\]
+manteniendo la condición de crecimiento lineal global (independiente de
+\(N\)): \begin{align*}
     |b(t,x,\omega)| &\leq \tilde{c}(t)(1 + |x|), \\
     |\sigma(t,x,\omega)|^2 + \int_Z |R(t,x,z,\omega)|^2 \, \nu(dz) &\leq \tilde{c}(t)(1 + |x|^2),
 \end{align*} con \(\tilde{c}(t) \geq 0\) no aleatoria y
@@ -1647,23 +1644,21 @@ conclusión del Teorema anterior sigue siendo cierta.
 
 \begin{proof}
 Sea \(b^{N}(t,x,\omega)\) definida de la siguiente manera
-\begin{equation}\protect\phantomsection\label{eq-6}{
-\begin{split}
+\[\begin{split}
       b^{N}(t,x,\omega) = \left\lbrace\begin{array}{c}b(t,x,\omega), \quad \text{si }|x|\leq N,
        \\
        b(t,N_{\frac{x}{|x|}},\omega), \quad
        \text{si } |x| > N.\end{array}\right.
-\end{split}}\end{equation} De igual manera se hace para
-\(\sigma^{N}(t,x,\omega)\) y \(R^{N}(t,x,z,\omega),\) consideramos
-\begin{equation}\protect\phantomsection\label{eq-7}{\begin{split}
+\end{split}\] De igual manera se hace para \(\sigma^{N}(t,x,\omega)\) y
+\(R^{N}(t,x,z,\omega),\) consideramos \[\begin{split}
 x_t = x_0 &+ \int_0^t b_N(s,x^N_s,\omega)\,ds 
            + \int_0^t \sigma^N(s,x^N_s,\omega)\,dw_s \\
           & \ \ \ \ \ \ \ \ \ \ \ +  \int_0^t\!\int_Z R^N(s,x^N_{s-},z,\omega)\,\tilde{N}_t(ds,dz),
           \qquad t\geq 0
-\end{split}}\end{equation} Como \(b^N, \sigma^N, R^N\) son globalmente
-Lipschitz en \(x\) y satisfacen las condiciones de medibilidad y
-crecimiento del Teorema anterior, se deduce inmediatamente la existencia
-y unicidad de una solución fuerte
+\end{split}\] Como \(b^N, \sigma^N, R^N\) son globalmente Lipschitz en
+\(x\) y satisfacen las condiciones de medibilidad y crecimiento del
+Teorema anterior, se deduce inmediatamente la existencia y unicidad de
+una solución fuerte
 \(\{x^N_t\}_{t\geq 0}\in S^{2,loc}_{\mathcal{F}}(\mathbb{R})\).
 Definimos el tiempo de paro \(\tau^N:=inf\{t\geq0:|x^N_t|> N\}\), en el
 intervalo estocástico \([0, \tau^N),\) se tiene \(x^N_t=x_t,\) donde
@@ -1671,42 +1666,38 @@ intervalo estocástico \([0, \tau^N),\) se tiene \(x^N_t=x_t,\) donde
 Para \$ t \textless{} \tau\^{}N\$, se tiene \(|x_t^N| \leq N\). Por la
 definición de los coeficientes truncados, esto implica
 
-\[
-b^N(t,x_t^N,\omega) = b(t,x_t^N,\omega), \quad \sigma^N(t,x_t^N,\omega) = \sigma(t,x_t^N,\omega),
-\]
+\[b^N(t,x_t^N,\omega) = b(t,x_t^N,\omega), \quad \sigma^N(t,x_t^N,\omega) = \sigma(t,x_t^N,\omega),\]
 
-\[
-R^N(t,x_{t-}^N,z,\omega) = R(t,x_{t-}^N,z,\omega).
-\] Por lo tanto, en \([0, \tau^N)\), la ecuación (7) coincide
-exactamente con la ecuación (1). Así, la restricción de \(x^N\) a
-\([0, \tau^N)\) es una solución local de (1).
+\[R^N(t,x_{t-}^N,z,\omega) = R(t,x_{t-}^N,z,\omega).\] Por lo tanto, en
+\([0, \tau^N)\), la ecuación (7) coincide exactamente con la ecuación
+(1). Así, la restricción de \(x^N\) a \([0, \tau^N)\) es una solución
+local de (1).
 
 Sea \$ N \textless{} M\$, entonces, en el intervalo \([0, \tau^N)\),
 ambas soluciones \(x^N\) y \(x^M\) satisfacen la misma SDE, por la
 unicidad del Teorema anterior aplicada a la ecuación original en el
-intervalo estocástico, se concluye que \[
-x_t^N = x_t^M \quad \text{para todo } t < \tau^N, \quad \text{c.s.}
-\] lo que permite definir un proceso \$ x = \{x\_t\}\_\{t \geq 0\}\$
-mediante \[
-x_t := x_t^N \quad \text{para } t \in [0, \tau^N).
-\] Gracias a la compatibilidad entre las soluciones truncadas , esta
-definición es independiente de \(N\), por lo tanto \(x\) está bien
-definido en todo \([0, \infty)\), siempre que \(\tau^N \to \infty\) casi
-seguramente cuando \(N \to \infty\). Supongamos ahora por contradicción
-que existe ( T\_0 \textgreater{} 0 ) tal que \[
-\mathbb{P}\left( \lim_{N \to \infty} \tau^N \leq T_0 \right) > 0.\]
+intervalo estocástico, se concluye que
+\[x_t^N = x_t^M \quad \text{para todo } t < \tau^N, \quad \text{c.s.}\]
+lo que permite definir un proceso \$ x = \{x\_t\}\_\{t \geq 0\}\$
+mediante \[x_t := x_t^N \quad \text{para } t \in [0, \tau^N).\] Gracias
+a la compatibilidad entre las soluciones truncadas , esta definición es
+independiente de \(N\), por lo tanto \(x\) está bien definido en todo
+\([0, \infty)\), siempre que \(\tau^N \to \infty\) casi seguramente
+cuando \(N \to \infty\). Supongamos ahora por contradicción que existe (
+T\_0 \textgreater{} 0 ) tal que
+\[\mathbb{P}\left( \lim_{N \to \infty} \tau^N \leq T_0 \right) > 0.\]
 
 Definamos \(\tau := \lim_{N \to \infty} \tau^N\). Entonces, para el
 evento \(A := \{ \tau \leq T_0 \}\), se tiene \(\mathbb{P}(A) > 0\), y
 para todo \(N\), \(\tau^N \leq T_0\) en \(A\), con
 \(|x_{\tau^N}^N| = N.\) Aplicando la desigualdad de Itô a la solución
-truncada \(x^N\) \[
-|x_t^N|^2 = |x_0|^2 + 2\int_0^t x_s^N \cdot b^N(s,x_s^N) ds + 2\int_0^t x_s^N \cdot \sigma^N(s,x_s^N) dw_s
-\] \[
-+ \int_0^t \|\sigma^N(s,x_s^N)\|^2 ds + \int_0^t \int_Z |c^N(s,x_{s-}^N,z)|^2 N(ds,dz)
-\] \[
-+ 2\int_0^t \int_Z x_{s-}^N \cdot c^N(s,x_{s-}^N,z) \tilde{N}(ds,dz).
-\] Tomando supremo en \([0, T_0]\) y esperanza, y usando la desigualdad
+truncada \(x^N\)
+\[|x_t^N|^2 = |x_0|^2 + 2\int_0^t x_s^N \cdot b^N(s,x_s^N) ds + 2\int_0^t x_s^N \cdot \sigma^N(s,x_s^N) dw_s\]
+
+\[+ \int_0^t \|\sigma^N(s,x_s^N)\|^2 ds + \int_0^t \int_Z |c^N(s,x_{s-}^N,z)|^2 N(ds,dz)\]
+
+\[+ 2\int_0^t \int_Z x_{s-}^N \cdot c^N(s,x_{s-}^N,z) \tilde{N}(ds,dz).\]
+Tomando supremo en \([0, T_0]\) y esperanza, y usando la desigualdad
 \((a+b+c)^2 \leq 3(a^2 + b^2 + c^2)\), obtenemos
 \[\mathbb{E}\left[ \sup_{0 \leq t \leq T_0} \|x_t^N\|^2 \right] \leq C\Bigg( 
 \mathbb{E}[\|x_0\|^2] 
@@ -1720,20 +1711,20 @@ lineal global y la desigualdad de Burkholder--Davis--Gundy (BDG). Para
 el termino con drift aplicamos Cauchy--Schwarz y crecimiento lineal:
 \[\left| x_s^N \cdot b^N(s,x_s^N) \right| \leq \|x_s^N\| \cdot \tilde{c}(s)(1 + \|x_s^N\|)
 \leq \tilde{c}(s)\bigl(\|x_s^N\| + \|x_s^N\|^2\bigr)
-\leq \tilde{c}(s)\bigl(1 + 2\|x_s^N\|^2\bigr).\] Luego
-\[\mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t x_s^N \cdot b^N(s,x_s^N)\,ds \right| \right]
-\leq \int_0^{T_0} \tilde{c}(s)\bigl(1 + 2\mathbb{E}[\|x_s^N\|^2]\bigr) ds
-\leq C\left(1 + \int_0^{T_0} \tilde{c}(s) \mathbb{E}\left[ \sup_{r \leq s} \|x_r^N\|^2 \right] ds\right).\]
-Ahora para el término browniano por la desigualdad de BDG con \(p=2\),
-existe una constante universal \(C_{\mathrm{BDG}} > 0\) tal que
+\leq \tilde{c}(s)\bigl(1 + 2\|x_s^N\|^2\bigr).\] Luego \begin{align*}
+\mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t x_s^N \cdot b^N(s,x_s^N)\,ds \right| \right]
+\leq \int_0^{T_0} \tilde{c}(s)\bigl(1 + 2\mathbb{E}[\|x_s^N\|^2]\bigr) ds \\
+\leq C\left(1 + \int_0^{T_0} \tilde{c}(s) \mathbb{E}\left[ \sup_{r \leq s} \|x_r^N\|^2 \right] ds\right).
+\end{align*} Ahora para el término browniano por la desigualdad de BDG
+con \(p=2\), existe una constante universal \(C_{\mathrm{BDG}} > 0\) tal
+que
 \[\mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t x_s^N \cdot \sigma^N(s,x_s^N)\,dW_s \right|^2 \right]
 \leq C_{\mathrm{BDG}} \, \mathbb{E}\left[ \int_0^{T_0} \|x_s^N \cdot \sigma^N(s,x_s^N)\|^2 ds \right].\]
-Usando Cauchy--Schwarz y crecimiento lineal: \[
-\|x_s^N \cdot \sigma^N(s,x_s^N)\|^2 \leq \|x_s^N\|^2 \cdot \|\sigma^N(s,x_s^N)\|^2
+Usando Cauchy--Schwarz y crecimiento lineal:
+\[\|x_s^N \cdot \sigma^N(s,x_s^N)\|^2 \leq \|x_s^N\|^2 \cdot \|\sigma^N(s,x_s^N)\|^2
 \leq \|x_s^N\|^2 \cdot \tilde{c}(s)(1 + \|x_s^N\|^2)
-\leq \tilde{c}(s)\bigl(\|x_s^N\|^2 + \|x_s^N\|^4\bigr).
-\] Sin embargo, al trabajar con cotas en \(L^2\), es estándar usar
-directamente:
+\leq \tilde{c}(s)\bigl(\|x_s^N\|^2 + \|x_s^N\|^4\bigr).\] Sin embargo,
+al trabajar con cotas en \(L^2\), es estándar usar directamente:
 \[\|\sigma^N(s,x_s^N)\|^2 \leq \tilde{c}(s)(1 + \|x_s^N\|^2),\] y por lo
 tanto:
 
@@ -1744,34 +1735,34 @@ tanto:
 \end{align*}
 
 Análogamente para el término de saltos, por la versión con saltos de
-BDG, se tiene \[
-\mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t \int_Z x_{s-}^N \cdot R^N(s,x_{s-}^N,z)\,\tilde{N}(ds,dz) \right|^2 \right]
-\leq C \, \mathbb{E}\left[ \int_0^{T_0} \int_Z \|x_{s-}^N \cdot R^N(s,x_{s-}^N,z)\|^2 \nu(dz) ds \right]
-\] \[
-\leq C \int_0^{T_0} \tilde{c}(s)\left(1 + \mathbb{E}[\|x_s^N\|^2]\right) ds
-\leq C\left(1 + \int_0^{T_0} \tilde{c}(s) \mathbb{E}\left[ \sup_{r \leq s} \|x_r^N\|^2 \right] ds\right).
-\] Por crecimiento lineal global se acotan los términos de variación
-cuadrática \[
-\mathbb{E}\left[ \int_0^{T_0} \|\sigma^N(s,x_s^N)\|^2 ds \right] + \mathbb{E}\left[ \int_0^{T_0} \int_Z \|R^N(s,x_{s-}^N,z)\|^2 \nu(dz) ds \right]
-\leq C \int_0^{T_0} \tilde{c}(s)\left(1 + \mathbb{E}[\|x_s^N\|^2]\right) ds.
-\] Reuniendo todas las estimaciones, definimos \[
-u(t) := \mathbb{E}\left[ \sup_{0 \leq r \leq t} \|x_r^N\|^2 \right],
-\] y obtenemos \[
-u(t) \leq C \left( 1 + \mathbb{E}[\|x_0\|^2] + \int_0^t \tilde{c}(s) u(s) ds \right).
-\] Por la desigualdad de Grönwall, se deduce \[
-u(T_0) \leq C\left(1 + \mathbb{E}[\|x_0\|^2]\right) \exp\!\left( C \int_0^{T_0} \tilde{c}(s) ds \right) =: K_{T_0}.
-\] \(K_{T_0}\) no depende de \(N\), ya que \(\tilde{c}(t)\) es
+BDG, se tiene
+\[\mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t \int_Z x_{s-}^N \cdot R^N(s,x_{s-}^N,z)\,\tilde{N}(ds,dz) \right|^2 \right]
+\leq C \, \mathbb{E}\left[ \int_0^{T_0} \int_Z \|x_{s-}^N \cdot R^N(s,x_{s-}^N,z)\|^2 \nu(dz) ds \right]\]
+
+\[\leq C \int_0^{T_0} \tilde{c}(s)\left(1 + \mathbb{E}[\|x_s^N\|^2]\right) ds
+\leq C\left(1 + \int_0^{T_0} \tilde{c}(s) \mathbb{E}\left[ \sup_{r \leq s} \|x_r^N\|^2 \right] ds\right).\]
+Por crecimiento lineal global se acotan los términos de variación
+cuadrática
+\[\mathbb{E}\left[ \int_0^{T_0} \|\sigma^N(s,x_s^N)\|^2 ds \right] + \mathbb{E}\left[ \int_0^{T_0} \int_Z \|R^N(s,x_{s-}^N,z)\|^2 \nu(dz) ds \right]
+\leq C \int_0^{T_0} \tilde{c}(s)\left(1 + \mathbb{E}[\|x_s^N\|^2]\right) ds.\]
+Reuniendo todas las estimaciones, definimos
+\[u(t) := \mathbb{E}\left[ \sup_{0 \leq r \leq t} \|x_r^N\|^2 \right],\]
+y obtenemos
+\[u(t) \leq C \left( 1 + \mathbb{E}[\|x_0\|^2] + \int_0^t \tilde{c}(s) u(s) ds \right).\]
+Por la desigualdad de Grönwall, se deduce
+\[u(T_0) \leq C\left(1 + \mathbb{E}[\|x_0\|^2]\right) \exp\!\left( C \int_0^{T_0} \tilde{c}(s) ds \right) =: K_{T_0}.\]
+\(K_{T_0}\) no depende de \(N\), ya que \(\tilde{c}(t)\) es
 independiente de \(N\) por hipótesis.\textbackslash{} Ahora, observamos
 que en el evento \(A\) se tiene \(\tau_N \leq T_0\) y
-\(\|x^N_{\tau_N}\| = N\), luego \[
-N^2 \, \mathbb{P}(A) \leq \mathbb{E}\left[ \sup_{0 \leq t \leq \tau_N \wedge T_0} \|x^N_t\|^2 \right] \leq K_{T_0}.
-\] Esto implica \[
-\mathbb{P}(A) \leq \frac{K_{T_0}}{N^2} \xrightarrow{N \to \infty} 0,
-\] lo cual contradice \(\mathbb{P}(A) > 0\). Por lo tanto,
-\(\mathbb{P}(A) = 0\) para todo \(T_0 > 0\), y en consecuencia, \[
-\mathbb{P}\!\left( \lim_{N \to \infty} \tau_N = \infty \right) = 1.
-\] Esto garantiza que el proceso \(x = \{x_t\}_{t \geq 0}\) está
-definido para todo \(t \geq 0\), pertenece a
+\(\|x^N_{\tau_N}\| = N\), luego
+\[N^2 \, \mathbb{P}(A) \leq \mathbb{E}\left[ \sup_{0 \leq t \leq \tau_N \wedge T_0} \|x^N_t\|^2 \right] \leq K_{T_0}.\]
+Esto implica
+\[\mathbb{P}(A) \leq \frac{K_{T_0}}{N^2} \xrightarrow{N \to \infty} 0,\]
+lo cual contradice \(\mathbb{P}(A) > 0\). Por lo tanto,
+\(\mathbb{P}(A) = 0\) para todo \(T_0 > 0\), y en consecuencia,
+\[\mathbb{P}\!\left( \lim_{N \to \infty} \tau_N = \infty \right) = 1.\]
+Esto garantiza que el proceso \(x = \{x_t\}_{t \geq 0}\) está definido
+para todo \(t \geq 0\), pertenece a
 \(S^{2,\mathrm{loc}}_{\mathcal{F}}(\mathbb{R})\), y es la única solución
 fuerte de la SDE Ecuación~\ref{eq-1}. La unicidad por trayectoria se
 sigue del argumento estándar usando densidad de
@@ -1843,21 +1834,20 @@ las carteras de seguros sujetas a siniestros catastróficos.
 Una ecuación diferencial estocástica con saltos y parámetros
 dependientes del tiempo toma la forma general
 (Capítulo~\ref{sec-EDESJs})
-\begin{equation}\protect\phantomsection\label{eq-9}{
-dX(t) = a(t,X(t^-))dt + b(t,X(t^-))dW(t) + \int_{\mathbb{R}} R(t,X(t^-),x) \tilde{N}(dt,dx),
-}\end{equation} donde los coeficientes \(a\), \(b\) y \(R\) satisfacen
-condiciones de Lipschitz y crecimiento lineal que garantizan existencia
-y unicidad de soluciones fuertes. La notación \(X(t^-)\) denota el valor
-del proceso predecible(Sección~\ref{sec-proc_predecibles})
-inmediatamente antes del tiempo \(t\), crucial para manejar
-correctamente las discontinuidades inducidas por los
-saltos.(Teorema~\ref{thm-exis_uni_glo_fuerte_SDE}) \(N(dt,dx)\) es una
-medida de Poisson aleatoria que cuenta los saltos de tamaño \(x\) en el
-intervalo \(dt\), y \(\tilde{N}(dt,dx) = N(dt,dx) - \nu(dx)dt\) es su
-compensador con \(\nu\) siendo la medida de Poisson compensada. Esta
-descomposición separa explícitamente la componente difusiva continua
-(\(\sigma W(t)\)) de los saltos de pequeña magnitud (integrado
-compensado) y los saltos de gran magnitud (integrado
+\begin{equation}\protect\phantomsection\label{eq-9}{dX(t) = a(t,X(t^-))dt + b(t,X(t^-))dW(t) + \int_{\mathbb{R}} R(t,X(t^-),x) \tilde{N}(dt,dx),}\end{equation}
+donde los coeficientes \(a\), \(b\) y \(R\) satisfacen condiciones de
+Lipschitz y crecimiento lineal que garantizan existencia y unicidad de
+soluciones fuertes. La notación \(X(t^-)\) denota el valor del proceso
+predecible(Sección~\ref{sec-proc_predecibles}) inmediatamente antes del
+tiempo \(t\), crucial para manejar correctamente las discontinuidades
+inducidas por los saltos.(Teorema~\ref{thm-exis_uni_glo_fuerte_SDE})
+\(N(dt,dx)\) es una medida de Poisson aleatoria que cuenta los saltos de
+tamaño \(x\) en el intervalo \(dt\), y
+\(\tilde{N}(dt,dx) = N(dt,dx) - \nu(dx)dt\) es su compensador con
+\(\nu\) siendo la medida de Poisson compensada. Esta descomposición
+separa explícitamente la componente difusiva continua (\(\sigma W(t)\))
+de los saltos de pequeña magnitud (integrado compensado) y los saltos de
+gran magnitud (integrado
 puro).(Sección~\ref{sec-medida_aleatoria_poisson})
 
 Para capturar la dinámica real del mercado Mexicano, extendemos el
@@ -1882,9 +1872,8 @@ manera coherente tres elementos fundamentales:
   fundamentos teóricos al marco de la ecuación el proceso de reservas
   \(\{U(t)\}_{t \geq 0}\) se presenta como la siguiente ecuación
   diferencial estocástica con saltos (Ecuación~\ref{eq-9})
-  \begin{equation}\protect\phantomsection\label{eq-modelo_extendido}{
-  dU(t) = \underbrace{c(t)\,dt}_{\text{Primas}} + \underbrace{U(t^-)r(t)\,dt}_{\text{Rendimientos}} + \underbrace{U(t^-)\sigma(t)\,dW(t)}_{\text{Volatilidad}} - \underbrace{dJ(t)}_{\text{Siniestros}},
-  }\end{equation} donde
+  \begin{equation}\protect\phantomsection\label{eq-modelo_extendido}{dU(t) = \underbrace{c(t)\,dt}_{\text{Primas}} + \underbrace{U(t^-)r(t)\,dt}_{\text{Rendimientos}} + \underbrace{U(t^-)\sigma(t)\,dW(t)}_{\text{Volatilidad}} - \underbrace{dJ(t)}_{\text{Siniestros}},}\end{equation}
+  donde
 \item
   \(c(t) > 0\) es la tasa de prima neta tiempo-dependiente, ajustada por
   inflación y estacionalidad en la demanda
@@ -1933,36 +1922,31 @@ Integrada}\label{estimaciuxf3n-de-la-varianza-integrada}
 
 \begin{theorem}[]\protect\hypertarget{thm-VB}{}\label{thm-VB}
 
-Definamos la variación de bipotencia con retardo \(h = 1\), \[
-BV_n := \frac{1}{\mu_1^2} \sum_{i=2}^{n} \bigl|r_{i-1,n}\bigr| \cdot \bigl|r_{i,n}\bigr|, \quad \mu_1 = \sqrt{\frac{2}{\pi}},
-\] se quiere demostrar que es un estimador consistente en probabilidad
-de la varianza integrada \[
-IV := \int_0^1 \sigma^2(t)\,dt,
-\] es decir, \[
-BV_n \xrightarrow[n\to\infty]{\mathbb{P}} IV.
-\]
+Definamos la variación de bipotencia con retardo \(h = 1\),
+\[BV_n := \frac{1}{\mu_1^2} \sum_{i=2}^{n} \bigl|r_{i-1,n}\bigr| \cdot \bigl|r_{i,n}\bigr|, \quad \mu_1 = \sqrt{\frac{2}{\pi}},\]
+se quiere demostrar que es un estimador consistente en probabilidad de
+la varianza integrada \[IV := \int_0^1 \sigma^2(t)\,dt,\] es decir,
+\[BV_n \xrightarrow[n\to\infty]{\mathbb{P}} IV.\]
 
 \end{theorem}
 
 \begin{proof}
-Cada retorno se descompone en su parte continua y su parte por saltos \[
-r_{i,n} = C_{i,n} + S_{i,n},
-\] donde \[
-C_{i,n} = \int_{(i-1)\Delta}^{i\Delta} \sigma(t)\,dW(t), \quad 
-S_{i,n} = \sum_{(i-1)\Delta < t \leq i\Delta} \Delta J_t.
-\] Por la hipótesis de actividad finita de los saltos, se tiene que \[
-\mathbb{P}\bigl(S_{i-1,n} \neq 0 \text{ y } S_{i,n} \neq 0\bigr) \xrightarrow[n\to\infty]{} 0.
-\] Por lo tanto, con probabilidad \(1\), \[
-|r_{i-1,n}| \cdot |r_{i,n}| = |C_{i-1,n}| \cdot |C_{i,n}| + o_p(n^{-1}).
-\] Dado que \(\sigma(t)\) es cádlág, es localmente constante en el
-límite. Así, condicionalmente, \[
-\mathbb{E}\bigl[|C_{i-1,n}| \cdot |C_{i,n}| \mid \mathcal{F}_{(i-1)\Delta}\bigr] 
-= \mu_1^2 \cdot \sigma^2((i-1)\Delta) \cdot \frac{1}{n} + o(n^{-1}),
-\] donde \(\mu_1 = \mathbb{E}[|Z|] = \sqrt{2/\pi}\), \(Z \sim N(0,1)\).
-Sumando sobre \(i = 2,\dots,n\), obtenemos \[
-\mathbb{E}[BV_n] = \frac{1}{\mu_1^2} \sum_{i=2}^n \mathbb{E}\bigl[|r_{i-1,n}| \cdot |r_{i,n}|\bigr]
-= \sum_{i=2}^n \sigma^2((i-1)\Delta) \cdot \frac{1}{n} + o(1).
-\]
+Cada retorno se descompone en su parte continua y su parte por saltos
+\[r_{i,n} = C_{i,n} + S_{i,n},\] donde
+\[C_{i,n} = \int_{(i-1)\Delta}^{i\Delta} \sigma(t)\,dW(t), \quad 
+S_{i,n} = \sum_{(i-1)\Delta < t \leq i\Delta} \Delta J_t.\] Por la
+hipótesis de actividad finita de los saltos, se tiene que
+\[\mathbb{P}\bigl(S_{i-1,n} \neq 0 \text{ y } S_{i,n} \neq 0\bigr) \xrightarrow[n\to\infty]{} 0.\]
+Por lo tanto, con probabilidad \(1\),
+\[|r_{i-1,n}| \cdot |r_{i,n}| = |C_{i-1,n}| \cdot |C_{i,n}| + o_p(n^{-1}).\]
+Dado que \(\sigma(t)\) es cádlág, es localmente constante en el límite.
+Así, condicionalmente,
+\[\mathbb{E}\bigl[|C_{i-1,n}| \cdot |C_{i,n}| \mid \mathcal{F}_{(i-1)\Delta}\bigr] 
+= \mu_1^2 \cdot \sigma^2((i-1)\Delta) \cdot \frac{1}{n} + o(n^{-1}),\]
+donde \(\mu_1 = \mathbb{E}[|Z|] = \sqrt{2/\pi}\), \(Z \sim N(0,1)\).
+Sumando sobre \(i = 2,\dots,n\), obtenemos
+\[\mathbb{E}[BV_n] = \frac{1}{\mu_1^2} \sum_{i=2}^n \mathbb{E}\bigl[|r_{i-1,n}| \cdot |r_{i,n}|\bigr]
+= \sum_{i=2}^n \sigma^2((i-1)\Delta) \cdot \frac{1}{n} + o(1).\]
 \end{proof}
 
 \subsection{Hipótesis técnicas}\label{hipuxf3tesis-tuxe9cnicas}
@@ -1975,20 +1959,19 @@ Sumando sobre \(i = 2,\dots,n\), obtenemos \[
 \item
   \textbf{Hipótesis 2} \emph{(Acotamiento local)} Existe una sucesión
   creciente de tiempos de parada \((\tau_m)_{m \geq 1}\), con
-  \(\tau_m \uparrow \infty\) casi seguramente, tal que \[
-  \sup_{t \leq \tau_m} \sigma^2(t) < \infty \quad \text{c.s.}
-  \]
+  \(\tau_m \uparrow \infty\) casi seguramente, tal que
+  \[\sup_{t \leq \tau_m} \sigma^2(t) < \infty \quad \text{c.s.}\]
 \item
-  \textbf{Hipótesis 3} \emph{(Integrabilidad)} \[
-  \int_0^1 \sigma^2(t)\,dt < \infty \quad \text{casi seguramente}.\]
+  \textbf{Hipótesis 3} \emph{(Integrabilidad)}
+  \[\int_0^1 \sigma^2(t)\,dt < \infty \quad \text{casi seguramente}.\]
 \end{itemize}
 
 \begin{theorem}[]\protect\hypertarget{thm-Cons_variacion_bipotencia}{}\label{thm-Cons_variacion_bipotencia}
 
 Bajo las Hipótesis \(1\)--\(3\) y la condición de actividad finita de
-los saltos, se cumple: \[
-BV_n \xrightarrow[n\to\infty]{\mathbb{P}} \int_0^1 \sigma^2(t)\,dt.
-\] Es decir, la variación de bipotencia es un estimador consistente en
+los saltos, se cumple:
+\[BV_n \xrightarrow[n\to\infty]{\mathbb{P}} \int_0^1 \sigma^2(t)\,dt.\]
+Es decir, la variación de bipotencia es un estimador consistente en
 probabilidad de la varianza integrada. Sea
 \((\Omega, \mathcal{F}, (\mathcal{F}_t)_{t \in [0,1]}, \mathbb{P})\) un
 espacio de probabilidad filtrado que satisface las
@@ -1996,13 +1979,13 @@ espacio de probabilidad filtrado que satisface las
 Supongamos que \(\sigma^2 = (\sigma^2(t))_{t \in [0,1]}\) es un proceso
 estocástico. Definimos la partición regular del intervalo \([0,1]\) como
 \(t_i^n := \frac{i}{n}, \quad i = 0,1,\dots,n.\) La suma de Riemann
-izquierda asociada a \(\sigma^2\) es \[
-S_n := \frac{1}{n} \sum_{i=1}^n \sigma^2\!\left(t_{i-1}^n\right) = \frac{1}{n} \sum_{i=1}^n \sigma^2\!\left(\frac{i-1}{n}\right).
-\] Denotamos el límite objetivo como la varianza integrada \[
-IV := \int_0^1 \sigma^2(t)\,dt.
-\] se busca demostrar que, para todo \(\varepsilon > 0\), \[
-\lim_{n \to \infty} \mathbb{P}\bigl( |S_n - IV| > \varepsilon \bigr) = 0,
-\] es decir, \(S_n \xrightarrow[n \to \infty]{\mathbb{P}} IV\).
+izquierda asociada a \(\sigma^2\) es
+\[S_n := \frac{1}{n} \sum_{i=1}^n \sigma^2\!\left(t_{i-1}^n\right) = \frac{1}{n} \sum_{i=1}^n \sigma^2\!\left(\frac{i-1}{n}\right).\]
+Denotamos el límite objetivo como la varianza integrada
+\[IV := \int_0^1 \sigma^2(t)\,dt.\] se busca demostrar que, para todo
+\(\varepsilon > 0\),
+\[\lim_{n \to \infty} \mathbb{P}\bigl( |S_n - IV| > \varepsilon \bigr) = 0,\]
+es decir, \(S_n \xrightarrow[n \to \infty]{\mathbb{P}} IV\).
 
 \end{theorem}
 
@@ -2015,15 +1998,12 @@ umbral \(\tau_n = \alpha \Delta_n^{\varpi}\)
 
 Definimos el estimador de intensidad de saltos mediante el método de
 conteo con umbral:
-\begin{equation}\protect\phantomsection\label{eq-umbral}{
-\hat{\lambda}_n := \frac{1}{T} \sum_{i=1}^n \mathbf{1}_{\{ |\Delta_i^n X| > \tau_n \}},
-}\end{equation}
+\begin{equation}\protect\phantomsection\label{eq-umbral}{\hat{\lambda}_n := \frac{1}{T} \sum_{i=1}^n \mathbf{1}_{\{ |\Delta_i^n X| > \tau_n \}},}\end{equation}
 
 donde \(\tau_n > 0\) es un umbral determinista que depende de \(n\).
 Siguiendo la metodología de \cite{ait2009testing} (ver Sección 4.3 y la
 ecuación (24)), elegimos el umbral de la forma
-\begin{equation}\protect\phantomsection\label{eq-estimador}{
- \tau_n = \alpha \Delta_n^{\varpi}, \quad \alpha > 0, \quad \varpi \in \left(0, \frac{1}{2}\right).
+\begin{equation}\protect\phantomsection\label{eq-estimador}{ \tau_n = \alpha \Delta_n^{\varpi}, \quad \alpha > 0, \quad \varpi \in \left(0, \frac{1}{2}\right).
  }\end{equation} Esta elección es crucial y satisface dos propiedades
 asintóticas fundamentales: (I) \textbf{Detección de saltos:}
 \(\tau_n \to 0\) cuando \(n \to \infty\). Esto asegura que,
@@ -2048,9 +2028,8 @@ asintótico de alta frecuencia en el que \(\Delta_n \to 0\) y
 \(T = n \Delta_n \to \infty\) cuando \(n \to \infty\). Entonces, bajo la
 elección del umbral (Ecuación~\ref{eq-umbral}) con
 \(\varpi \in (0, 1/2)\), el estimador (Ecuación~\ref{eq-estimador}) es
-consistente en probabilidad para \(\lambda\), es decir, \[
-\hat{\lambda}_n \xrightarrow{\mathbb{P}} \lambda.
-\]
+consistente en probabilidad para \(\lambda\), es decir,
+\[\hat{\lambda}_n \xrightarrow{\mathbb{P}} \lambda.\]
 
 \end{theorem}
 
@@ -2062,9 +2041,8 @@ magnitud de la parte continua. La herramienta fundamental es la cota
 proporcionada en la \textbf{ecuación (46)} de \cite{ait2009testing}
 (Sección 8.1), derivada bajo el Assumption 1. Para cualquier
 \(\eta > 0\) y \(\theta \in (0,1)\), se cumple
-\begin{equation}\protect\phantomsection\label{eq-cota_46}{
- \mathbb{E}_{i-1}^n \left( |\Delta_i^n X - \delta_i^n|^2 \wedge \eta^2 \right) \leq K \Delta_n (\eta^2 + \Delta_n^{\theta} + \epsilon(\theta))
- }\end{equation} donde -
+\[ \mathbb{E}_{i-1}^n \left( |\Delta_i^n X - \delta_i^n|^2 \wedge \eta^2 \right) \leq K \Delta_n (\eta^2 + \Delta_n^{\theta} + \epsilon(\theta))
+ \] donde -
 \(\mathbb{E}_{i-1}^n(\cdot) = \mathbb{E}(\cdot \mid \mathcal{F}_{(i-1)\Delta_n})\),
 -
 \(\delta_i^n = \sigma_{(i-1)\Delta_n} (W_{i\Delta_n} - W_{(i-1)\Delta_n})\)
@@ -2075,15 +2053,15 @@ constante que depende de los coeficientes del modelo.
 Esta desigualdad implica que la parte continua del incremento es de
 orden \(O_p(\sqrt{\Delta_n})\). Ahora, utilizando la desigualdad de
 Chebyshev o argumentos de cola gaussiana, la probabilidad de que un
-incremento puramente difusivo exceda \(\tau_n\) se puede acotar por \[
-\mathbb{P}(|\Delta_i^n X| > \tau_n \mid \text{no hay salto en } [(i-1)\Delta_n, i\Delta_n]) \leq C \exp\left( -c \frac{\tau_n^2}{\Delta_n} \right).
-\] Dado que
+incremento puramente difusivo exceda \(\tau_n\) se puede acotar por
+\[\mathbb{P}(|\Delta_i^n X| > \tau_n \mid \text{no hay salto en } [(i-1)\Delta_n, i\Delta_n]) \leq C \exp\left( -c \frac{\tau_n^2}{\Delta_n} \right).\]
+Dado que
 \(\tau_n^2 / \Delta_n = \alpha^2 \Delta_n^{2\varpi-1} \to \infty\)
 (porque \(\varpi < 1/2\)), el término exponencial decae a cero más
 rápido que cualquier potencia de \(\Delta_n\). Por lo tanto, el número
-esperado de falsos positivos, \(\mathrm{FP}_n\), satisface \[
-\mathbb{E}[\mathrm{FP}_n] = \sum_{i=1}^n \mathbb{P}(\text{falso positivo en } i) \leq n \cdot o(\Delta_n) = o(T).
-\] En consecuencia, \(\mathrm{FP}_n / T \xrightarrow{\mathbb{P}} 0\). Un
+esperado de falsos positivos, \(\mathrm{FP}_n\), satisface
+\[\mathbb{E}[\mathrm{FP}_n] = \sum_{i=1}^n \mathbb{P}(\text{falso positivo en } i) \leq n \cdot o(\Delta_n) = o(T).\]
+En consecuencia, \(\mathrm{FP}_n / T \xrightarrow{\mathbb{P}} 0\). Un
 falso negativo ocurre cuando un salto real \(J\) ocurre en un intervalo
 de muestreo, pero su magnitud \(|J|\) es menor o igual que \(\tau_n\),
 por lo que no se detecta. Sin embargo, dado que el proceso tiene
@@ -2099,23 +2077,19 @@ negativos, \(\mathrm{FN}_n\), satisface
 real (y finito) de saltos en \([0,T]\). De los pasos anteriores, se
 deduce que el número de saltos detectados por el estimador coincide
 asintóticamente con \(N_T\):
-\begin{equation}\protect\phantomsection\label{eq-12}{\sum_{i=1}^n \mathbf{1}_{\{ |\Delta_i^n X| > \tau_n \}} = N_T + \mathrm{FP}_n - \mathrm{FN}_n = N_T + o_{\mathbb{P}}(T).
-}\end{equation} Dividiendo por \(T\), obtenemos
-\begin{equation}\protect\phantomsection\label{eq-13}{
-\hat{\lambda}_n = \frac{N_T}{T} + o_{\mathbb{P}}(1).
-}\end{equation} Finalmente, dado que la actividad de saltos es finita y
-la intensidad es constante \(\lambda\), el proceso de conteo \(N_T\) es
-un proceso de Poisson con media \(\mathbb{E}[N_T] = \lambda T\) y
-varianza \(\mathrm{Var}(N_T) = \lambda T\). Por la ley de los grandes
-números para procesos de Poisson, se tiene que cuando \(T \to \infty\),
-\[
-\frac{N_T}{T} \xrightarrow{\mathbb{P}} \lambda.
-\]
+\[\sum_{i=1}^n \mathbf{1}_{\{ |\Delta_i^n X| > \tau_n \}} = N_T + \mathrm{FP}_n - \mathrm{FN}_n = N_T + o_{\mathbb{P}}(T).\]
+Dividiendo por \(T\), obtenemos
+\[\hat{\lambda}_n = \frac{N_T}{T} + o_{\mathbb{P}}(1).\] Finalmente,
+dado que la actividad de saltos es finita y la intensidad es constante
+\(\lambda\), el proceso de conteo \(N_T\) es un proceso de Poisson con
+media \(\mathbb{E}[N_T] = \lambda T\) y varianza
+\(\mathrm{Var}(N_T) = \lambda T\). Por la ley de los grandes números
+para procesos de Poisson, se tiene que cuando \(T \to \infty\),
+\[\frac{N_T}{T} \xrightarrow{\mathbb{P}} \lambda.\]
 
-Combinando las dos últimas convergencias, concluimos que \[
-\hat{\lambda}_n \xrightarrow{\mathbb{P}} \lambda,
-\] lo cual demuestra el
-Teorema~\ref{thm-Consistencia_estimador_intensidad}.
+Combinando las dos últimas convergencias, concluimos que
+\[\hat{\lambda}_n \xrightarrow{\mathbb{P}} \lambda,\] lo cual demuestra
+el Teorema~\ref{thm-Consistencia_estimador_intensidad}.
 \end{proof}
 
 \bookmarksetup{startatroot}
