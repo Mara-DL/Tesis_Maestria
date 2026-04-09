@@ -1,4 +1,8 @@
-# Custom Dictionary Words
+# Agregar el archivo
+git add Tesis_Maestria_MDL.tex
+
+# Hacer otro commit
+git commit -m "chore: Actualizado archivo LaTeX generado Tesis_Maestria_MDL.tex"# Custom Dictionary Words
 actuariales
 Banxico
 Cramér
