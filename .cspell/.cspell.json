@@ -1,0 +1,33 @@
+{
+    "version": "0.2",
+    "language": "es,es-MX",
+    "words": [
+        "Cramér",
+        "Lundberg",
+        "Itô",
+        "CDMX",
+        "CNSF",
+        "INEGI",
+        "Banxico",
+        "AMIS",
+        "pólizas",
+        "siniestros",
+        "estocásticas",
+        "martingalas",
+        "hidrometeorológicos",
+        "sísmicos",
+        "actuariales"
+    ],
+    "ignorePaths": [
+        "_book/**",
+        ".quarto/**",
+        "*.pdf",
+        "*.tex"
+    ],
+    "enableFiletypes": [
+        "quarto",
+        "markdown",
+        "latex",
+        "yaml"
+    ]
+}

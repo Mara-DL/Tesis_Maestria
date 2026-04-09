@@ -1,0 +1,61 @@
+{
+    "cSpell.language": "es,es-MX",
+    "cSpell.enabledLanguageIds": ["quarto", "markdown", "latex"],
+    "cSpell.dictionaryDefinitions": [
+        {
+            "name": "workspace-words",
+            "path": "./.cspell/custom-dictionary-workspace.txt",
+            "addWords": true
+        }
+    ],
+    "cSpell.dictionaries": [
+        "workspace-words",
+        "es_ES",
+        "es_MX"
+    ],
+    "cSpell.words": [
+        "actuariales",
+        "AMIS",
+        "Banxico",
+        "Burkholder",
+        "cádlág",
+        "CDMX",
+        "CETES",
+        "Chiapas",
+        "CNSF",
+        "Cramér",
+        "Cramér-Lundberg",
+        "Davis",
+        "estocásticas",
+        "Grönwall",
+        "Gundy",
+        "hidrometeorológicos",
+        "INEGI",
+        "Itô",
+        "Lévy",
+        "Lipschitz",
+        "Lundberg",
+        "martingalas",
+        "Milstein",
+        "Poisson",
+        "pólizas",
+        "semimartingala",
+        "siniestros",
+        "sísmicos",
+        "UNACH",
+        "Wiener"
+    ],
+    "editor.spellcheck": true,
+    "[quarto]": {
+        "editor.spellcheck": true,
+        "editor.quickSuggestions": {
+            "comments": true,
+            "strings": true,
+            "other": true
+        }
+    },
+    "cSpell.caseSensitive": true,
+    "cSpell.languageSettings": [
+        
+    ]
+}

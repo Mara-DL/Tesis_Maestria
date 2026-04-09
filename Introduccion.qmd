@@ -1,0 +1,11 @@
+---
+title: "Introducción"
+lang: es
+cSpell.language: es,es-MX
+---
+
+La Ciudad de México (CDMX) representa uno de los mercados más relevantes para el sector asegurador mexicano. Según el Censo de Población y Vivienda 2020 del INEGI([@inegi2020censo]), la CDMX contaba con $2330816$ viviendas particulares habitadas. Ajustando por un crecimiento demográfico estimado del $SI{0.5}$ anual, para el periodo 2024--2025 se proyecta un parque habitacional de aproximadamente $2378000$ unidadesssion of literate programming.
+
+De acuerdo con el Panorama Analítico del Sector de Seguros y Fianzas 2024 publicado por la Comisión Nacional de Seguros y Fianzas (CNSF), el ramo de Daños sin Automóviles registró una colocación de $12200$ millones de pesos en 2024, estimándose que aproximadamente el corresponde a seguros de vivienda, lo que equivale a primas del orden de $7320$ millones de pesos.
+
+Estudios de la Asociación Mexicana de Instituciones de Seguros (AMIS) y consultoras especializadas (Marsh, AON) indican que la CDMX concentra entre el SI 22 del mercado nacional de seguros de vivienda, debido a su alta densidad poblacional y valor patrimonial de los inmuebles.

@@ -1,0 +1,28 @@
+{
+    "version": "0.2",
+    "language": "es,es-MX,es-ES",
+    "words": [
+        "actuariales",
+        "AMIS",
+        "Banxico",
+        "CDMX",
+        "CNSF",
+        "Cramér",
+        "estocásticas",
+        "hidrometeorológicos",
+        "INEGI",
+        "Itô",
+        "Lundberg",
+        "martingalas",
+        "pólizas",
+        "siniestros",
+        "sísmicos",
+        "unnumbered"
+    ],
+    "ignorePaths": [
+        "_book/**",
+        ".quarto/**",
+        "*.pdf",
+        "*.tex"
+    ]
+}

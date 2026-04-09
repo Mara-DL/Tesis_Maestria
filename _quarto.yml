@@ -34,7 +34,7 @@ book:
 
   chapters:
     - index.qmd
-    - intro.qmd
+    - Introduccion.qmd
     - fundamentos_estocasticos.qmd
     - edes_saltos.qmd
     - metodos-numericos.qmd
@@ -60,9 +60,13 @@ format:
       body-width: 900px
       margin-width: 300px
       gutter-width: 1.5rem
+    code-copy: true
+    code-fold: true
 
   pdf:
     lang: es
+    cite-method: biblatex
+    bibliographystyle: apa
     include-in-header:
       - packa.tex
     template-partials:
