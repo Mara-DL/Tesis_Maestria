@@ -1,0 +1,34 @@
+[33mcommit 4b1b8237e547252b135b60a176255d8b0f8fce47[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Mara-DL <x180099@unach.mx>
+Date:   Thu Apr 9 10:41:09 2026 -0600
+
+    feat: Actualización completa de capítulos y configuración del proyecto
+    
+    CAMBIOS PRINCIPALES:
+    - Actualizados capítulos: index, fundamentos_estocasticos, edes_saltos
+    - Agregado capítulo de métodos numéricos (metodos-numericos.qmd)
+    - Configurado _quarto.yml con formato PDF/HTML en español
+    - Actualizada bibliografía (references.bib) con referencias verificadas
+    
+    CONFIGURACIÓN TÉCNICA:
+    - Configurados entornos de demostración con símbolo QED (□)
+    - Agregadas definiciones de punto absorbente y procesos puntuales
+    - Implementados teoremas con numeración por sección
+    - Excluido packa.tex (configuración LaTeX manejada en _quarto.yml)
+    
+    CONTENIDO MATEMÁTICO:
+    - Teorema 3.7: Desigualdad de Cauchy-Schwarz con demostración completa
+    - Teorema 3.8: Desigualdad discreta con demostración por Cauchy-Schwarz y Jensen
+    - Definición 3.5: Espacios de Lusin y punto absorbente
+    - Procesos puntuales y medidas de conteo
+    
+    LIMPIEZA:
+    - Eliminados archivos CSS de site_libs (generados automáticamente)
+    - Eliminada configuración LaTeX externa redundante
+    
+    PRÓXIMOS PASOS:
+    - Completar capítulo de marco probabilístico
+    - Agregar simulaciones numéricas
+    - Publicar en GitHub Pages
+    
+    Refs: #tesis-doctorado #EDEs-saltos #matemáticas-aplicadas
