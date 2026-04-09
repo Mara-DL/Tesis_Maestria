@@ -586,7 +586,7 @@ y_t = x_0 &amp;+ \int_0^t b(s,x^{\prime}_s,\omega)\,ds
 x_t(\omega) = x'_t(\omega) \quad \text{para todo } t \in [0,T].
 \]</span> Por lo tanto, el conjunto <span class="math display">\[
 \left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \text{ para todo } t \in [0,T] \right\}
-\]</span> contiene a <span class="math inline">\(\Omega_0\)</span>, y en consecuencia tiene probabilidad uno. Por lo tanto, coinciden para todo $ t .$ Por lo que se concluye que la solución de la ecuación estocástica diferencial con saltos es única por trayectoria. Además, como los coeficientes <span class="math inline">\(b\)</span>, <span class="math inline">\(\sigma\)</span> y <span class="math inline">\(R\)</span> son <span class="math inline">\(\mathcal{F}_t^{W,\widetilde{N}}\)</span>-adaptados, se sigue la solución es fuerte.</p>
+\]</span> contiene a <span class="math inline">\(\Omega_0\)</span>, y en consecuencia tiene probabilidad uno. Por lo tanto, coinciden para todo $ t .$ Por lo que se concluye que la solución de la ecuación estocástica diferencial con saltos es única por trayectoria. Además, como los coeficientes <span class="math inline">\(b\)</span>, <span class="math inline">\(\sigma\)</span> y <span class="math inline">\(R\)</span> son <span class="math inline">\(\mathcal{F}_t^{W,\widetilde{N}}\)</span>-adaptados, se sigue la solución es fuerte.<span class="math inline">\(\quad \square\)</span></p>
 </div>
 <div id="def-Tiempos_paro_explosión" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 4.3</strong></span> <span class="math display">\[\tau^N := \inf\{ t \geq 0 : |x_t| &gt; N \}\]</span> Se demuestra que <span class="math inline">\(\tau^N \uparrow \infty\)</span> c.s. usando: - Estimaciones en <span class="math inline">\(S^{2,\mathrm{loc}}\)</span> vía BDG y Grönwall, - Cota uniforme en <span class="math inline">\(N\)</span>: <span class="math inline">\(\mathbb{E}[\sup_{t \leq T} |x_t^N|^2] \leq K_T &lt; \infty\)</span>, - Argumento de contradicción: <span class="math inline">\(N^2 \mathbb{P}(\tau^N \leq T) \leq K_T \Rightarrow \mathbb{P}(\tau^N \leq T) \to 0\)</span>.</p>
@@ -679,7 +679,7 @@ N^2 \, \mathbb{P}(A) \leq \mathbb{E}\left[ \sup_{0 \leq t \leq \tau_N \wedge T_0
 \mathbb{P}(A) \leq \frac{K_{T_0}}{N^2} \xrightarrow{N \to \infty} 0,
 \]</span> lo cual contradice <span class="math inline">\(\mathbb{P}(A) &gt; 0\)</span>. Por lo tanto, <span class="math inline">\(\mathbb{P}(A) = 0\)</span> para todo <span class="math inline">\(T_0 &gt; 0\)</span>, y en consecuencia, <span class="math display">\[
 \mathbb{P}\!\left( \lim_{N \to \infty} \tau_N = \infty \right) = 1.
-\]</span> Esto garantiza que el proceso <span class="math inline">\(x = \{x_t\}_{t \geq 0}\)</span> está definido para todo <span class="math inline">\(t \geq 0\)</span>, pertenece a <span class="math inline">\(S^{2,\mathrm{loc}}_{\mathcal{F}}(\mathbb{R})\)</span>, y es la única solución fuerte de la SDE <a href="#eq-1" class="quarto-xref">Ecuación&nbsp;<span>4.1</span></a>. La unicidad por trayectoria se sigue del argumento estándar usando densidad de <span class="math inline">\(\mathbb{Q} \cap [0,T]\)</span> y la propiedad cádlág de las soluciones, como se demostró en el Teorema <a href="#thm-exis_uni_glo_fuerte_SDE" class="quarto-xref">Teorema&nbsp;<span>4.1</span></a>.</p>
+\]</span> Esto garantiza que el proceso <span class="math inline">\(x = \{x_t\}_{t \geq 0}\)</span> está definido para todo <span class="math inline">\(t \geq 0\)</span>, pertenece a <span class="math inline">\(S^{2,\mathrm{loc}}_{\mathcal{F}}(\mathbb{R})\)</span>, y es la única solución fuerte de la SDE <a href="#eq-1" class="quarto-xref">Ecuación&nbsp;<span>4.1</span></a>. La unicidad por trayectoria se sigue del argumento estándar usando densidad de <span class="math inline">\(\mathbb{Q} \cap [0,T]\)</span> y la propiedad cádlág de las soluciones, como se demostró en el Teorema <a href="#thm-exis_uni_glo_fuerte_SDE" class="quarto-xref">Teorema&nbsp;<span>4.1</span></a>. <span class="math inline">\(\quad \square\)</span></p>
 </div>
 </section>
 </section>
@@ -756,7 +756,7 @@ S_{i,n} = \sum_{(i-1)\Delta &lt; t \leq i\Delta} \Delta J_t.
 = \mu_1^2 \cdot \sigma^2((i-1)\Delta) \cdot \frac{1}{n} + o(n^{-1}),
 \]</span> donde <span class="math inline">\(\mu_1 = \mathbb{E}[|Z|] = \sqrt{2/\pi}\)</span>, <span class="math inline">\(Z \sim N(0,1)\)</span>. Sumando sobre <span class="math inline">\(i = 2,\dots,n\)</span>, obtenemos <span class="math display">\[
 \mathbb{E}[BV_n] = \frac{1}{\mu_1^2} \sum_{i=2}^n \mathbb{E}\bigl[|r_{i-1,n}| \cdot |r_{i,n}|\bigr]
-= \sum_{i=2}^n \sigma^2((i-1)\Delta) \cdot \frac{1}{n} + o(1).
+= \sum_{i=2}^n \sigma^2((i-1)\Delta) \cdot \frac{1}{n} + o(1). \quad \square
 \]</span></p>
 </div>
 </section>
@@ -846,7 +846,7 @@ S_n^{(m)}(\omega) \xrightarrow[n \to \infty]{} IV_m(\omega).
 \mathbb{P}(|S_n - IV| &gt; \varepsilon) &lt; \frac{\varepsilon}{3} + \frac{\varepsilon}{3} + \frac{\varepsilon}{3} = \varepsilon.
 \]</span> Como <span class="math inline">\(\varepsilon &gt; 0\)</span> fue arbitrario, concluimos <span class="math display">\[
 \lim_{n \to \infty} \mathbb{P}(|S_n - IV| &gt; \varepsilon) = 0.
-\]</span> es decir, <span class="math inline">\(S_n \xrightarrow{\mathbb{P}} IV\)</span>.</p>
+\]</span> es decir, <span class="math inline">\(S_n \xrightarrow{\mathbb{P}} IV. \quad \square\)</span></p>
 </div>
 </section>
 </section>
@@ -883,7 +883,7 @@ S_n^{(m)}(\omega) \xrightarrow[n \to \infty]{} IV_m(\omega).
 \]</span></p>
 <p>Combinando las dos últimas convergencias, concluimos que <span class="math display">\[
 \hat{\lambda}_n \xrightarrow{\mathbb{P}} \lambda,
-\]</span> lo cual demuestra el <a href="#thm-Consistencia_estimador_intensidad" class="quarto-xref">Teorema&nbsp;<span>4.5</span></a></p>
+\]</span> lo cual demuestra el <a href="#thm-Consistencia_estimador_intensidad" class="quarto-xref">Teorema&nbsp;<span>4.5</span></a>. <span class="math inline">\(\quad \square\)</span></p>
 </div>
 
 
