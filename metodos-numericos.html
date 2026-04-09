@@ -456,8 +456,8 @@ window.Quarto = {
 <p><span id="eq-sde_jumps_general"><span class="math display">\[
 \begin{aligned}
 X_t = {}&amp; X_0 + \int_0^t a(s,X_s)\,d s + \int_0^t b(s,X_s)\,d W_s
-+ \int_0^t \int_E R(s,X_{s-},v)\,\tilde{p}_\phi(d v, ds) + \\
-&amp; \int_0^t \int_E R(s,X_{s-},v)\,\nu(d v)\,ds,
++ \int_0^t \int_E R(s,X_{s-},v)\,\tilde{p}_\phi(d v, ds) \\
+&amp; + \int_0^t \int_E R(s,X_{s-},v)\,\nu(d v)\,ds,
 \end{aligned}
 \tag{5.1}\]</span></span> donde: - <span class="math inline">\(a: [0,T] \times \mathbb{R} \to \mathbb{R}\)</span> es el coeficiente de deriva (drift), - <span class="math inline">\(b: [0,T] \times \mathbb{R} \to \mathbb{R}\)</span> es el coeficiente de difusión, - <span class="math inline">\(W = \{W_t\}_{t \geq 0}\)</span> es un proceso de Wiener, - <span class="math inline">\(p_\phi\)</span> es una medida aleatoria de Poisson con intensidad <span class="math inline">\(\nu(dv) dt\)</span>, - <span class="math inline">\(\tilde{p}_\phi(dv, ds) = p_\phi(dv, ds) - \nu(dv) ds\)</span> es la medida de Poisson compensada, - <span class="math inline">\(R: [0,T] \times \mathbb{R} \times E \to \mathbb{R}\)</span> describe la magnitud de los saltos, - <span class="math inline">\(E \subseteq \mathbb{R}^k \setminus \{0\}\)</span> es el espacio de marcas (marks).</p>
 <p>La SDE con saltos compensados es: <span class="math display">\[
