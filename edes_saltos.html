@@ -647,8 +647,8 @@ x_t := x_t^N \quad \text{para } t \in [0, \tau^N).
 \leq \tilde{c}(s)\bigl(1 + 2\|x_s^N\|^2\bigr).\]</span> Luego <span class="math display">\[
 \begin{aligned}
 \mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t x_s^N \cdot b^N(s,x_s^N)\,ds \right| \right]
-\leq {}&amp;  \int_0^{T_0} \tilde{c}(s)\bigl(1 + 2\mathbb{E}[\|x_s^N\|^2]\bigr) ds\\
-&amp; \leq C\left(1 + \int_0^{T_0} \tilde{c}(s) \mathbb{E}\left[ \sup_{r \leq s} \|x_r^N\|^2 \right] ds\right).
+\leq{}&amp;  \int_0^{T_0} \tilde{c}(s)\bigl(1 + 2\mathbb{E}[\|x_s^N\|^2]\bigr) ds \\
+&amp;\leq C\left(1 + \int_0^{T_0} \tilde{c}(s) \mathbb{E}\left[ \sup_{r \leq s} \|x_r^N\|^2 \right] ds\right).
 \end{aligned}
 \]</span> Ahora para el término browniano por la desigualdad de BDG con <span class="math inline">\(p=2\)</span>, existe una constante universal <span class="math inline">\(C_{\mathrm{BDG}} &gt; 0\)</span> tal que <span class="math display">\[\mathbb{E}\left[ \sup_{t \leq T_0} \left| \int_0^t x_s^N \cdot \sigma^N(s,x_s^N)\,dW_s \right|^2 \right]
 \leq C_{\mathrm{BDG}} \, \mathbb{E}\left[ \int_0^{T_0} \|x_s^N \cdot \sigma^N(s,x_s^N)\|^2 ds \right].\]</span> Usando Cauchy–Schwarz y crecimiento lineal: <span class="math display">\[
@@ -670,10 +670,8 @@ x_t := x_t^N \quad \text{para } t \in [0, \tau^N).
 \leq C \int_0^{T_0} \tilde{c}(s)\left(1 + \mathbb{E}[\|x_s^N\|^2]\right) ds
 \leq C\left(1 + \int_0^{T_0} \tilde{c}(s) \mathbb{E}\left[ \sup_{r \leq s} \|x_r^N\|^2 \right] ds\right).
 \]</span> Por crecimiento lineal global se acotan los términos de variación cuadrática <span class="math display">\[
-\begin{aligned}
 \mathbb{E}\left[ \int_0^{T_0} \|\sigma^N(s,x_s^N)\|^2 ds \right] + \mathbb{E}\left[ \int_0^{T_0} \int_Z \|R^N(s,x_{s-}^N,z)\|^2 \nu(dz) ds \right]
 \leq C \int_0^{T_0} \tilde{c}(s)\left(1 + \mathbb{E}[\|x_s^N\|^2]\right) ds.
-\end{aligned}
 \]</span> Reuniendo todas las estimaciones, definimos <span class="math display">\[
 u(t) := \mathbb{E}\left[ \sup_{0 \leq r \leq t} \|x_r^N\|^2 \right],
 \]</span> y obtenemos <span class="math display">\[
