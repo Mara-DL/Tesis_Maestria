@@ -173,10 +173,10 @@
 \usepackage{amsthm}
 \theoremstyle{plain}
 \newtheorem{theorem}{Teorema}[chapter]
-\theoremstyle{plain}
-\newtheorem{lemma}{Lema}[chapter]
 \theoremstyle{definition}
 \newtheorem{definition}{Definición}[chapter]
+\theoremstyle{plain}
+\newtheorem{lemma}{Lema}[chapter]
 \theoremstyle{remark}
 \AtBeginDocument{\renewcommand*{\proofname}{Demostración}}
 \newtheorem*{remark}{Observación}
@@ -1528,7 +1528,7 @@ e^{-b_0 A(t)} u(t)
 menor que uno si \(b_0\geq\frac{1}{4}.\) Por lo que haciendo un cambio
 de variable \(U = A(s)\), \(dU=\widetilde{c}(s)ds,\) y
 \(A(t)= \int_0^t \widetilde{c}(s)ds\) \begin{align*}
-\int_0^t \widetilde{c}(s) exp\left(\left(b_0 - \frac{1}{4}\right)(A(s(-A(t))))\right)ds & = \int_0^{A(t)}exp\left(\left( b_0 - \frac{1}{4}\right)(U-A(t))\right)dU\\
+\int_0^t \widetilde{c}(s) exp\left(\left(b_0 - \frac{1}{4}\right) \cdot A(s(-A(t)))\right)ds & = \int_0^{A(t)}exp\left(\left( b_0 - \frac{1}{4}\right)(U-A(t))\right)dU\\
 & = exp\left(-\left( b_0 - \frac{1}{4}\right)A(t)\right)\int_0^{A(t)}exp\left(\left( b_0 - \frac{1}{4}\right)U\right)dU,
 \end{align*} Si \(b_0>\frac{1}4{}\)
 
