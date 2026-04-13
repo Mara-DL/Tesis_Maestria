@@ -510,13 +510,19 @@ Y_{n+1} = Y_n &amp;+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right
 </ul>
 </div>
 <div id="thm-convergencia_fuerte" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 5.1</strong></span> (Convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span> ). Supongamos las siguientes hipótesis: 1. <strong>Lipschitz global</strong>: Los coeficientes <span class="math inline">\(a(t,x)\)</span> y <span class="math inline">\(b(t,x)\)</span> son globalmente Lipschitz en <span class="math inline">\(x\)</span>, y <span class="math inline">\(c(t,x,v)\)</span> es globalmente Lipschitz en <span class="math inline">\(x\)</span> uniformemente en <span class="math inline">\(t\)</span> y <span class="math inline">\(v\)</span>: <span class="math display">\[
+<p><span class="theorem-title"><strong>Teorema 5.1</strong></span> (Convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span> ). Supongamos las siguientes hipótesis:</p>
+<ol type="1">
+<li><p><strong>Lipschitz global</strong>: Los coeficientes <span class="math inline">\(a(t,x)\)</span> y <span class="math inline">\(b(t,x)\)</span> son globalmente Lipschitz en <span class="math inline">\(x\)</span>, y <span class="math inline">\(c(t,x,v)\)</span> es globalmente Lipschitz en <span class="math inline">\(x\)</span> uniformemente en <span class="math inline">\(t\)</span> y <span class="math inline">\(v\)</span>: <span class="math display">\[
 |c(t, x_1, v) - c(t, x_2, v)| \leq L_c |x_1 - x_2|, \quad \forall t \in [0,T], \, x_1, x_2 \in \mathbb{R}, \, v \in E.
-\]</span> 2. <strong>Crecimiento lineal</strong>: Existe <span class="math inline">\(K &gt; 0\)</span> tal que <span class="math display">\[
+\]</span></p></li>
+<li><p><strong>Crecimiento lineal</strong>: Existe <span class="math inline">\(K &gt; 0\)</span> tal que <span class="math display">\[
 |a(t,x)| + |b(t,x)| + \left( \int_E |R(t, x, v)|^2 \phi(d v) \right)^{1/2} \leq K(1 + |x|),
-\]</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(x \in \mathbb{R}\)</span>. 3. <strong>Momentos finitos de saltos</strong>: <span class="math inline">\(\int_E |R(t, x, v)|^2 \phi(d v) &lt; \infty\)</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(x \in \mathbb{R}\)</span>. 4. <strong>Condiciones iniciales</strong>: <span class="math inline">\(\mathbb{E}[|X_0|^2] &lt; \infty\)</span> y <span class="math inline">\(Y_0 = X_0\)</span>. Entonces, existe una constante <span class="math inline">\(C &gt; 0\)</span>, independiente de <span class="math inline">\(\, dt\)</span>, tal que: <span id="eq-convergencia"><span class="math display">\[
+\]</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(x \in \mathbb{R}\)</span>.</p></li>
+<li><p><strong>Momentos finitos de saltos</strong>: <span class="math inline">\(\int_E |R(t, x, v)|^2 \phi(d v) &lt; \infty\)</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(x \in \mathbb{R}\)</span>.</p></li>
+<li><p><strong>Condiciones iniciales</strong>: <span class="math inline">\(\mathbb{E}[|X_0|^2] &lt; \infty\)</span> y <span class="math inline">\(Y_0 = X_0\)</span>. Entonces, existe una constante <span class="math inline">\(C &gt; 0\)</span>, independiente de <span class="math inline">\(\, dt\)</span>, tal que: <span id="eq-convergencia"><span class="math display">\[
 \max_{0 \leq n \leq N} \left( \mathbb{E}\left[ |X_{t_n} - Y_n|^2 \right] \right)^{1/2} \leq C \sqrt{dt}.
-\tag{5.4}\]</span></span> Es decir, el esquema converge fuertemente con orden <span class="math inline">\(\gamma = 1/2\)</span>.</p>
+\tag{5.4}\]</span></span> Es decir, el esquema converge fuertemente con orden <span class="math inline">\(\gamma = 1/2\)</span>.</p></li>
+</ol>
 </div>
 <div class="proof">
 <p><span class="proof-title"><em>Demostración</em>. </span>La EDE <a href="#eq-sdej" class="quarto-xref">Ecuación&nbsp;<span>5.2</span></a> puede reescribirse en la forma estándar ( Platen &amp; Bruti-Liberati, Ec. (1.8.2)): <span id="eq-sdej_estandar"><span class="math display">\[
