@@ -420,7 +420,11 @@ window.Quarto = {
     <h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-  <li><a href="#introducción-a-la-discretización-de-edesjs" id="toc-introducción-a-la-discretización-de-edesjs" class="nav-link active" data-scroll-target="#introducción-a-la-discretización-de-edesjs"><span class="header-section-number">5.1</span> Introducción a la Discretización de EDESJs</a></li>
+  <li><a href="#introducción-a-la-discretización-de-edesjs" id="toc-introducción-a-la-discretización-de-edesjs" class="nav-link active" data-scroll-target="#introducción-a-la-discretización-de-edesjs"><span class="header-section-number">5.1</span> Introducción a la Discretización de EDESJs</a>
+  <ul class="collapse">
+  <li><a href="#formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj." id="toc-formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj." class="nav-link" data-scroll-target="#formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj."><span class="header-section-number">5.1.1</span> Formulación general del modelo de Cramér–Lundberg con reinversión como EDESJ.</a></li>
+  </ul></li>
+  <li><a href="#esquema-de-milstein-compensado" id="toc-esquema-de-milstein-compensado" class="nav-link" data-scroll-target="#esquema-de-milstein-compensado"><span class="header-section-number">5.2</span> Esquema de Milstein Compensado</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/metodos-numericos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/metodos-numericos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
@@ -466,13 +470,59 @@ dX_t = \underbrace{a(t, X_t)\,dt}_{\text{drift original}} + \underbrace{b(t, X_t
 \tilde{p}_\phi(dv, dt) = p_\phi(dv, dt) - \phi(dv)\,dt
 \]</span> Al expandir la integral con la medida compensada, obtenemos: <span class="math display">\[
 \int_E R(t, X_{t-}, v)\,\tilde{p}_\phi(dv, dt) = \underbrace{\int_E R(t, X_{t-}, v)\,p_\phi(dv, dt)}_{\text{saltos brutos}} - \underbrace{\int_E R(t, X_{t-}, v)\,\phi(dv)\,dt}_{\text{compensación}}
-\]</span> Por lo tanto, la SDE completa se puede escribir como: <span class="math display">\[
+\]</span> Por lo tanto, la EDE completa se puede escribir como: <span class="math display">\[
 dX_t = a(t, X_t)\,dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\,p_\phi(dv, dt) - \int_E R(t, X_{t-}, v)\,\phi(dv)\,dt
 \]</span> Para discretizar esta ecuación, reorganizamos los términos de la siguiente manera: <span class="math display">\[
 dX_t = \underbrace{\left[a(t, X_t) - \int_E R(t, X_{t-}, v)\,\phi(dv)\right]}_{\text{drift compensado}} dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\,p_\phi(dv, dt)
 \]</span> El término de compensación cambia de signo al moverse al drift, porque: <span class="math display">\[
 a(t, X_t)\,dt - \int_E R(t, X_{t-}, v)\,\phi(dv)\,dt = \left[a(t, X_t) - \int_E c(t, X_{t-}, v)\,\phi(dv)\right] dt
 \]</span></p>
+</div>
+<section id="formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj." class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj."><span class="header-section-number">5.1.1</span> Formulación general del modelo de Cramér–Lundberg con reinversión como EDESJ.</h3>
+<div style="text-align:justify">
+<p>El modelo de Cramér–Lundberg extendido con reinversión y parámetros temporales puede escribirse como una ecuación diferencial estocástica con saltos (EDSEJ). Consideremos la siguiente ecuación diferencial estocástica con saltos (SDEJ): <span id="eq-sdej"><span class="math display">\[
+d X_t = \underbrace{c(t)\,dt}_{\text{primas}} + \underbrace{r(t) X_t\,dt}_{\text{rendimiento}} + \underbrace{\sigma(t) X_t\,d W_t}_{\text{volatilidad}} - \underbrace{\int_E R(t, X_{t-}, v)\,\tilde{p}_\phi(dv, dt)}_{\text{saltos compensados}},
+\tag{5.2}\]</span></span> donde - <span class="math inline">\(c(t) \in \mathbb{R}\)</span> es un flujo de primas determinista y acotado, - <span class="math inline">\(r(t), \sigma(t)\)</span> son funciones acotadas y medibles, - <span class="math inline">\(R(t, x, v)\)</span> es la magnitud del salto, dependiente del tiempo <span class="math inline">\(t\)</span>, del estado <span class="math inline">\(x\)</span> y de la marca <span class="math inline">\(v\)</span>, - <span class="math inline">\(\tilde{p}_\phi(dv, d t) = p_\phi(d v, dt) - \phi(dv)d t\)</span> es la medida de Poisson compensada, - <span class="math inline">\(\phi(E) &lt; \infty\)</span> y <span class="math inline">\(\int_E |R(t, x, v)|^2 \phi(d v) &lt; \infty\)</span> para todo <span class="math inline">\(t \in [0,T]\)</span>, <span class="math inline">\(x \in \mathbb{R}\)</span>.</p>
+</div>
+</section>
+</section>
+<section id="esquema-de-milstein-compensado" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="esquema-de-milstein-compensado"><span class="header-section-number">5.2</span> Esquema de Milstein Compensado</h2>
+<div style="text-align:justify">
+<p>Sea <span class="math inline">\(Y_n\)</span> la aproximación numérica dada por el esquema Milstein compensado: <span id="eq-milstein"><span class="math display">\[
+\boxed{
+\begin{aligned}
+Y_{n+1} = Y_n &amp;+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right]\Delta t \\
+&amp;+ b(t_n, Y_n) \Delta W_n \\
+&amp;+ \frac{1}{2} b(t_n, Y_n) b_x(t_n, Y_n) \left[ (\Delta W_n)^2 - \Delta t \right] \\
+&amp;+ \sum_{i=1}^{\Delta N_n} R(t_n, Y_n, \xi_i),
+\end{aligned}
+}
+\tag{5.3}\]</span></span></p>
+<ul>
+<li><span class="math inline">\(\Delta t = t_{n+1} - t_n\)</span> es el paso de tiempo,</li>
+<li><span class="math inline">\(\Delta W_n \sim \mathcal{N}(0, \Delta t)\)</span> es el incremento del proceso de Wiener,</li>
+<li><span class="math inline">\(\Delta N_n \sim \text{Poisson}(\lambda \Delta t)\)</span>, <span class="math inline">\(\lambda = \phi(E)\)</span>, es el número de saltos en el intervalo,</li>
+<li><span class="math inline">\(\xi_i \stackrel{\text{i.i.d.}}{\sim} \phi(dv)/\lambda\)</span> son las marcas de los saltos,</li>
+<li><span class="math inline">\(b_x = \partial b / \partial x\)</span> es la derivada parcial del coeficiente de difusión,</li>
+<li><span class="math inline">\(a(t, x) = c(t) + r(t)x\)</span> y <span class="math inline">\(b(t, x) = \sigma(t)x\)</span>.</li>
+</ul>
+</div>
+<div id="thm-convergencia_fuerte" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 5.1</strong></span> (Convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span> ). Supongamos las siguientes hipótesis: 1. <strong>Lipschitz global</strong>: Los coeficientes <span class="math inline">\(a(t,x)\)</span> y <span class="math inline">\(b(t,x)\)</span> son globalmente Lipschitz en <span class="math inline">\(x\)</span>, y <span class="math inline">\(c(t,x,v)\)</span> es globalmente Lipschitz en <span class="math inline">\(x\)</span> uniformemente en <span class="math inline">\(t\)</span> y <span class="math inline">\(v\)</span>: <span class="math display">\[
+|c(t, x_1, v) - c(t, x_2, v)| \leq L_c |x_1 - x_2|, \quad \forall t \in [0,T], \, x_1, x_2 \in \mathbb{R}, \, v \in E.
+\]</span> 2. <strong>Crecimiento lineal</strong>: Existe <span class="math inline">\(K &gt; 0\)</span> tal que <span class="math display">\[
+|a(t,x)| + |b(t,x)| + \left( \int_E |R(t, x, v)|^2 \phi(d v) \right)^{1/2} \leq K(1 + |x|),
+\]</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(x \in \mathbb{R}\)</span>. 3. <strong>Momentos finitos de saltos</strong>: <span class="math inline">\(\int_E |R(t, x, v)|^2 \phi(d v) &lt; \infty\)</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(x \in \mathbb{R}\)</span>. 4. <strong>Condiciones iniciales</strong>: <span class="math inline">\(\mathbb{E}[|X_0|^2] &lt; \infty\)</span> y <span class="math inline">\(Y_0 = X_0\)</span>. Entonces, existe una constante <span class="math inline">\(C &gt; 0\)</span>, independiente de <span class="math inline">\(\, dt\)</span>, tal que: <span id="eq-convergencia"><span class="math display">\[
+\max_{0 \leq n \leq N} \left( \mathbb{E}\left[ |X_{t_n} - Y_n|^2 \right] \right)^{1/2} \leq C \sqrt{dt}.
+\tag{5.4}\]</span></span> Es decir, el esquema converge fuertemente con orden <span class="math inline">\(\gamma = 1/2\)</span>.</p>
+</div>
+<div class="proof">
+<p><span class="proof-title"><em>Demostración</em>. </span>La EDE <a href="#eq-sdej" class="quarto-xref">Ecuación&nbsp;<span>5.2</span></a> puede reescribirse en la forma estándar ( Platen &amp; Bruti-Liberati, Ec. (1.8.2)): <span id="eq-sdej_estandar"><span class="math display">\[
+d X_t = a(t,X_t)\,d t + b(t,X_t)\,dW_t + \int_E R(t,X_{t-},v)\,p_\phi(dv, d t),
+\tag{5.5}\]</span></span></p>
+<p>donde: - <span class="math inline">\(a(t,x) = c(t) + r(t)x\)</span> (drift original), - <span class="math inline">\(b(t,x) = \sigma(t)x\)</span>, - <span class="math inline">\(R(t,x,v)\)</span> es el tamaño del salto bruto, dependiente del estado. Las hipótesis de Lipschitz y crecimiento lineal garantizan que los coeficientes satisfacen las condiciones del Teorema 1.9.3 de Platen &amp; Bruti-Liberati (2010), que establece la existencia y unicidad de una solución fuerte <span class="math inline">\(X_t\)</span>.</p>
 </div>
 
 
