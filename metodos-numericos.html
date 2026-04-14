@@ -112,10 +112,10 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="5&nbsp; Métodos Numéricos para EDES – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta property="og:title" content="[5]{.chapter-number}&nbsp; [Métodos Numéricos para EDES]{.chapter-title} – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta property="og:image" content="assets/UNACH.png">
 <meta property="og:site_name" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
-<meta name="twitter:title" content="5&nbsp; Métodos Numéricos para EDES – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta name="twitter:title" content="[5]{.chapter-number}&nbsp; [Métodos Numéricos para EDES]{.chapter-title} – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta name="twitter:image" content="assets/UNACH.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -308,7 +308,9 @@ window.Quarto = {
       <img src="./assets/UNACH.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos</a> 
+      <a href="./">
+      Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos
+      </a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/Mara-DL/Tesis_Maestria" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
@@ -521,8 +523,6 @@ Y_{n+1} = Y_n &amp;+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right
 <p>Para demostrar que el esquema tiene momentos finitos, usamos un argumento de tipo Grönwall discreto. Definimos: <span id="eq-momentos_Def"><span class="math display">\[M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |Y_k|^2 \right]. \tag{5.12}\]</span></span></p>
 <p>Tomando cuadrados en <span class="quarto-unresolved-ref">?eq-milstein</span> y esperanza, y usando las cotas de Lipschitz y crecimiento lineal, se obtiene: <span id="eq-momentos_recursivos"><span class="math display">\[M_{n+1} \leq (1 + K_5 \, dt) M_n + K_6 \, dt. \tag{5.13}\]</span></span> Iterando esta desigualdad y usando que <span class="math inline">\(M_0 = \mathbb{E}[|Y_0|^2] &lt; \infty\)</span>, se obtiene: <span id="eq-momentos_ligados"><span class="math display">\[M_N \leq M_0 e^{K_5 T} + \frac{K_6}{K_5} (e^{K_5 T} - 1) &lt; \infty. \tag{5.14}\]</span></span> Por lo tanto, el esquema numérico tiene momentos finitos uniformes.</p>
 </div>
-
-
 </section>
 
 </main> <!-- /main -->
