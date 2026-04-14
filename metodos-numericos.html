@@ -577,21 +577,21 @@ Y_{n+1} = Y_n &amp;+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right
 \end{aligned} \tag{5.19}\]</span></span></p>
 <p>Simplificando y usando que <span class="math inline">\(\, dt \leq 1\)</span>: <span id="eq-condicional_error_r_3"><span class="math display">\[
 \mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] \leq (1 + K_7 \, dt) |e_n|^2 + K_8 |R_n|^2,
-\tag{5.20}\]</span></span> donde <span class="math inline">\(K_7 = 2L_a + 2L_c + L_b^2 + L_a^2 + 2L_a L_c + L_c^2 + 1\)</span> y <span class="math inline">\(K_8 = 4 + (\, dt)^2 \leq 5\)</span>. Usando la cota del error local <a href="#eq-error_total_limite" class="quarto-xref">Ecuación&nbsp;<span>5.11</span></a>: <span class="math display">\[\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] \leq (1 + K_7 \, dt) |e_n|^2 + K_8 K_4 (1 + |Y_n|^2 + |e_n|^2) (\, dt)^2.\]</span> Usando la desigualdad <span class="math inline">\(|Y_n|^2 \leq 2|X_{t_n}|^2 + 2|e_n|^2\)</span> y tomando esperanza total: <span class="math display">\[\mathbb{E}[|e_{n+1}|^2] \leq (1 + K_7 \, dt + 2K_8 K_4 (\, dt)^2) \mathbb{E}[|e_n|^2] + 2K_8 K_4 (\, dt)^2 \mathbb{E}[|X_{t_n}|^2] + K_8 K_4 (\, dt)^2.\]</span> {eq-total_error_1} Definiendo <span class="math inline">\(E_n = \mathbb{E}[|e_n|^2]\)</span> y usando la cota de momentos de la solución exacta <a href="#eq-exact_moment" class="quarto-xref">Ecuación&nbsp;<span>5.6</span></a>:</p>
+\tag{5.20}\]</span></span> donde <span class="math inline">\(K_7 = 2L_a + 2L_c + L_b^2 + L_a^2 + 2L_a L_c + L_c^2 + 1\)</span> y <span class="math inline">\(K_8 = 4 + (\, dt)^2 \leq 5\)</span>. Usando la cota del error local <a href="#eq-error_total_limite" class="quarto-xref">Ecuación&nbsp;<span>5.11</span></a>: <span class="math display">\[\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] \leq (1 + K_7 \, dt) |e_n|^2 + K_8 K_4 (1 + |Y_n|^2 + |e_n|^2) (\, dt)^2.\]</span> Usando la desigualdad <span class="math inline">\(|Y_n|^2 \leq 2|X_{t_n}|^2 + 2|e_n|^2\)</span> y tomando esperanza total: <span id="eq-total_error_1"><span class="math display">\[\mathbb{E}[|e_{n+1}|^2] \leq (1 + K_7 \, dt + 2K_8 K_4 (\, dt)^2) \mathbb{E}[|e_n|^2] + 2K_8 K_4 (\, dt)^2 \mathbb{E}[|X_{t_n}|^2] + K_8 K_4 (\, dt)^2. \tag{5.21}\]</span></span> Definiendo <span class="math inline">\(E_n = \mathbb{E}[|e_n|^2]\)</span> y usando la cota de momentos de la solución exacta <a href="#eq-exact_moment" class="quarto-xref">Ecuación&nbsp;<span>5.6</span></a>:</p>
 <p><span id="eq-recursive_error"><span class="math display">\[
 E_{n+1} \leq (1 + K_9 \, dt) E_n + K_{10} (\, dt)^2,
-\tag{5.21}\]</span></span></p>
+\tag{5.22}\]</span></span></p>
 <p>donde <span class="math inline">\(K_9 = K_7 + 2K_8 K_4 \, dt \leq K_7 + 2K_8 K_4 \ \text{y} K_{10} = 2K_8 K_4 C_1 (1 + \mathbb{E}[|X_0|^2]) + K_8 K_4\)</span>.</p>
-<p>Iteramos la desigualdad <a href="#eq-recursive_error" class="quarto-xref">Ecuación&nbsp;<span>5.21</span></a>: <span id="eq-iteration"><span class="math display">\[\begin{aligned}
+<p>Iteramos la desigualdad <a href="#eq-recursive_error" class="quarto-xref">Ecuación&nbsp;<span>5.22</span></a>: <span id="eq-iteration"><span class="math display">\[\begin{aligned}
 E_1 &amp;\leq (1 + K_9 \, dt) E_0 + K_{10} (\, dt)^2, \\
 E_2 &amp;\leq (1 + K_9 \, dt)^2 E_0 + K_{10} (\, dt)^2 \left[1 + (1 + K_9 \, dt)\right], \\
 &amp;\vdots \\
 E_N &amp;\leq (1 + K_9 \, dt)^N E_0 + K_{10} (\, dt)^2 \sum_{k=0}^{N-1} (1 + K_9 \, dt)^k.
-\end{aligned} \tag{5.22}\]</span></span></p>
+\end{aligned} \tag{5.23}\]</span></span></p>
 <p>Como <span class="math inline">\(E_0 = 0\)</span> (condiciones iniciales iguales), el primer término se anula. La suma geométrica se puede acotar: <span id="eq-geometric_sum"><span class="math display">\[
 \sum_{k=0}^{N-1} (1 + K_9 \, dt)^k = \frac{(1 + K_9 \, dt)^N - 1}{K_9 \, dt}.
-\tag{5.23}\]</span></span></p>
-<p>Usando la desigualdad <span class="math inline">\((1 + x)^N \leq e^{Nx}\)</span> para <span class="math inline">\(x \geq 0\)</span>, y notando que <span class="math inline">\(N\, dt = T\)</span>, obtenemos: <span class="math display">\[(1 + K_9 \, dt)^N \leq e^{K_9 T}\]</span> {eq-exponential_bound} donde <span class="math inline">\(C = K_{10} (e^{K_9 T} - 1)/K_9\)</span> es una constante independiente de <span class="math inline">\(\,dt\)</span>. Tomando raíz cuadrada, obtenemos finalmente: <span id="eq-final_result"><span class="math display">\[\left( \mathbb{E}[|X_T - Y_N|^2] \right)^{1/2} \leq C \sqrt{\,dt}. \quad \square \tag{5.24}\]</span></span></p>
+\tag{5.24}\]</span></span></p>
+<p>Usando la desigualdad <span class="math inline">\((1 + x)^N \leq e^{Nx}\)</span> para <span class="math inline">\(x \geq 0\)</span>, y notando que <span class="math inline">\(N\, dt = T\)</span>, obtenemos: <span id="eq-exponential_bound"><span class="math display">\[(1 + K_9 \, dt)^N \leq e^{K_9 T} \tag{5.25}\]</span></span> donde <span class="math inline">\(C = K_{10} (e^{K_9 T} - 1)/K_9\)</span> es una constante independiente de <span class="math inline">\(\,dt\)</span>. Tomando raíz cuadrada, obtenemos finalmente: <span id="eq-final_result"><span class="math display">\[\left( \mathbb{E}[|X_T - Y_N|^2] \right)^{1/2} \leq C \sqrt{\,dt}. \quad \square \tag{5.26}\]</span></span></p>
 </div>
 </section>
 <section id="esquema-semi-implícito-compensado" class="level2" data-number="5.3">
