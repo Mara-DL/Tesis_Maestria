@@ -112,10 +112,10 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="[5]{.chapter-number}&nbsp; [Métodos Numéricos para EDES]{.chapter-title} – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta property="og:title" content="5&nbsp; Métodos Numéricos para EDES – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta property="og:image" content="assets/UNACH.png">
 <meta property="og:site_name" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
-<meta name="twitter:title" content="[5]{.chapter-number}&nbsp; [Métodos Numéricos para EDES]{.chapter-title} – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta name="twitter:title" content="5&nbsp; Métodos Numéricos para EDES – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta name="twitter:image" content="assets/UNACH.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -308,9 +308,7 @@ window.Quarto = {
       <img src="./assets/UNACH.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">
-      Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos
-      </a> 
+      <a href="./">Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos</a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/Mara-DL/Tesis_Maestria" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
@@ -427,6 +425,7 @@ window.Quarto = {
   <li><a href="#formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj." id="toc-formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj." class="nav-link" data-scroll-target="#formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj."><span class="header-section-number">5.1.1</span> Formulación general del modelo de Cramér–Lundberg con reinversión como EDESJ.</a></li>
   </ul></li>
   <li><a href="#esquema-de-milstein-compensado" id="toc-esquema-de-milstein-compensado" class="nav-link" data-scroll-target="#esquema-de-milstein-compensado"><span class="header-section-number">5.2</span> Esquema de Milstein Compensado</a></li>
+  <li><a href="#esquema-semi-implícito-compensado" id="toc-esquema-semi-implícito-compensado" class="nav-link" data-scroll-target="#esquema-semi-implícito-compensado"><span class="header-section-number">5.3</span> Esquema Semi-Implícito Compensado</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/metodos-numericos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/metodos-numericos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
@@ -463,13 +462,26 @@ window.Quarto = {
 X_t = {}&amp; X_0 + \int_0^t a(s,X_s)\,d s + \int_0^t b(s,X_s)\,d W_s
 + \int_0^t \int_E R(s,X_{s-},v)\,\tilde{p}_\phi(d v, ds) \\
 &amp; + \int_0^t \int_E R(s,X_{s-},v)\,\nu(d v)\,ds,
-\end{aligned} \tag{5.1}\]</span></span> donde: - <span class="math inline">\(a: [0,T] \times \mathbb{R} \to \mathbb{R}\)</span> es el coeficiente de deriva (drift), - <span class="math inline">\(b: [0,T] \times \mathbb{R} \to \mathbb{R}\)</span> es el coeficiente de difusión, - <span class="math inline">\(W = \{W_t\}_{t \geq 0}\)</span> es un proceso de Wiener, - <span class="math inline">\(p_\phi\)</span> es una medida aleatoria de Poisson con intensidad <span class="math inline">\(\nu(dv) dt\)</span>, - <span class="math inline">\(\tilde{p}_\phi(dv, ds) = p_\phi(dv, ds) - \nu(dv) ds\)</span> es la medida de Poisson compensada, - <span class="math inline">\(R: [0,T] \times \mathbb{R} \times E \to \mathbb{R}\)</span> describe la magnitud de los saltos, - <span class="math inline">\(E \subseteq \mathbb{R}^k \setminus \{0\}\)</span> es el espacio de marcas (marks).</p>
+\end{aligned} \tag{5.1}\]</span></span> donde:</p>
+<ul>
+<li><p><span class="math inline">\(a: [0,T] \times \mathbb{R} \to \mathbb{R}\)</span> es el coeficiente de deriva (drift),</p></li>
+<li><p><span class="math inline">\(b: [0,T] \times \mathbb{R} \to \mathbb{R}\)</span> es el coeficiente de difusión,</p></li>
+<li><p><span class="math inline">\(W = \{W_t\}_{t \geq 0}\)</span> es un proceso de Wiener, - <span class="math inline">\(p_\phi\)</span> es una medida aleatoria de Poisson con intensidad <span class="math inline">\(\nu(dv) dt\)</span>,</p></li>
+<li><p><span class="math inline">\(\tilde{p}_\phi(dv, ds) = p_\phi(dv, ds) - \nu(dv) ds\)</span> es la medida de Poisson compensada,</p></li>
+<li><p><span class="math inline">\(R: [0,T] \times \mathbb{R} \times E \to \mathbb{R}\)</span> describe la magnitud de los saltos,</p></li>
+<li><p><span class="math inline">\(E \subseteq \mathbb{R}^k \setminus \{0\}\)</span> es el espacio de marcas (marks).</p></li>
+</ul>
 <p>La SDE con saltos compensados es: <span class="math display">\[dX_t = \underbrace{a(t, X_t)\,dt}_{\text{drift original}} + \underbrace{b(t, X_t)\,dW_t}_{\text{difusión}} + \underbrace{\int_E R(t, X_{t-}, v)\,\tilde{p}_\phi(dv, dt)}_{\text{saltos compensados}}\]</span> donde la medida compensada es: <span class="math display">\[\tilde{p}_\phi(dv, dt) = p_\phi(dv, dt) - \phi(dv)\,dt\]</span> Al expandir la integral con la medida compensada, obtenemos: <span class="math display">\[\int_E R(t, X_{t-}, v)\,\tilde{p}_\phi(dv, dt) = \underbrace{\int_E R(t, X_{t-}, v)\,p_\phi(dv, dt)}_{\text{saltos brutos}} - \underbrace{\int_E R(t, X_{t-}, v)\,\phi(dv)\,dt}_{\text{compensación}}\]</span> Por lo tanto, la EDE completa se puede escribir como: <span class="math display">\[dX_t = a(t, X_t)\,dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\,p_\phi(dv, dt) - \int_E R(t, X_{t-}, v)\,\phi(dv)\,dt\]</span> Para discretizar esta ecuación, reorganizamos los términos de la siguiente manera: <span class="math display">\[dX_t = \underbrace{\left[a(t, X_t) - \int_E R(t, X_{t-}, v)\,\phi(dv)\right]}_{\text{drift compensado}} dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\,p_\phi(dv, dt)\]</span> El término de compensación cambia de signo al moverse al drift, porque: <span class="math display">\[a(t, X_t)\,dt - \int_E R(t, X_{t-}, v)\,\phi(dv)\,dt = \left[a(t, X_t) - \int_E c(t, X_{t-}, v)\,\phi(dv)\right] dt\]</span></p>
 </div>
 <section id="formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj." class="level3" data-number="5.1.1">
 <h3 data-number="5.1.1" class="anchored" data-anchor-id="formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj."><span class="header-section-number">5.1.1</span> Formulación general del modelo de Cramér–Lundberg con reinversión como EDESJ.</h3>
 <div style="text-align:justify">
-<p>El modelo de Cramér–Lundberg extendido con reinversión y parámetros temporales puede escribirse como una ecuación diferencial estocástica con saltos (EDSEJ). Consideremos la siguiente ecuación diferencial estocástica con saltos (SDEJ): <span id="eq-sdej"><span class="math display">\[d X_t = \underbrace{c(t)\,dt}_{\text{primas}} + \underbrace{r(t) X_t\,dt}_{\text{rendimiento}} + \underbrace{\sigma(t) X_t\,d W_t}_{\text{volatilidad}} - \underbrace{\int_E R(t, X_{t-}, v)\,\tilde{p}_\phi(dv, dt)}_{\text{saltos compensados}}, \tag{5.2}\]</span></span> donde - <span class="math inline">\(c(t) \in \mathbb{R}\)</span> es un flujo de primas determinista y acotado, - <span class="math inline">\(r(t), \sigma(t)\)</span> son funciones acotadas y medibles, - <span class="math inline">\(R(t, x, v)\)</span> es la magnitud del salto, dependiente del tiempo <span class="math inline">\(t\)</span>, del estado <span class="math inline">\(x\)</span> y de la marca <span class="math inline">\(v\)</span>, - <span class="math inline">\(\tilde{p}_\phi(dv, d t) = p_\phi(d v, dt) - \phi(dv)d t\)</span> es la medida de Poisson compensada, - <span class="math inline">\(\phi(E) &lt; \infty\)</span> y <span class="math inline">\(\int_E |R(t, x, v)|^2 \phi(d v) &lt; \infty\)</span> para todo <span class="math inline">\(t \in [0,T]\)</span>, <span class="math inline">\(x \in \mathbb{R}\)</span>.</p>
+<p>El modelo de Cramér–Lundberg extendido con reinversión y parámetros temporales puede escribirse como una ecuación diferencial estocástica con saltos (EDSEJ). Consideremos la siguiente ecuación diferencial estocástica con saltos (SDEJ): <span id="eq-sdej"><span class="math display">\[d X_t = \underbrace{c(t)\,dt}_{\text{primas}} + \underbrace{r(t) X_t\,dt}_{\text{rendimiento}} + \underbrace{\sigma(t) X_t\,d W_t}_{\text{volatilidad}} - \underbrace{\int_E R(t, X_{t-}, v)\,\tilde{p}_\phi(dv, dt)}_{\text{saltos compensados}}, \tag{5.2}\]</span></span> donde</p>
+<ul>
+<li><p><span class="math inline">\(c(t) \in \mathbb{R}\)</span> es un flujo de primas determinista y acotado,</p></li>
+<li><p><span class="math inline">\(r(t), \sigma(t)\)</span> son funciones acotadas y medibles,</p></li>
+<li><p><span class="math inline">\(R(t, x, v)\)</span> es la magnitud del salto, dependiente del tiempo <span class="math inline">\(t\)</span>, del estado <span class="math inline">\(x\)</span> y de la marca <span class="math inline">\(v\)</span>, - <span class="math inline">\(\tilde{p}_\phi(dv, d t) = p_\phi(d v, dt) - \phi(dv)d t\)</span> es la medida de Poisson compensada, - <span class="math inline">\(\phi(E) &lt; \infty\)</span> y <span class="math inline">\(\int_E |R(t, x, v)|^2 \phi(d v) &lt; \infty\)</span> para todo <span class="math inline">\(t \in [0,T]\)</span>, <span class="math inline">\(x \in \mathbb{R}\)</span>.</p></li>
+</ul>
 </div>
 </section>
 </section>
@@ -504,7 +516,12 @@ Y_{n+1} = Y_n &amp;+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right
 </div>
 <div class="proof">
 <p><span class="proof-title"><em>Demostración</em>. </span>La EDE <a href="#eq-sdej" class="quarto-xref">Ecuación&nbsp;<span>5.2</span></a> puede reescribirse en la forma estándar ( Platen &amp; Bruti-Liberati, Ec. (1.8.2)): <span id="eq-sdej_estandar"><span class="math display">\[d X_t = a(t,X_t)\,d t + b(t,X_t)\,dW_t + \int_E R(t,X_{t-},v)\,p_\phi(dv, d t), \tag{5.5}\]</span></span></p>
-<p>donde: - <span class="math inline">\(a(t,x) = c(t) + r(t)x\)</span> (drift original), - <span class="math inline">\(b(t,x) = \sigma(t)x\)</span>, - <span class="math inline">\(R(t,x,v)\)</span> es el tamaño del salto bruto, dependiente del estado. Las hipótesis de Lipschitz y crecimiento lineal garantizan que los coeficientes satisfacen las condiciones del Teorema 1.9.3 de Platen &amp; Bruti-Liberati (2010), que establece la existencia y unicidad de una solución fuerte <span class="math inline">\(X_t\)</span>.</p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(a(t,x) = c(t) + r(t)x\)</span> (drift original),</p></li>
+<li><p><span class="math inline">\(b(t,x) = \sigma(t)x\)</span>,</p></li>
+<li><p><span class="math inline">\(R(t,x,v)\)</span> es el tamaño del salto bruto, dependiente del estado. Las hipótesis de Lipschitz y crecimiento lineal garantizan que los coeficientes satisfacen las condiciones del Teorema 1.9.3 de Platen &amp; Bruti-Liberati (2010), que establece la existencia y unicidad de una solución fuerte <span class="math inline">\(X_t\)</span>.</p></li>
+</ul>
 <p>Además, el Teorema 1.9.3 garantiza que la solución tiene momentos finitos de segundo orden: <span id="eq-exa_ct_moment"><span class="math display">\[\mathbb{E}\left[ \sup_{0 \leq t \leq T} |X_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|X_0|^2]) &lt; \infty. \tag{5.6}\]</span></span></p>
 <p>El esquema <a href="#eq-milstein_ec" class="quarto-xref">Ecuación&nbsp;<span>5.3</span></a> incluye la corrección de Milstein, que corresponde a truncar la expansión estocástica de Wagner-Platen (ver Platen &amp; Bruti-Liberati, Ec. (4.4.7)) después de los términos de orden <span class="math inline">\(\mathcal{O}((dt)^{3/2})\)</span>.</p>
 <p>Para una SDE con saltos, la expansión completa incluye términos adicionales relacionados con la medida de Poisson. Como el modelo es aditivo en los saltos (aunque <span class="math inline">\(c(t,x,v)\)</span> depende de <span class="math inline">\(x\)</span>, no hay términos cruzados de orden superior), los operadores de salto y difusión conmutan trivialmente, lo que simplifica el análisis.</p>
@@ -516,13 +533,66 @@ Y_{n+1} = Y_n &amp;+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right
 </ul>
 <p>Por la expansión de Wagner-Platen para difusiones puras (Platen &amp; Bruti-Liberati, Ec. (5.3.19)), el error local de la parte difusiva satisface:</p>
 <p><span id="eq-diff_error"><span class="math display">\[\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \mathcal{F}_{t_n} \right] \leq K_1 (1 + |Y_n|^2) (\,dt)^3. \tag{5.8}\]</span></span> Para la parte de saltos, el error local es: <span id="eq-error_saltos"><span class="math display">\[R_n^{\text{jump}} = \int_{t_n}^{t_{n+1}} \int_E R(s, X_{s-}, v)\,\tilde{p}_\phi(dv, ds) - \sum_{i=1}^{\Delta N_n} R(t_n, Y_n, \xi_i) - \int_E R(t_n, Y_n, v)\phi(dv)\,dt \tag{5.9}\]</span></span></p>
-<p>Usando propiedades de la medida de Poisson compensada (ver Platen &amp; Bruti-Liberati, Ec. (4.2.1)) y la condición de Lipschitz para <span class="math inline">\(c\)</span>, se tiene: <span id="eq-error_saltos_limite"><span class="math display">\[
-\mathbb{E}\left[ |R_n^{\text{jump}}|^2 \mid \mathcal{F}_{t_n} \right] \leq K_2 \,dt + K_3 |X_{t_n} - Y_n|^2 \,dt.
-\tag{5.10}\]</span></span> Combinando <a href="#eq-diff_error" class="quarto-xref">Ecuación&nbsp;<span>5.8</span></a> y <a href="#eq-error_saltos_limite" class="quarto-xref">Ecuación&nbsp;<span>5.10</span></a> usando la desigualdad <span class="math inline">\((a+b)^2 \leq 2a^2 + 2b^2\)</span>, obtenemos: <span id="eq-error_total_limite"><span class="math display">\[\mathbb{E}\left[ |R_n|^2 \mid \mathcal{F}_{t_n} \right] \leq 2K_1 (1 + |Y_n|^2) (\,dt)^3 + 2K_2 \,dt + 2K_3 |e_n|^2 \,dt \leq K_4 (1 + |Y_n|^2 + |e_n|^2) (\,dt)^2, \tag{5.11}\]</span></span></p>
+<p>Usando propiedades de la medida de Poisson compensada (ver Platen &amp; Bruti-Liberati, Ec. (4.2.1)) y la condición de Lipschitz para <span class="math inline">\(c\)</span>, se tiene: <span id="eq-error_saltos_limite"><span class="math display">\[\mathbb{E}\left[ |R_n^{\text{jump}}|^2 \mid \mathcal{F}_{t_n} \right] \leq K_2 \,dt + K_3 |X_{t_n} - Y_n|^2 \,dt. \tag{5.10}\]</span></span> Combinando <a href="#eq-diff_error" class="quarto-xref">Ecuación&nbsp;<span>5.8</span></a> y <a href="#eq-error_saltos_limite" class="quarto-xref">Ecuación&nbsp;<span>5.10</span></a> usando la desigualdad <span class="math inline">\((a+b)^2 \leq 2a^2 + 2b^2\)</span>, obtenemos: <span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[ |R_n|^2 \mid \mathcal{F}_{t_n} \right] \leq {}&amp; 2K_1 (1 + |Y_n|^2) (\,dt)^3 + 2K_2 \,dt + 2K_3 |e_n|^2 \,dt \\
+&amp; \leq K_4 (1 + |Y_n|^2 + |e_n|^2) (\,dt)^2,
+\end{aligned}
+\]</span></p>
 <p>donde en el último paso usamos que <span class="math inline">\(\, dt \leq 1\)</span> (paso de tiempo pequeño) y <span class="math inline">\(e_n = X_{t_n} - Y_n\)</span> es el error global.</p>
-<p>Para demostrar que el esquema tiene momentos finitos, usamos un argumento de tipo Grönwall discreto. Definimos: <span id="eq-momentos_Def"><span class="math display">\[M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |Y_k|^2 \right]. \tag{5.12}\]</span></span></p>
-<p>Tomando cuadrados en <a href="#eq-milstein_ec" class="quarto-xref">Ecuación&nbsp;<span>5.3</span></a> y esperanza, y usando las cotas de Lipschitz y crecimiento lineal, se obtiene: <span id="eq-momentos_recursivos"><span class="math display">\[M_{n+1} \leq (1 + K_5 \, dt) M_n + K_6 \, dt. \tag{5.13}\]</span></span> Iterando esta desigualdad y usando que <span class="math inline">\(M_0 = \mathbb{E}[|Y_0|^2] &lt; \infty\)</span>, se obtiene: <span id="eq-momentos_ligados"><span class="math display">\[M_N \leq M_0 e^{K_5 T} + \frac{K_6}{K_5} (e^{K_5 T} - 1) &lt; \infty. \tag{5.14}\]</span></span> Por lo tanto, el esquema numérico tiene momentos finitos uniformes.</p>
+<p>Para demostrar que el esquema tiene momentos finitos, usamos un argumento de tipo Grönwall discreto. Definimos: <span id="eq-momentos_Def"><span class="math display">\[M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |Y_k|^2 \right]. \tag{5.11}\]</span></span></p>
+<p>Tomando cuadrados en <a href="#eq-milstein_ec" class="quarto-xref">Ecuación&nbsp;<span>5.3</span></a> y esperanza, y usando las cotas de Lipschitz y crecimiento lineal, se obtiene: <span id="eq-momentos_recursivos"><span class="math display">\[M_{n+1} \leq (1 + K_5 \, dt) M_n + K_6 \, dt. \tag{5.12}\]</span></span> Iterando esta desigualdad y usando que <span class="math inline">\(M_0 = \mathbb{E}[|Y_0|^2] &lt; \infty\)</span>, se obtiene: <span id="eq-momentos_ligados"><span class="math display">\[M_N \leq M_0 e^{K_5 T} + \frac{K_6}{K_5} (e^{K_5 T} - 1) &lt; \infty. \tag{5.13}\]</span></span> Por lo tanto, el esquema numérico tiene momentos finitos uniformes.</p>
+<p>Definimos el error global <span class="math inline">\(e_n = X_{t_n} - Y_n\)</span>. Usando la fórmula de Itô para la solución exacta y la definición del esquema, podemos escribir: <span id="eq-global_error_descomposicion"><span class="math display">\[e_{n+1} = e_n + \delta a_n \,dt + \delta b_n \,dW_n + \delta c_n + R_n, \tag{5.14}\]</span></span> donde</p>
+<ul>
+<li><p><span class="math inline">\(\delta a_n = a(t_n, X_{t_n}) - a(t_n, Y_n)\)</span>,</p></li>
+<li><p><span class="math inline">\(\delta b_n = b(t_n, X_{t_n}) - b(t_n, Y_n)\)</span>,</p></li>
+<li><p><span class="math inline">\(\delta c_n = \int_E [c(t_n, X_{t_n}, v) - c(t_n, Y_n, v)] \phi(\,D v) \, dt\)</span>,</p></li>
+<li><p><span class="math inline">\(R_n\)</span> es el residuo total (error local).</p></li>
+</ul>
+<p>Por la condición de Lipschitz: <span id="eq-lipschitz_limite"><span class="math display">\[|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \, dt, \tag{5.15}\]</span></span></p>
+<p>donde <span class="math inline">\(L_a, L_b, L_c\)</span> son las constantes de Lipschitz de <span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span> y <span class="math inline">\(c\)</span>, respectivamente.</p>
+<p>Tomamos cuadrados en <a href="#eq-global_error_descomposicion" class="quarto-xref">Ecuación&nbsp;<span>5.14</span></a>: <span id="eq-error_cuadratico"><span class="math display">\[
+\begin{aligned}
+|e_{n+1}|^2 &amp;= |e_n|^2 + 2e_n \cdot \delta a_n \, dt + 2e_n \cdot \delta b_n \, dW_n + 2e_n \cdot \delta c_n \\
+&amp;\quad + |\delta a_n|^2 (\, dt)^2 + 2\delta a_n \cdot \delta b_n \, dt \, dW_n + 2\delta a_n \cdot \delta c_n \, dt \\
+&amp;\quad + |\delta b_n|^2 (\, dW_n)^2 + 2\delta b_n \cdot \delta c_n \, dW_n + |\delta c_n|^2 \\
+&amp;\quad + 2e_n \cdot R_n + 2\delta a_n \cdot R_n \, dt + 2\delta b_n \cdot R_n \, dW_n + 2\delta c_n \cdot R_n + |R_n|^2.
+\end{aligned}
+\tag{5.16}\]</span></span> Tomamos esperanza condicional dado <span class="math inline">\(\mathcal{F}_{t_n}\)</span>. Notamos que:</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}[\,dW_n \mid \mathcal{F}_{t_n}] = 0\)</span>,</li>
+<li><span class="math inline">\(\mathbb{E}[(\,dW_n)^2 \mid \mathcal{F}_{t_n}] = dt\)</span>,</li>
+<li>Los términos con <span class="math inline">\(\,dW_n\)</span> tienen esperanza cero.</li>
+</ul>
+<p>Por lo tanto: <span id="eq-condicional_error_r_1"><span class="math display">\[\begin{aligned}
+\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] &amp;\leq |e_n|^2 + 2e_n \cdot \delta a_n \, dt + 2e_n \cdot \delta c_n + |\delta b_n|^2 \, dt \\
+&amp;\quad + |\delta a_n|^2 (\, dt)^2 + 2|\delta a_n| |\delta c_n| \, dt + |\delta c_n|^2 \\
+&amp;\quad + 2|e_n| |R_n| + 2|\delta a_n| |R_n| \, dt + 2|\delta c_n| |R_n| + |R_n|^2.
+\end{aligned} \tag{5.17}\]</span></span></p>
+<p>Usando las cotas de Lipschitz <a href="#eq-lipschitz_limite" class="quarto-xref">Ecuación&nbsp;<span>5.15</span></a> y la desigualdad <span class="math inline">\(2ab \leq a^2 + b^2\)</span>, obtenemos: <span id="eq-condicional_error_r_2"><span class="math display">\[\begin{aligned}
+\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] &amp;\leq |e_n|^2 + 2L_a |e_n|^2 \, dt + 2L_c |e_n|^2 \, dt + L_b^2 |e_n|^2 \, dt \\
+&amp;\quad + L_a^2 |e_n|^2 (\, dt)^2 + 2L_a L_c |e_n|^2 (\, dt)^2 + L_c^2 |e_n|^2 (\, dt)^2 \\
+&amp;\quad + |e_n|^2 + |R_n|^2 + L_a^2 |e_n|^2 (\, dt)^2 + |R_n|^2 (\, dt)^2 \\
+&amp;\quad + L_c^2 |e_n|^2 (\, dt)^2 + |R_n|^2 + |R_n|^2.
+\end{aligned} \tag{5.18}\]</span></span></p>
+<p>Simplificando y usando que <span class="math inline">\(\, dt \leq 1\)</span>: <span id="eq-condicional_error_r_3"><span class="math display">\[\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] \leq (1 + K_7 \, dt) |e_n|^2 + K_8 |R_n|^2, \tag{5.19}\]</span></span> donde <span class="math inline">\(K_7 = 2L_a + 2L_c + L_b^2 + L_a^2 + 2L_a L_c + L_c^2 + 1\)</span> y <span class="math inline">\(K_8 = 4 + (\, dt)^2 \leq 5\)</span>. Usando la cota del error local <span class="quarto-unresolved-ref">?eq-error_total_limite</span>: <span class="math display">\[\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] \leq (1 + K_7 \, dt) |e_n|^2 + K_8 K_4 (1 + |Y_n|^2 + |e_n|^2) (\, dt)^2.\]</span> Usando la desigualdad <span class="math inline">\(|Y_n|^2 \leq 2|X_{t_n}|^2 + 2|e_n|^2\)</span> y tomando esperanza total: <span class="math display">\[\mathbb{E}[|e_{n+1}|^2] \leq (1 + K_7 \, dt + 2K_8 K_4 (\, dt)^2) \mathbb{E}[|e_n|^2] + 2K_8 K_4 (\, dt)^2 \mathbb{E}[|X_{t_n}|^2] + K_8 K_4 (\, dt)^2.\]</span> {eq-total_error_1} Definiendo <span class="math inline">\(E_n = \mathbb{E}[|e_n|^2]\)</span> y usando la cota de momentos de la solución exacta <a href="#eq-exa_ct_moment" class="quarto-xref">Ecuación&nbsp;<span>5.6</span></a>: <span class="math display">\[
+E_{n+1} \leq (1 + K_9 \, dt) E_n + K_{10} (\, dt)^2,
+\]</span> {eq-recursive_error}</p>
+<p>donde <span class="math inline">\(K_9 = K_7 + 2K_8 K_4 \, dt \leq K_7 + 2K_8 K_4 \ \text{y} K_{10} = 2K_8 K_4 C_1 (1 + \mathbb{E}[|X_0|^2]) + K_8 K_4\)</span>.</p>
+<p>Iteramos la desigualdad <span class="quarto-unresolved-ref">?eq-recursive_error</span>: <span class="math display">\[\begin{aligned}
+E_1 &amp;\leq (1 + K_9 \, dt) E_0 + K_{10} (\, dt)^2, \\
+E_2 &amp;\leq (1 + K_9 \, dt)^2 E_0 + K_{10} (\, dt)^2 \left[1 + (1 + K_9 \, dt)\right], \\
+&amp;\vdots \\
+E_N &amp;\leq (1 + K_9 \, dt)^N E_0 + K_{10} (\, dt)^2 \sum_{k=0}^{N-1} (1 + K_9 \, dt)^k.
+\end{aligned}\]</span> {eq-iteration}</p>
+<p>Como <span class="math inline">\(E_0 = 0\)</span> (condiciones iniciales iguales), el primer término se anula. La suma geométrica se puede acotar: <span class="math display">\[\sum_{k=0}^{N-1} (1 + K_9 \, dt)^k = \frac{(1 + K_9 \, dt)^N - 1}{K_9 \, dt}.\]</span> {eq-geometric_sum}</p>
+<p>Usando la desigualdad <span class="math inline">\((1 + x)^N \leq e^{Nx}\)</span> para <span class="math inline">\(x \geq 0\)</span>, y notando que <span class="math inline">\(N\, dt = T\)</span>, obtenemos: <span class="math display">\[(1 + K_9 \, dt)^N \leq e^{K_9 T}\]</span> {eq-exponential_bound} donde <span class="math inline">\(C = K_{10} (e^{K_9 T} - 1)/K_9\)</span> es una constante independiente de <span class="math inline">\(\,dt\)</span>. Tomando raíz cuadrada, obtenemos finalmente: <span class="math display">\[\left( \mathbb{E}[|X_T - Y_N|^2] \right)^{1/2} \leq C \sqrt{\,dt}. \quad \square\]</span> {eq-final_result}</p>
 </div>
+</section>
+<section id="esquema-semi-implícito-compensado" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="esquema-semi-implícito-compensado"><span class="header-section-number">5.3</span> Esquema Semi-Implícito Compensado</h2>
+
+
 </section>
 
 </main> <!-- /main -->
