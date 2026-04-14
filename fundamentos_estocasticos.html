@@ -131,10 +131,10 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="[3]{.chapter-number}&nbsp; [Resultados técnicos fundamentales]{.chapter-title} – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta property="og:title" content="3&nbsp; Resultados técnicos fundamentales – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta property="og:image" content="assets/UNACH.png">
 <meta property="og:site_name" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
-<meta name="twitter:title" content="[3]{.chapter-number}&nbsp; [Resultados técnicos fundamentales]{.chapter-title} – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta name="twitter:title" content="3&nbsp; Resultados técnicos fundamentales – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta name="twitter:image" content="assets/UNACH.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -327,9 +327,7 @@ window.Quarto = {
       <img src="./assets/UNACH.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">
-      Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos
-      </a> 
+      <a href="./">Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos</a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/Mara-DL/Tesis_Maestria" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
@@ -477,29 +475,20 @@ window.Quarto = {
 <p>En esta sección se presentan con detalle los resultados clave que sustentan la demostración del Teorema de Isometría de Itô para la parte de saltos. Se asume que <span class="math inline">\((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t\geq0}, \mathbb{P})\)</span> es un espacio de probabilidad filtrado que satisface las condiciones usuales, <span class="math inline">\(Z\)</span> es un espacio métrico separable completo, y <span class="math inline">\(\nu\)</span> es una medida <span class="math inline">\(\sigma\)</span>-finita sobre <span class="math inline">\((Z, \mathcal{B}(Z))\)</span>. Sea <span class="math inline">\(\widetilde{N}(ds,dz) = N(ds,dz) - \nu(dz)ds\)</span> la medida aleatoria compensada asociada a una medida de Poisson.</p>
 </div>
 <div id="def-Espacio_probabilidad_filtrado" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.1</strong></span> (Espacio de probabilidad filtrado). Sea <span class="math inline">\((\Omega, \mathcal{F}, \mathbb{P})\)</span> un espacio de probabilidad y <span class="math inline">\(\{\mathcal{F}_t\}_{t \geq 0}\)</span> una filtración, es decir, una familia creciente de sub-<span class="math inline">\(\sigma\)</span>-álgebras de <span class="math inline">\(\mathcal{F}\)</span>: <span class="math display">\[\mathcal{F}_s \subseteq \mathcal{F}_t \subseteq \mathcal{F} \quad \text{para todo } 0 \leq s \leq t.
-\]</span> Se dice que la filtración satisface las hipótesis usuales si cumple las siguientes dos condiciones:</p>
+<p><span class="theorem-title"><strong>Definición 3.1</strong></span> (Espacio de probabilidad filtrado). Sea <span class="math inline">\((\Omega, \mathcal{F}, \mathbb{P})\)</span> un espacio de probabilidad y <span class="math inline">\(\{\mathcal{F}_t\}_{t \geq 0}\)</span> una filtración, es decir, una familia creciente de sub-<span class="math inline">\(\sigma\)</span>-álgebras de <span class="math inline">\(\mathcal{F}\)</span>: <span class="math display">\[\mathcal{F}_s \subseteq \mathcal{F}_t \subseteq \mathcal{F} \quad \text{para todo } 0 \leq s \leq t.\]</span> Se dice que la filtración satisface las hipótesis usuales si cumple las siguientes dos condiciones:</p>
 <ol type="i">
-<li>Completitud: La <span class="math inline">\(\sigma\)</span>-álgebra inicial <span class="math inline">\(\mathcal{F}_0\)</span> contiene todos los conjuntos <span class="math inline">\(\mathbb{P}\)</span>-nulos. Es decir: <span class="math display">\[
-\text{Si } A \in \mathcal{F} \text{ y } \mathbb{P}(A) = 0, \quad \text{entonces } A \in \mathcal{F}_0.
-\]</span> Como <span class="math inline">\(\mathcal{F}_0 \subseteq \mathcal{F}_t\)</span> para todo <span class="math inline">\(t\)</span>, esto implica que todos los conjuntos nulos están en cada <span class="math inline">\(\mathcal{F}_t\)</span>. En otras palabras, cada <span class="math inline">\(\mathcal{F}_t\)</span> es completa respecto a <span class="math inline">\(\mathbb{P}\)</span>.</li>
-<li>Continuidad por la derecha: Para todo <span class="math inline">\(t \geq 0\)</span> <span class="math display">\[
-\mathcal{F}_t = \bigcap_{s &gt; t} \mathcal{F}_s.
-\]</span></li>
+<li>Completitud: La <span class="math inline">\(\sigma\)</span>-álgebra inicial <span class="math inline">\(\mathcal{F}_0\)</span> contiene todos los conjuntos <span class="math inline">\(\mathbb{P}\)</span>-nulos. Es decir: <span class="math display">\[\text{Si } A \in \mathcal{F} \text{ y } \mathbb{P}(A) = 0, \quad \text{entonces } A \in \mathcal{F}_0.\]</span> Como <span class="math inline">\(\mathcal{F}_0 \subseteq \mathcal{F}_t\)</span> para todo <span class="math inline">\(t\)</span>, esto implica que todos los conjuntos nulos están en cada <span class="math inline">\(\mathcal{F}_t\)</span>. En otras palabras, cada <span class="math inline">\(\mathcal{F}_t\)</span> es completa respecto a <span class="math inline">\(\mathbb{P}\)</span>.</li>
+<li>Continuidad por la derecha: Para todo <span class="math inline">\(t \geq 0\)</span> <span class="math display">\[\mathcal{F}_t = \bigcap_{s &gt; t} \mathcal{F}_s.\]</span></li>
 </ol>
 </div>
 <div id="def-filtracion_natural" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.2</strong></span> (Filtración natural). Sea <span class="math inline">\(W = \{W_t\}_{t \geq 0}\)</span> un movimiento browniano. La es <span class="math inline">\(\mathcal{F}_t^W = \sigma(W_s : s \leq t)\)</span>. La filtración asociada es <span class="math display">\[
-\mathcal{F}_t = \bigcap_{s &gt; t} \sigma(\mathcal{F}_s^W \cup \mathcal{N}),
-\]</span> donde <span class="math inline">\(\mathcal{N}\)</span> es la colección de todos los conjuntos <span class="math inline">\(\mathbb{P}\)</span>-nulos.</p>
+<p><span class="theorem-title"><strong>Definición 3.2</strong></span> (Filtración natural). Sea <span class="math inline">\(W = \{W_t\}_{t \geq 0}\)</span> un movimiento browniano. La es <span class="math inline">\(\mathcal{F}_t^W = \sigma(W_s : s \leq t)\)</span>. La filtración asociada es <span class="math display">\[\mathcal{F}_t = \bigcap_{s &gt; t} \sigma(\mathcal{F}_s^W \cup \mathcal{N}),\]</span> donde <span class="math inline">\(\mathcal{N}\)</span> es la colección de todos los conjuntos <span class="math inline">\(\mathbb{P}\)</span>-nulos.</p>
 </div>
 <div id="def-tiempo_paro" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.3</strong></span> (Tiempo de paro). Una variable aleatoria <span class="math inline">\(\tau : \Omega \to [0,\infty]\)</span> es un respecto a <span class="math inline">\(\{\ \mathcal{F} \}\)</span> si <span class="math inline">\(\{\tau \leq t\} \in \mathcal{F}_t\)</span> para todo <span class="math inline">\(t \geq 0\)</span>.</p>
 </div>
 <div id="def-Tiempos_paro_controlados" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.4</strong></span> (Tiempos de paro controlados). Un tiempo de paro <span class="math inline">\(\{\tau &lt; t\} \in \mathcal{F}_t\)</span> para todo <span class="math inline">\(t\)</span>. La continuidad por la derecha se deduce que <span class="math display">\[
-\{\tau &lt; t\} = \bigcup_{q \in \mathbb{Q}, q &lt; t} \{\tau \leq q\} \in \mathcal{F}_t,
-\]</span></p>
+<p><span class="theorem-title"><strong>Definición 3.4</strong></span> (Tiempos de paro controlados). Un tiempo de paro <span class="math inline">\(\{\tau &lt; t\} \in \mathcal{F}_t\)</span> para todo <span class="math inline">\(t\)</span>. La continuidad por la derecha se deduce que <span class="math display">\[\{\tau &lt; t\} = \bigcup_{q \in \mathbb{Q}, q &lt; t} \{\tau \leq q\} \in \mathcal{F}_t,\]</span></p>
 </div>
 </section>
 <section id="resultados-de-teoría-de-la-medida-y-análisis-funcional" class="level2" data-number="3.2">
@@ -604,6 +593,8 @@ El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <
 4\,\mathbb{E}[XY]^2 \leq 4\,\mathbb{E}[X^2]\,\mathbb{E}[Y^2]\]</span> Dividiendo por <span class="math inline">\(4\)</span> y tomando valor absoluto (pues <span class="math inline">\(\mathbb{E}[XY]\)</span> puede ser negativo), concluimos: <span class="math display">\[\bigl| \mathbb{E}[XY] \bigr|^2 \leq \mathbb{E}[X^2] \, \mathbb{E}[Y^2].\]</span> Ahora analizamos cuándo se cumple <span class="math display">\[\bigl| \mathbb{E}[XY] \bigr|^2 = \mathbb{E}[X^2] \, \mathbb{E}[Y^2].\]</span> Esto equivale a que el discriminante sea exactamente cero, es decir, <span class="math inline">\(\Delta = 0\)</span>. En tal caso, el polinomio <span class="math inline">\(f(\lambda)\)</span> tiene una raíz doble; es decir, existe tal que <span class="math inline">\(\lambda_0 \in \mathbb{R}\)</span> <span class="math display">\[f(\lambda_0) = \mathbb{E}[(X - \lambda_0 Y)^2] = 0.\]</span> Pero <span class="math inline">\(\mathbb{E}[Z^2] = 0\)</span> implica <span class="math inline">\(Z = 0\)</span> c.s. Por lo tanto, <span class="math display">\[ X - \lambda_0 Y = 0 \quad \text{c.s.} \quad \Longrightarrow \quad \mathbb{P}(X = \lambda_0 Y) = 1.\]</span> Esto muestra que existen constantes <span class="math inline">\(a = 1\)</span>, <span class="math inline">\(b = \lambda_0\)</span> (no ambos nulos) tales que <span class="math inline">\(\mathbb{P}(aX = bY) = 1\)</span>. Si en cambio <span class="math inline">\(Y = 0\)</span> c.s., tomamos <span class="math inline">\(a = 0\)</span>, <span class="math inline">\(b = 1\)</span>, y claramente <span class="math inline">\(\mathbb{P}(0 \cdot X = 1 \cdot Y) = 1\)</span>.</p>
 <p>Recíprocamente, supongamos que existen <span class="math inline">\(a, b \in \mathbb{R}\)</span>, no ambos nulos, tales que <span class="math inline">\(\mathbb{P}(aX = bY) = 1.\)</span> Si <span class="math inline">\(a \neq 0\)</span>, entonces <span class="math inline">\(X = \frac{b}{a} Y\)</span> c.s., y entonces <span class="math display">\[\mathbb{E}[XY] = \frac{b}{a} \mathbb{E}[Y^2], \qquad \mathbb{E}[X^2] = \left( \frac{b}{a} \right)^2 \mathbb{E}[Y^2],\]</span> de donde <span class="math display">\[\mathbb{E}[X^2] \mathbb{E}[Y^2] = \left( \frac{b}{a} \right)^2 \mathbb{E}[Y^2]^2 = \bigl( \mathbb{E}[XY] \bigr)^2\]</span> Si <span class="math inline">\(b \neq 0\)</span>, entonces <span class="math inline">\(Y = \frac{a}{b} X\)</span> c.s., y un cálculo análogo lleva a la misma conclusión. En ambos casos, se tiene igualdad en la desigualdad de Cauchy–Schwarz. <span class="math inline">\(\quad \square\)</span></p>
 </div>
+
+
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-applebaum2009levy" class="csl-entry" role="listitem">
 Applebaum, David. 2009. <em>Lévy Processes and Stochastic Calculus</em>. 2nd ed. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511809781">https://doi.org/10.1017/CBO9780511809781</a>.
