@@ -488,14 +488,14 @@ X_t = {}&amp; X_0 + \int_0^t a(s,X_s)\,d s + \int_0^t b(s,X_s)\,d W_s
 <section id="esquema-de-milstein-compensado" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="esquema-de-milstein-compensado"><span class="header-section-number">5.2</span> Esquema de Milstein Compensado</h2>
 <div style="text-align:justify">
-<p>Sea <span class="math inline">\(Y_n\)</span> la aproximación numérica dada por el esquema Milstein compensado: <span id="eq-milstein_ec"><span class="math display">\[\boxed{
+<p>Sea <span class="math inline">\(Y_n\)</span> la aproximación numérica dada por el esquema Milstein compensado: <span id="eq-milstein_ec"><span class="math display">\[
 \begin{aligned}
 Y_{n+1} = Y_n &amp;+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right]\Delta t \\
 &amp;+ b(t_n, Y_n) \Delta W_n \\
 &amp;+ \frac{1}{2} b(t_n, Y_n) b_x(t_n, Y_n) \left[ (\Delta W_n)^2 - \Delta t \right] \\
 &amp;+ \sum_{i=1}^{\Delta N_n} R(t_n, Y_n, \xi_i),
 \end{aligned}
-} \tag{5.3}\]</span></span></p>
+\tag{5.3}\]</span></span></p>
 <ul>
 <li><span class="math inline">\(\Delta t = t_{n+1} - t_n\)</span> es el paso de tiempo,</li>
 <li><span class="math inline">\(\Delta W_n \sim \mathcal{N}(0, \Delta t)\)</span> es el incremento del proceso de Wiener,</li>
