@@ -596,6 +596,26 @@ E_N &amp;\leq (1 + K_9 \, dt)^N E_0 + K_{10} (\, dt)^2 \sum_{k=0}^{N-1} (1 + K_9
 </section>
 <section id="esquema-semi-implícito-compensado" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="esquema-semi-implícito-compensado"><span class="header-section-number">5.3</span> Esquema Semi-Implícito Compensado</h2>
+<div style="text-align:justify">
+<p>El método semi-implícito compensado se define aplicando una regla de Euler implícita en el drift y explícita en la difusión y el salto compensado <span class="math display">\[
+U_{n+1} = U_n + [c_{n+1} + r_{n+1}U_{n+1}]\Delta t + \sigma_n U_n \Delta W_n - \tilde{J}_n,
+\]</span> {#esquema_semiimplicito}</p>
+<p>donde <span class="math inline">\(c_{n+1} = c(t_{n+1})\)</span>, <span class="math inline">\(r_{n+1} = r(t_{n+1})\)</span>, <span class="math inline">\(\sigma_n = \sigma(t_n)\)</span>, y <span class="math inline">\(\Delta W_n = W_{t_{n+1}} - W_{t_n}\)</span>. Reordenando algebraicamente para despejar <span class="math inline">\(U_{n+1}\)</span>:</p>
+<p><span class="math display">\[
+U_{n+1}(1 - r_{n+1}\Delta t) = U_n(1 + \sigma_n \Delta W_n) + c_{n+1}\Delta t + \mathbb{E}[\Delta J_n] - \Delta J_n,
+\]</span> lo que da lugar a la fórmula cerrada central:</p>
+<p><span class="math display">\[
+U_{n+1} =
+\frac{U_n (1 + \sigma(t_n) \Delta W_n ) + c(t_n)\Delta t + \int_E c(t_n, U_n, v) \phi(dv) \Delta t - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i)
+}{1 - r(t_{n+1}) \Delta t}
+\]</span> {#esquema_semiimplicito_despeje} donde:</p>
+<ul>
+<li><span class="math inline">\(\Delta t = t_{n+1} - t_n\)</span>,</li>
+<li><span class="math inline">\(\Delta W_n \sim \mathcal{N}(0, \Delta t)\)</span>,</li>
+<li><span class="math inline">\(\Delta N_n \sim \text{Poisson}(\lambda \Delta t)\)</span>, <span class="math inline">\(\lambda = \phi(E)\)</span>,</li>
+<li><span class="math inline">\(\xi_i \stackrel{\text{i.i.d.}}{\sim} \phi(dv)/\lambda\)</span>.</li>
+</ul>
+</div>
 
 
 </section>
