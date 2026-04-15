@@ -687,13 +687,13 @@ e_{n+1} = e_n + \delta a_n \Delta t + \delta b_n \Delta W_n + \delta c_n + R_n,
 \delta c_n &amp;= \int_E [c(t_n, U_{t_n}, v) - c(t_n, U_n, v)] \phi(dv) \Delta t.
 \end{align}
 \]</span> Por la condición de Lipschitz (H1): <span id="eq-lipschitz_bounds_semiimplicit"><span class="math display">\[
-|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \dt.
+|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \Delta t.
 \tag{5.42}\]</span></span> Tomamos cuadrados en <a href="#eq-global_error_decomp_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>5.41</span></a> y esperanza condicional <span class="math inline">\(\mathbb{E}[\cdot \mid \mathcal{F_{t_n}}]\)</span>. Usando <span class="math inline">\(\mathbb{E}[\Delta W_n \mid \mathcal{F_{t_n}}] = 0\)</span>, <span class="math inline">\(\mathbb{E}[(\Delta W_n)^2 \mid \mathcal{F_{t_n}}] = \Delta t\)</span>, y que los términos con <span class="math inline">\(\Delta W_n\)</span> tienen esperanza cero: <span id="eq-conditional_error_semiimplicit"><span class="math display">\[
 \begin{align}
-\E[|e_{n+1}|^2 \mid \cF_{t_n}]
-&amp;\leq |e_n|^2 + 2e_n \cdot \delta a_n \dt + 2e_n \cdot \delta c_n + |\delta b_n|^2 \dt + \E[|R_n|^2 \mid \cF_{t_n}] \nonumber \\
-&amp;\leq |e_n|^2 + 2L_a |e_n|^2 \dt + 2L_c |e_n|^2 \dt + L_b^2 |e_n|^2 \dt + K_5 (1 + |U_n|^2 + |e_n|^2) \dt \nonumber \\
-&amp;\leq (1 + K_8 \dt) |e_n|^2 + K_9 (1 + |U_n|^2) \dt,
+\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}]
+&amp;\leq |e_n|^2 + 2e_n \cdot \delta a_n \Delta t + 2e_n \cdot \delta c_n + |\delta b_n|^2 \Delta t + \mathbb{E}[|R_n|^2 \mid \mathcal{F_{t_n}}] \nonumber \\
+&amp;\leq |e_n|^2 + 2L_a |e_n|^2 \Delta t + 2L_c |e_n|^2 \Delta t + L_b^2 |e_n|^2 \Delta t + K_5 (1 + |U_n|^2 + |e_n|^2) \Deltact \nonumber \\
+&amp;\leq (1 + K_8 \Delta t) |e_n|^2 + K_9 (1 + |U_n|^2) \Delta t,
 \end{align}
 \tag{5.43}\]</span></span> donde <span class="math inline">\(K_8 = 2L_a + 2L_c + L_b^2 + K_5\)</span> y <span class="math inline">\(K_9 = K_5\)</span>. Usando la desigualdad <span class="math inline">\(|U_n|^2 \leq 2|U_{t_n}|^2 + 2|e_n|^2\)</span> y la cota de momentos de la solución exacta <a href="#eq-exact_moment_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>5.31</span></a>: <span id="eq-conditional_error_final_semiimplicit"><span class="math display">\[
 \mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}] \leq (1 + K_{10} \Delta t) |e_n|^2 + K_{11} \Delta t,
