@@ -616,6 +616,22 @@ U_{n+1} =
 <li><span class="math inline">\(\xi_i \stackrel{\text{i.i.d.}}{\sim} \phi(dv)/\lambda\)</span>.</li>
 </ul>
 </div>
+<div id="thm-convergencia_fuerte_semi_impli" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 5.2</strong></span> (Convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span>) Supongamos las siguientes hipótesis:</p>
+<ul>
+<li><p><em>(H1)</em> <strong><em>Lipschitz global:</em></strong> Los coeficientes <span class="math inline">\(a(t,u) = c(t) + r(t)u\)</span> y <span class="math inline">\(b(t,u) = \sigma(t)u\)</span> son globalmente Lipschitz en <span class="math inline">\(u\)</span>, y <span class="math inline">\(c(t,u,v)\)</span> es globalmente Lipschitz en <span class="math inline">\(u\)</span> uniformemente en <span class="math inline">\(t\)</span> y <span class="math inline">\(v\)</span>: <span class="math display">\[
+|c(t, u_1, v) - c(t, u_2, v)| \leq L_c |u_1 - u_2|, \quad \forall t \in [0,T], \, u_1, u_2 \in \mathbb{R}, \, v \in E.
+\tag{H1}
+\]</span></p></li>
+<li><p><em>(H2)</em> <strong><em>Crecimiento lineal</em></strong>: Existe <span class="math inline">\(K &gt; 0\)</span> tal que <span class="math display">\[
+  |a(t,u)| + |b(t,u)| + \left( \int_E |c(t, u, v)|^2 \phi(dv) \right)^{1/2} \leq K(1 + |u|),
+  \tag{H2}
+  \]</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(u \in \mathbb{R}\)</span> (Platen &amp; Bruti-Liberati, 2010, Ec. (1.9.3)).</p></li>
+<li><p><em>(H3)</em> <strong><em>Momentos finitos de saltos</em></strong>: <span class="math inline">\(\int_E |c(t, u, v)|^4 \phi(dv) &lt; \infty\)</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(u \in \mathbb{R}\)</span> (Wang &amp; Gan, 2013, Hipótesis 3.1).</p></li>
+<li><p><em>(H4)</em> <strong><em>Estabilidad numérica</em></strong>: Existe <span class="math inline">\(\Delta t_0 &gt; 0\)</span> y <span class="math inline">\(\delta &gt; 0\)</span> tales que <span class="math inline">\(1 - r(t_{n+1})\Delta t \geq \delta &gt; 0\)</span> para todo <span class="math inline">\(\Delta t \leq \Delta t_0\)</span> (Higham &amp; Kloeden, 2005, Lema 2.1).</p></li>
+<li><p><em>(H5)</em><strong><em>Condiciones iniciales</em></strong>: <span class="math inline">\(\mathbb{E}[|U_0|^2] &lt; \infty\)</span> y <span class="math inline">\(U_0 = _0\)</span>.</p></li>
+</ul>
+</div>
 
 
 </section>
