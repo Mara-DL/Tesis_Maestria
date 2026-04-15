@@ -647,11 +647,12 @@ R_n = R_n^{\text{dif}} + R_n^{\text{jump}} + R_n^{\text{implicit}},
 \tag{5.32}\]</span></span></p>
 <p>donde <span class="math inline">\(R_n^{\text{dif}}\)</span> es el error de difusión, <span class="math inline">\(R_n^{\text{jump}}\)</span> el error de saltos y <span class="math inline">\(R_n^{\text{implicit}}\)</span> el error de implicitidad.</p>
 <p>Por la expansión de Euler-Maruyama para difusiones puras (Higham &amp; Kloeden, 2005, Ec. (2.3)), el error local de la parte difusiva satisface: <span id="eq-diff_error_bound_semiimplicit"><span class="math display">\[
-\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \cF_{t_n} \right] \leq K_1 (1 + |U_n|^2) (\Delta t)^2
+\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_1 (1 + |U_n|^2) (\Delta t)^2
 \tag{5.33}\]</span></span></p>
 <p>Esta cota es de orden <span class="math inline">\((\Delta t)^3\)</span> en <span class="math inline">\(L^2\)</span> debido a que el esquema semi-implícito utiliza una aproximación de Euler para la parte difusiva, cuyo error local en <span class="math inline">\(L^2\)</span> es <span class="math inline">\(\mathcal{O}((\Delta t)^{3/2})\)</span>. El error local asociado a los saltos es: <span id="eq-jump_error_semiimplicit"><span class="math display">\[
 R_n^{\text{jump}} = \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{p}_\phi(dv, ds) - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i) + \int_E c(t_n, U_n, v) \phi(dv)\,\Delta t.
-\tag{5.34}\]</span></span> Aplicando la desigualdad de Cauchy-Schwarz, la condición de Lipschitz (H1) y las propiedades de la medida compensada (Platen &amp; Bruti-Liberati, 2010, Ec. (4.2.1)), obtenemos:</p>
+\tag{5.34}\]</span></span></p>
+<p>Aplicando la desigualdad de Cauchy-Schwarz, la condición de Lipschitz (H1) y las propiedades de la medida compensada (Platen &amp; Bruti-Liberati, 2010, Ec. (4.2.1)), obtenemos:</p>
 </div>
 
 
