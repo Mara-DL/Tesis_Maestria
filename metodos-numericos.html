@@ -514,7 +514,7 @@ Y_{n+1} = Y_n &amp;+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right
 <li><p><strong>Condiciones iniciales</strong>: <span class="math inline">\(\mathbb{E}[|X_0|^2] &lt; \infty\)</span> y <span class="math inline">\(Y_0 = X_0\)</span>. Entonces, existe una constante <span class="math inline">\(C &gt; 0\)</span>, independiente de <span class="math inline">\(\, dt\)</span>, tal que: <span id="eq-convergencia"><span class="math display">\[\max_{0 \leq n \leq N} \left( \mathbb{E}\left[ |X_{t_n} - Y_n|^2 \right] \right)^{1/2} \leq C \sqrt{dt}. \tag{5.4}\]</span></span> Es decir, el esquema converge fuertemente con orden <span class="math inline">\(\gamma = 1/2\)</span>.</p></li>
 </ol>
 </div>
-<div class="proof">
+<div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>La EDE <a href="#eq-sdej" class="quarto-xref">Ecuación&nbsp;<span>5.2</span></a> puede reescribirse en la forma estándar ( Platen &amp; Bruti-Liberati, Ec. (1.8.2)): <span id="eq-sdej_estandar"><span class="math display">\[d X_t = a(t,X_t)\,d t + b(t,X_t)\,dW_t + \int_E R(t,X_{t-},v)\,p_\phi(dv, d t), \tag{5.5}\]</span></span></p>
 <p>donde:</p>
 <ul>
@@ -631,6 +631,27 @@ U_{n+1} =
 <li><p><em>(H4)</em> <strong><em>Estabilidad numérica</em></strong>: Existe <span class="math inline">\(\Delta t_0 &gt; 0\)</span> y <span class="math inline">\(\delta &gt; 0\)</span> tales que <span class="math inline">\(1 - r(t_{n+1})\Delta t \geq \delta &gt; 0\)</span> para todo <span class="math inline">\(\Delta t \leq \Delta t_0\)</span> (Higham &amp; Kloeden, 2005, Lema 2.1).</p></li>
 <li><p><em>(H5)</em><strong><em>Condiciones iniciales</em></strong>: <span class="math inline">\(\mathbb{E}[|U_0|^2] &lt; \infty\)</span> y <span class="math inline">\(U_0 = _0\)</span>.</p></li>
 </ul>
+<p>Bajo las hipótesis (H1)–(H5), existe una constante <span class="math inline">\(C &gt; 0\)</span>, independiente de <span class="math inline">\(\Delta t\)</span>, tal que: <span id="eq-convergence_result_semiimplicit"><span class="math display">\[
+\max_{0 \leq n \leq N} \left( \mathbb{E}\left[ |U_{t_n} - U_n|^2 \right] \right)^{1/2} \leq C \sqrt{\Delta t}. \tag{5.29}\]</span></span></p>
+</div>
+<div class="proof" style="text-align:justify">
+<p><span class="proof-title"><em>Demostración</em>. </span>Reescribimos la SDEJ(<a href="#eq-sdej" class="quarto-xref">Ecuación&nbsp;<span>5.2</span></a>) en forma estándar (Platen &amp; Bruti-Liberati, 2010, Ec. (1.8.2)):</p>
+<p><span id="eq-sdej_standard_semiimplicit"><span class="math display">\[
+dU_t = a(t,U_t)\,dt  + b(t,U_t)\,dW_t + \int_E c(t,U_{t-},v)\,p_\phi(dv, dt),
+\tag{5.30}\]</span></span></p>
+<p>donde <span class="math inline">\(a(t,u) = c(t) + r(t)u\)</span> y <span class="math inline">\(b(t,u) = \sigma(t)u\)</span>. Las hipótesis (H1) y (H2) satisfacen las condiciones del de Platen &amp; Bruti-Liberati (2010), que garantiza la existencia y unicidad de una solución fuerte <span class="math inline">\(U_t\)</span>. Además asegura que la solución tiene momentos finitos de segundo orden: <span id="eq-exact_moment_semiimplicit"><span class="math display">\[
+\mathbb{E}\left[ \sup_{0 \leq t \leq T} |U_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|U_0|^2]) &lt; \infty.
+\tag{5.31}\]</span></span> Esta cota es esencial para controlar el crecimiento de la solución exacta durante la propagación del error.</p>
+<p>Definimos el error local <span class="math inline">\(R_n = U_{t_{n+1}} - U_{n+1}\)</span> y lo descomponemos como: <span id="eq-error_decomp_semiimplicit"><span class="math display">\[
+R_n = R_n^{\text{dif}} + R_n^{\text{jump}} + R_n^{\text{implicit}},
+\tag{5.32}\]</span></span></p>
+<p>donde <span class="math inline">\(R_n^{\text{dif}}\)</span> es el error de difusión, <span class="math inline">\(R_n^{\text{jump}}\)</span> el error de saltos y <span class="math inline">\(R_n^{\text{implicit}}\)</span> el error de implicitidad.</p>
+<p>Por la expansión de Euler-Maruyama para difusiones puras (Higham &amp; Kloeden, 2005, Ec. (2.3)), el error local de la parte difusiva satisface: <span id="eq-diff_error_bound_semiimplicit"><span class="math display">\[
+\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \cF_{t_n} \right] \leq K_1 (1 + |U_n|^2) (\Delta t)^2
+\tag{5.33}\]</span></span></p>
+<p>Esta cota es de orden <span class="math inline">\((\Delta t)^3\)</span> en <span class="math inline">\(L^2\)</span> debido a que el esquema semi-implícito utiliza una aproximación de Euler para la parte difusiva, cuyo error local en <span class="math inline">\(L^2\)</span> es <span class="math inline">\(\mathcal{O}((\Delta t)^{3/2})\)</span>. El error local asociado a los saltos es: <span id="eq-jump_error_semiimplicit"><span class="math display">\[
+R_n^{\text{jump}} = \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{p}_\phi(dv, ds) - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i) + \int_E c(t_n, U_n, v) \phi(dv)\,\Delta t.
+\tag{5.34}\]</span></span> Aplicando la desigualdad de Cauchy-Schwarz, la condición de Lipschitz (H1) y las propiedades de la medida compensada (Platen &amp; Bruti-Liberati, 2010, Ec. (4.2.1)), obtenemos:</p>
 </div>
 
 
