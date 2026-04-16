@@ -448,6 +448,8 @@ window.Quarto = {
   <li><a href="#método-monte-carlo" id="toc-método-monte-carlo" class="nav-link" data-scroll-target="#método-monte-carlo"><span class="header-section-number">5.4</span> Método Monte Carlo</a>
   <ul class="collapse">
   <li><a href="#estimador-de-monte-carlo" id="toc-estimador-de-monte-carlo" class="nav-link" data-scroll-target="#estimador-de-monte-carlo"><span class="header-section-number">5.4.1</span> Estimador de Monte Carlo</a></li>
+  <li><a href="#convergencia-y-rigor-asintótico." id="toc-convergencia-y-rigor-asintótico." class="nav-link" data-scroll-target="#convergencia-y-rigor-asintótico."><span class="header-section-number">5.4.2</span> Convergencia y rigor asintótico.</a></li>
+  <li><a href="#generación-de-variables-aleatorias." id="toc-generación-de-variables-aleatorias." class="nav-link" data-scroll-target="#generación-de-variables-aleatorias."><span class="header-section-number">5.4.3</span> Generación de variables aleatorias.</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/metodos-numericos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/metodos-numericos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
@@ -744,9 +746,9 @@ E_N \leq K_{11} \frac{e^{K_{10} T} - 1}{K_{10}} \Delta t = C \Delta t,
 <p>La base teórica del método reside en la construcción de un estimador no sesgado basado en muestras independientes.</p>
 </div>
 <div id="def-Espacio_probabilidad_filtrado" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.1</strong></span> (Estimador de Monte Carlo).Sean <span class="math inline">\(X_1, X_2, \dots, X_N\)</span> variables aleatorias independientes e idénticamente distribuidas (i.i.d.) con la misma distribución que <span class="math inline">\(X\)</span>. Definimos el estimador de Monte Carlo <span class="math inline">\(\hat{I}_N\)</span> como la media muestral de las realizaciones de la función <span class="math inline">\(f\)</span>: <span class="math display">\[
+<p><span class="theorem-title"><strong>Definición 5.1</strong></span> (Estimador de Monte Carlo).Sean <span class="math inline">\(X_1, X_2, \dots, X_N\)</span> variables aleatorias independientes e idénticamente distribuidas (i.i.d.) con la misma distribución que <span class="math inline">\(X\)</span>. Definimos el estimador de Monte Carlo <span class="math inline">\(\hat{I}_N\)</span> como la media muestral de las realizaciones de la función <span class="math inline">\(f\)</span>: <span id="eq-mc_estimator"><span class="math display">\[
 \hat{I}_N = \frac{1}{N} \sum_{i=1}^{N} f(X_i).
-\]</span></p>
+\tag{5.50}\]</span></span></p>
 </div>
 <div style="text-align:justify">
 <p>La validez de este estimador se sustenta en dos propiedades estadísticas fundamentales: su insesgamiento y su consistencia.</p>
@@ -760,6 +762,48 @@ E_N \leq K_{11} \frac{e^{K_{10} T} - 1}{K_{10}} \Delta t = C \Delta t,
     &amp;= \frac{1}{N} \sum_{i=1}^{N} I = \frac{1}{N} \cdot N \cdot I = I.
 \end{aligned} \quad \square
 \]</span></p>
+</div>
+</section>
+<section id="convergencia-y-rigor-asintótico." class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="convergencia-y-rigor-asintótico."><span class="header-section-number">5.4.2</span> Convergencia y rigor asintótico.</h3>
+<div style="text-align:justify">
+<p>Para justificar teóricamente por qué simular el sistema “miles o millones de veces” (es decir, hacer tender <span class="math inline">\(N \to \infty\)</span>) nos permite aproximar el valor real del sistema, debemos recurrir a los teoremas límite de la teoría de la probabilidad.</p>
+</div>
+<section id="ley-fuerte-de-los-grandes-números." class="level4" data-number="5.4.2.1">
+<h4 data-number="5.4.2.1" class="anchored" data-anchor-id="ley-fuerte-de-los-grandes-números."><span class="header-section-number">5.4.2.1</span> Ley Fuerte de los Grandes Números.</h4>
+<div style="text-align:justify">
+<p>La convergencia casi segura del estimador está garantizada por la Ley Fuerte de los Grandes Números.</p>
+</div>
+<div id="thm-ley_fuerte_grandes_numeros" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 5.3</strong></span> (Ley Fuerte de los Grandes Números). Sea <span class="math inline">\(\{X_i\}_{i \geq 1}\)</span> una sucesión de variables aleatorias i.i.d. con <span class="math inline">\(\mathbb{E}[|f(X_1)|] &lt; \infty\)</span>. Entonces, el estimador de Monte Carlo converge casi seguramente (c.s.) al valor verdadero <span class="math inline">\(I\)</span>: <span class="math display">\[
+\mathbb{P}\left( \lim_{N \to \infty} \hat{I}_N = I \right) = 1.
+\]</span></p>
+</div>
+<div style="text-align:justify">
+<p>Este teorema proporciona la garantía teórica de que, al aumentar el número de simulaciones, el error de aproximación tiende a cero con probabilidad unitaria. Sin embargo, la SLLN no cuantifica la tasa de convergencia ni la distribución del error para un <span class="math inline">\(N\)</span> finito.</p>
+<p>Para evaluar la precisión del método y construir intervalos de confianza, utilizamos el Teorema del Límite Central. Asumamos que la varianza de la función es finita, es decir, <span class="math inline">\(\sigma^2 = \mathbb{V}[f(X)] &lt; \infty\)</span>.</p>
+</div>
+<div id="thm-limite_central" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 5.4</strong></span> (Teorema del Límite Central para MC) Bajo las condiciones de varianza finita, la distribución del error normalizado converge en distribución a una normal estándar: <span class="math display">\[
+    \sqrt{N} \frac{\hat{I}_N - I}{\sigma} \xrightarrow{d} \mathbb{N}(0, 1) \quad \text{cuando } N \to \infty.
+\]</span></p>
+</div>
+<div style="text-align:justify">
+<p>De este resultado se desprende una conclusión crítica para la simulación computacional: el error estándar del estimador decae proporcionalmente a <span class="math inline">\(N^{-1/2}\)</span>, independientemente de la dimensión del problema. <span id="eq-error_rate"><span class="math display">\[
+\text{Error}(\hat{I}_N) \approx \frac{\sigma}{\sqrt{N}}.
+\tag{5.51}\]</span></span></p>
+<p>Esta propiedad es distintiva del método Monte Carlo. Mientras que los métodos deterministas sufren una degradación exponencial en su precisión a medida que aumenta la dimensionalidad del espacio de integración, la tasa de convergencia <span class="math inline">\(O(N^{-1/2})\)</span> de Monte Carlo permanece invariante ante la dimensionalidad, lo que lo hace superior para sistemas complejos de alta dimensión.</p>
+</div>
+</section>
+</section>
+<section id="generación-de-variables-aleatorias." class="level3" data-number="5.4.3">
+<h3 data-number="5.4.3" class="anchored" data-anchor-id="generación-de-variables-aleatorias."><span class="header-section-number">5.4.3</span> Generación de variables aleatorias.</h3>
+<div style="text-align:justify">
+<p>La implementación práctica de la ecuación <a href="#eq-mc_estimator" class="quarto-xref">Ecuación&nbsp;<span>5.50</span></a> requiere la capacidad de generar muestras <span class="math inline">\(X_i\)</span> de una distribución de probabilidad específica <span class="math inline">\(P\)</span>. Matemáticamente, esto se logra a menudo mediante el Método de la Transformada Inversa.</p>
+<p>Sea <span class="math inline">\(U \sim \text{Uniforme}(0,1)\)</span> una variable aleatoria uniforme. Si <span class="math inline">\(F_X(x) = \mathbb{P}(X \leq x)\)</span> es la función de distribución acumulada (CDF) de <span class="math inline">\(X\)</span>, y <span class="math inline">\(F_X^{-1}\)</span> es su inversa generalizada definida como: <span class="math display">\[
+F_X^{-1}(u) = \inf \{ x \in \mathbb{R} : F_X(x) \geq u \},
+\]</span> entonces la variable aleatoria <span class="math inline">\(Y = F_X^{-1}(U)\)</span> tiene la misma distribución que <span class="math inline">\(X\)</span>.</p>
+<p>En sistemas complejos donde <span class="math inline">\(F_X^{-1}\)</span> no tiene forma cerrada, se emplean métodos de rechazo (Rejection Sampling) o cadenas de Markov (MCMC), los cuales garantizan que la distribución estacionaria de la cadena generada coincida con la distribución objetivo <span class="math inline">\(P\)</span>.</p>
 </div>
 
 
