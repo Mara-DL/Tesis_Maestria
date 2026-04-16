@@ -442,7 +442,8 @@ window.Quarto = {
   <li><a href="#estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano" id="toc-estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano" class="nav-link active" data-scroll-target="#estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano"><span class="header-section-number">6.1</span> Estimación de Parámetros para el mercado de seguros de bienes raíces Mexicano</a>
   <ul class="collapse">
   <li><a href="#función-de-primas-ajustadas-por-inflación-ct" id="toc-función-de-primas-ajustadas-por-inflación-ct" class="nav-link" data-scroll-target="#función-de-primas-ajustadas-por-inflación-ct"><span class="header-section-number">6.1.1</span> Función de Primas Ajustadas por Inflación: <span class="math inline">\(c(t)\)</span></a></li>
-  <li><a href="#tasa-de-inversión-mensual-rt." id="toc-tasa-de-inversión-mensual-rt." class="nav-link" data-scroll-target="#tasa-de-inversión-mensual-rt."><span class="header-section-number">6.1.2</span> Tasa de Inversión Mensual: <span class="math inline">\(r(t)\)</span>.</a></li>
+  <li><a href="#modelado-de-la-tasa-de-inversión-rt." id="toc-modelado-de-la-tasa-de-inversión-rt." class="nav-link" data-scroll-target="#modelado-de-la-tasa-de-inversión-rt."><span class="header-section-number">6.1.2</span> Modelado de la tasa de inversión: <span class="math inline">\(r(t)\)</span>.</a></li>
+  <li><a href="#modelado-de-la-volatilidad-de-inversiones-sigmat." id="toc-modelado-de-la-volatilidad-de-inversiones-sigmat." class="nav-link" data-scroll-target="#modelado-de-la-volatilidad-de-inversiones-sigmat."><span class="header-section-number">6.1.3</span> Modelado de la volatilidad de Inversiones <span class="math inline">\(\sigma(t)\)</span>.</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/modelo-actuarial.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/modelo-actuarial.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
@@ -595,8 +596,8 @@ window.Quarto = {
 </div>
 </section>
 </section>
-<section id="tasa-de-inversión-mensual-rt." class="level3" data-number="6.1.2">
-<h3 data-number="6.1.2" class="anchored" data-anchor-id="tasa-de-inversión-mensual-rt."><span class="header-section-number">6.1.2</span> Tasa de Inversión Mensual: <span class="math inline">\(r(t)\)</span>.</h3>
+<section id="modelado-de-la-tasa-de-inversión-rt." class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="modelado-de-la-tasa-de-inversión-rt."><span class="header-section-number">6.1.2</span> Modelado de la tasa de inversión: <span class="math inline">\(r(t)\)</span>.</h3>
 <div style="text-align:justify">
 <p>Las aseguradoras mexicanas mantienen carteras conservadoras con asignación aproximada de <span class="math inline">\(70\%\)</span> en instrumentos locales (CETES, Mbonos) y <span class="math inline">\(30\%\)</span> en activos globales (<span class="citation" data-cites="cnsf2024panorama">(<a href="references.html#ref-cnsf2024panorama" role="doc-biblioref">CNSF 2024</a>)</span>). Siguiendo el marco regulatorio de la CNSF y la estructura conservadora de las carteras aseguradoras mexicanas (informe anual CNSF), modelamos <span class="math inline">\(r(t)\)</span> como combinación convexa ponderada:</p>
 <p><span id="eq-tasa_inversion"><span class="math display">\[r(t) = \rho \cdot r_{\text{CETES}}(t) + (1-\rho) \cdot r_{\text{USD}}(t) \tag{6.2}\]</span></span></p>
@@ -609,6 +610,288 @@ window.Quarto = {
 <p>Para el periodo 2024-2025, con tasas de Banxico estables en <span class="math inline">\(11.0\%\)</span> anual y bonos USD en <span class="math inline">\(4.8\%\)</span> anual:</p>
 <p><span class="math display">\[r(t) = 0.75 \cdot \frac{0.110}{12} + 0.25 \cdot \frac{0.048}{12} = 0.007875 \text{ mensual} \quad (9.45\% \text{ anual})\]</span></p>
 <p>Este valor se ajusta a <span class="math inline">\(0.78\%\)</span> mensual para incorporar costos operativos y fiscales (<span class="math inline">\(1.5\)</span> p.p. anuales), resultando en un rendimiento neto anual de <span class="math inline">\(8.9\%\)</span>.</p>
+</div>
+</section>
+<section id="modelado-de-la-volatilidad-de-inversiones-sigmat." class="level3" data-number="6.1.3">
+<h3 data-number="6.1.3" class="anchored" data-anchor-id="modelado-de-la-volatilidad-de-inversiones-sigmat."><span class="header-section-number">6.1.3</span> Modelado de la volatilidad de Inversiones <span class="math inline">\(\sigma(t)\)</span>.</h3>
+<section id="combinación-convexa-de-volatilidades" class="level4" data-number="6.1.3.1">
+<h4 data-number="6.1.3.1" class="anchored" data-anchor-id="combinación-convexa-de-volatilidades"><span class="header-section-number">6.1.3.1</span> Combinación Convexa de Volatilidades</h4>
+<div style="text-align:justify">
+<p>La volatilidad total se estima como combinación ponderada de componentes globales y locales:</p>
+<p><span id="eq-volatilidad"><span class="math display">\[\sigma(t) = w_g \cdot \sigma_g(t) + w_l \cdot \sigma_l, \tag{6.3}\]</span></span></p>
+<p>Los informes anuales de la CNSF sobre la composición de las inversiones del sector asegurador en México indican que, en promedio, las compañías mantienen:</p>
+<ul>
+<li><p><span class="math inline">\(30\%\)</span> de sus inversiones en instrumentos del extranjero.</p></li>
+<li><p><span class="math inline">\(70\%\)</span> en instrumentos del mercado nacional.</p></li>
+</ul>
+<p>Dado que no hay datos mensuales oficiales públicos, se asume una asignación constante durante el periodo, basada en el último informe disponible (2023) con <span class="math inline">\(w_g = 0\cdot30\)</span>, <span class="math inline">\(w_l = 0\cdot70\)</span>.</p>
+<p>La componente local <span class="math inline">\(\sigma_l(t)\)</span> respecta a la Volatilidad de CETES a 28 días ue es el activo de referencia para las inversiones conservadoras en México, estimada mediante desviación estándar móvil de 30 días de las tasas diarias de Banxico:</p>
+<p><span class="math display">\[\sigma_l(t) = 0.05\% \text{ mensual (constante)}\]</span></p>
+<p>Mientras que la componente global <span class="math inline">\(\sigma_g(t)\)</span> es dada por la Volatilidad del índice ILS (Artemis.bm), calculada como desviación estándar móvil de <span class="math inline">\(3\)</span> meses de los rendimientos mensuales. Presenta estacionalidad marcada por la temporada de huracanes (junio-noviembre):</p>
+<table class="caption-top table">
+<caption>T Volatilidad Global, <span class="math inline">\(\sigma g(t)\)</span> mensual</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Mes</th>
+<th style="text-align: center;"><span class="math inline">\(\sigma_g(t)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Ene 2024</td>
+<td style="text-align: center;">0.08%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Feb 2024</td>
+<td style="text-align: center;">0.09%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Mar 2024</td>
+<td style="text-align: center;">0.10%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Abr 2024</td>
+<td style="text-align: center;">0.11%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">May 2024</td>
+<td style="text-align: center;">0.12%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Jun 2024</td>
+<td style="text-align: center;">0.15%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Jul 2024</td>
+<td style="text-align: center;">0.18%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Ago 2024</td>
+<td style="text-align: center;">0.35%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Sep 2024</td>
+<td style="text-align: center;">0.30%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Oct 2024</td>
+<td style="text-align: center;">0.25%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Nov 2024</td>
+<td style="text-align: center;">0.20%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Dic 2024</td>
+<td style="text-align: center;">0.18%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Ene 2025</td>
+<td style="text-align: center;">0.16%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Feb 2025</td>
+<td style="text-align: center;">0.14%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Mar 2025</td>
+<td style="text-align: center;">0.13%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Abr 2025</td>
+<td style="text-align: center;">0.14%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">May 2025</td>
+<td style="text-align: center;">0.16%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Jun 2025</td>
+<td style="text-align: center;">0.20%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Jul 2025</td>
+<td style="text-align: center;">0.25%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Ago 2025</td>
+<td style="text-align: center;">0.22%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Sep 2025</td>
+<td style="text-align: center;">0.28%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Oct 2025</td>
+<td style="text-align: center;">0.24%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Nov-25</td>
+<td style="text-align: center;">0.20%</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Dic 2025</td>
+<td style="text-align: center;">0.18%</td>
+</tr>
+</tbody>
+</table>
+<p>La volatilidad total mensual resultante es :</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Mes</th>
+<th style="text-align: center;"><span class="math inline">\(\sigma_g\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(\sigma_l\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(\sigma(t)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Ene 2024</td>
+<td style="text-align: center;">0.08</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.059</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Feb 2024</td>
+<td style="text-align: center;">0.09</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.062</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Mar 2024</td>
+<td style="text-align: center;">0.10</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.065</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Abr 2024</td>
+<td style="text-align: center;">0.11</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.068</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">May 2024</td>
+<td style="text-align: center;">0.12</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.071</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Jun 2024</td>
+<td style="text-align: center;">0.15</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.080</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Jul 2024</td>
+<td style="text-align: center;">0.18</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.089</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Ago 2024</td>
+<td style="text-align: center;">0.35</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.140</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Sep 2024</td>
+<td style="text-align: center;">0.30</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.125</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Oct 2024</td>
+<td style="text-align: center;">0.25</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.110</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Nov 2024</td>
+<td style="text-align: center;">0.20</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.095</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Dic 2024</td>
+<td style="text-align: center;">0.18</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.089</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Ene 2025</td>
+<td style="text-align: center;">0.16</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.083</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Feb 2025</td>
+<td style="text-align: center;">0.14</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.077</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Mar 2025</td>
+<td style="text-align: center;">0.13</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.074</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Abr 2025</td>
+<td style="text-align: center;">0.14</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.077</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">May 2025</td>
+<td style="text-align: center;">0.16</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.083</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Jun 2025</td>
+<td style="text-align: center;">0.20</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.095</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Jul 2025</td>
+<td style="text-align: center;">0.25</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.110</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Ago 2025</td>
+<td style="text-align: center;">0.22</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.101</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Sep 2025</td>
+<td style="text-align: center;">0.28</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.119</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Oct 2025</td>
+<td style="text-align: center;">0.24</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.107</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Nov-25</td>
+<td style="text-align: center;">0.20</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.095</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Dic 2025</td>
+<td style="text-align: center;">0.18</td>
+<td style="text-align: center;">0.05</td>
+<td style="text-align: center;">0.089</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 
@@ -623,6 +906,7 @@ CNSF. 2024. <em>Panorama Analítico del Sector de Seguros y Fianzas 2024</em>. C
 INEGI. 2024. <em>Índice Nacional de Precios al Consumidor (INPC)</em>. Instituto Nacional de Estadística y Geografía. <a href="https://www.inegi.org.mx/temas/inpc/">https://www.inegi.org.mx/temas/inpc/</a>.
 </div>
 </div>
+</section>
 </section>
 </section>
 
