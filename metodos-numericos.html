@@ -647,8 +647,8 @@ U_{n+1} =
   |a(t,u)| + |b(t,u)| + \left( \int_E |c(t, u, v)|^2 \phi(dv) \right)^{1/2} \leq K(1 + |u|),
   \tag{H2}
   \]</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(u \in \mathbb{R}\)</span> (<span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, Ec. (1.9.3)).</p></li>
-<li><p><em>(H3)</em> <strong><em>Momentos finitos de saltos</em></strong>: <span class="math inline">\(\int_E |c(t, u, v)|^4 \phi(dv) &lt; \infty\)</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(u \in \mathbb{R}\)</span> (Wang &amp; Gan, 2013, Hipótesis 3.1).</p></li>
-<li><p><em>(H4)</em> <strong><em>Estabilidad numérica</em></strong>: Existe <span class="math inline">\(\Delta t_0 &gt; 0\)</span> y <span class="math inline">\(\delta &gt; 0\)</span> tales que <span class="math inline">\(1 - r(t_{n+1})\Delta t \geq \delta &gt; 0\)</span> para todo <span class="math inline">\(\Delta t \leq \Delta t_0\)</span> (Higham &amp; Kloeden, 2005, Lema 2.1).</p></li>
+<li><p><em>(H3)</em> <strong><em>Momentos finitos de saltos</em></strong>: <span class="math inline">\(\int_E |c(t, u, v)|^4 \phi(dv) &lt; \infty\)</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(u \in \mathbb{R}\)</span> (<span class="citation" data-cites="wang2007">Wang et&nbsp;al. (<a href="references.html#ref-wang2007" role="doc-biblioref">2007</a>)</span>, Hipótesis 3.1).</p></li>
+<li><p><em>(H4)</em> <strong><em>Estabilidad numérica</em></strong>: Existe <span class="math inline">\(\Delta t_0 &gt; 0\)</span> y <span class="math inline">\(\delta &gt; 0\)</span> tales que <span class="math inline">\(1 - r(t_{n+1})\Delta t \geq \delta &gt; 0\)</span> para todo <span class="math inline">\(\Delta t \leq \Delta t_0\)</span> (<span class="citation" data-cites="higham2005">Higham y Kloeden (<a href="references.html#ref-higham2005" role="doc-biblioref">2005</a>)</span>, Lema 2.1).</p></li>
 <li><p><em>(H5)</em><strong><em>Condiciones iniciales</em></strong>: <span class="math inline">\(\mathbb{E}[|U_0|^2] &lt; \infty\)</span> y <span class="math inline">\(U_0 = _0\)</span>.</p></li>
 </ul>
 <p>Bajo las hipótesis (H1)–(H5), existe una constante <span class="math inline">\(C &gt; 0\)</span>, independiente de <span class="math inline">\(\Delta t\)</span>, tal que: <span id="eq-convergence_result_semiimplicit"><span class="math display">\[
@@ -666,7 +666,7 @@ dU_t = a(t,U_t)\,dt  + b(t,U_t)\,dW_t + \int_E c(t,U_{t-},v)\,p_\phi(dv, dt),
 R_n = R_n^{\text{dif}} + R_n^{\text{jump}} + R_n^{\text{implicit}},
 \tag{5.32}\]</span></span></p>
 <p>donde <span class="math inline">\(R_n^{\text{dif}}\)</span> es el error de difusión, <span class="math inline">\(R_n^{\text{jump}}\)</span> el error de saltos y <span class="math inline">\(R_n^{\text{implicit}}\)</span> el error de implicitidad.</p>
-<p>Por la expansión de Euler-Maruyama para difusiones puras (Higham &amp; Kloeden, 2005, Ec. (2.3)), el error local de la parte difusiva satisface: <span id="eq-diff_error_bound_semiimplicit"><span class="math display">\[
+<p>Por la expansión de Euler-Maruyama para difusiones puras (<span class="citation" data-cites="higham2005">Higham y Kloeden (<a href="references.html#ref-higham2005" role="doc-biblioref">2005</a>)</span>, Ec. (2.3)), el error local de la parte difusiva satisface: <span id="eq-diff_error_bound_semiimplicit"><span class="math display">\[
 \mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_1 (1 + |U_n|^2) (\Delta t)^2
 \tag{5.33}\]</span></span></p>
 <p>Esta cota es de orden <span class="math inline">\((\Delta t)^3\)</span> en <span class="math inline">\(L^2\)</span> debido a que el esquema semi-implícito utiliza una aproximación de Euler para la parte difusiva, cuyo error local en <span class="math inline">\(L^2\)</span> es <span class="math inline">\(\mathcal{O}((\Delta t)^{3/2})\)</span>. El error local asociado a los saltos es: <span id="eq-jump_error_semiimplicit"><span class="math display">\[
@@ -686,7 +686,7 @@ R_n^{\text{jump}} = {}&amp; \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{
 &amp;\leq 2L_c^2 \mathbb{E}\left[ \int_{t_n}^{t_{n+1}} |U_s - U_n|^2 ds \mid \mathcal{F_{t_n}} \right] \int_E \phi(dv) + 2 \int_E |c(t_n, U_n, v)|^2 \phi(dv) \Delta t \nonumber \\
 &amp;\leq K_2 \Delta t + K_3 |U_{t_n} - U_n|^2 \Delta t,
 \end{align}
-\tag{5.35}\]</span></span> donde en la última desigualdad usamos la cota de momentos de la solución exacta <a href="#eq-exact_moment_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>5.31</span></a> y la condición de crecimiento lineal (H2). El primer término proviene de la variación del estado durante el intervalo, y el segundo de la diferencia entre el estado exacto y el numérico. Expandiendo el denominador mediante serie de Taylor (Wang &amp; Gan, 2013, Lema 3.1): <span id="eq-taylor_denom_semiimplicit"><span class="math display">\[
+\tag{5.35}\]</span></span> donde en la última desigualdad usamos la cota de momentos de la solución exacta <a href="#eq-exact_moment_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>5.31</span></a> y la condición de crecimiento lineal (H2). El primer término proviene de la variación del estado durante el intervalo, y el segundo de la diferencia entre el estado exacto y el numérico. Expandiendo el denominador mediante serie de Taylor (<span class="citation" data-cites="wang2007">Wang et&nbsp;al. (<a href="references.html#ref-wang2007" role="doc-biblioref">2007</a>)</span>, Lema 3.1): <span id="eq-taylor_denom_semiimplicit"><span class="math display">\[
 \frac{1}{1 - r(t_{n+1})\Delta t} = 1 + r(t_{n+1})\Delta t + \mathcal{O}((\Delta t)^2),
 \tag{5.36}\]</span></span> lo que implica que el error introducido por la implicitidad satisface: <span id="eq-implicit_error_bound_semiimplicit"><span class="math display">\[
 \mathbb{E}\left[ |R_n^{\text{implicit}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_4 (1 + |U_n|^2) (\Delta t)^4.
@@ -694,7 +694,7 @@ R_n^{\text{jump}} = {}&amp; \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{
 <p>Este término es de orden superior y no afectará el orden global de convergencia.</p>
 <p>Combinando <a href="#eq-diff_error_bound_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>5.33</span></a>, <a href="#eq-jump_error_bound_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>5.35</span></a> y <a href="#eq-implicit_error_bound_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>5.37</span></a>, y usando <span class="math inline">\((a+b+c)^2 \leq 3a^2 + 3b^2 + 3c^2\)</span>: <span id="eq-total_error_bound_semiimplicit"><span class="math display">\[
 \mathbb{E}\left[ |R_n|^2 \mid \mathcal{F_{t_n}} \right] \leq K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t,
-\tag{5.38}\]</span></span> donde <span class="math inline">\(e_n = U_{t_n} - U_n\)</span> es el error global y usamos que <span class="math inline">\(\Delta t \leq 1\)</span> para absorber los términos de orden superior. Definiendo <span class="math inline">\(M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |U_k|^2 \right]\)</span>, y tomando cuadrados en <a href="#eq-esquema_semiimplicito_despeje" class="quarto-xref">Ecuación&nbsp;<span>5.28</span></a> seguido de esperanza, aplicamos las cotas de Lipschitz (H1), crecimiento lineal (H2) y la cota de estabilidad (H4). Siguiendo el argumento del Teorema 3.2 de Higham &amp; Kloeden (2006), obtenemos: <span id="eq-moments_recursion_semiimplicit"><span class="math display">\[
+\tag{5.38}\]</span></span> donde <span class="math inline">\(e_n = U_{t_n} - U_n\)</span> es el error global y usamos que <span class="math inline">\(\Delta t \leq 1\)</span> para absorber los términos de orden superior. Definiendo <span class="math inline">\(M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |U_k|^2 \right]\)</span>, y tomando cuadrados en <a href="#eq-esquema_semiimplicito_despeje" class="quarto-xref">Ecuación&nbsp;<span>5.28</span></a> seguido de esperanza, aplicamos las cotas de Lipschitz (H1), crecimiento lineal (H2) y la cota de estabilidad (H4). Siguiendo el argumento del Teorema 3.2 de <span class="citation" data-cites="higham2005">Higham y Kloeden (<a href="references.html#ref-higham2005" role="doc-biblioref">2005</a>)</span>, obtenemos: <span id="eq-moments_recursion_semiimplicit"><span class="math display">\[
 M_{n+1} \leq (1 + K_6 \Delta t) M_n + K_7 \Delta t.
 \tag{5.39}\]</span></span> Iterando esta desigualdad y usando <span class="math inline">\(M_0 = \mathbb{E}[|U_0|^2] &lt; \infty\)</span>: <span id="eq-moments_bound_semiimplicit"><span class="math display">\[
 M_N \leq M_0 e^{K_6 T} + \frac{K_7}{K_6} (e^{K_6 T} - 1) &lt; \infty.
@@ -738,8 +738,14 @@ E_N \leq K_{11} \frac{e^{K_{10} T} - 1}{K_{10}} \Delta t = C \Delta t,
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-higham2005" class="csl-entry" role="listitem">
+Higham, Desmond J., y Peter E. Kloeden. 2005. <span>«Numerical methods for nonlinear stochastic differential equations with jumps»</span>. <em>Numerische Mathematik</em> 101 (1): 101-19. <a href="https://doi.org/10.1007/s00211-005-0611-8">https://doi.org/10.1007/s00211-005-0611-8</a>.
+</div>
 <div id="ref-platen2010numerical" class="csl-entry" role="listitem">
 Platen, Eckhard, y Nicola Bruti-Liberati. 2010. <em>Numerical Solution of Stochastic Differential Equations with Jumps in Finance</em>. Vol. 64. Stochastic Modelling y Applied Probability. Springer-Verlag. <a href="https://doi.org/10.1007/978-3-642-13694-8">https://doi.org/10.1007/978-3-642-13694-8</a>.
+</div>
+<div id="ref-wang2007" class="csl-entry" role="listitem">
+Wang, Lishan, Chun Mei, y Huakun Xue. 2007. <span>«The semi-implicit Euler method for stochastic differential delay equations with jumps»</span>. <em>Applied Mathematics and Computation</em> 192 (2): 567-78. <a href="https://doi.org/10.1016/j.amc.2007.03.038">https://doi.org/10.1016/j.amc.2007.03.038</a>.
 </div>
 </div>
 </section>
