@@ -442,6 +442,7 @@ window.Quarto = {
   <li><a href="#estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano" id="toc-estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano" class="nav-link active" data-scroll-target="#estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano"><span class="header-section-number">6.1</span> Estimación de Parámetros para el mercado de seguros de bienes raíces Mexicano</a>
   <ul class="collapse">
   <li><a href="#función-de-primas-ajustadas-por-inflación-ct" id="toc-función-de-primas-ajustadas-por-inflación-ct" class="nav-link" data-scroll-target="#función-de-primas-ajustadas-por-inflación-ct"><span class="header-section-number">6.1.1</span> Función de Primas Ajustadas por Inflación: <span class="math inline">\(c(t)\)</span></a></li>
+  <li><a href="#tasa-de-inversión-mensual-rt." id="toc-tasa-de-inversión-mensual-rt." class="nav-link" data-scroll-target="#tasa-de-inversión-mensual-rt."><span class="header-section-number">6.1.2</span> Tasa de Inversión Mensual: <span class="math inline">\(r(t)\)</span>.</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/modelo-actuarial.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/modelo-actuarial.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
@@ -474,8 +475,7 @@ window.Quarto = {
 <section id="función-de-primas-ajustadas-por-inflación-ct" class="level3" data-number="6.1.1">
 <h3 data-number="6.1.1" class="anchored" data-anchor-id="función-de-primas-ajustadas-por-inflación-ct"><span class="header-section-number">6.1.1</span> Función de Primas Ajustadas por Inflación: <span class="math inline">\(c(t)\)</span></h3>
 <div style="text-align:justify">
-<p>La prima base para enero de 2024 se establece en <span class="math inline">\(c_0 = 283.00\)</span>, derivada del consenso de fuentes sectoriales (AMIS, CNSF). El ajuste por inflación se realiza mediante capitalización compuesta: <span id="eq-ajuste_inflacion"><span class="math display">\[
-c(t) = c_0 \prod_{i=1}^{t} \left(1 + \pi_i\right),
+<p>La prima base para enero de 2024 se establece en <span class="math inline">\(c_0 = 283.00\)</span>, derivada del consenso de fuentes sectoriales (AMIS, CNSF). El ajuste por inflación se realiza mediante capitalización compuesta: <span id="eq-ajuste_inflacion"><span class="math display">\[ c(t) = c_0 \prod_{i=1}^{t} \left(1 + \pi_i\right),
   \tag{6.1}\]</span></span> donde <span class="math inline">\(\pi_i\)</span> representa la tasa de inflación mensual reportada por el INEGI <span class="citation" data-cites="inegi2024inpc">INEGI (<a href="references.html#ref-inegi2024inpc" role="doc-biblioref">2024</a>)</span>.</p>
 </div>
 <section id="datos-de-inflación-mensual" class="level4" data-number="6.1.1.1">
@@ -483,17 +483,146 @@ c(t) = c_0 \prod_{i=1}^{t} \left(1 + \pi_i\right),
 <div style="text-align:justify">
 <p>La Tabla presenta las tasas de inflación utilizadas para el periodo enero 2024 – diciembre 2025. Los datos de 2024 son observados, mientras que las proyecciones de 2025 se basan en el consenso de analistas del Banco de México <span class="citation" data-cites="banxico2024expectativas">Banco de México (<a href="references.html#ref-banxico2024expectativas" role="doc-biblioref">2024</a>)</span>.</p>
 </div>
+<table class="caption-top table">
+<caption>Tasas de inflación mensual en México (variación porcentual del INPC)</caption>
+<thead>
+<tr class="header">
+<th>Mes</th>
+<th>Prima mensual ajustada (MXN)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Ene 2024</td>
+<td>283.00</td>
+</tr>
+<tr class="even">
+<td>Feb 2024</td>
+<td>284.47</td>
+</tr>
+<tr class="odd">
+<td>Mar 2024</td>
+<td>285.55</td>
+</tr>
+<tr class="even">
+<td>Abr 2024</td>
+<td>286.72</td>
+</tr>
+<tr class="odd">
+<td>May 2024</td>
+<td>288.01</td>
+</tr>
+<tr class="even">
+<td>Jun 2024</td>
+<td>289.42</td>
+</tr>
+<tr class="odd">
+<td>Jul 2024</td>
+<td>291.02</td>
+</tr>
+<tr class="even">
+<td>Ago 2024</td>
+<td>292.79</td>
+</tr>
+<tr class="odd">
+<td>Sep 2024</td>
+<td>294.49</td>
+</tr>
+<tr class="even">
+<td>Oct 2024</td>
+<td>295.87</td>
+</tr>
+<tr class="odd">
+<td>Nov 2024</td>
+<td>297.12</td>
+</tr>
+<tr class="even">
+<td>Dic 2024</td>
+<td>298.28</td>
+</tr>
+<tr class="odd">
+<td>Ene 2025</td>
+<td>299.32</td>
+</tr>
+<tr class="even">
+<td>Feb 2025</td>
+<td>300.82</td>
+</tr>
+<tr class="odd">
+<td>Mar 2025</td>
+<td>301.93</td>
+</tr>
+<tr class="even">
+<td>Abr 2025</td>
+<td>303.14</td>
+</tr>
+<tr class="odd">
+<td>May 2025</td>
+<td>304.47</td>
+</tr>
+<tr class="even">
+<td>Jun 2025</td>
+<td>305.93</td>
+</tr>
+<tr class="odd">
+<td>Jul 2025</td>
+<td>307.55</td>
+</tr>
+<tr class="even">
+<td>Ago 2025</td>
+<td>309.37</td>
+</tr>
+<tr class="odd">
+<td>Sep 2025</td>
+<td>311.10</td>
+</tr>
+<tr class="even">
+<td>Oct 2025</td>
+<td>312.53</td>
+</tr>
+<tr class="odd">
+<td>Nov 2025</td>
+<td>313.81</td>
+</tr>
+<tr class="even">
+<td>Dic 2025</td>
+<td>315.01</td>
+</tr>
+</tbody>
+</table>
+<div style="text-align:justify">
+<p>Aplicando <a href="#eq-ajuste_inflacion" class="quarto-xref">Ecuación&nbsp;<span>6.1</span></a>, las primas mensuales ajustadas evolucionan de <span class="math inline">\(283.00\)</span> en enero 2024 a <span class="math inline">\(315.01\)</span> en diciembre 2025, representando un incremento acumulado del <span class="math inline">\(11.3\%\)</span>, consistente con la inflación proyectada</p>
+</div>
+</section>
+</section>
+<section id="tasa-de-inversión-mensual-rt." class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="tasa-de-inversión-mensual-rt."><span class="header-section-number">6.1.2</span> Tasa de Inversión Mensual: <span class="math inline">\(r(t)\)</span>.</h3>
+<div style="text-align:justify">
+<p>Las aseguradoras mexicanas mantienen carteras conservadoras con asignación aproximada de <span class="math inline">\(70\%\)</span> en instrumentos locales (CETES, Mbonos) y <span class="math inline">\(30\%\)</span> en activos globales (<span class="citation" data-cites="cnsf2024panorama">(<a href="references.html#ref-cnsf2024panorama" role="doc-biblioref">CNSF 2024</a>)</span>). Siguiendo el marco regulatorio de la CNSF y la estructura conservadora de las carteras aseguradoras mexicanas (informe anual CNSF), modelamos <span class="math inline">\(r(t)\)</span> como combinación convexa ponderada:</p>
+<p><span class="math display">\[r(t) = \rho \cdot r_{\text{CETES}}(t) + (1-\rho) \cdot r_{\text{USD}}(t)\]</span> {#eq-tasa_inversion}</p>
+<ul>
+<li><p><span class="math inline">\(\rho = 0.70\)</span>,</p></li>
+<li><p><span class="math inline">\(r_{\text{CETES}}(t)\)</span> la tasa de CETES a 28 días mensualizada,</p></li>
+<li><p><span class="math inline">\(r_{\text{USD}}(t)\)</span> el rendimiento de bonos del Tesoro de EE.UU.,</p></li>
+<li><p><span class="math inline">\(\rho = 0.75\)</span> refleja la asignación típica de carteras <span class="math inline">\((70-80\%)\)</span> en activos locales según CNSF)</p></li>
+</ul>
+<p>Para el periodo 2024-2025, con tasas de Banxico estables en <span class="math inline">\(11.0\%\)</span> anual y bonos USD en <span class="math inline">\(4.8\%\)</span> anual:</p>
+<p><span class="math display">\[r(t) = 0.75 \cdot \frac{0.110}{12} + 0.25 \cdot \frac{0.048}{12} = 0.007875 \text{ mensual} \quad (9.45\% \text{ anual})\]</span></p>
+<p>Este valor se ajusta a <span class="math inline">\(0.78\%\)</span> mensual para incorporar costos operativos y fiscales (<span class="math inline">\(1.5\)</span> p.p. anuales), resultando en un rendimiento neto anual de <span class="math inline">\(8.9\%\)</span>.</p>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-banxico2024expectativas" class="csl-entry" role="listitem">
 Banco de México. 2024. <em>Encuesta sobre las Expectativas de los Especialistas en Economía del Sector Privado</em>. Banco de México. <a href="https://www.banxico.org.mx">https://www.banxico.org.mx</a>.
 </div>
+<div id="ref-cnsf2024panorama" class="csl-entry" role="listitem">
+CNSF. 2024. <em>Panorama Analítico del Sector de Seguros y Fianzas 2024</em>. Comisión Nacional de Seguros y Fianzas. <a href="https://sio.cnsf.gob.mx/">https://sio.cnsf.gob.mx/</a>.
+</div>
 <div id="ref-inegi2024inpc" class="csl-entry" role="listitem">
 INEGI. 2024. <em>Índice Nacional de Precios al Consumidor (INPC)</em>. Instituto Nacional de Estadística y Geografía. <a href="https://www.inegi.org.mx/temas/inpc/">https://www.inegi.org.mx/temas/inpc/</a>.
 </div>
 </div>
-</section>
 </section>
 </section>
 
