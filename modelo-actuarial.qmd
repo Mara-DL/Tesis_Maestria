@@ -1,0 +1,26 @@
+---
+lang: es
+format:
+  html: default
+  pdf: default  
+---
+
+#  Implementación Numérica y Análisis de Resultados
+
+## Estimación de Parámetros para el mercado de seguros de bienes raíces Mexicano
+
+###  Función de Primas Ajustadas por Inflación: $c(t)$
+
+::: {style="text-align:justify"}
+La prima base para enero de 2024 se establece en $c_0 = 283.00$, derivada del consenso de fuentes sectoriales (AMIS, CNSF). El ajuste por inflación se realiza mediante capitalización compuesta:
+$$
+ c(t) = c_0 \prod_{i=1}^{t} \left(1 + \pi_i\right),
+ $$ {#eq-ajuste_inflacion}
+ donde $\pi_i$ representa la tasa de inflación mensual reportada por el INEGI @inegi2024inpc.
+:::
+
+#### Datos de Inflación Mensual
+
+::: {style="text-align:justify"}
+La Tabla presenta las tasas de inflación utilizadas para el periodo enero 2024 -- diciembre 2025. Los datos de 2024 son observados, mientras que las proyecciones de 2025 se basan en el consenso de analistas del Banco de México  @banxico2024expectativas.
+:::
