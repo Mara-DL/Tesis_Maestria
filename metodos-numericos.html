@@ -445,7 +445,10 @@ window.Quarto = {
   </ul></li>
   <li><a href="#esquema-de-milstein-compensado" id="toc-esquema-de-milstein-compensado" class="nav-link" data-scroll-target="#esquema-de-milstein-compensado"><span class="header-section-number">5.2</span> Esquema de Milstein Compensado</a></li>
   <li><a href="#esquema-semi-implícito-compensado" id="toc-esquema-semi-implícito-compensado" class="nav-link" data-scroll-target="#esquema-semi-implícito-compensado"><span class="header-section-number">5.3</span> Esquema Semi-Implícito Compensado</a></li>
-  <li><a href="#método-monte-carlo" id="toc-método-monte-carlo" class="nav-link" data-scroll-target="#método-monte-carlo"><span class="header-section-number">5.4</span> Método Monte Carlo</a></li>
+  <li><a href="#método-monte-carlo" id="toc-método-monte-carlo" class="nav-link" data-scroll-target="#método-monte-carlo"><span class="header-section-number">5.4</span> Método Monte Carlo</a>
+  <ul class="collapse">
+  <li><a href="#estimador-de-monte-carlo" id="toc-estimador-de-monte-carlo" class="nav-link" data-scroll-target="#estimador-de-monte-carlo"><span class="header-section-number">5.4.1</span> Estimador de Monte Carlo</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/metodos-numericos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/metodos-numericos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
@@ -735,6 +738,32 @@ E_N \leq K_{11} \frac{e^{K_{10} T} - 1}{K_{10}} \Delta t = C \Delta t,
 <div style="text-align:justify">
 <p>El método Monte Carlo (MC) constituye una clase de algoritmos computacionales que se basan en el muestreo aleatorio repetido para obtener resultados numéricos. En el contexto de esta tesis, el objetivo fundamental es aproximar cantidades de interés deterministas, tales como integrales multidimensionales o valores esperados de sistemas estocásticos complejos, mediante la simulación de un sistema un gran número de veces bajo condiciones aleatorias.</p>
 </div>
+<section id="estimador-de-monte-carlo" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="estimador-de-monte-carlo"><span class="header-section-number">5.4.1</span> Estimador de Monte Carlo</h3>
+<div style="text-align:justify">
+<p>La base teórica del método reside en la construcción de un estimador no sesgado basado en muestras independientes.</p>
+</div>
+<div id="def-Espacio_probabilidad_filtrado" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.1</strong></span> (Estimador de Monte Carlo).Sean <span class="math inline">\(X_1, X_2, \dots, X_N\)</span> variables aleatorias independientes e idénticamente distribuidas (i.i.d.) con la misma distribución que <span class="math inline">\(X\)</span>. Definimos el estimador de Monte Carlo <span class="math inline">\(\hat{I}_N\)</span> como la media muestral de las realizaciones de la función <span class="math inline">\(f\)</span>: <span class="math display">\[
+\hat{I}_N = \frac{1}{N} \sum_{i=1}^{N} f(X_i).
+\]</span></p>
+</div>
+<div style="text-align:justify">
+<p>La validez de este estimador se sustenta en dos propiedades estadísticas fundamentales: su insesgamiento y su consistencia.</p>
+<p>El estimador <span class="math inline">\(\hat{I}_N\)</span> es un estimador insesgado de <span class="math inline">\(I\)</span>. Es decir, <span class="math inline">\(\mathbb{E}[\hat{I}_N] = I\)</span>.</p>
+</div>
+<div class="proof" style="text-align:justify">
+<p><span class="proof-title"><em>Demostración</em>. </span></p>
+</div>
+<p>Dado que la esperanza es un operador lineal y las variables <span class="math inline">\(X_i\)</span> son i.i.d.: <span class="math display">\[
+\begin{aligned}
+    \mathbb{E}[\hat{I}_N] &amp;= \mathbb{E}\left[ \frac{1}{N} \sum_{i=1}^{N} f(X_i) \right] \\
+    &amp;= \frac{1}{N} \sum_{i=1}^{N} \mathbb{E}[f(X_i)] \\
+    &amp;= \frac{1}{N} \sum_{i=1}^{N} I = \frac{1}{N} \cdot N \cdot I = I.
+\end{aligned}
+\]</span></p>
+<p>::::</p>
+<p>::::</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
@@ -748,6 +777,7 @@ Platen, Eckhard, y Nicola Bruti-Liberati. 2010. <em>Numerical Solution of Stocha
 Wang, Lishan, Chun Mei, y Huakun Xue. 2007. <span>«The semi-implicit Euler method for stochastic differential delay equations with jumps»</span>. <em>Applied Mathematics and Computation</em> 192 (2): 567-78. <a href="https://doi.org/10.1016/j.amc.2007.03.038">https://doi.org/10.1016/j.amc.2007.03.038</a>.
 </div>
 </div>
+</section>
 </section>
 
 </main> <!-- /main -->
