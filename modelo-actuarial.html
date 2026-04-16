@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>modelo-actuarial – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos</title>
+<title>6&nbsp; Implementación Numérica y Análisis de Resultados – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,7 +23,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -82,16 +101,45 @@ ul.task-list li input[type="checkbox"] {
   });
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta property="og:title" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="6&nbsp; Implementación Numérica y Análisis de Resultados – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta property="og:image" content="assets/UNACH.png">
 <meta property="og:site_name" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
-<meta name="twitter:title" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta name="twitter:title" content="6&nbsp; Implementación Numérica y Análisis de Resultados – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta name="twitter:image" content="assets/UNACH.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar floating fullcontent quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -260,7 +308,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./modelo-actuarial.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">modelo-actuarial.html</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./modelo-actuarial.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Implementación Numérica y Análisis de Resultados</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
@@ -360,7 +408,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./modelo-actuarial.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">modelo-actuarial.html</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Implementación Numérica y Análisis de Resultados</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -386,16 +434,68 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano" id="toc-estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano" class="nav-link active" data-scroll-target="#estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano"><span class="header-section-number">6.1</span> Estimación de Parámetros para el mercado de seguros de bienes raíces Mexicano</a>
+  <ul class="collapse">
+  <li><a href="#función-de-primas-ajustadas-por-inflación-ct" id="toc-función-de-primas-ajustadas-por-inflación-ct" class="nav-link" data-scroll-target="#función-de-primas-ajustadas-por-inflación-ct"><span class="header-section-number">6.1.1</span> Función de Primas Ajustadas por Inflación: <span class="math inline">\(c(t)\)</span></a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/modelo-actuarial.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/modelo-actuarial.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
+    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Implementación Numérica y Análisis de Resultados</span></h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
 
 
+</header>
 
 
+<section id="estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano"><span class="header-section-number">6.1</span> Estimación de Parámetros para el mercado de seguros de bienes raíces Mexicano</h2>
+<section id="función-de-primas-ajustadas-por-inflación-ct" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="función-de-primas-ajustadas-por-inflación-ct"><span class="header-section-number">6.1.1</span> Función de Primas Ajustadas por Inflación: <span class="math inline">\(c(t)\)</span></h3>
+<div style="text-align:justify">
+<p>La prima base para enero de 2024 se establece en <span class="math inline">\(c_0 = 283.00\)</span>, derivada del consenso de fuentes sectoriales (AMIS, CNSF). El ajuste por inflación se realiza mediante capitalización compuesta: <span id="eq-ajuste_inflacion"><span class="math display">\[
+c(t) = c_0 \prod_{i=1}^{t} \left(1 + \pi_i\right),
+  \tag{6.1}\]</span></span> donde <span class="math inline">\(\pi_i\)</span> representa la tasa de inflación mensual reportada por el INEGI <span class="citation" data-cites="inegi2024inpc">INEGI (<a href="references.html#ref-inegi2024inpc" role="doc-biblioref">2024</a>)</span>.</p>
+</div>
+<section id="datos-de-inflación-mensual" class="level4" data-number="6.1.1.1">
+<h4 data-number="6.1.1.1" class="anchored" data-anchor-id="datos-de-inflación-mensual"><span class="header-section-number">6.1.1.1</span> Datos de Inflación Mensual</h4>
+<div style="text-align:justify">
+<p>La Tabla presenta las tasas de inflación utilizadas para el periodo enero 2024 – diciembre 2025. Los datos de 2024 son observados, mientras que las proyecciones de 2025 se basan en el consenso de analistas del Banco de México <span class="citation" data-cites="banxico2024expectativas">Banco de México (<a href="references.html#ref-banxico2024expectativas" role="doc-biblioref">2024</a>)</span>.</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-banxico2024expectativas" class="csl-entry" role="listitem">
+Banco de México. 2024. <em>Encuesta sobre las Expectativas de los Especialistas en Economía del Sector Privado</em>. Banco de México. <a href="https://www.banxico.org.mx">https://www.banxico.org.mx</a>.
+</div>
+<div id="ref-inegi2024inpc" class="csl-entry" role="listitem">
+INEGI. 2024. <em>Índice Nacional de Precios al Consumidor (INPC)</em>. Instituto Nacional de Estadística y Geografía. <a href="https://www.inegi.org.mx/temas/inpc/">https://www.inegi.org.mx/temas/inpc/</a>.
+</div>
+</div>
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -828,4 +928,4 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/modelo-actuarial.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/modelo-actuarial.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/modelo-actuarial.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/modelo-actuarial.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></div></div></footer></body></html>
