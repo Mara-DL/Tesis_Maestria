@@ -445,6 +445,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#esquema-de-milstein-compensado" id="toc-esquema-de-milstein-compensado" class="nav-link" data-scroll-target="#esquema-de-milstein-compensado"><span class="header-section-number">5.2</span> Esquema de Milstein Compensado</a></li>
   <li><a href="#esquema-semi-implícito-compensado" id="toc-esquema-semi-implícito-compensado" class="nav-link" data-scroll-target="#esquema-semi-implícito-compensado"><span class="header-section-number">5.3</span> Esquema Semi-Implícito Compensado</a></li>
+  <li><a href="#método-monte-carlo" id="toc-método-monte-carlo" class="nav-link" data-scroll-target="#método-monte-carlo"><span class="header-section-number">5.4</span> Método Monte Carlo</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/metodos-numericos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/metodos-numericos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
@@ -539,10 +540,10 @@ Y_{n+1} = Y_n &amp;+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right
 <ul>
 <li><p><span class="math inline">\(a(t,x) = c(t) + r(t)x\)</span> (drift original),</p></li>
 <li><p><span class="math inline">\(b(t,x) = \sigma(t)x\)</span>,</p></li>
-<li><p><span class="math inline">\(R(t,x,v)\)</span> es el tamaño del salto bruto, dependiente del estado. Las hipótesis de Lipschitz y crecimiento lineal garantizan que los coeficientes satisfacen las condiciones del Teorema 1.9.3 de Platen &amp; Bruti-Liberati (2010), que establece la existencia y unicidad de una solución fuerte <span class="math inline">\(X_t\)</span>.</p></li>
+<li><p><span class="math inline">\(R(t,x,v)\)</span> es el tamaño del salto bruto, dependiente del estado. Las hipótesis de Lipschitz y crecimiento lineal garantizan que los coeficientes satisfacen las condiciones del Teorema 1.9.3 de <span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, que establece la existencia y unicidad de una solución fuerte <span class="math inline">\(X_t\)</span>.</p></li>
 </ul>
 <p>Además, el Teorema 1.9.3 garantiza que la solución tiene momentos finitos de segundo orden: <span id="eq-exact_moment"><span class="math display">\[\mathbb{E}\left[ \sup_{0 \leq t \leq T} |X_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|X_0|^2]) &lt; \infty. \tag{5.6}\]</span></span></p>
-<p>El esquema <a href="#eq-milstein_ec" class="quarto-xref">Ecuación&nbsp;<span>5.3</span></a> incluye la corrección de Milstein, que corresponde a truncar la expansión estocástica de Wagner-Platen (ver Platen &amp; Bruti-Liberati, Ec. (4.4.7)) después de los términos de orden <span class="math inline">\(\mathcal{O}((dt)^{3/2})\)</span>.</p>
+<p>El esquema <a href="#eq-milstein_ec" class="quarto-xref">Ecuación&nbsp;<span>5.3</span></a> incluye la corrección de Milstein, que corresponde a truncar la expansión estocástica de Wagner-Platen (ver <span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, Ec. (4.4.7)) después de los términos de orden <span class="math inline">\(\mathcal{O}((dt)^{3/2})\)</span>.</p>
 <p>Para una SDE con saltos, la expansión completa incluye términos adicionales relacionados con la medida de Poisson. Como el modelo es aditivo en los saltos (aunque <span class="math inline">\(c(t,x,v)\)</span> depende de <span class="math inline">\(x\)</span>, no hay términos cruzados de orden superior), los operadores de salto y difusión conmutan trivialmente, lo que simplifica el análisis.</p>
 <p>El error local <span class="math inline">\(R_n = X_{t_{n+1}} - Y_{n+1}\)</span> puede descomponerse como:</p>
 <p><span id="eq-error_descomp"><span class="math display">\[R_n = R_n^{\text{dif}} + R_n^{\text{jump}}, \tag{5.7}\]</span></span> donde</p>
@@ -550,9 +551,9 @@ Y_{n+1} = Y_n &amp;+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right
 <li><span class="math inline">\(R_n^{\text{dif}}\)</span> es el error de la parte difusiva,</li>
 <li><span class="math inline">\(R_n^{\text{jump}}\)</span> es el error de la parte de saltos.</li>
 </ul>
-<p>Por la expansión de Wagner-Platen para difusiones puras (Platen &amp; Bruti-Liberati, Ec. (5.3.19)), el error local de la parte difusiva satisface:</p>
+<p>Por la expansión de Wagner-Platen para difusiones puras (<span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, Ec. (5.3.19)), el error local de la parte difusiva satisface:</p>
 <p><span id="eq-diff_error"><span class="math display">\[\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \mathcal{F}_{t_n} \right] \leq K_1 (1 + |Y_n|^2) (\,dt)^3. \tag{5.8}\]</span></span> Para la parte de saltos, el error local es: <span id="eq-error_saltos"><span class="math display">\[R_n^{\text{jump}} = \int_{t_n}^{t_{n+1}} \int_E R(s, X_{s-}, v)\,\tilde{p}_\phi(dv, ds) - \sum_{i=1}^{\Delta N_n} R(t_n, Y_n, \xi_i) - \int_E R(t_n, Y_n, v)\phi(dv)\,dt \tag{5.9}\]</span></span></p>
-<p>Usando propiedades de la medida de Poisson compensada (ver Platen &amp; Bruti-Liberati, Ec. (4.2.1)) y la condición de Lipschitz para <span class="math inline">\(c\)</span>, se tiene: <span id="eq-error_saltos_limite"><span class="math display">\[\mathbb{E}\left[ |R_n^{\text{jump}}|^2 \mid \mathcal{F}_{t_n} \right] \leq K_2 \,dt + K_3 |X_{t_n} - Y_n|^2 \,dt. \tag{5.10}\]</span></span> Combinando <a href="#eq-diff_error" class="quarto-xref">Ecuación&nbsp;<span>5.8</span></a> y <a href="#eq-error_saltos_limite" class="quarto-xref">Ecuación&nbsp;<span>5.10</span></a> usando la desigualdad <span class="math inline">\((a+b)^2 \leq 2a^2 + 2b^2\)</span>, obtenemos: <span id="eq-error_total_limite"><span class="math display">\[
+<p>Usando propiedades de la medida de Poisson compensada (ver <span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, Ec. (4.2.1)) y la condición de Lipschitz para <span class="math inline">\(c\)</span>, se tiene: <span id="eq-error_saltos_limite"><span class="math display">\[\mathbb{E}\left[ |R_n^{\text{jump}}|^2 \mid \mathcal{F}_{t_n} \right] \leq K_2 \,dt + K_3 |X_{t_n} - Y_n|^2 \,dt. \tag{5.10}\]</span></span> Combinando <a href="#eq-diff_error" class="quarto-xref">Ecuación&nbsp;<span>5.8</span></a> y <a href="#eq-error_saltos_limite" class="quarto-xref">Ecuación&nbsp;<span>5.10</span></a> usando la desigualdad <span class="math inline">\((a+b)^2 \leq 2a^2 + 2b^2\)</span>, obtenemos: <span id="eq-error_total_limite"><span class="math display">\[
 \begin{aligned}
 \mathbb{E}\left[ |R_n|^2 \mid \mathcal{F}_{t_n} \right] \leq {}&amp; 2K_1 (1 + |Y_n|^2) (\,dt)^3 + 2K_2 \,dt + 2K_3 |e_n|^2 \,dt \\
 &amp; \leq K_4 (1 + |Y_n|^2 + |e_n|^2) (\,dt)^2,
@@ -645,7 +646,7 @@ U_{n+1} =
 <li><p><em>(H2)</em> <strong><em>Crecimiento lineal</em></strong>: Existe <span class="math inline">\(K &gt; 0\)</span> tal que <span class="math display">\[
   |a(t,u)| + |b(t,u)| + \left( \int_E |c(t, u, v)|^2 \phi(dv) \right)^{1/2} \leq K(1 + |u|),
   \tag{H2}
-  \]</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(u \in \mathbb{R}\)</span> (Platen &amp; Bruti-Liberati, 2010, Ec. (1.9.3)).</p></li>
+  \]</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(u \in \mathbb{R}\)</span> (<span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, Ec. (1.9.3)).</p></li>
 <li><p><em>(H3)</em> <strong><em>Momentos finitos de saltos</em></strong>: <span class="math inline">\(\int_E |c(t, u, v)|^4 \phi(dv) &lt; \infty\)</span> para todo <span class="math inline">\(t \in [0,T]\)</span> y <span class="math inline">\(u \in \mathbb{R}\)</span> (Wang &amp; Gan, 2013, Hipótesis 3.1).</p></li>
 <li><p><em>(H4)</em> <strong><em>Estabilidad numérica</em></strong>: Existe <span class="math inline">\(\Delta t_0 &gt; 0\)</span> y <span class="math inline">\(\delta &gt; 0\)</span> tales que <span class="math inline">\(1 - r(t_{n+1})\Delta t \geq \delta &gt; 0\)</span> para todo <span class="math inline">\(\Delta t \leq \Delta t_0\)</span> (Higham &amp; Kloeden, 2005, Lema 2.1).</p></li>
 <li><p><em>(H5)</em><strong><em>Condiciones iniciales</em></strong>: <span class="math inline">\(\mathbb{E}[|U_0|^2] &lt; \infty\)</span> y <span class="math inline">\(U_0 = _0\)</span>.</p></li>
@@ -727,6 +728,12 @@ E_N \leq K_{11} \frac{e^{K_{10} T} - 1}{K_{10}} \Delta t = C \Delta t,
 \tag{5.48}\]</span></span> donde <span class="math inline">\(C = K_{11} (e^{K_{10} T} - 1)/K_{10}\)</span> es independiente de <span class="math inline">\(\Delta t\)</span>. Tomando raíz cuadrada: <span id="eq-final_result_semiimplicit"><span class="math display">\[
 \left( \mathbb{E}[|U_T - U_N|^2] \right)^{1/2} \leq C \sqrt{\Delta t}. \quad \square
 \tag{5.49}\]</span></span></p>
+</div>
+</section>
+<section id="método-monte-carlo" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="método-monte-carlo"><span class="header-section-number">5.4</span> Método Monte Carlo</h2>
+<div style="text-align:justify">
+<p>El método Monte Carlo (MC) constituye una clase de algoritmos computacionales que se basan en el muestreo aleatorio repetido para obtener resultados numéricos. En el contexto de esta tesis, el objetivo fundamental es aproximar cantidades de interés deterministas, tales como integrales multidimensionales o valores esperados de sistemas estocásticos complejos, mediante la simulación de un sistema un gran número de veces bajo condiciones aleatorias.</p>
 </div>
 
 
