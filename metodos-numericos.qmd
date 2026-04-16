@@ -350,7 +350,7 @@ Combinando @eq-diff_error_bound_semiimplicit, @eq-jump_error_bound_semiimplicit 
 \delta a_n &= a(t_n, U_{t_n}) - a(t_n, U_n), \\
 \delta b_n &= b(t_n, U_{t_n}) - b(t_n, U_n), \\
 \delta c_n &= \int_E [c(t_n, U_{t_n}, v) - c(t_n, U_n, v)] \phi(dv) \Delta t.
-\end{align}$$ Por la condición de Lipschitz (H1): $$|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \Delta t.$$ {#eq-lipschitz_bounds_semiimplicit} Tomamos cuadrados en @eq-global_error_decomp_semiimplicit y esperanza condicional $mathbb{E}\[\cdot \mid \mathcal{F_{t_n}}\].$ Usando $\mathbb{E}[\Delta W_n \mid \mathcal{F_{t_n}}] = 0$, $\mathbb{E}[(\Delta W_n)^2 \mid \mathcal{F_{t_n}}] = \Delta t$, y que los términos con $\Delta W_n$ tienen esperanza cero: $$\begin{align}
+\end{align}$$ Por la condición de Lipschitz (H1): $$|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \Delta t.$$ {#eq-lipschitz_bounds_semiimplicit} Tomamos cuadrados en @eq-global_error_decomp_semiimplicit y esperanza condicional $\mathbb{E}[\cdot \mid \mathcal{F_{t_n}}].$ Usando $\mathbb{E}[\Delta W_n \mid \mathcal{F_{t_n}}] = 0$, $\mathbb{E}[(\Delta W_n)^2 \mid \mathcal{F_{t_n}}] = \Delta t$, y que los términos con $\Delta W_n$ tienen esperanza cero: $$\begin{align}
 \mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}] 
 &\leq |e_n|^2 + 2e_n \cdot \delta a_n \Delta t + 2e_n \cdot \delta c_n + |\delta b_n|^2 \Delta t + \mathbb{E}[|R_n|^2 \mid \mathcal{F_{t_n}}] \nonumber \\
 &\leq |e_n|^2 + 2L_a |e_n|^2 \Delta t + 2L_c |e_n|^2 \Delta t + L_b^2 |e_n|^2 \Delta t + K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t \nonumber \\
@@ -399,7 +399,7 @@ Para la descomposición del error global definimos $e_n = U_{t_n} - U_n$. Usando
 \delta a_n &= a(t_n, U_{t_n}) - a(t_n, U_n), \\
 \delta b_n &= b(t_n, U_{t_n}) - b(t_n, U_n), \\
 \delta c_n &= \int_E [c(t_n, U_{t_n}, v) - c(t_n, U_n, v)] \phi(dv) \Delta t.
-\end{aligned}$$ Por la condición de Lipschitz (H1): $$|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \Delta t.$$ Tomamos cuadrados en @eq-global_error_decomp_semiimplicit y esperanza condicional $\mathbb{E}\[\cdot \mid \mathcal{F_{t_n}}\].$ Usando $\mathbb{E}[\Delta W_n \mid \mathcal{F_{t_n}}] = 0$, $\mathbb{E}[(\Delta W_n)^2 \mid \mathcal{F_{t_n}}] = \Delta t$, y que los términos con $\Delta W_n$ tienen esperanza cero: $$\begin{aligned}
+\end{aligned}$$ Por la condición de Lipschitz (H1): $$|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \Delta t.$$ Tomamos cuadrados en @eq-global_error_decomp_semiimplicit y esperanza condicional $\mathbb{E}[\cdot \mid \mathcal{F_{t_n}}].$ Usando $\mathbb{E}[\Delta W_n \mid \mathcal{F_{t_n}}] = 0$, $\mathbb{E}[(\Delta W_n)^2 \mid \mathcal{F_{t_n}}] = \Delta t$, y que los términos con $\Delta W_n$ tienen esperanza cero: $$\begin{aligned}
 \mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}] 
 &\leq |e_n|^2 + 2e_n \cdot \delta a_n \Delta t + 2e_n \cdot \delta c_n + |\delta b_n|^2 \Delta t + \mathbb{E}[|R_n|^2 \mid \mathcal{F_{t_n}}] \nonumber \\
 &\leq |e_n|^2 + 2L_a |e_n|^2 \Delta t + 2L_c |e_n|^2 \Delta t + L_b^2 |e_n|^2 \Delta t \\
