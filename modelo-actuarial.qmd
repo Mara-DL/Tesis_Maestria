@@ -5,22 +5,76 @@ format:
   pdf: default  
 ---
 
-#  Implementación Numérica y Análisis de Resultados
+# Implementación Numérica y Análisis de Resultados
 
 ## Estimación de Parámetros para el mercado de seguros de bienes raíces Mexicano
 
-###  Función de Primas Ajustadas por Inflación: $c(t)$
+### Función de Primas Ajustadas por Inflación: $c(t)$
 
 ::: {style="text-align:justify"}
 La prima base para enero de 2024 se establece en $c_0 = 283.00$, derivada del consenso de fuentes sectoriales (AMIS, CNSF). El ajuste por inflación se realiza mediante capitalización compuesta:
-$$
- c(t) = c_0 \prod_{i=1}^{t} \left(1 + \pi_i\right),
- $$ {#eq-ajuste_inflacion}
- donde $\pi_i$ representa la tasa de inflación mensual reportada por el INEGI @inegi2024inpc.
+$$ c(t) = c_0 \prod_{i=1}^{t} \left(1 + \pi_i\right),
+ $$ {#eq-ajuste_inflacion} donde $\pi_i$ representa la tasa de inflación mensual reportada por el INEGI @inegi2024inpc.
 :::
 
 #### Datos de Inflación Mensual
 
 ::: {style="text-align:justify"}
-La Tabla presenta las tasas de inflación utilizadas para el periodo enero 2024 -- diciembre 2025. Los datos de 2024 son observados, mientras que las proyecciones de 2025 se basan en el consenso de analistas del Banco de México  @banxico2024expectativas.
+La Tabla presenta las tasas de inflación utilizadas para el periodo enero 2024 -- diciembre 2025. Los datos de 2024 son observados, mientras que las proyecciones de 2025 se basan en el consenso de analistas del Banco de México @banxico2024expectativas.
+:::
+
+| Mes      | Prima mensual ajustada (MXN) |
+|----------|------------------------------|
+| Ene 2024 | 283.00                       |
+| Feb 2024 | 284.47                       |
+| Mar 2024 | 285.55                       |
+| Abr 2024 | 286.72                       |
+| May 2024 | 288.01                       |
+| Jun 2024 | 289.42                       |
+| Jul 2024 | 291.02                       |
+| Ago 2024 | 292.79                       |
+| Sep 2024 | 294.49                       |
+| Oct 2024 | 295.87                       |
+| Nov 2024 | 297.12                       |
+| Dic 2024 | 298.28                       |
+| Ene 2025 | 299.32                       |
+| Feb 2025 | 300.82                       |
+| Mar 2025 | 301.93                       |
+| Abr 2025 | 303.14                       |
+| May 2025 | 304.47                       |
+| Jun 2025 | 305.93                       |
+| Jul 2025 | 307.55                       |
+| Ago 2025 | 309.37                       |
+| Sep 2025 | 311.10                       |
+| Oct 2025 | 312.53                       |
+| Nov 2025 | 313.81                       |
+| Dic 2025 | 315.01                       |
+
+: Tasas de inflación mensual en México (variación porcentual del INPC)
+
+::: {style="text-align:justify"}
+Aplicando @eq-ajuste_inflacion, las primas mensuales ajustadas evolucionan de $283.00$ en enero 2024 a $315.01$ en diciembre 2025, representando un incremento acumulado del $11.3\%$, consistente con la inflación proyectada
+:::
+
+### Tasa de Inversión Mensual: $r(t)$.
+
+::: {style="text-align:justify"}
+Las aseguradoras mexicanas mantienen carteras conservadoras con asignación aproximada de $70\%$ en instrumentos locales (CETES, Mbonos) y $30\%$ en activos globales ([@cnsf2024panorama]). Siguiendo el marco regulatorio de la CNSF y la estructura conservadora de las carteras aseguradoras mexicanas (informe anual CNSF), modelamos $r(t)$ como combinación convexa ponderada:
+
+$$r(t) = \rho \cdot r_{\text{CETES}}(t) + (1-\rho) \cdot r_{\text{USD}}(t)$$
+ {#eq-tasa_inversion}
+
+- $\rho = 0.70$,
+
+- $r_{\text{CETES}}(t)$ la tasa de CETES a 28 días mensualizada,
+
+- $r_{\text{USD}}(t)$ el rendimiento de bonos del Tesoro de EE.UU.,
+
+- $\rho = 0.75$ refleja la asignación típica de carteras $(70-80\%)$ en activos locales según CNSF)
+
+Para el periodo 2024-2025, con tasas de Banxico estables en $11.0\%$ anual y bonos USD en $4.8\%$ anual:
+
+$$r(t) = 0.75 \cdot \frac{0.110}{12} + 0.25 \cdot \frac{0.048}{12} = 0.007875 \text{ mensual} \quad (9.45\% \text{ anual})$$
+
+Este valor se ajusta a $0.78\%$ mensual para incorporar costos operativos y fiscales ($1.5$ p.p. anuales), resultando en un rendimiento neto anual de $8.9\%$.
 :::
