@@ -450,6 +450,7 @@ window.Quarto = {
   <li><a href="#estimador-de-monte-carlo" id="toc-estimador-de-monte-carlo" class="nav-link" data-scroll-target="#estimador-de-monte-carlo"><span class="header-section-number">5.4.1</span> Estimador de Monte Carlo</a></li>
   <li><a href="#convergencia-y-rigor-asintótico." id="toc-convergencia-y-rigor-asintótico." class="nav-link" data-scroll-target="#convergencia-y-rigor-asintótico."><span class="header-section-number">5.4.2</span> Convergencia y rigor asintótico.</a></li>
   <li><a href="#generación-de-variables-aleatorias." id="toc-generación-de-variables-aleatorias." class="nav-link" data-scroll-target="#generación-de-variables-aleatorias."><span class="header-section-number">5.4.3</span> Generación de variables aleatorias.</a></li>
+  <li><a href="#técnicas-de-reducción-de-varianza." id="toc-técnicas-de-reducción-de-varianza." class="nav-link" data-scroll-target="#técnicas-de-reducción-de-varianza."><span class="header-section-number">5.4.4</span> Técnicas de Reducción de Varianza.</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/metodos-numericos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/metodos-numericos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
@@ -805,6 +806,24 @@ F_X^{-1}(u) = \inf \{ x \in \mathbb{R} : F_X(x) \geq u \},
 \]</span> entonces la variable aleatoria <span class="math inline">\(Y = F_X^{-1}(U)\)</span> tiene la misma distribución que <span class="math inline">\(X\)</span>.</p>
 <p>En sistemas complejos donde <span class="math inline">\(F_X^{-1}\)</span> no tiene forma cerrada, se emplean métodos de rechazo (Rejection Sampling) o cadenas de Markov (MCMC), los cuales garantizan que la distribución estacionaria de la cadena generada coincida con la distribución objetivo <span class="math inline">\(P\)</span>.</p>
 </div>
+</section>
+<section id="técnicas-de-reducción-de-varianza." class="level3" data-number="5.4.4">
+<h3 data-number="5.4.4" class="anchored" data-anchor-id="técnicas-de-reducción-de-varianza."><span class="header-section-number">5.4.4</span> Técnicas de Reducción de Varianza.</h3>
+<div style="text-align:justify">
+<p>Dado que la convergencia es lenta (<span class="math inline">\(1/\sqrt{N}\)</span>), reducir la varianza <span class="math inline">\(\sigma^2\)</span> es tan importante como aumentar <span class="math inline">\(N\)</span>. Una varianza menor implica que se requieren menos simulaciones para alcanzar un nivel de precisión deseado.</p>
+</div>
+<section id="variables-de-control." class="level4" data-number="5.4.4.1">
+<h4 data-number="5.4.4.1" class="anchored" data-anchor-id="variables-de-control."><span class="header-section-number">5.4.4.1</span> Variables de control.</h4>
+<div style="text-align:justify">
+<p>Una de las técnicas más rigurosas es el uso de variables de control. Supongamos que existe una variable aleatoria <span class="math inline">\(Y\)</span> correlacionada con <span class="math inline">\(f(X)\)</span> cuya esperanza <span class="math inline">\(\mu_Y = \mathbb{E}[Y]\)</span> es conocida analíticamente. Definimos un nuevo estimador: <span class="math display">\[
+\hat{I}_{CV}(c) = \hat{I}_N - c(\hat{Y}_N - \mu_Y),
+\]</span> donde <span class="math inline">\(\hat{Y}_N = \frac{1}{N}\sum Y_i\)</span> y <span class="math inline">\(c\)</span> es una constante. Este estimador sigue siendo insesgado para cualquier <span class="math inline">\(c \in \mathbb{R}\)</span>. La varianza de este nuevo estimador es: <span class="math display">\[
+\mathbb{V}[\hat{I}_{CV}(c)] = \mathbb{V}[\hat{I}_N] + c^2 \mathbb{V}[\hat{Y}_N] - 2c \text{Cov}(\hat{I}_N, \hat{Y}_N).
+\]</span></p>
+<p>Minimizando esta expresión respecto a <span class="math inline">\(c\)</span>, obtenemos el coeficiente óptimo: <span class="math display">\[
+c^* = \frac{\text{Cov}(f(X), Y)}{\mathbb{V}(Y)}.
+\]</span> Sustituyendo <span class="math inline">\(c^*\)</span>, se demuestra que la varianza se reduce en un factor de <span class="math inline">\((1 - \rho^2)\)</span>, donde <span class="math inline">\(\rho\)</span> es el coeficiente de correlación entre <span class="math inline">\(f(X)\)</span> e <span class="math inline">\(Y\)</span>. Si existe una alta correlación, la eficiencia del método mejora drásticamente.</p>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
@@ -818,6 +837,7 @@ Platen, Eckhard, y Nicola Bruti-Liberati. 2010. <em>Numerical Solution of Stocha
 Wang, Lishan, Chun Mei, y Huakun Xue. 2007. <span>«The semi-implicit Euler method for stochastic differential delay equations with jumps»</span>. <em>Applied Mathematics and Computation</em> 192 (2): 567-78. <a href="https://doi.org/10.1016/j.amc.2007.03.038">https://doi.org/10.1016/j.amc.2007.03.038</a>.
 </div>
 </div>
+</section>
 </section>
 </section>
 
