@@ -957,17 +957,390 @@ window.Quarto = {
 <section id="aproximación-numérica-del-modelo-de-crámer-lundberg-extendido" class="level3" data-number="6.1.5">
 <h3 data-number="6.1.5" class="anchored" data-anchor-id="aproximación-numérica-del-modelo-de-crámer-lundberg-extendido"><span class="header-section-number">6.1.5</span> Aproximación numérica del modelo de Crámer Lundberg extendido</h3>
 <p>Consideramos el proceso de reservas bajo el modelo extendido de Cramér-Lundberg con inversión estocástica y saltos reescribimos <a href="edes_saltos.html#eq-modelo_extendido" class="quarto-xref">Ecuación&nbsp;<span>4.10</span></a> en forma diferencial estocástica:</p>
-<p><span class="math display">\[dX_t = \underbrace{\left[c(t) + r(t)X_t - \lambda_{\text{meteo}}(t)\mathbb{E}[Y^{\text{meteo}}_t \mid \mathcal{F}_t] - \lambda_{\text{sismo}}\mathbb{E}[Y^{\text{sismo}}_t \mid \mathcal{F}_t]\right]}_{\mu(t,X_t)}dt + \underbrace{\sigma(t)X_t}_{\sigma(t,X_t)}dW_t - dJ_t\]</span> {#eq-eds-completa} La compensación <span class="math inline">\(\lambda \mathbb{E}[Y \mid \mathcal{F}_t]\)</span> garantiza que el proceso sin saltos reales sea una semimartingala con la deriva correcta, esencial para la convergencia del esquema numérico.</p>
+<p><span id="eq-eds-completa"><span class="math display">\[dX_t = \underbrace{\left[c(t) + r(t)X_t - \lambda_{\text{meteo}}(t)\mathbb{E}[Y^{\text{meteo}}_t \mid \mathcal{F}_t] - \lambda_{\text{sismo}}\mathbb{E}[Y^{\text{sismo}}_t \mid \mathcal{F}_t]\right]}_{\mu(t,X_t)}dt + \underbrace{\sigma(t)X_t}_{\sigma(t,X_t)}dW_t - dJ_t \tag{6.4}\]</span></span> La compensación <span class="math inline">\(\lambda \mathbb{E}[Y \mid \mathcal{F}_t]\)</span> garantiza que el proceso sin saltos reales sea una semimartingala con la deriva correcta, esencial para la convergencia del esquema numérico.</p>
 <p>Se ha desarrollado un modelo Cramér-Lundberg extendido para aproximar las reservas de una aseguradora de vivienda en la Ciudad de México. Este modelo incorpora parámetros dependientes del tiempo, primas ajustadas por inflación (Sección 3.1), tasas de interés estocásticas (Sección 3.2), volatilidad mediante combinación convexa (Sección 3.3) y un proceso de saltos compuesto que modela siniestros catastróficos meteorológicos y sísmicos con intensidades estacionales (Sección 3.4.1).</p>
 <p>Dada la complejidad de la ecuación diferencial estocástica con saltos resultante (EDE-S), cuya solución analítica no es viable ante la no estacionariedad de los parámetros y la estructura de saltos, se requiere métodos numéricos robustos.</p>
 <p>Para la simulación, discretizamos con paso <span class="math inline">\(\Delta t = 1/12\)</span> (mensual) y consideramos dos esquemas numéricos.</p>
 <section id="implementación-numérica-métodos-milstein-y-semi-implícito." class="level4" data-number="6.1.5.1">
 <h4 data-number="6.1.5.1" class="anchored" data-anchor-id="implementación-numérica-métodos-milstein-y-semi-implícito."><span class="header-section-number">6.1.5.1</span> Implementación Numérica Métodos Milstein y Semi-Implícito.</h4>
 <p>Presentando el algoritmo de Milstein compensado (<a href="metodos-numericos.html#sec-EDESJs" class="quarto-xref"><span>Sección 5.2</span></a>), escrito en lenguaje natural estructurado (es decir, como un pseudocódigo), diseñado específicamente para aproximar soluciones de ecuaciones diferenciales estocásticas (EDS) con difusión y salto(<a href="metodos-numericos.html#sec-EDESJs" class="quarto-xref"><span>Sección 5.2</span></a>), como las que surgen en el modelo de Cramér–Lundberg (<a href="edes_saltos.html#eq-modelo_extendido" class="quarto-xref">Ecuación&nbsp;<span>4.10</span></a>) por ejemplo, con componentes de procesos compuestos de Poisson)</p>
-<p>El pseudocódigo siguiente está pensado para ser puente conceptual entre la teoría y la implementación, y se enfoca en la versión compensada (es decir, usando el proceso de salto compensado <span class="math inline">\(\tilde{N} = N_t - \lambda t\)</span> para garantizar que el término de salto tenga esperanza cero y sea adecuado para esquemas numéricos estables.</p>
+<p>El pseudocódigo siguiente está pensado para ser puente conceptual entre la teoría y la implementación, y se enfoca en la versión compensada (es decir, usando el proceso de salto compensado <span class="math inline">\(\tilde{N} = N_t - \lambda t\)</span>) para garantizar que el término de salto tenga esperanza cero y sea adecuado para esquemas numéricos estables.</p>
 </section>
 <section id="pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto." class="level4" data-number="6.1.5.2">
 <h4 data-number="6.1.5.2" class="anchored" data-anchor-id="pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto."><span class="header-section-number">6.1.5.2</span> Pseudocódigo: Esquema de Milstein Compensado para EDS con Difusión y Salto.</h4>
+<pre class="{# -*- coding: utf-8 -*-}"><code>"""
+Implementación Completa del Método Milstein para SDE con Saltos Compensados.
+Incluye simulación histórica, pronóstico, detección de saltos y visualización.
+"""
+
+import numpy as np
+import plotly.graph_objects as go
+
+# -----------------------------
+# PARTE 0: CONFIGURACIÓN INICIAL
+# -----------------------------
+np.random.seed(2026)
+tipo_cambio = 18.5
+dt = 1 / 365  # Paso diario
+
+# -----------------------------
+# PARTE 1: CALIBRACIÓN DE PARÁMETROS
+# -----------------------------
+
+N_polizas = 6800
+prima_base_por_poliza = 850.00
+delta = 0.0015
+X0_hist = 500e6  # Capital inicial histórico
+U0_forecast = 520e6  # Capital inicial para pronóstico (ejemplo)
+
+# Inflación y primas
+inflacion_mensual = np.array([
+    0.52, 0.38, 0.38, 0.41, 0.45, 0.49, 0.55, 0.61, 0.58, 0.47, 0.42, 0.39,
+    0.35, 0.50, 0.37, 0.40, 0.44, 0.48, 0.53, 0.59, 0.56, 0.46, 0.41, 0.38
+]) / 100.0
+
+g = inflacion_mensual + delta
+cum_g = np.cumsum(g)
+primas_por_poliza_mxn = prima_base_por_poliza * np.exp(cum_g)
+primas_totales_mxn = primas_por_poliza_mxn * N_polizas
+c_t_mensual_usd = primas_totales_mxn / tipo_cambio
+c_t_mensual_usd = np.round(c_t_mensual_usd, 2)
+
+# --- Intensidades calibradas ---
+lambda_meteo_annual = 6.0
+lambda_sismo = 0.15 #0.08
+seasonal_raw = [0.3, 0.3, 0.4, 0.6, 1.0, 1.8, 2.2, 2.5, 2.8, 2.3, 1.2, 0.5]
+seasonal_norm = np.array(seasonal_raw) / np.mean(seasonal_raw)
+
+# --- Parámetros de severidad (ahora dependientes del estado) ---
+ceiling_per_policy = 5000.0
+COEF_VARIACION_METEO = 0.1
+COEF_VARIACION_SISMO = 0.2
+
+# --- Rendimiento y volatilidad ---
+r_t_mensual = np.array([
+    0.606, 0.602, 0.600, 0.597, 0.593, 0.589,
+    0.586, 0.582, 0.578, 0.574, 0.570, 0.566,
+    0.562, 0.559, 0.555, 0.551, 0.547, 0.543,
+    0.539, 0.535, 0.532, 0.528, 0.524, 0.520
+]) / 100.0
+
+sigma_t_mensual = np.array([
+    0.44, 0.47, 0.50, 0.53, 0.59, 0.74,
+    0.89, 1.34, 1.19, 0.98, 0.74, 0.68,
+    0.65, 0.60, 0.58, 0.60, 0.65, 0.74,
+    0.89, 0.82, 0.95, 0.86, 0.74, 0.68
+]) / 100.0
+
+# -----------------------------
+# PARTE 2: FUNCIÓN AUXILIAR PARA LA COMPENSACIÓN
+# -----------------------------
+
+def expected_loss_per_event(deviation, mu_per_policy, pct_low, pct_high, n_pols):
+    """
+    Calcula la pérdida esperada por un evento dado el estado actual.
+    """
+    E_pct = (pct_low + pct_high) / 2
+    n_aff_mean = n_pols * E_pct #Valor esperado de la distribución uniforme para el número de afectados
+    mu_per_policy = deviation
+    return n_aff_mean * mu_per_policy
+
+# -----------------------------
+# PARTE 3: SIMULACIÓN HISTÓRICA (Ene 2024 - Dic 2025) CON COMPENSACIÓN
+# -----------------------------
+
+T_hist = 2.0
+N_hist = int(T_hist / dt)
+N_sim_hist = 500
+
+dias_hist = np.linspace(0, T_hist, N_hist + 1)
+meses_enteros = np.arange(24)
+
+r_hist = np.interp(dias_hist[:-1], meses_enteros, r_t_mensual)
+sigma_hist = np.interp(dias_hist[:-1], meses_enteros, sigma_t_mensual)
+c_hist = np.interp(dias_hist[:-1], meses_enteros, c_t_mensual_usd)
+
+X_hist = np.zeros((N_sim_hist, N_hist + 1))
+X_hist[:, 0] = X0_hist
+
+print("Simulando periodo histórico (Ene 2024 - Dic 2025) con Milstein y compensación...")
+
+for sim in range(N_sim_hist):
+    for i in range(N_hist):
+        t_dia = dias_hist[i]
+        mes_actual = int(t_dia) % 12
+
+        lam_meteo_dia = (lambda_meteo_annual / 365) * seasonal_norm[mes_actual]
+        lam_sismo_dia = lambda_sismo / 365
+
+        n_meteo = np.random.poisson(lam_meteo_dia)
+        n_sismo = np.random.poisson(lam_sismo_dia)
+
+        x_current = X_hist[sim, i]
+        deviation = (abs(x_current - X0_hist))/N_polizas
+        if deviation &gt; ceiling_per_policy:
+            deviation = ceiling_per_policy
+
+        total_jump = 0.0
+        compensacion = 0.0
+
+        # --- Eventos Meteorológicos ---
+        if n_meteo &gt; 0:
+            pct_affected = np.random.uniform(0.005, 0.02)
+            n_affected = max(1, int(N_polizas * pct_affected))
+            mu_per_policy = deviation
+            sigma_per_policy = COEF_VARIACION_METEO * mu_per_policy
+            losses = np.random.normal(mu_per_policy, sigma_per_policy, size=n_affected)
+            losses = np.clip(losses, 0.0, None)
+            total_jump += np.sum(losses)
+
+        # Compensación meteorológica
+        E_loss_meteo = expected_loss_per_event(
+            deviation, mu_per_policy, 0.005, 0.02, N_polizas
+        )
+        compensacion += (-1)*lam_meteo_dia * E_loss_meteo
+
+        # --- Eventos Sísmicos ---
+        if n_sismo &gt; 0:
+            pct_affected = np.random.uniform(0.01, 0.10)
+            n_affected = max(1, int(N_polizas * pct_affected))
+            mu_per_policy = deviation
+            sigma_per_policy = COEF_VARIACION_SISMO * mu_per_policy
+            losses = np.random.normal(mu_per_policy, sigma_per_policy, size=n_affected)
+            losses = np.clip(losses, 0.0, None)
+            total_jump += np.sum(losses)
+
+        # Compensación sísmica
+        E_loss_sismo = expected_loss_per_event(
+            deviation, mu_per_policy, 0.01, 0.10, N_polizas
+        )
+        compensacion += (-1)*lam_sismo_dia * E_loss_sismo
+
+        # --- Actualización con Milstein + Compensación ---
+        dW = np.sqrt(dt) * np.random.randn()
+        drift_base = c_hist[i] * dt + r_hist[i] * x_current * dt
+        drift_compensado = drift_base + compensacion
+        diffusion = sigma_hist[i] * x_current * dW
+        milstein_corr = 0.5 * (sigma_hist[i]**2) * x_current * (dW**2 - dt)
+        X_hist[sim, i+1] = x_current + drift_compensado + diffusion + milstein_corr - total_jump
+
+U0_forecast = np.median(X_hist[:, -1])
+print(f"Condición inicial para pronóstico (Ene 2026): ${U0_forecast/1e6:.2f}M")
+# -----------------------------
+# PARTE 4: SIMULACIÓN DEL PRONÓSTICO (Ene 2026) CON COMPENSACIÓN
+# -----------------------------
+
+forecast_days = 30
+mes_pronostico = 0
+
+# Promedios para enero (mes 0 y mes 12)
+c_ene_avg = (c_t_mensual_usd[0] + c_t_mensual_usd[12]) / 2
+r_ene_avg = (r_t_mensual[0] + r_t_mensual[12]) / 2
+sigma_ene_avg = (sigma_t_mensual[0] + sigma_t_mensual[12]) / 2
+sf_ene_avg = seasonal_norm[0]  # Enero es el mes 0
+
+c_daily_fc = np.full(forecast_days, c_ene_avg / 30.0)
+r_daily_fc = np.full(forecast_days, r_ene_avg)
+sigma_daily_fc = np.full(forecast_days, sigma_ene_avg)
+lambda_meteo_dia_fc = (lambda_meteo_annual / 365) * sf_ene_avg
+lambda_sismo_dia_fc = lambda_sismo / 365
+
+np.random.seed(2027)
+N_sim_fc = 1000
+U_forecast = np.zeros((N_sim_fc, forecast_days + 1))
+U_forecast[:, 0] = U0_forecast
+
+print("Simulando pronóstico para Enero 2026 con Milstein y compensación...")
+
+for sim in range(N_sim_fc):
+    for i in range(forecast_days):
+        u_current = U_forecast[sim, i]
+        deviation = (abs(u_current - U0_forecast))/N_polizas
+        if deviation &gt; ceiling_per_policy:
+            deviation = ceiling_per_policy
+        total_jump = 0.0
+        compensacion = 0.0
+
+        # --- Simular eventos ---
+        n_meteo = np.random.poisson(lambda_meteo_dia_fc)
+        n_sismo = np.random.poisson(lambda_sismo_dia_fc)
+
+        # --- Eventos Meteorológicos ---
+        if n_meteo &gt; 0:
+            pct_affected = np.random.uniform(0.005, 0.02)
+            n_affected = max(1, int(N_polizas * pct_affected))
+            mu_per_policy = deviation
+            sigma_per_policy = COEF_VARIACION_METEO * mu_per_policy
+            losses = np.random.normal(mu_per_policy, sigma_per_policy, size=n_affected)
+            losses = np.clip(losses, 0.0, None)
+            total_jump += np.sum(losses)
+
+        # Compensación meteorológica
+        E_loss_meteo = expected_loss_per_event(
+            deviation, mu_per_policy, 0.005, 0.02, N_polizas
+        )
+        compensacion += (-1)*lambda_meteo_dia_fc * E_loss_meteo
+
+        # --- Eventos Sísmicos ---
+        if n_sismo &gt; 0:
+            pct_affected = np.random.uniform(0.01, 0.10)
+            n_affected = max(1, int(N_polizas * pct_affected))
+            mu_per_policy = deviation
+            sigma_per_policy = COEF_VARIACION_SISMO * mu_per_policy
+            losses = np.random.normal(mu_per_policy, sigma_per_policy, size=n_affected)
+            losses = np.clip(losses, 0.0, None)
+            total_jump += np.sum(losses)
+
+        # Compensación sísmica
+        E_loss_sismo = expected_loss_per_event(
+            deviation, mu_per_policy,  0.01, 0.10, N_polizas
+        )
+        compensacion +=(-1)* lambda_sismo_dia_fc * E_loss_sismo
+
+        # --- Actualización con Milstein + Compensación ---
+        dW = np.sqrt(dt) * np.random.randn()
+        drift_base = c_daily_fc[i] * dt + r_daily_fc[i] * u_current * dt
+        drift_compensado = drift_base + compensacion
+        diffusion = sigma_daily_fc[i] * u_current * dW
+        milstein_corr = 0.5 * (sigma_daily_fc[i]**2) * u_current * (dW**2 - dt)
+        U_forecast[sim, i+1] = u_current + drift_compensado + diffusion + milstein_corr - total_jump
+
+# -----------------------------
+# PARTE 5: CÁLCULO DE ESTADÍSTICAS
+# -----------------------------
+
+median_hist = np.median(X_hist, axis=0) / 1e6
+p05_hist = np.percentile(X_hist, 5, axis=0) / 1e6
+p95_hist = np.percentile(X_hist, 95, axis=0) / 1e6
+
+median_fc = np.median(U_forecast, axis=0) / 1e6
+p05_fc = np.percentile(U_forecast, 5, axis=0) / 1e6
+p95_fc = np.percentile(U_forecast, 95, axis=0) / 1e6
+
+# -----------------------------
+# PARTE 6: DETECCIÓN DE SALTOS EN LA MEDIANA
+# -----------------------------
+
+def detect_jumps(median_series):
+    """Detecta saltos en una serie temporal usando umbral de 3 desviaciones estándar."""
+    median_usd = median_series * 1e6
+    log_returns = np.log(median_usd[1:] / median_usd[:-1])
+    threshold = 3 * np.std(log_returns)
+    jump_flags = np.abs(log_returns) &gt; threshold
+    jump_indices = np.where(jump_flags)[0] + 1
+    jump_times = np.arange(len(median_series))[jump_indices]
+    jump_values = median_series[jump_indices]
+    return jump_times, jump_values
+
+# Detectar saltos
+time_historical = np.arange(N_hist + 1)
+jump_times_hist, jump_values_hist = detect_jumps(median_hist)
+
+time_forecast = np.arange(N_hist, N_hist + forecast_days + 1)
+jump_times_fc, jump_values_fc = detect_jumps(median_fc)
+
+# -----------------------------
+# PARTE 7: GRÁFICA INTERACTIVA CON PLOTLY
+# -----------------------------
+
+fig = go.Figure()
+
+# Área de incertidumbre histórico
+fig.add_trace(go.Scatter(
+    x=np.concatenate([time_historical, time_historical[::-1]]),
+    y=np.concatenate([p95_hist, p05_hist[::-1]]),
+    fill='toself',
+    fillcolor='rgba(144, 238, 144, 0.3)',
+    line=dict(color='rgba(144, 238, 144, 0)'),
+    hoverinfo="skip",
+    showlegend=True,
+    name='Histórico (5%-95%)'
+))
+
+# Mediana histórica
+fig.add_trace(go.Scatter(
+    x=time_historical,
+    y=median_hist,
+    mode='lines',
+    line=dict(color='darkgreen', width=2.5),
+    name='Mediana (Histórico)'
+))
+
+# Saltos en la mediana histórica
+if len(jump_times_hist) &gt; 0:
+    fig.add_trace(go.Scatter(
+        x=jump_times_hist,
+        y=jump_values_hist,
+        mode='markers',
+        marker=dict(color='red', size=8, symbol='x'),
+        name='Saltos (Histórico)'
+    ))
+
+# Área de incertidumbre del pronóstico
+fig.add_trace(go.Scatter(
+    x=np.concatenate([time_forecast, time_forecast[::-1]]),
+    y=np.concatenate([p95_fc, p05_fc[::-1]]),
+    fill='toself',
+    fillcolor='rgba(205, 92, 92, 0.25)',
+    line=dict(color='rgba(205, 92, 92, 0)'),
+    hoverinfo="skip",
+    showlegend=True,
+    name='Pronóstico (5%-95%)'
+))
+
+# Mediana del pronóstico
+fig.add_trace(go.Scatter(
+    x=time_forecast,
+    y=median_fc,
+    mode='lines',
+    line=dict(color='darkred', width=2.5),
+    name='Mediana (Pronóstico)'
+))
+
+# Saltos en la mediana del pronóstico
+if len(jump_times_fc) &gt; 0:
+    fig.add_trace(go.Scatter(
+        x=jump_times_fc + N_hist,
+        y=jump_values_fc,
+        mode='markers',
+        marker=dict(color='blue', size=10, symbol='star'),
+        name='Saltos (Pronóstico)'
+    ))
+
+# Línea divisoria
+fig.add_vline(x=N_hist, line_dash="dash", line_color="black", annotation_text="Inicio del Pronóstico")
+
+# Configuración final
+months_full = [f"{y}-{m:02d}" for y in [2024, 2025] for m in range(1, 13)]
+month_labels = months_full[::2]
+month_ticks = np.arange(0, 720, 60)
+all_ticks = np.concatenate([month_ticks, [N_hist + 30]])
+all_labels = month_labels + ["2026-01"]
+
+fig.update_layout(
+    title='Reservas de la Aseguradora: Histórico (2024–2025) + Pronóstico Ene 2026&lt;br&gt;'
+          '&lt;sup&gt;Modelo Cramér-Lundberg con Milstein, Siniestros Realistas y Detección de Saltos (México)&lt;/sup&gt;',
+    xaxis_title="Tiempo",
+    yaxis_title="Reservas (Millones USD)",
+    xaxis=dict(tickmode='array', tickvals=all_ticks, ticktext=all_labels, tickangle=45),
+    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+    hovermode="x unified",
+    template="plotly_white",
+    height=600,
+    width=1000
+)
+
+fig.show()
+
+# -----------------------------
+# PARTE 8: RESUMEN DEL PRONÓSTICO
+# -----------------------------
+
+print(f"\nPronóstico para Enero 2026:")
+print(f"- Reserva inicial: ${U0_forecast/1e6:.2f}M")
+print(f"- Mediana final:  ${median_fc[-1]:.2f}M")
+print(f"- IC (5%-95%):    [${p05_fc[-1]:.2f}M, ${p95_fc[-1]:.2f}M]"){python}
+</code></pre>
 </section>
 </section>
 </div>
