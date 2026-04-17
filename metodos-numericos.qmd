@@ -118,11 +118,7 @@ donde en el último paso usamos que $\, dt \leq 1$ (paso de tiempo pequeño) y $
 
 Para demostrar que el esquema tiene momentos finitos, usamos un argumento de tipo Grönwall discreto. Definimos: $$M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |Y_k|^2 \right].$$ {#eq-momentos_Def}
 
-Tomando cuadrados en @eq-milstein_ec y esperanza, y usando las cotas de Lipschitz y crecimiento lineal, se obtiene: 
-$$M_{n+1} \leq (1 + K_5 \, dt) M_n + K_6 \, dt.$$ {#eq-momentos_recursivos} 
-Iterando esta desigualdad y usando que $M_0 = \mathbb{E}[|Y_0|^2] < \infty$, se obtiene: 
-$$M_N \leq M_0 e^{K_5 T} + \frac{K_6}{K_5} (e^{K_5 T} - 1) < \infty.$$ {#eq-momentos_ligados} 
-Por lo tanto, el esquema numérico tiene momentos finitos uniformes.
+Tomando cuadrados en @eq-milstein_ec y esperanza, y usando las cotas de Lipschitz y crecimiento lineal, se obtiene: $$M_{n+1} \leq (1 + K_5 \, dt) M_n + K_6 \, dt.$$ {#eq-momentos_recursivos} Iterando esta desigualdad y usando que $M_0 = \mathbb{E}[|Y_0|^2] < \infty$, se obtiene: $$M_N \leq M_0 e^{K_5 T} + \frac{K_6}{K_5} (e^{K_5 T} - 1) < \infty.$$ {#eq-momentos_ligados} Por lo tanto, el esquema numérico tiene momentos finitos uniformes.
 
 Definimos el error global $e_n = X_{t_n} - Y_n$. Usando la fórmula de Itô para la solución exacta y la definición del esquema, podemos escribir: $$e_{n+1} = e_n + \delta a_n \,dt + \delta b_n \,dW_n + \delta c_n + R_n,$$ {#eq-global_error_descomposicion} donde
 
@@ -183,10 +179,7 @@ Usando la desigualdad $(1 + x)^N \leq e^{Nx}$ para $x \geq 0$, y notando que $N\
 
 :::: {.content-visible when-format="pdf"}
 ::: {.proof style="text-align:justify"}
-La EDE @eq-sdej puede reescribirse en la forma estándar @platen2010numerical, Ec. (1.8.2): 
-$$
-d X_t = a(t,X_t)\,d t + b(t,X_t)\,dW_t + \int_E R(t,X_{t-},v)\,p_\phi(dv, d t),
-$$ {#eq-sdej_estandar_pdf}
+La EDE @eq-sdej puede reescribirse en la forma estándar @platen2010numerical, Ec. (1.8.2): $$d X_t = a(t,X_t)\,d t + b(t,X_t)\,dW_t + \int_E R(t,X_{t-},v)\,p_\phi(dv, d t),$$ {#eq-sdej_estandar_pdf}
 
 donde:
 
@@ -196,10 +189,7 @@ donde:
 
 - $R(t,x,v)$ es el tamaño del salto bruto, dependiente del estado. Las hipótesis de Lipschitz y crecimiento lineal garantizan que los coeficientes satisfacen las condiciones del Teorema 1.9.3 de @platen2010numerical, que establece la existencia y unicidad de una solución fuerte $X_t$.
 
-Además, el Teorema 1.9.3 garantiza que la solución tiene momentos finitos de segundo orden: 
-$$
-\mathbb{E}\left[ \sup_{0 \leq t \leq T} |X_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|X_0|^2]) < \infty.
-$$ {#eq-exact_moment_pdf}
+Además, el Teorema 1.9.3 garantiza que la solución tiene momentos finitos de segundo orden: $$\mathbb{E}\left[ \sup_{0 \leq t \leq T} |X_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|X_0|^2]) < \infty.$$ {#eq-exact_moment_pdf}
 
 El esquema @eq-milstein_ec incluye la corrección de Milstein, que corresponde a truncar la expansión estocástica de Wagner-Platen (ver @platen2010numerical, Ec. (4.4.7)) después de los términos de orden $\mathcal{O}((dt)^{3/2})$.
 
@@ -228,10 +218,7 @@ Para demostrar que el esquema tiene momentos finitos, usamos un argumento de tip
 
 Tomando cuadrados en @eq-milstein_ec y esperanza, y usando las cotas de Lipschitz y crecimiento lineal, se obtiene: $$M_{n+1} \leq (1 + K_5 \, dt) M_n + K_6 \, dt.$$ {#eq-momentos_recursivos_pdf} Iterando esta desigualdad y usando que $M_0 = \mathbb{E}[|Y_0|^2] < \infty$, se obtiene: $$M_N \leq M_0 e^{K_5 T} + \frac{K_6}{K_5} (e^{K_5 T} - 1) < \infty.$$ {#eq-momentos_ligados_pdf} Por lo tanto, el esquema numérico tiene momentos finitos uniformes.
 
-Definimos el error global $e_n = X_{t_n} - Y_n$. Usando la fórmula de Itô para la solución exacta y la definición del esquema, podemos escribir: 
-$$e_{n+1} = e_n + \delta a_n \,dt + \delta b_n \,dW_n + \delta c_n + R_n,
-$$ {#eq-global_error_descomposicion_pdf} 
-donde
+Definimos el error global $e_n = X_{t_n} - Y_n$. Usando la fórmula de Itô para la solución exacta y la definición del esquema, podemos escribir: $$e_{n+1} = e_n + \delta a_n \,dt + \delta b_n \,dW_n + \delta c_n + R_n,$$ {#eq-global_error_descomposicion_pdf} donde
 
 - $\delta a_n = a(t_n, X_{t_n}) - a(t_n, Y_n)$,
 
@@ -241,22 +228,16 @@ donde
 
 - $R_n$ es el residuo total (error local).
 
-Por la condición de Lipschitz: 
-$$
-|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \, dt,
-$$ {#eq-lipschitz_limite_pdf}
+Por la condición de Lipschitz: $$|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \, dt,$$ {#eq-lipschitz_limite_pdf}
 
 donde $L_a, L_b, L_c$ son las constantes de Lipschitz de $a$, $b$ y $c$, respectivamente.
 
-Tomamos cuadrados en @eq-global_error_descomposicion_pdf : 
-$$\begin{aligned}
+Tomamos cuadrados en @eq-global_error_descomposicion_pdf : $$\begin{aligned}
 |e_{n+1}|^2 &= |e_n|^2 + 2e_n \cdot \delta a_n \, dt + 2e_n \cdot \delta b_n \, dW_n + 2e_n \cdot \delta c_n \\
 &\quad + |\delta a_n|^2 (\, dt)^2 + 2\delta a_n \cdot \delta b_n \, dt \, dW_n + 2\delta a_n \cdot \delta c_n \, dt \\
 &\quad + |\delta b_n|^2 (\, dW_n)^2 + 2\delta b_n \cdot \delta c_n \, dW_n + |\delta c_n|^2 \\
 &\quad + 2e_n \cdot R_n + 2\delta a_n \cdot R_n \, dt + 2\delta b_n \cdot R_n \, dW_n + 2\delta c_n \cdot R_n + |R_n|^2.
-\end{aligned}
-$$ {#eq-error_cuadratico_pdf} Tomamos esperanza condicional dado $\mathcal{F}_{t_n}$. 
-Notamos que:
+\end{aligned}$$ {#eq-error_cuadratico_pdf} Tomamos esperanza condicional dado $\mathcal{F}_{t_n}$. Notamos que:
 
 - $\mathbb{E}[\,dW_n \mid \mathcal{F}_{t_n}] = 0$,
 - $\mathbb{E}[(\,dW_n)^2 \mid \mathcal{F}_{t_n}] = dt$,
@@ -362,7 +343,8 @@ $$\begin{align}
 &\quad \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ + \int_E c(t_n, U_n, v) \phi(dv)\Delta t \Biggl|^2 \mid \mathcal{F_{t_n}} \Biggr] \nonumber \\
 &\leq 2L_c^2 \mathbb{E}\left[ \int_{t_n}^{t_{n+1}} |U_s - U_n|^2 ds \mid \mathcal{F_{t_n}} \right] \int_E \phi(dv) + 2 \int_E |c(t_n, U_n, v)|^2 \phi(dv) \Delta t \nonumber \\
 &\leq K_2 \Delta t + K_3 |U_{t_n} - U_n|^2 \Delta t,
-\end{align}$$ {#eq-jump_error_bound_semiimplicit} donde en la última desigualdad usamos la cota de momentos de la solución exacta @eq-exact_moment_semiimplicit y la condición de crecimiento lineal (H2). El primer término proviene de la variación del estado durante el intervalo, y el segundo de la diferencia entre el estado exacto y el numérico. Expandiendo el denominador mediante serie de Taylor (@wang2007, Lema 3.1): $$\frac{1}{1 - r(t_{n+1})\Delta t} = 1 + r(t_{n+1})\Delta t + \mathcal{O}((\Delta t)^2),$$ {#eq-taylor_denom_semiimplicit} lo que implica que el error introducido por la implicitidad satisface: $$\mathbb{E}\left[|R_n^{\text{implicit}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_4 (1 + |U_n|^2) (\Delta t)^4.$$
+\end{align}$$ {#eq-jump_error_bound_semiimplicit} 
+donde en la última desigualdad usamos la cota de momentos de la solución exacta @eq-exact_moment_semiimplicit y la condición de crecimiento lineal (H2). El primer término proviene de la variación del estado durante el intervalo, y el segundo de la diferencia entre el estado exacto y el numérico. Expandiendo el denominador mediante serie de Taylor (@wang2007, Lema 3.1): $$\frac{1}{1 - r(t_{n+1})\Delta t} = 1 + r(t_{n+1})\Delta t + \mathcal{O}((\Delta t)^2),$$ {#eq-taylor_denom_semiimplicit} lo que implica que el error introducido por la implicitidad satisface: $$\mathbb{E}\left[|R_n^{\text{implicit}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_4 (1 + |U_n|^2) (\Delta t)^4.$$ {#eq-implicit_error_bound_semiimplicit} 
 
 Este término es de orden superior y no afectará el orden global de convergencia.
 
@@ -383,21 +365,21 @@ Combinando @eq-diff_error_bound_semiimplicit, @eq-jump_error_bound_semiimplicit 
 ::: {.proof style="text-align:justify"}
 Reescribimos la SDEJ(@eq-sdej) en forma estándar (@platen2010numerical, Ec. (1.8.2)):
 
-$$dU_t = a(t,U_t)\,dt  + b(t,U_t)\,dW_t + \int_E c(t,U_{t-},v)\,p_\phi(dv, dt),$$
+$$dU_t = a(t,U_t)\,dt  + b(t,U_t)\,dW_t + \int_E c(t,U_{t-},v)\,p_\phi(dv, dt),$$ {#eq-sdej_standard_semiimplicit_pdf}
 
-donde $a(t,u) = c(t) + r(t)u$ y $b(t,u) = \sigma(t)u$. Las hipótesis (H1) y (H2) satisfacen las condiciones del \textbf{Teorema 1.9.4} de @platen2010numerical, que garantiza la existencia y unicidad de una solución fuerte $U_t$. Además asegura que la solución tiene momentos finitos de segundo orden: $$\mathbb{E}\left[ \sup_{0 \leq t \leq T} |U_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|U_0|^2]) < \infty.$$ Esta cota es esencial para controlar el crecimiento de la solución exacta durante la propagación del error.
+donde $a(t,u) = c(t) + r(t)u$ y $b(t,u) = \sigma(t)u$. Las hipótesis (H1) y (H2) satisfacen las condiciones del \textbf{Teorema 1.9.4} de @platen2010numerical, que garantiza la existencia y unicidad de una solución fuerte $U_t$. Además asegura que la solución tiene momentos finitos de segundo orden: $$\mathbb{E}\left[ \sup_{0 \leq t \leq T} |U_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|U_0|^2]) < \infty.$$ {#eq-exact_moment_semiimplicit_pdf} Esta cota es esencial para controlar el crecimiento de la solución exacta durante la propagación del error.
 
-Definimos el error local $R_n = U_{t_{n+1}} - U_{n+1}$ y lo descomponemos como: $$R_n = R_n^{\text{dif}} + R_n^{\text{jump}} + R_n^{\text{implicit}},$$
+Definimos el error local $R_n = U_{t_{n+1}} - U_{n+1}$ y lo descomponemos como: $$R_n = R_n^{\text{dif}} + R_n^{\text{jump}} + R_n^{\text{implicit}},$$ {#eq-error_decomp_semiimplicit_pdf}
 
 donde $R_n^{\text{dif}}$ es el error de difusión, $R_n^{\text{jump}}$ el error de saltos y $R_n^{\text{implicit}}$ el error de implicitidad.
 
-Por la expansión de Euler-Maruyama para difusiones puras (@higham2005, Ec. (2.3)), el error local de la parte difusiva satisface: $$\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_1 (1 + |U_n|^2) (\Delta t)^2$$
+Por la expansión de Euler-Maruyama para difusiones puras (@higham2005, Ec. (2.3)), el error local de la parte difusiva satisface: $$\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_1 (1 + |U_n|^2) (\Delta t)^2$$ {#eq-diff_error_bound_semiimplicit_pdf}
 
 Esta cota es de orden $(\Delta t)^3$ en $L^2$ debido a que el esquema semi-implícito utiliza una aproximación de Euler para la parte difusiva, cuyo error local en $L^2$ es $\mathcal{O}((\Delta t)^{3/2})$. El error local asociado a los saltos es: $$\begin{aligned}
 R_n^{\text{jump}} = {}& \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{p}_\phi(dv, ds)  \\
 & - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i)  \\
 & + \int_E c(t_n, U_n, v) \phi(dv)\,\Delta t.
-\end{aligned}$$
+\end{aligned}$$ {#eq-jump_error_semiimplicit_pdf}
 
 Aplicando la desigualdad de Cauchy-Schwarz, la condición de Lipschitz (H1) y las propiedades de la medida compensada (@platen2010numerical, Ec. (4.2.1)), obtenemos:
 
@@ -406,37 +388,23 @@ $$\begin{aligned}
 &\leq 2\mathbb{E}\left[ \left| \int_{t_n}^{t_{n+1}} \int_E [c(s, U_{s-}, v) - c(t_n, U_n, v)] \tilde{p}_\phi(dv, ds) \right|^2 \mid \mathcal{F_{t_n}} \right] \nonumber \\
 &\quad \ \ \ \ \ \ \ \ \ \ \ + 2\mathbb{E}\Biggl[ \Biggl| \int_{t_n}^{t_{n+1}} \int_E c(t_n, U_n, v) \tilde{p}_\phi(dv, ds) - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i) \\
 &\quad \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ + \int_E c(t_n, U_n, v) \phi(dv)\Delta t \Biggl|^2 \mid \mathcal{F_{t_n}} \Biggr] \nonumber \\
-&\leq 2L_c^2 \mathbb{E}\left[ \int_{t_n}^{t_{n+1}} |U_s - U_n|^2 ds \mid \mathcal{F_{t_n}} \right] \int_E \phi(dv) \\
-& + 2 \int_E |c(t_n, U_n, v)|^2 \phi(dv) \Delta t \nonumber \\
-& \quad \ \ \ \ \ \ \ \ \ \ \ \leq K_2 \Delta t + K_3 |U_{t_n} - U_n|^2 \Delta t,
-\end{aligned}$$
-
-donde en la última desigualdad usamos la cota de momentos de la solución exacta @eq-exact_moment_semiimplicit y la condición de crecimiento lineal (H2). El primer término proviene de la variación del estado durante el intervalo, y el segundo de la diferencia entre el estado exacto y el numérico.
-
-Expandiendo el denominador mediante serie de Taylor (@wang2007, Lema 3.1): $$\frac{1}{1 - r(t_{n+1})\Delta t} = 1 + r(t_{n+1})\Delta t + \mathcal{O}((\Delta t)^2),$$
-
-lo que implica que el error introducido por la implicitidad satisface: $$\mathbb{E}\left[ |R_n^{\text{implicit}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_4 (1 + |U_n|^2) (\Delta t)^4.$$ {#implicit_error_bound_semiimplicit_pdf}
+&\leq 2L_c^2 \mathbb{E}\left[ \int_{t_n}^{t_{n+1}} |U_s - U_n|^2 ds \mid \mathcal{F_{t_n}} \right] \int_E \phi(dv) + 2 \int_E |c(t_n, U_n, v)|^2 \phi(dv) \Delta t \nonumber \\
+&\leq K_2 \Delta t + K_3 |U_{t_n} - U_n|^2 \Delta t,
+\end{aligned}$$ {#eq-jump_error_bound_semiimplicit_pdf} donde en la última desigualdad usamos la cota de momentos de la solución exacta @eq-exact_moment_semiimplicit_pdf y la condición de crecimiento lineal (H2). El primer término proviene de la variación del estado durante el intervalo, y el segundo de la diferencia entre el estado exacto y el numérico. Expandiendo el denominador mediante serie de Taylor (@wang2007, Lema 3.1): $$\frac{1}{1 - r(t_{n+1})\Delta t} = 1 + r(t_{n+1})\Delta t + \mathcal{O}((\Delta t)^2),$$ {#eq-taylor_denom_semiimplicit_pdf} lo que implica que el error introducido por la implicitidad satisface: $$\mathbb{E}\left[|R_n^{\text{implicit}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_4 (1 + |U_n|^2) (\Delta t)^4.$$ {#eq-implicit_error_bound_semiimplicit_pdf}
 
 Este término es de orden superior y no afectará el orden global de convergencia.
 
-Combinando @eq-diff_error_bound_semiimplicit_pdf, @eq-jump_error_bound_semiimplicit_pdf y @eq-implicit_error_bound_semiimplicit_pdf, y usando $(a+b+c)^2 \leq 3a^2 + 3b^2 + 3c^2$: $$\mathbb{E}\left[ |R_n|^2 \mid \mathcal{F_{t_n}} \right] \leq K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t,$$ donde $e_n = U_{t_n} - U_n$ es el error global y usamos que $\Delta t \leq 1$ para absorber los términos de orden superior. Definiendo $M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |U_k|^2 \right]$, y tomando cuadrados en @eq-esquema_semiimplicito_despeje seguido de esperanza, aplicamos las cotas de Lipschitz (H1), crecimiento lineal (H2) y la cota de estabilidad (H4). Siguiendo el argumento del Teorema 3.2 de @higham2005, obtenemos: $$M_{n+1} \leq (1 + K_6 \Delta t) M_n + K_7 \Delta t.$$
-
-Iterando esta desigualdad y usando $M_0 = \mathbb{E}[|U_0|^2] < \infty$:
-
-$$M_N \leq M_0 e^{K_6 T} + \frac{K_7}{K_6} (e^{K_6 T} - 1) < \infty.$$ Por lo tanto, el esquema numérico tiene momentos finitos uniformes, condición esencial para la convergencia fuerte.
-
-Para la descomposición del error global definimos $e_n = U_{t_n} - U_n$. Usando la fórmula de Itô para la solución exacta y la definición del esquema @eq-esquema_semiimplicito_despeje, obtenemos: $$e_{n+1} = e_n + \delta a_n \Delta t + \delta b_n \Delta W_n + \delta c_n + R_n,$$ donde: $$\begin{aligned}
+Combinando @eq-diff_error_bound_semiimplicit_pdf, @eq-jump_error_bound_semiimplicit_pdf y @eq-implicit_error_bound_semiimplicit_pdf, y usando $(a+b+c)^2 \leq 3a^2 + 3b^2 + 3c^2$: $$\mathbb{E}\left[ |R_n|^2 \mid \mathcal{F_{t_n}} \right] \leq K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t,$$ {#eq-total_error_bound_semiimplicit_pdf} donde $e_n = U_{t_n} - U_n$ es el error global y usamos que $\Delta t \leq 1$ para absorber los términos de orden superior. Definiendo $M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |U_k|^2 \right]$, y tomando cuadrados en @eq-esquema_semiimplicito_despeje seguido de esperanza, aplicamos las cotas de Lipschitz (H1), crecimiento lineal (H2) y la cota de estabilidad (H4). Siguiendo el argumento del Teorema 3.2 de @higham2005, obtenemos: $$M_{n+1} \leq (1 + K_6 \Delta t) M_n + K_7 \Delta t.$$ {#eq-moments_recursion_semiimplicit_pdf} Iterando esta desigualdad y usando $M_0 = \mathbb{E}[|U_0|^2] < \infty$: $$M_N \leq M_0 e^{K_6 T} + \frac{K_7}{K_6} (e^{K_6 T} - 1) < \infty.$$ {#eq-moments_bound_semiimplicit_pdf} Por lo tanto, el esquema numérico tiene momentos finitos uniformes, condición esencial para la convergencia fuerte. Para la descomposición del error global definimos $e_n = U_{t_n} - U_n$. Usando la fórmula de Itô para la solución exacta y la definición del esquema @eq-esquema_semiimplicito_despeje, obtenemos: $$e_{n+1} = e_n + \delta a_n \Delta t + \delta b_n \Delta W_n + \delta c_n + R_n,$$ {#eq-global_error_decomp_semiimplicit_pdf} donde: $$\begin{aligned}
 \delta a_n &= a(t_n, U_{t_n}) - a(t_n, U_n), \\
 \delta b_n &= b(t_n, U_{t_n}) - b(t_n, U_n), \\
 \delta c_n &= \int_E [c(t_n, U_{t_n}, v) - c(t_n, U_n, v)] \phi(dv) \Delta t.
-\end{aligned}$$ Por la condición de Lipschitz (H1): $$|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \Delta t.$$ Tomamos cuadrados en @eq-global_error_decomp_semiimplicit y esperanza condicional $\mathbb{E}[\cdot \mid \mathcal{F_{t_n}}].$ Usando $\mathbb{E}[\Delta W_n \mid \mathcal{F_{t_n}}] = 0$, $\mathbb{E}[(\Delta W_n)^2 \mid \mathcal{F_{t_n}}] = \Delta t$, y que los términos con $\Delta W_n$ tienen esperanza cero: $$\begin{aligned}
+\end{aligned}$$ Por la condición de Lipschitz (H1): $$|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \Delta t.$$ {#eq-lipschitz_bounds_semiimplicit_pdf} Tomamos cuadrados en @eq-global_error_decomp_semiimplicit_pdf y esperanza condicional $\mathbb{E}[\cdot \mid \mathcal{F_{t_n}}].$ Usando $\mathbb{E}[\Delta W_n \mid \mathcal{F_{t_n}}] = 0$, $\mathbb{E}[(\Delta W_n)^2 \mid \mathcal{F_{t_n}}] = \Delta t$, y que los términos con $\Delta W_n$ tienen esperanza cero: $$\begin{aligned}
 \mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}] 
 &\leq |e_n|^2 + 2e_n \cdot \delta a_n \Delta t + 2e_n \cdot \delta c_n + |\delta b_n|^2 \Delta t + \mathbb{E}[|R_n|^2 \mid \mathcal{F_{t_n}}] \nonumber \\
-&\leq |e_n|^2 + 2L_a |e_n|^2 \Delta t + 2L_c |e_n|^2 \Delta t + L_b^2 |e_n|^2 \Delta t \\
-& + K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t \nonumber \\
+&\leq |e_n|^2 + 2L_a |e_n|^2 \Delta t + 2L_c |e_n|^2 \Delta t + L_b^2 |e_n|^2 \Delta t + K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t \nonumber \\
 &\leq (1 + K_8 \Delta t) |e_n|^2 + K_9 (1 + |U_n|^2) \Delta t,
-\end{aligned}$$ donde $K_8 = 2L_a + 2L_c + L_b^2 + K_5$ y $K_9 = K_5$. Usando la desigualdad $|U_n|^2 \leq 2|U_{t_n}|^2 + 2|e_n|^2$ y la cota de momentos de la solución exacta @eq-exact_moment_semiimplicit: $$\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}] \leq (1 + K_{10} \Delta t) |e_n|^2 + K_{11} \Delta t,
-$$ donde $K_{10} = K_8 + 2K_9$ y $K_{11} = 2K_9 C_1 (1 + \mathbb{E}[|U_0|^2]) + K_9$. Tomando esperanza total y definiendo $E_n = \mathbb{E}[|e_n|^2]$: $$E_{n+1} \leq (1 + K_{10} \Delta t) E_n + K_{11} \Delta t.$$ Iteramos la desigualdad @eq-recursive_error_semiimplicit con $E_0 = 0$: $$ E_N \leq K_{11} \Delta t \sum_{k=0}^{N-1} (1 + K_{10} \Delta t)^k = K_{11} \Delta t \frac{(1 + K_{10} \Delta t)^N - 1}{K_{10} \Delta t}.$$ Usando la desigualdad $(1 + x)^N \leq e^{Nx}$ para $x \geq 0$ y $N\Delta t = T$ (@platen2010numerical, Lema 1.2.1): $$(1 + K_{10} \Delta t)^N \leq e^{K_{10} T}.$$ Sustituyendo en @eq-iteration_semiimplicit: $$E_N \leq K_{11} \frac{e^{K_{10} T} - 1}{K_{10}} \Delta t = C \Delta t,$$ donde $C = K_{11} (e^{K_{10} T} - 1)/K_{10}$ es independiente de $\Delta t$. Tomando raíz cuadrada: $$\left( \mathbb{E}[|U_T - U_N|^2] \right)^{1/2} \leq C \sqrt{\Delta t}.$$
+\end{aligned}$$ {#eq-conditional_error_semiimplicit_pdf} donde $K_8 = 2L_a + 2L_c + L_b^2 + K_5$ y $K_9 = K_5$. Usando la desigualdad $|U_n|^2 \leq 2|U_{t_n}|^2 + 2|e_n|^2$ y la cota de momentos de la solución exacta @eq-exact_moment_semiimplicit_pdf: $$\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}] \leq (1 + K_{10} \Delta t) |e_n|^2 + K_{11} \Delta t,$$ donde $K_{10} = K_8 + 2K_9$ y $K_{11} = 2K_9 C_1 (1 + \mathbb{E}[|U_0|^2]) + K_9$. Tomando esperanza total y definiendo $E_n = \mathbb{E}[|e_n|^2]$: $$E_{n+1} \leq (1 + K_{10} \Delta t) E_n + K_{11} \Delta t.$$ {#eq-recursive_error_semiimplicit_pdf} Iteramos la desigualdad @eq-recursive_error_semiimplicit_pdf con $E_0 = 0$: $$E_N \leq K_{11} \Delta t \sum_{k=0}^{N-1} (1 + K_{10} \Delta t)^k = K_{11} \Delta t \frac{(1 + K_{10} \Delta t)^N - 1}{K_{10} \Delta t}.$$ {#eq-iteration_semiimplicit_pdf} Usando la desigualdad $(1 + x)^N \leq e^{Nx}$ para $x \geq 0$ y $N\Delta t = T$ @platen2010numerical, (Lema 1.2.1): $$(1 + K_{10} \Delta t)^N \leq e^{K_{10} T}.$$ {#eq-exponential_bound_semiimplicit_pdf} Sustituyendo en @eq-iteration_semiimplicit_pdf: $$E_N \leq K_{11} \frac{e^{K_{10} T} - 1}{K_{10}} \Delta t = C \Delta t,$$ {#eq-final_bound_semiimplicit_pdf} donde $C = K_{11} (e^{K_{10} T} - 1)/K_{10}$ es independiente de $\Delta t$. Tomando raíz cuadrada: $$\left( \mathbb{E}[|U_T - U_N|^2] \right)^{1/2} \leq C \sqrt{\Delta t}. $$
+
 :::
 ::::
 
