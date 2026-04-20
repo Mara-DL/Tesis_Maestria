@@ -636,17 +636,17 @@ Tabla&nbsp;6.1: Tasas de inflación mensual en México (variación porcentual de
 <p>La componente local <span class="math inline">\(\sigma_l(t)\)</span> respecta a la Volatilidad de CETES a 28 días ue es el activo de referencia para las inversiones conservadoras en México, estimada mediante desviación estándar móvil de 30 días de las tasas diarias de Banxico:</p>
 <p><span class="math display">\[\sigma_l(t) = 0.05\% \text{ mensual (constante)}\]</span></p>
 <p>Mientras que la componente global <span class="math inline">\(\sigma_g(t)\)</span> es dada por la Volatilidad del índice ILS (Artemis.bm), calculada como desviación estándar móvil de <span class="math inline">\(3\)</span> meses de los rendimientos mensuales. Presenta estacionalidad marcada por la temporada de huracanes (junio-noviembre):</p>
-<div id="tbl-volatilidad" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="tbl-volatilidad_global" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-volatilidad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;6.2: Volatilidad Global, <span class="math inline">\(\sigma_g(t)\)</span> mensual.
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-volatilidad_global-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;6.2: Tasas de volatilidad mensual en el mercado global, <span class="math inline">\(\sigma_g(t)\)</span>.
 </figcaption>
-<div aria-describedby="tbl-volatilidad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="tbl-volatilidad_global-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <thead>
 <tr class="header">
 <th style="text-align: center;">Mes</th>
-<th style="text-align: center;"><span class="math inline">\(\sigma_g(t)\)</span></th>
+<th style="text-align: center;">Volatilidad global <span class="math inline">\(\sigma_g(t)\)</span></th>
 </tr>
 </thead>
 <tbody>
@@ -752,8 +752,13 @@ Tabla&nbsp;6.2: Volatilidad Global, <span class="math inline">\(\sigma_g(t)\)</s
 </figure>
 </div>
 <p>La volatilidad total mensual resultante es :</p>
+<div id="tbl-volatilidad_total" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-volatilidad_total-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="math inline">\(\sigma\)</span>.
+</figcaption>
+<div aria-describedby="tbl-volatilidad_total-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
-<caption>Volatilidad Total, <span class="math inline">\(\sigma\)</span> mensual.</caption>
 <thead>
 <tr class="header">
 <th style="text-align: center;">Mes</th>
@@ -909,6 +914,9 @@ Tabla&nbsp;6.2: Volatilidad Global, <span class="math inline">\(\sigma_g(t)\)</s
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
 <p>con promedio anual <span class="math inline">\(\bar \sigma= 0.092\%\)</span> con picos superiores a <span class="math inline">\(0.14\%\)</span> en meses de alta actividad catastrófica.</p>
 <section id="función-de-costos-de-saltos-eventos-meteorológicos-y-sísmicos." class="level3" data-number="6.1.4">
 <h3 data-number="6.1.4" class="anchored" data-anchor-id="función-de-costos-de-saltos-eventos-meteorológicos-y-sísmicos."><span class="header-section-number">6.1.4</span> Función de Costos de Saltos: Eventos Meteorológicos y Sísmicos.</h3>
