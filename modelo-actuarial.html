@@ -964,13 +964,13 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 <h5 data-number="6.1.4.1.1" class="anchored" data-anchor-id="componente-hidrometeorológico"><span class="header-section-number">6.1.4.1.1</span> Componente Hidrometeorológico</h5>
 <p>La intensidad mensual <span class="math inline">\(\lambda_{\text{meteo}}(m)\)</span> para el mes <span class="math inline">\(m \in {1,\dots,12}\)</span> se estima mediante:</p>
 <p><span class="math display">\[\lambda_{\text{meteo}}(m) = \frac{\lambda_{\text{meteo}}^{\text{anual}}}{12} \cdot \phi(m)\]</span></p>
-<p>donde <span class="math inline">\(\lambda_{\text{meteo}}^{\text{anual}} = 8.0\)</span> eventos/año se calibra a partir de los registros históricos de la CONAGUA de fenómenos hidrometeorológicos que generaron reclamaciones superiores a USD <span class="math inline">\(100,000\)</span> en viviendas aseguradas en la CDMX. La función estacional <span class="math inline">\(\phi(m)\)</span> se obtiene normalizando los datos mensuales de frecuencia relativa:</p>
+<p>donde <span class="math inline">\(\lambda_{\text{meteo}}^{\text{anual}} = 8.0\)</span> eventos/año se calibra a partir de los registros históricos de la CONAGUA (<span class="citation" data-cites="conagua_datos">Comisión Nacional del Agua (CONAGUA) (<a href="references.html#ref-conagua_datos" role="doc-biblioref">2024</a>)</span>) de fenómenos hidrometeorológicos que generaron reclamaciones superiores a USD <span class="math inline">\(100,000\)</span> en viviendas aseguradas en la CDMX. La función estacional <span class="math inline">\(\phi(m)\)</span> se obtiene normalizando los datos mensuales de frecuencia relativa:</p>
 <p><span class="math display">\[\phi(m) = \frac{f_m}{\frac{1}{12}\sum_{k=1}^{12} f_k}, \quad f = [0.3, 0.3, 0.4, 0.6, 1.0, 1.8, 2.2, 2.5, 2.8, 2.3, 1.2, 0.5]\]</span></p>
 <p>Esta calibración refleja el pico estacional en septiembre (huracanes y lluvias intensas) y el mínimo en enero-febrero, consistente con el patrón climatológico del centro de México.</p>
 </section>
 <section id="componente-sísmico" class="level5" data-number="6.1.4.1.2">
 <h5 data-number="6.1.4.1.2" class="anchored" data-anchor-id="componente-sísmico"><span class="header-section-number">6.1.4.1.2</span> Componente Sísmico</h5>
-<p>Para sismos, utilizamos <span class="math inline">\(\lambda_{\text{sismo}} = 0.08\)</span> eventos/año, derivado del catálogo del Servicio Sismológico Nacional (SSN) considerando únicamente eventos con magnitud <span class="math inline">\(M_w \geq 6.0\)</span> y epicentro a menos de <span class="math inline">\(300 km\)</span> de la CDMX que históricamente han generado siniestralidad asegurada significativa (ej. sismos de 1985, 2017). Dado que la ocurrencia de sismos no presenta estacionalidad estadísticamente significativa <span class="math inline">\((p\text{-valor} &gt; 0.15)\)</span> en test de Kolmogorov-Smirnov para uniformidad mensual), mantenemos intensidad constante:</p>
+<p>Para sismos, utilizamos <span class="math inline">\(\lambda_{\text{sismo}} = 0.08\)</span> eventos/año, derivado del catálogo del Servicio Sismológico Nacional (SSN <span class="citation" data-cites="ssn_catalogo">Servicio Sismológico Nacional (SSN), Instituto de Geofísica, UNAM (<a href="references.html#ref-ssn_catalogo" role="doc-biblioref">2024</a>)</span>) considerando únicamente eventos con magnitud <span class="math inline">\(M_w \geq 6.0\)</span> y epicentro a menos de <span class="math inline">\(300 km\)</span> de la CDMX que históricamente han generado siniestralidad asegurada significativa (ej. sismos de 1985, 2017). Dado que la ocurrencia de sismos no presenta estacionalidad estadísticamente significativa <span class="math inline">\((p\text{-valor} &gt; 0.15)\)</span> en test de Kolmogorov-Smirnov para uniformidad mensual), mantenemos intensidad constante:</p>
 <p><span class="math display">\[\lambda_{\text{sismo}}(m) = \frac{\lambda_{\text{sismo}}}{12} = 0.0067 \text{ eventos/mes}\]</span></p>
 </section>
 </section>
@@ -1174,8 +1174,14 @@ Banco de México. 2024. <em>Encuesta sobre las Expectativas de los Especialistas
 <div id="ref-cnsf2024panorama" class="csl-entry" role="listitem">
 CNSF. 2024. <em>Panorama Analítico del Sector de Seguros y Fianzas 2024</em>. Comisión Nacional de Seguros y Fianzas. <a href="https://sio.cnsf.gob.mx/">https://sio.cnsf.gob.mx/</a>.
 </div>
+<div id="ref-conagua_datos" class="csl-entry" role="listitem">
+Comisión Nacional del Agua (CONAGUA). 2024. <em>Registro de fenómenos hidrometeorológicos y precipitaciones en la Ciudad de México</em>. Sitio web oficial. <a href="https://www.gob.mx/conagua">https://www.gob.mx/conagua</a>.
+</div>
 <div id="ref-inegi2024inpc" class="csl-entry" role="listitem">
 INEGI. 2024. <em>Índice Nacional de Precios al Consumidor (INPC)</em>. Instituto Nacional de Estadística y Geografía. <a href="https://www.inegi.org.mx/temas/inpc/">https://www.inegi.org.mx/temas/inpc/</a>.
+</div>
+<div id="ref-ssn_catalogo" class="csl-entry" role="listitem">
+Servicio Sismológico Nacional (SSN), Instituto de Geofísica, UNAM. 2024. <em>Catálogo de sismos: Reportes históricos y en tiempo real</em>. Sitio web oficial. <a href="https://www.ssn.unam.mx">https://www.ssn.unam.mx</a>.
 </div>
 </div>
 </section>
