@@ -995,7 +995,11 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 <p><span class="math display">\[\hat{\mu}_s = \ln(1{,}750{,}000) \approx 14.37, \qquad\hat{\sigma}_s = 0.65 \quad (\text{IC}_{95\%}: [0.55,\, 0.75]).\]</span></p>
 <p>Estos valores se obtienen al ajustar una normal en escala logarítmica (como es común en modelado de severidad), y luego se interpreta como una normal truncada en la escala original. Nuevamente, dado que <span class="math inline">\(\mu_s / \sigma_s \approx 22.1 \gg 1\)</span>, la probabilidad de que la variable no truncada sea negativa es astronómicamente pequeña <span class="math inline">\((&lt;10^{-100})\)</span>, por lo que la truncación no modifica significativamente la media.</p>
 <p>El valor esperado es entonces aproximadamente:</p>
-<p><span class="math display">\[\mathbb{E}[Y_{\text{sismo}}] \approx \exp\!\left(\mu_s + \frac{\sigma_s^2}{2}\right)= \exp\!\left(14.37 + \frac{0.65^2}{2}\right)= \exp(14.37 + 0.21125) = \exp(14.58125) \approx \text{USD } 2{,}160{,}000.\]</span></p>
+<p><span class="math display">\[\begin{aligned}
+\mathbb{E}[Y_{\text{sismo}}] \approx {}&amp;  \exp\!\left(\mu_s + \frac{\sigma_s^2}{2}\right)= \exp\!\left(14.37 + \frac{0.65^2}{2}\right)=  \\
+&amp; \exp(14.37 + 0.21125) = \exp(14.58125) \approx \text{USD } 2{,}160{,}000.
+\end{aligned}
+\]</span></p>
 <p>Sin embargo, si queremos mantener coherencia con el valor anterior de USD 1,750,000 con <span class="math inline">\(\alpha=1.4\)</span>, <span class="math inline">\(x_{\min}=500{,}000\)</span>, podemos calibrar la normal truncada para que tenga exactamente esa media. Resolvemos:</p>
 <p><span class="math display">\[\mathbb{E}[Y] = \mu + \sigma \cdot \lambda(\alpha) = 1{,}750{,}000,\]</span></p>
 <p>con <span class="math inline">\(\alpha = -\mu/\sigma\)</span>, y <span class="math inline">\(\lambda(\alpha) = \varphi(\alpha)/(1-\Phi(\alpha))\)</span>. Dado que <span class="math inline">\(\mu\)</span> y <span class="math inline">\(\sigma\)</span> están en escala <em>lineal</em> (no log), proponemos una calibración directa:</p>
