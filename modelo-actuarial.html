@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -990,11 +1025,146 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 <p>Presentando el algoritmo de Milstein compensado (<a href="metodos-numericos.html#sec-EDESJs" class="quarto-xref"><span>Sección 5.2</span></a>), escrito en lenguaje natural estructurado (es decir, como un pseudocódigo), diseñado específicamente para aproximar soluciones de ecuaciones diferenciales estocásticas (EDS) con difusión y salto(<a href="metodos-numericos.html#sec-EDESJs" class="quarto-xref"><span>Sección 5.2</span></a>), como las que surgen en el modelo de Cramér–Lundberg (<a href="edes_saltos.html#eq-modelo_extendido" class="quarto-xref">Ecuación&nbsp;<span>4.10</span></a>) por ejemplo, con componentes de procesos compuestos de Poisson)</p>
 <p>El pseudocódigo siguiente está pensado para ser puente conceptual entre la teoría y la implementación, y se enfoca en la versión compensada (es decir, usando el proceso de salto compensado <span class="math inline">\(\tilde{N} = N_t - \lambda t\)</span>) para garantizar que el término de salto tenga esperanza cero y sea adecuado para esquemas numéricos estables.</p>
 </section>
-<section id="pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto." class="level4" data-number="6.1.5.2">
-<h4 data-number="6.1.5.2" class="anchored" data-anchor-id="pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto."><span class="header-section-number">6.1.5.2</span> Pseudocódigo: Esquema de Milstein Compensado para EDS con Difusión y Salto.</h4>
-</section>
 </section>
 </div>
+</section>
+<section id="pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto." class="level4" data-number="6.1.5.2">
+<h4 data-number="6.1.5.2" class="anchored" data-anchor-id="pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto."><span class="header-section-number">6.1.5.2</span> Pseudocódigo: Esquema de Milstein Compensado para EDS con Difusión y Salto.</h4>
+<div id="alg-milstein-entrada" class="theorem algorithm">
+<p><span class="theorem-title"><strong>Algorithm 6.1</strong></span> <strong>Algoritmo 1:</strong> Datos de Entrada - Simulación de Reservas Cramér-Lundberg con Método de Milstein Compensado</p>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 36%">
+<col style="width: 43%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tipo</th>
+<th>Parámetro</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Entrada</strong></td>
+<td><span class="math inline">\(U_0^{\text{hist}}\)</span></td>
+<td>Capital inicial histórico (USD)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><span class="math inline">\(T_{\text{hist}}\)</span></td>
+<td>Horizonte temporal histórico (años)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><span class="math inline">\(T_{\text{fc}}\)</span></td>
+<td>Horizonte de pronóstico (días)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><span class="math inline">\(\Delta t\)</span></td>
+<td>Paso de tiempo (<span class="math inline">\(1/365\)</span>)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><span class="math inline">\(M_{\text{hist}}, M_{\text{fc}}\)</span></td>
+<td>Número de trayectorias Monte Carlo</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><span class="math inline">\(N_{\text{pólizas}}\)</span></td>
+<td>Número total de pólizas vigentes</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><span class="math inline">\(\text{ceiling}_{\text{póliza}}\)</span></td>
+<td>Tope máximo de pérdida por póliza</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><span class="math inline">\(\text{CV}_{\text{meteo}}, \text{CV}_{\text{sismo}}\)</span></td>
+<td>Coeficientes de variación</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Parámetros históricos interpolados</td>
+<td><span class="math inline">\(c_{\text{hist}}[i]\)</span>, <span class="math inline">\(r_{\text{hist}}[i]\)</span>, <span class="math inline">\(\sigma_{\text{hist}}[i]\)</span>, <span class="math inline">\(\lambda_{m,\text{hist}}[i]\)</span></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Parámetros pronóstico (enero)</td>
+<td><span class="math inline">\(c_{\text{ene}}\)</span>, <span class="math inline">\(r_{\text{ene}}\)</span>, <span class="math inline">\(\sigma_{\text{ene}}\)</span>, <span class="math inline">\(\lambda_{m,\text{ene}}\)</span>, <span class="math inline">\(\lambda_s\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Salida</strong></td>
+<td><span class="math inline">\(\text{median}_{\text{hist}}\)</span>, <span class="math inline">\(\text{IC}_{5,95}^{\text{hist}}\)</span></td>
+<td>Estadísticas periodo histórico</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><span class="math inline">\(\text{median}_{\text{fc}}\)</span>, <span class="math inline">\(\text{IC}_{5,95}^{\text{fc}}\)</span></td>
+<td>Estadísticas pronóstico</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><span class="math inline">\(\text{saltos}_{\text{hist}}\)</span>, <span class="math inline">\(\text{saltos}_{\text{fc}}\)</span></td>
+<td>Puntos de salto detectados</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<div id="alg-fase1" class="theorem algorithm">
+<p><span class="theorem-title"><strong>Algorithm 6.2</strong></span> <strong>Algoritmo 2:</strong> Fase 1 - Simulación histórica con Milstein compensado</p>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: alg-fase1-code</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>N_hist ← ⌊T_hist <span class="op">/</span> Δt⌋</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Inicializar X[M_hist][N_hist <span class="op">+</span> <span class="dv">1</span>] ← <span class="dv">0</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m ← <span class="dv">1</span> to M_hist do</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    X[m][<span class="dv">0</span>] ← U_0<span class="op">^</span>hist</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i ← <span class="dv">0</span> to N_hist <span class="op">-</span> <span class="dv">1</span> do</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        δ ← <span class="op">|</span>X[m][i] <span class="op">-</span> U_0<span class="op">^</span>hist<span class="op">|</span> <span class="op">/</span> N_pólizas</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> δ <span class="op">&gt;</span> ceiling_póliza then</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>            δ ← ceiling_póliza</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Generación y compensación de saltos</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        total_saltos ← <span class="dv">0</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        comp ← <span class="dv">0</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        n_meteo ← Poisson(λ_m,hist[i])</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_meteo <span class="op">&gt;</span> <span class="dv">0</span> then</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>            p_af ← Uniforme(<span class="fl">0.005</span>, <span class="fl">0.02</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            n_af ← <span class="bu">max</span>(<span class="dv">1</span>, ⌊N_pólizas · p_af⌋)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>            μ_pól ← δ</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>            σ_pól ← CV_meteo · μ_pól</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j ← <span class="dv">1</span> to n_af do</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                pérdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pól, σ_pól))</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> pérdida</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        E_meteo ← ((<span class="fl">0.005</span> <span class="op">+</span> <span class="fl">0.02</span>) <span class="op">/</span> <span class="dv">2</span> · N_pólizas) · δ</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        comp ← comp <span class="op">-</span> λ_m,hist[i] · E_meteo</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        n_sismo ← Poisson(λ_s <span class="op">/</span> <span class="dv">365</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_sismo <span class="op">&gt;</span> <span class="dv">0</span> then</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>            p_af ← Uniforme(<span class="fl">0.01</span>, <span class="fl">0.10</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>            n_af ← <span class="bu">max</span>(<span class="dv">1</span>, ⌊N_pólizas · p_af⌋)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>            μ_pól ← δ</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>            σ_pól ← CV_sismo · μ_pól</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j ← <span class="dv">1</span> to n_af do</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>                pérdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pól, σ_pól))</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> pérdida</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>        E_sismo ← ((<span class="fl">0.01</span> <span class="op">+</span> <span class="fl">0.10</span>) <span class="op">/</span> <span class="dv">2</span> · N_pólizas) · δ</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>        comp ← comp <span class="op">-</span> (λ_s <span class="op">/</span> <span class="dv">365</span>) · E_sismo</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
