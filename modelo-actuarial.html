@@ -479,6 +479,7 @@ window.Quarto = {
   <li><a href="#función-de-primas-ajustadas-por-inflación-ct" id="toc-función-de-primas-ajustadas-por-inflación-ct" class="nav-link" data-scroll-target="#función-de-primas-ajustadas-por-inflación-ct"><span class="header-section-number">6.1.1</span> Función de Primas Ajustadas por Inflación: <span class="math inline">\(c(t)\)</span></a></li>
   <li><a href="#modelado-de-la-tasa-de-inversión-rt." id="toc-modelado-de-la-tasa-de-inversión-rt." class="nav-link" data-scroll-target="#modelado-de-la-tasa-de-inversión-rt."><span class="header-section-number">6.1.2</span> Modelado de la tasa de inversión: <span class="math inline">\(r(t)\)</span>.</a></li>
   <li><a href="#modelado-de-la-volatilidad-de-inversiones-sigmat." id="toc-modelado-de-la-volatilidad-de-inversiones-sigmat." class="nav-link" data-scroll-target="#modelado-de-la-volatilidad-de-inversiones-sigmat."><span class="header-section-number">6.1.3</span> Modelado de la volatilidad de Inversiones <span class="math inline">\(\sigma(t)\)</span>.</a></li>
+  <li><a href="#pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto." id="toc-pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto." class="nav-link" data-scroll-target="#pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto."><span class="header-section-number">6.2.2</span> Pseudocódigo: Esquema de Milstein Compensado para EDS con Difusión y Salto.</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/modelo-actuarial.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/modelo-actuarial.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
@@ -656,7 +657,7 @@ Tabla&nbsp;6.1: Tasas de inflación mensual en México (variación porcentual de
 </div>
 </section>
 <section id="modelado-de-la-volatilidad-de-inversiones-sigmat." class="level3" data-number="6.1.3">
-<h3 data-number="6.1.3" class="anchored" data-anchor-id="modelado-de-la-volatilidad-de-inversiones-sigmat."><span class="header-section-number">6.1.3</span> Modelado de la volatilidad de Inversiones <span class="math inline">\(\sigma(t)\)</span>.</h3>
+<h3 data-number="6.1.3" class="anchored"><span class="header-section-number">6.1.3</span> Modelado de la volatilidad de Inversiones <span class="math inline">\(\sigma(t)\)</span>.</h3>
 <section id="combinación-convexa-de-volatilidades" class="level4" data-number="6.1.3.1">
 <h4 data-number="6.1.3.1" class="anchored"><span class="header-section-number">6.1.3.1</span> Combinación Convexa de Volatilidades</h4>
 <div style="text-align:justify">
@@ -1017,23 +1018,24 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 </section>
 </section>
 </section>
-<section id="aproximación-numérica-del-modelo-de-crámer-lundberg-extendido" class="level3" data-number="6.1.5">
-<h3 data-number="6.1.5" class="anchored" data-anchor-id="aproximación-numérica-del-modelo-de-crámer-lundberg-extendido"><span class="header-section-number">6.1.5</span> Aproximación numérica del modelo de Crámer Lundberg extendido</h3>
+<section id="aproximación-numérica-del-modelo-de-crámer-lundberg-extendido" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="aproximación-numérica-del-modelo-de-crámer-lundberg-extendido"><span class="header-section-number">6.2</span> Aproximación numérica del modelo de Crámer Lundberg extendido</h2>
 <p>Consideramos el proceso de reservas bajo el modelo extendido de Cramér-Lundberg con inversión estocástica y saltos reescribimos <a href="edes_saltos.html#eq-modelo_extendido" class="quarto-xref">Ecuación&nbsp;<span>4.10</span></a> en forma diferencial estocástica:</p>
 <p><span id="eq-eds-completa"><span class="math display">\[dX_t = \underbrace{\left[c(t) + r(t)X_t - \lambda_{\text{meteo}}(t)\mathbb{E}[Y^{\text{meteo}}_t \mid \mathcal{F}_t] - \lambda_{\text{sismo}}\mathbb{E}[Y^{\text{sismo}}_t \mid \mathcal{F}_t]\right]}_{\mu(t,X_t)}dt + \underbrace{\sigma(t)X_t}_{\sigma(t,X_t)}dW_t - dJ_t \tag{6.4}\]</span></span> La compensación <span class="math inline">\(\lambda \mathbb{E}[Y \mid \mathcal{F}_t]\)</span> garantiza que el proceso sin saltos reales sea una semimartingala (<a href="edes_saltos.html#def-Semimartingalas_saltos" class="quarto-xref">Definición&nbsp;<span>4.1</span></a>) con la deriva correcta, esencial para la convergencia del esquema numérico.</p>
 <p>Se ha desarrollado un modelo Cramér-Lundberg extendido para aproximar las reservas de una aseguradora de vivienda en la Ciudad de México. Este modelo incorpora parámetros dependientes del tiempo, primas ajustadas por inflación (Sección 3.1), tasas de interés estocásticas (Sección 3.2), volatilidad mediante combinación convexa (Sección 3.3) y un proceso de saltos compuesto que modela siniestros catastróficos meteorológicos y sísmicos con intensidades estacionales (Sección 3.4.1).</p>
 <p>Dada la complejidad de la ecuación diferencial estocástica con saltos resultante (EDE), cuya solución analítica no es viable ante la no estacionariedad de los parámetros y la estructura de saltos, se requiere métodos numéricos robustos.</p>
 <p>Para la simulación, discretizamos con paso <span class="math inline">\(\Delta t = 1/12\)</span> (mensual) y consideramos dos esquemas numéricos.</p>
-<section id="implementación-numérica-métodos-milstein-y-semi-implícito." class="level4" data-number="6.1.5.1">
-<h4 data-number="6.1.5.1" class="anchored" data-anchor-id="implementación-numérica-métodos-milstein-y-semi-implícito."><span class="header-section-number">6.1.5.1</span> Implementación Numérica Métodos Milstein y Semi-Implícito.</h4>
+<section id="implementación-numérica-métodos-milstein-y-semi-implícito." class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="implementación-numérica-métodos-milstein-y-semi-implícito."><span class="header-section-number">6.2.1</span> Implementación Numérica Métodos Milstein y Semi-Implícito.</h3>
 <p>Presentando el algoritmo de Milstein compensado (<a href="metodos-numericos.html#sec-EDESJs" class="quarto-xref"><span>Sección 5.2</span></a>), escrito en lenguaje natural estructurado (es decir, como un pseudocódigo), diseñado específicamente para aproximar soluciones de ecuaciones diferenciales estocásticas (EDS) con difusión y salto (<a href="metodos-numericos.html#sec-EDESJs" class="quarto-xref"><span>Sección 5.2</span></a>), como las que surgen en el modelo de Cramér–Lundberg (<a href="edes_saltos.html#eq-modelo_extendido" class="quarto-xref">Ecuación&nbsp;<span>4.10</span></a>) por ejemplo, con componentes de procesos compuestos de Poisson)</p>
 <p>El pseudocódigo siguiente está pensado para ser puente conceptual entre la teoría y la implementación, y se enfoca en la versión compensada (es decir, usando el proceso de salto compensado (<a href="fundamentos_estocasticos.html#def-med_alea_poisson" class="quarto-xref">Definición&nbsp;<span>3.18</span></a>) <span class="math inline">\(\tilde{N} = N_t - \lambda t\)</span>) para garantizar que el término de salto tenga esperanza cero y sea adecuado para esquemas numéricos estables.</p>
 </section>
 </section>
 </div>
 </section>
-<section id="pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto." class="level4" data-number="6.1.5.2">
-<h4 data-number="6.1.5.2" class="anchored" data-anchor-id="pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto."><span class="header-section-number">6.1.5.2</span> Pseudocódigo: Esquema de Milstein Compensado para EDS con Difusión y Salto.</h4>
+</section>
+<section id="pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto." class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto."><span class="header-section-number">6.2.2</span> Pseudocódigo: Esquema de Milstein Compensado para EDS con Difusión y Salto.</h3>
 <div id="alg-milstein-entrada" class="theorem algorithm">
 <p><span class="theorem-title"><strong>Algorithm 6.1</strong></span> <strong>Algoritmo 1:</strong> Datos de Entrada - Simulación de Reservas Cramér-Lundberg con Método de Milstein Compensado</p>
 </div>
@@ -1248,7 +1250,6 @@ INEGI. 2024. <em>Índice Nacional de Precios al Consumidor (INPC)</em>. Institut
 Servicio Sismológico Nacional (SSN), Instituto de Geofísica, UNAM. 2024. <em>Catálogo de sismos: Reportes históricos y en tiempo real</em>. Sitio web oficial. <a href="https://www.ssn.unam.mx">https://www.ssn.unam.mx</a>.
 </div>
 </div>
-</section>
 </section>
 </section>
 
