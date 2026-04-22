@@ -1337,88 +1337,93 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i ← <span class="dv">0</span> to N do</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    mes ← DeterminarMes(t_i)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    c_i ← c(t_i)                      <span class="co"># Prima mensual ajustada por inflación</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    r_i ← r(t_i)                      <span class="co"># Tasa CETES + componente global</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    σ_i ← σ(t_i)                      <span class="co"># Combinación convexa de volatilidades</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    λ_m,i ← (λ_meteo,anual <span class="op">/</span> <span class="dv">365</span>) × factor_estacional[mes]  <span class="co"># Intensidad eventos meteorológicos</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    λ_s,i ← λ_sismo <span class="op">/</span> <span class="dv">365</span>             <span class="co"># Intensidad eventos sísmicos</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Almacenar parámetros en vectores indexados por i</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>Inicializar U[M][N <span class="op">+</span> <span class="dv">1</span>] ← <span class="dv">0</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m ← <span class="dv">1</span> to M do</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    U[m][<span class="dv">0</span>] ← U_0</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i ← <span class="dv">0</span> to N <span class="op">-</span> <span class="dv">1</span> do</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2.1: Generación de saltos</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        n_meteo ← Poisson(λ_m,i)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        n_sismo ← Poisson(λ_s,i)</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2.2: Cálculo de saltos brutos</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        total_saltos ← <span class="dv">0</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        δ ← <span class="op">|</span>U[m][i] <span class="op">-</span> U_0<span class="op">|</span> <span class="op">/</span> N_pólizas</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> δ <span class="op">&gt;</span> ceiling_póliza then</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>            δ ← ceiling_póliza</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Eventos meteorológicos</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_meteo <span class="op">&gt;</span> <span class="dv">0</span> then</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>            p_af ← Uniforme(<span class="fl">0.005</span>, <span class="fl">0.02</span>)</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>            n_af ← <span class="bu">max</span>(<span class="dv">1</span>, ⌊N_pólizas × p_af⌋)</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>            μ_pól ← δ</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>            σ_pól ← CV_meteo × μ_pól</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j ← <span class="dv">1</span> to n_af do</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>                pérdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pól, σ_pól))</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> pérdida</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Eventos sísmicos</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_sismo <span class="op">&gt;</span> <span class="dv">0</span> then</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>            p_af ← Uniforme(<span class="fl">0.01</span>, <span class="fl">0.10</span>)</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>            n_af ← <span class="bu">max</span>(<span class="dv">1</span>, ⌊N_pólizas × p_af⌋)</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>            μ_pól ← δ</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>            σ_pól ← CV_sismo × μ_pól</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j ← <span class="dv">1</span> to n_af do</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>                pérdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pól, σ_pól))</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> pérdida</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2.3: Cálculo de compensación (reducción de varianza)</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        E_meteo ← (N_pólizas × <span class="fl">0.0125</span>) × δ</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        E_sismo ← (N_pólizas × <span class="fl">0.055</span>) × δ</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        comp ← (<span class="op">-</span>λ_m,i × E_meteo) <span class="op">+</span> (<span class="op">-</span>λ_s,i × E_sismo)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Prima mensual ajustada por inflación</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    c_i ← c(t_i)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Tasa CETES + componente global           </span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    r_i ← r(t_i) </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Combinación convexa de volatilidades         </span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    σ_i ← σ(t_i)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Intensidad eventos meteorológicos         </span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    λ_m,i ← (λ_meteo,anual <span class="op">/</span> <span class="dv">365</span>) × factor_estacional[mes]  </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Intensidad eventos sísmicos</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    λ_s,i ← λ_sismo <span class="op">/</span> <span class="dv">365</span>  </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Almacenar parámetros en vectores indexados por i</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>Inicializar U[M][N <span class="op">+</span> <span class="dv">1</span>] ← <span class="dv">0</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m ← <span class="dv">1</span> to M do</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    U[m][<span class="dv">0</span>] ← U_0</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i ← <span class="dv">0</span> to N <span class="op">-</span> <span class="dv">1</span> do</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2.1: Generación de saltos</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        n_meteo ← Poisson(λ_m,i)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        n_sismo ← Poisson(λ_s,i)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2.2: Cálculo de saltos brutos</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        total_saltos ← <span class="dv">0</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        δ ← <span class="op">|</span>U[m][i] <span class="op">-</span> U_0<span class="op">|</span> <span class="op">/</span> N_pólizas</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> δ <span class="op">&gt;</span> ceiling_póliza then</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>            δ ← ceiling_póliza</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Eventos meteorológicos</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_meteo <span class="op">&gt;</span> <span class="dv">0</span> then</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>            p_af ← Uniforme(<span class="fl">0.005</span>, <span class="fl">0.02</span>)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>            n_af ← <span class="bu">max</span>(<span class="dv">1</span>, ⌊N_pólizas × p_af⌋)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>            μ_pól ← δ</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>            σ_pól ← CV_meteo × μ_pól</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j ← <span class="dv">1</span> to n_af do</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>                pérdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pól, σ_pól))</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> pérdida</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Eventos sísmicos</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_sismo <span class="op">&gt;</span> <span class="dv">0</span> then</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>            p_af ← Uniforme(<span class="fl">0.01</span>, <span class="fl">0.10</span>)</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>            n_af ← <span class="bu">max</span>(<span class="dv">1</span>, ⌊N_pólizas × p_af⌋)</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>            μ_pól ← δ</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>            σ_pól ← CV_sismo × μ_pól</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j ← <span class="dv">1</span> to n_af do</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>                pérdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pól, σ_pól))</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> pérdida</span>
 <span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2.4: Actualización semi-implícita con compensación</span></span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        ΔW ← √Δt × Normal(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        numerador ← U[m][i] × (<span class="dv">1</span> <span class="op">+</span> σ_i ΔW) <span class="op">+</span> c_i Δt <span class="op">+</span> comp <span class="op">-</span> total_saltos</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>        denominador ← <span class="dv">1</span> <span class="op">-</span> r_i Δt</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2.3: Cálculo de compensación (reducción de varianza)</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        E_meteo ← (N_pólizas × <span class="fl">0.0125</span>) × δ</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        E_sismo ← (N_pólizas × <span class="fl">0.055</span>) × δ</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>        comp ← (<span class="op">-</span>λ_m,i × E_meteo) <span class="op">+</span> (<span class="op">-</span>λ_s,i × E_sismo)</span>
 <span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> denominador ≤ <span class="dv">0</span> then</span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>            denominador ← <span class="dv">10</span><span class="op">^</span>(<span class="op">-</span><span class="dv">12</span>)  <span class="co"># Evitar división por cero</span></span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>        U[m][i <span class="op">+</span> <span class="dv">1</span>] ← numerador <span class="op">/</span> denominador</span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i ← <span class="dv">0</span> to N do</span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    Ũ[i] ← Mediana(U[<span class="fl">1.</span>.M][i])</span>
-<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    IC_5,<span class="dv">95</span>[i][<span class="dv">0</span>] ← Percentil₅(U[<span class="fl">1.</span>.M][i])</span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    IC_5,<span class="dv">95</span>[i][<span class="dv">1</span>] ← Percentil₉₅(U[<span class="fl">1.</span>.M][i])</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2.4: Actualización semi-implícita con compensación</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>        ΔW ← √Δt × Normal(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        numerador ← U[m][i] × (<span class="dv">1</span> <span class="op">+</span> σ_i ΔW) <span class="op">+</span> c_i Δt <span class="op">+</span> comp <span class="op">-</span> total_saltos</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>        denominador ← <span class="dv">1</span> <span class="op">-</span> r_i Δt</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> denominador ≤ <span class="dv">0</span> then</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>            denominador ← <span class="dv">10</span><span class="op">^</span>(<span class="op">-</span><span class="dv">12</span>)  <span class="co"># Evitar división por cero</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>        U[m][i <span class="op">+</span> <span class="dv">1</span>] ← numerador <span class="op">/</span> denominador</span>
 <span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="co"># FASE 4: Detección de saltos en la trayectoria mediana (opcional)</span></span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>Inicializar log_ret[N]</span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i ← <span class="dv">1</span> to N do</span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>    log_ret[i] ← ln(Ũ[i] <span class="op">/</span> Ũ[i <span class="op">-</span> <span class="dv">1</span>])</span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>θ ← <span class="dv">3</span> × DesvEst(log_ret)</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i ← <span class="dv">0</span> to N do</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>    Ũ[i] ← Mediana(U[<span class="fl">1.</span>.M][i])</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    IC_5,<span class="dv">95</span>[i][<span class="dv">0</span>] ← Percentil₅(U[<span class="fl">1.</span>.M][i])</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>    IC_5,<span class="dv">95</span>[i][<span class="dv">1</span>] ← Percentil₉₅(U[<span class="fl">1.</span>.M][i])</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="co"># FASE 4: Detección de saltos en la trayectoria mediana (opcional)</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>Inicializar log_ret[N]</span>
 <span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>Inicializar puntos_salto ← ∅</span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i ← <span class="dv">1</span> to N do</span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">|</span>log_ret[i]<span class="op">|</span> <span class="op">&gt;</span> θ then</span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>        Añadir t_i a puntos_salto</span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>retornar Ũ, IC_5,<span class="dv">95</span>, puntos_salto</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i ← <span class="dv">1</span> to N do</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>    log_ret[i] ← ln(Ũ[i] <span class="op">/</span> Ũ[i <span class="op">-</span> <span class="dv">1</span>])</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>θ ← <span class="dv">3</span> × DesvEst(log_ret)</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>Inicializar puntos_salto ← ∅</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i ← <span class="dv">1</span> to N do</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">|</span>log_ret[i]<span class="op">|</span> <span class="op">&gt;</span> θ then</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>        Añadir t_i a puntos_salto</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>retornar Ũ, IC_5,<span class="dv">95</span>, puntos_salto</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
