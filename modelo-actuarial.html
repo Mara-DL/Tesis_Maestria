@@ -1151,8 +1151,8 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>            σ_pol ← CV_meteo · μ_pol</span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>            </span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j ← <span class="dv">1</span> to n_af do</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                pérdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pol, σ_pol))</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> pérdida</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                perdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pol, σ_pol))</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> perdida</span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        E_meteo ← ((<span class="fl">0.005</span> <span class="op">+</span> <span class="fl">0.02</span>) <span class="op">/</span> <span class="dv">2</span> · N_polizas) · δ</span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        comp ← comp <span class="op">-</span> λ_m,hist[i] · E_meteo</span>
@@ -1166,8 +1166,8 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>            σ_pol ← CV_sismo · μ_pol</span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>            </span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j ← <span class="dv">1</span> to n_af do</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>                pérdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pol, σ_pol))</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> pérdida</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>                perdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pol, σ_pol))</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> perdida</span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>        E_sismo ← ((<span class="fl">0.01</span> <span class="op">+</span> <span class="fl">0.10</span>) <span class="op">/</span> <span class="dv">2</span> · N_polizas) · δ</span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>        comp ← comp <span class="op">-</span> (λ_s <span class="op">/</span> <span class="dv">365</span>) · E_sismo</span>
@@ -1199,10 +1199,10 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 <span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>    U[m][<span class="dv">0</span>] ← U_0<span class="op">^</span>fc</span>
 <span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i ← <span class="dv">0</span> to N_fc <span class="op">-</span> <span class="dv">1</span> do</span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>        δ ← <span class="op">|</span>U[m][i] <span class="op">-</span> U_0<span class="op">^</span>fc<span class="op">|</span> <span class="op">/</span> N_pólizas</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>        δ ← <span class="op">|</span>U[m][i] <span class="op">-</span> U_0<span class="op">^</span>fc<span class="op">|</span> <span class="op">/</span> N_polizas</span>
 <span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> δ <span class="op">&gt;</span> ceiling_póliza then</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>            δ ← ceiling_póliza</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> δ <span class="op">&gt;</span> ceiling_poliza then</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>            δ ← ceiling_poliza</span>
 <span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Saltos con parámetros constantes de enero</span></span>
 <span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>        n_meteo ← Poisson(λ_m,ene)</span>
@@ -1371,23 +1371,23 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_meteo <span class="op">&gt;</span> <span class="dv">0</span> then</span>
 <span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>            p_af ← Uniforme(<span class="fl">0.005</span>, <span class="fl">0.02</span>)</span>
 <span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>            n_af ← <span class="bu">max</span>(<span class="dv">1</span>, ⌊N_polizas × p_af⌋)</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>            μ_pól ← δ</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>            σ_pól ← CV_meteo × μ_pól</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>            μ_pol ← δ</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>            σ_pol ← CV_meteo × μ_pol</span>
 <span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>            </span>
 <span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j ← <span class="dv">1</span> to n_af do</span>
 <span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>                perdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pol, σ_pol))</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> pérdida</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> perdida</span>
 <span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Eventos sísmicos</span></span>
 <span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_sismo <span class="op">&gt;</span> <span class="dv">0</span> then</span>
 <span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>            p_af ← Uniforme(<span class="fl">0.01</span>, <span class="fl">0.10</span>)</span>
 <span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>            n_af ← <span class="bu">max</span>(<span class="dv">1</span>, ⌊N_polizas × p_af⌋)</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>            μ_pól ← δ</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>            σ_pól ← CV_sismo × μ_pól</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>            μ_pol ← δ</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>            σ_pol ← CV_sismo × μ_pol</span>
 <span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>            </span>
 <span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j ← <span class="dv">1</span> to n_af do</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>                pérdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pol, σ_pol))</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> pérdida</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>                perdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pol, σ_pol))</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> perdida</span>
 <span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2.3: Cálculo de compensación (reducción de varianza)</span></span>
 <span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        E_meteo ← (N_polizas × <span class="fl">0.0125</span>) × δ</span>
