@@ -479,7 +479,10 @@ window.Quarto = {
   <li><a href="#función-de-primas-ajustadas-por-inflación-ct" id="toc-función-de-primas-ajustadas-por-inflación-ct" class="nav-link" data-scroll-target="#función-de-primas-ajustadas-por-inflación-ct"><span class="header-section-number">6.1.1</span> Función de Primas Ajustadas por Inflación: <span class="math inline">\(c(t)\)</span></a></li>
   <li><a href="#modelado-de-la-tasa-de-inversión-rt." id="toc-modelado-de-la-tasa-de-inversión-rt." class="nav-link" data-scroll-target="#modelado-de-la-tasa-de-inversión-rt."><span class="header-section-number">6.1.2</span> Modelado de la tasa de inversión: <span class="math inline">\(r(t)\)</span>.</a></li>
   <li><a href="#modelado-de-la-volatilidad-de-inversiones-sigmat." id="toc-modelado-de-la-volatilidad-de-inversiones-sigmat." class="nav-link" data-scroll-target="#modelado-de-la-volatilidad-de-inversiones-sigmat."><span class="header-section-number">6.1.3</span> Modelado de la volatilidad de Inversiones <span class="math inline">\(\sigma(t)\)</span>.</a></li>
-  <li><a href="#pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto." id="toc-pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto." class="nav-link" data-scroll-target="#pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto."><span class="header-section-number">6.2.2</span> Pseudocódigo: Esquema de Milstein Compensado para EDS con Difusión y Salto.</a></li>
+  </ul></li>
+  <li><a href="#pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto." id="toc-pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto." class="nav-link" data-scroll-target="#pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto."><span class="header-section-number">6.3</span> Pseudocódigo: Esquema de Milstein Compensado para EDE con Difusión y Salto.</a>
+  <ul class="collapse">
+  <li><a href="#pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" id="toc-pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" class="nav-link" data-scroll-target="#pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto"><span class="header-section-number">6.3.1</span> Pseudocódigo: Esquema Semi-Implícito Compensado para EDE con Difusión y Salto</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/modelo-actuarial.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/modelo-actuarial.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
@@ -1034,8 +1037,9 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 </div>
 </section>
 </section>
-<section id="pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto." class="level3" data-number="6.2.2">
-<h3 data-number="6.2.2" class="anchored" data-anchor-id="pseudocódigo-esquema-de-milstein-compensado-para-eds-con-difusión-y-salto."><span class="header-section-number">6.2.2</span> Pseudocódigo: Esquema de Milstein Compensado para EDS con Difusión y Salto.</h3>
+</section>
+<section id="pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto." class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto."><span class="header-section-number">6.3</span> Pseudocódigo: Esquema de Milstein Compensado para EDE con Difusión y Salto.</h2>
 <div id="alg-milstein-entrada" class="theorem algorithm">
 <p><span class="theorem-title"><strong>Algorithm 6.1</strong></span> <strong>Algoritmo 1:</strong> Datos de Entrada - Simulación de Reservas Cramér-Lundberg con Método de Milstein Compensado</p>
 </div>
@@ -1231,6 +1235,192 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 <span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>retornar median_hist, IC_5,<span class="dv">95</span><span class="op">^</span>hist, median_fc, </span>
 <span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>IC_5,<span class="dv">95</span><span class="op">^</span>fc, saltos_hist, saltos_fc    </span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" class="level3" data-number="6.3.1">
+<h3 data-number="6.3.1" class="anchored" data-anchor-id="pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto"><span class="header-section-number">6.3.1</span> Pseudocódigo: Esquema Semi-Implícito Compensado para EDE con Difusión y Salto</h3>
+<div id="alg-semi-implícito" class="theorem algorithm">
+<p><span class="theorem-title"><strong>Algorithm 6.3</strong></span> <strong>Algoritmo 3:</strong> Simulación de Reservas Cramér-Lundberg con Método Semi-Implícito Compensado</p>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 36%">
+<col style="width: 43%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tipo</th>
+<th>Parámetro</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Entrada</strong></td>
+<td><span class="math inline">\(U_0\)</span></td>
+<td>Capital inicial (USD)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><span class="math inline">\(T\)</span></td>
+<td>Horizonte temporal (años)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><span class="math inline">\(\Delta t\)</span></td>
+<td>Paso de tiempo (ej. <span class="math inline">\(1/365\)</span> para diario)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><span class="math inline">\(M\)</span></td>
+<td>Número de trayectorias Monte Carlo</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><span class="math inline">\(N_{\text{pólizas}}\)</span></td>
+<td>Número total de pólizas vigentes</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><span class="math inline">\(\text{ceiling}_{\text{póliza}}\)</span></td>
+<td>Tope máximo de pérdida por póliza</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><span class="math inline">\(\text{CV}_{\text{meteo}}, \text{CV}_{\text{sismo}}\)</span></td>
+<td>Coeficientes de variación para severidad</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Funciones temporales <span class="math inline">\(c(t)\)</span></td>
+<td>Tasa de prima ajustada por inflación</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Funciones temporales <span class="math inline">\(r(t)\)</span></td>
+<td>Tasa de interés de inversiones</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Funciones temporales <span class="math inline">\(\sigma(t)\)</span></td>
+<td>Volatilidad de inversiones</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Funciones temporales <span class="math inline">\(\lambda_m(t)\)</span></td>
+<td>Intensidad estacional eventos meteorológicos</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Funciones temporales <span class="math inline">\(\lambda_s\)</span></td>
+<td>Intensidad constante eventos sísmicos (<span class="math inline">\(0.08\)</span>–<span class="math inline">\(0.15\)</span> eventos/año)</td>
+</tr>
+<tr class="odd">
+<td><strong>Salida</strong></td>
+<td><span class="math inline">\(\mathbf{U}[M][N+1]\)</span></td>
+<td>Matriz de trayectorias simuladas de reservas</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><span class="math inline">\(\tilde{U}[N+1]\)</span></td>
+<td>Pronóstico robusto mediante mediana</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><span class="math inline">\(\text{IC}_{5,95}[N+1]\)</span></td>
+<td>Intervalo de confianza al 90%</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<div id="alg-semi-fase1" class="theorem algorithm">
+<p><span class="theorem-title"><strong>Algorithm 6.4</strong></span> <strong>Algoritmo 4:</strong> Fase 1 - Preprocesamiento de parámetros temporales</p>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: alg-semi-fase1-code</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i ← <span class="dv">0</span> to N do</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    mes ← DeterminarMes(t_i)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    c_i ← c(t_i)                      <span class="co"># Prima mensual ajustada por inflación</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    r_i ← r(t_i)                      <span class="co"># Tasa CETES + componente global</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    σ_i ← σ(t_i)                      <span class="co"># Combinación convexa de volatilidades</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    λ_m,i ← (λ_meteo,anual <span class="op">/</span> <span class="dv">365</span>) × factor_estacional[mes]  <span class="co"># Intensidad eventos meteorológicos</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    λ_s,i ← λ_sismo <span class="op">/</span> <span class="dv">365</span>             <span class="co"># Intensidad eventos sísmicos</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Almacenar parámetros en vectores indexados por i</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>Inicializar U[M][N <span class="op">+</span> <span class="dv">1</span>] ← <span class="dv">0</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m ← <span class="dv">1</span> to M do</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    U[m][<span class="dv">0</span>] ← U_0</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i ← <span class="dv">0</span> to N <span class="op">-</span> <span class="dv">1</span> do</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2.1: Generación de saltos</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        n_meteo ← Poisson(λ_m,i)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        n_sismo ← Poisson(λ_s,i)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2.2: Cálculo de saltos brutos</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        total_saltos ← <span class="dv">0</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        δ ← <span class="op">|</span>U[m][i] <span class="op">-</span> U_0<span class="op">|</span> <span class="op">/</span> N_pólizas</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> δ <span class="op">&gt;</span> ceiling_póliza then</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>            δ ← ceiling_póliza</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Eventos meteorológicos</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_meteo <span class="op">&gt;</span> <span class="dv">0</span> then</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>            p_af ← Uniforme(<span class="fl">0.005</span>, <span class="fl">0.02</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>            n_af ← <span class="bu">max</span>(<span class="dv">1</span>, ⌊N_pólizas × p_af⌋)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>            μ_pól ← δ</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>            σ_pól ← CV_meteo × μ_pól</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j ← <span class="dv">1</span> to n_af do</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>                pérdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pól, σ_pól))</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> pérdida</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Eventos sísmicos</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_sismo <span class="op">&gt;</span> <span class="dv">0</span> then</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>            p_af ← Uniforme(<span class="fl">0.01</span>, <span class="fl">0.10</span>)</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>            n_af ← <span class="bu">max</span>(<span class="dv">1</span>, ⌊N_pólizas × p_af⌋)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>            μ_pól ← δ</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>            σ_pól ← CV_sismo × μ_pól</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> j ← <span class="dv">1</span> to n_af do</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>                pérdida ← <span class="bu">max</span>(<span class="dv">0</span>, Normal(μ_pól, σ_pól))</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>                total_saltos ← total_saltos <span class="op">+</span> pérdida</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2.3: Cálculo de compensación (reducción de varianza)</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        E_meteo ← (N_pólizas × <span class="fl">0.0125</span>) × δ</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        E_sismo ← (N_pólizas × <span class="fl">0.055</span>) × δ</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        comp ← (<span class="op">-</span>λ_m,i × E_meteo) <span class="op">+</span> (<span class="op">-</span>λ_s,i × E_sismo)</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 2.4: Actualización semi-implícita con compensación</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        ΔW ← √Δt × Normal(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        numerador ← U[m][i] × (<span class="dv">1</span> <span class="op">+</span> σ_i ΔW) <span class="op">+</span> c_i Δt <span class="op">+</span> comp <span class="op">-</span> total_saltos</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>        denominador ← <span class="dv">1</span> <span class="op">-</span> r_i Δt</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> denominador ≤ <span class="dv">0</span> then</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>            denominador ← <span class="dv">10</span><span class="op">^</span>(<span class="op">-</span><span class="dv">12</span>)  <span class="co"># Evitar división por cero</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>        U[m][i <span class="op">+</span> <span class="dv">1</span>] ← numerador <span class="op">/</span> denominador</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i ← <span class="dv">0</span> to N do</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>    Ũ[i] ← Mediana(U[<span class="fl">1.</span>.M][i])</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>    IC_5,<span class="dv">95</span>[i][<span class="dv">0</span>] ← Percentil₅(U[<span class="fl">1.</span>.M][i])</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    IC_5,<span class="dv">95</span>[i][<span class="dv">1</span>] ← Percentil₉₅(U[<span class="fl">1.</span>.M][i])</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="co"># FASE 4: Detección de saltos en la trayectoria mediana (opcional)</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>Inicializar log_ret[N]</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i ← <span class="dv">1</span> to N do</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>    log_ret[i] ← ln(Ũ[i] <span class="op">/</span> Ũ[i <span class="op">-</span> <span class="dv">1</span>])</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>θ ← <span class="dv">3</span> × DesvEst(log_ret)</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>Inicializar puntos_salto ← ∅</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i ← <span class="dv">1</span> to N do</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">|</span>log_ret[i]<span class="op">|</span> <span class="op">&gt;</span> θ then</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>        Añadir t_i a puntos_salto</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>retornar Ũ, IC_5,<span class="dv">95</span>, puntos_salto</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
