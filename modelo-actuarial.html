@@ -479,10 +479,8 @@ window.Quarto = {
   <li><a href="#función-de-primas-ajustadas-por-inflación-ct" id="toc-función-de-primas-ajustadas-por-inflación-ct" class="nav-link" data-scroll-target="#función-de-primas-ajustadas-por-inflación-ct"><span class="header-section-number">6.1.1</span> Función de Primas Ajustadas por Inflación: <span class="math inline">\(c(t)\)</span></a></li>
   <li><a href="#modelado-de-la-tasa-de-inversión-rt." id="toc-modelado-de-la-tasa-de-inversión-rt." class="nav-link" data-scroll-target="#modelado-de-la-tasa-de-inversión-rt."><span class="header-section-number">6.1.2</span> Modelado de la tasa de inversión: <span class="math inline">\(r(t)\)</span>.</a></li>
   <li><a href="#modelado-de-la-volatilidad-de-inversiones-sigmat." id="toc-modelado-de-la-volatilidad-de-inversiones-sigmat." class="nav-link" data-scroll-target="#modelado-de-la-volatilidad-de-inversiones-sigmat."><span class="header-section-number">6.1.3</span> Modelado de la volatilidad de Inversiones <span class="math inline">\(\sigma(t)\)</span>.</a></li>
-  </ul></li>
-  <li><a href="#pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto." id="toc-pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto." class="nav-link" data-scroll-target="#pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto."><span class="header-section-number">6.3</span> Pseudocódigo: Esquema de Milstein Compensado para EDE con Difusión y Salto.</a>
-  <ul class="collapse">
-  <li><a href="#pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" id="toc-pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" class="nav-link" data-scroll-target="#pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto"><span class="header-section-number">6.3.1</span> Pseudocódigo: Esquema Semi-Implícito Compensado para EDE con Difusión y Salto</a></li>
+  <li><a href="#pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto." id="toc-pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto." class="nav-link" data-scroll-target="#pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto."><span class="header-section-number">6.2.2</span> Pseudocódigo: Esquema de Milstein Compensado para EDE con Difusión y Salto.</a></li>
+  <li><a href="#pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" id="toc-pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" class="nav-link" data-scroll-target="#pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto"><span class="header-section-number">6.2.3</span> Pseudocódigo: Esquema Semi-Implícito Compensado para EDE con Difusión y Salto</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/modelo-actuarial.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/modelo-actuarial.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
@@ -1037,9 +1035,8 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 </div>
 </section>
 </section>
-</section>
-<section id="pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto." class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto."><span class="header-section-number">6.3</span> Pseudocódigo: Esquema de Milstein Compensado para EDE con Difusión y Salto.</h2>
+<section id="pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto." class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto."><span class="header-section-number">6.2.2</span> Pseudocódigo: Esquema de Milstein Compensado para EDE con Difusión y Salto.</h3>
 <div id="alg-milstein-entrada" class="theorem algorithm">
 <p><span class="theorem-title"><strong>Algorithm 6.1</strong></span> <strong>Algoritmo 1:</strong> Datos de Entrada - Simulación de Reservas Cramér-Lundberg con Método de Milstein Compensado</p>
 </div>
@@ -1235,8 +1232,9 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 <span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>retornar median_hist, IC_5,<span class="dv">95</span><span class="op">^</span>hist, median_fc, </span>
 <span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>IC_5,<span class="dv">95</span><span class="op">^</span>fc, saltos_hist, saltos_fc    </span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
-<section id="pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" class="level3" data-number="6.3.1">
-<h3 data-number="6.3.1" class="anchored" data-anchor-id="pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto"><span class="header-section-number">6.3.1</span> Pseudocódigo: Esquema Semi-Implícito Compensado para EDE con Difusión y Salto</h3>
+</section>
+<section id="pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" class="level3" data-number="6.2.3">
+<h3 data-number="6.2.3" class="anchored" data-anchor-id="pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto"><span class="header-section-number">6.2.3</span> Pseudocódigo: Esquema Semi-Implícito Compensado para EDE con Difusión y Salto</h3>
 <div id="alg-semi-implícito" class="theorem algorithm">
 <p><span class="theorem-title"><strong>Algorithm 6.3</strong></span> <strong>Algoritmo 3:</strong> Simulación de Reservas Cramér-Lundberg con Método Semi-Implícito Compensado</p>
 </div>
