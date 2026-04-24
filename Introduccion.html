@@ -132,11 +132,9 @@ window.Quarto = {
 </script>
 
 <meta property="og:title" content="2&nbsp; Introducción – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
-<meta property="og:description" content="">
 <meta property="og:image" content="assets/UNACH.png">
 <meta property="og:site_name" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta name="twitter:title" content="2&nbsp; Introducción – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
-<meta name="twitter:description" content="">
 <meta name="twitter:image" content="assets/UNACH.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -462,17 +460,35 @@ window.Quarto = {
 </header>
 
 
-<p>La Ciudad de México (CDMX) representa uno de los mercados más relevantes para el sector asegurador mexicano. Según el Censo de Población y Vivienda 2020 del INEGI(<span class="citation" data-cites="inegi2020censo">(<a href="references.html#ref-inegi2020censo" role="doc-biblioref">INEGI 2020</a>)</span>), la CDMX contaba con <span class="math inline">\(2330816\)</span> viviendas particulares habitadas. Ajustando por un crecimiento demográfico estimado del <span class="math inline">\(SI{0.5}\)</span> anual, para el periodo 2024–2025 se proyecta un parque habitacional de aproximadamente <span class="math inline">\(2378000\)</span> unidades.</p>
+<div style="text-align:justify">
+<p>La Ciudad de México (CDMX) representa uno de los mercados más relevantes para el sector asegurador mexicano. Según el Censo de Población y Vivienda 2020 del INEGI <span class="citation" data-cites="inegi2020censo">(<a href="references.html#ref-inegi2020censo" role="doc-biblioref">INEGI 2020</a>)</span>, la CDMX contaba con <span class="math inline">\(2330816\)</span> viviendas particulares habitadas. Ajustando por un crecimiento demográfico estimado del $ {0.5%}$ anual, para el periodo 2024–2025 se proyecta un parque habitacional de aproximadamente <span class="math inline">\(2378000\)</span> unidades.</p>
 <p>De acuerdo con el Panorama Analítico del Sector de Seguros y Fianzas 2024 publicado por la Comisión Nacional de Seguros y Fianzas (<span class="citation" data-cites="cnsf2024panorama">CNSF (<a href="references.html#ref-cnsf2024panorama" role="doc-biblioref">2024</a>)</span>), el ramo de Daños sin Automóviles registró una colocación de <span class="math inline">\(12200\)</span> millones de pesos en 2024, estimándose que aproximadamente el corresponde a seguros de vivienda, lo que equivale a primas del orden de <span class="math inline">\(7320\)</span> millones de pesos.</p>
-<p>Estudios de la Asociación Mexicana de Instituciones de Seguros (AMIS) y consultoras especializadas (Marsh, AON) indican que la CDMX concentra entre el SI 22 del mercado nacional de seguros de vivienda, debido a su alta densidad poblacional y valor patrimonial de los inmuebles.</p>
+<p>Estudios de la Asociación Mexicana de Instituciones de Seguros (<span class="citation" data-cites="amis2024seguros">AMIS (<a href="references.html#ref-amis2024seguros" role="doc-biblioref">2024</a>)</span>) y consultoras especializadas (<span class="citation" data-cites="marsh2025mercado">Marsh LLC (<a href="references.html#ref-marsh2025mercado" role="doc-biblioref">2025</a>)</span>, AON) indican que la CDMX concentra entre el <span class="math inline">\(18\%\)</span> y <span class="math inline">\(22\%\)</span> del mercado nacional de seguros de vivienda, debido a su alta densidad poblacional y valor patrimonial de los inmuebles.</p>
+<p>La modelación actuarial de reservas para seguros de vivienda en la CDMX enfrenta desafíos específicos derivados de:</p>
+<ul>
+<li><p><strong>Exposición a riesgos catastróficos</strong>: La ubicación geográfica de la CDMX la hace vulnerable a eventos sísmicos significativos y fenómenos hidrometeorológicos intensos, los cuales generan siniestros de magnitud considerable y frecuencia estacional.</p></li>
+<li><p><strong>Dinámica inflacionaria</strong>: La erosión del poder adquisitivo afecta tanto el valor de las sumas aseguradas como los costos de reparación, requiriendo ajustes continuos en las primas (<span class="citation" data-cites="inegi2024inpc">INEGI (<a href="references.html#ref-inegi2024inpc" role="doc-biblioref">2024</a>)</span>)</p></li>
+<li><p><strong>Volatilidad de inversiones</strong>: Las reservas técnicas son invertidas en instrumentos financieros cuyos rendimientos presentan variabilidad temporal, impactando directamente la solvencia de la aseguradora.</p></li>
+<li><p><strong>Dependencia temporal de parámetros</strong>: Los procesos estocásticos subyacentes no son estacionarios; sus parámetros (intensidad de saltos, severidad, tasas de interés) varían sistemáticamente con el tiempo.</p></li>
+</ul>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-amis2024seguros" class="csl-entry" role="listitem">
+AMIS. 2024. <em>Estudios del Mercado de Seguros de Vivienda</em>. Asociación Mexicana de Instituciones de Seguros.
+</div>
 <div id="ref-cnsf2024panorama" class="csl-entry" role="listitem">
 CNSF. 2024. <em>Panorama Analítico del Sector de Seguros y Fianzas 2024</em>. Comisión Nacional de Seguros y Fianzas. <a href="https://sio.cnsf.gob.mx/">https://sio.cnsf.gob.mx/</a>.
 </div>
 <div id="ref-inegi2020censo" class="csl-entry" role="listitem">
 INEGI. 2020. <em>Censo de Población y Vivienda 2020</em>. Instituto Nacional de Estadística y Geografía. <a href="https://www.inegi.org.mx/">https://www.inegi.org.mx/</a>.
+</div>
+<div id="ref-inegi2024inpc" class="csl-entry" role="listitem">
+INEGI. 2024. <em>Índice Nacional de Precios al Consumidor (INPC)</em>. Instituto Nacional de Estadística y Geografía. <a href="https://www.inegi.org.mx/temas/inpc/">https://www.inegi.org.mx/temas/inpc/</a>.
+</div>
+<div id="ref-marsh2025mercado" class="csl-entry" role="listitem">
+Marsh LLC. 2025. <em>Informe del Mercado Mundial de Seguros Q3 2025</em>. Marsh.
 </div>
 </div>
 
