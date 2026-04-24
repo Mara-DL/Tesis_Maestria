@@ -1,15 +1,26 @@
 ---
 lang: es
 format:
-  html: default
-  pdf: default  
+  html:
+    code-overflow: scroll
+  pdf:
+    documentclass: scrreprt
+    latex-engine: lualatex
+    include-in-header:
+      text: |
+        \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+        \usepackage{algorithmic}
+        \usepackage{amsmath}
+        \SetKwInput{KwIn}{Entrada}
+        \SetKwInput{KwOut}{Salida}
+        \SetKw{Return}{retornar}
 ---
 
-# Implementación Numérica y Análisis de Resultados
+# Implementación Numérica.
 
 ## Estimación de Parámetros para el mercado de seguros de bienes raíces Mexicano
 
-### Función de Primas Ajustadas por Inflación: $c(t)$
+### Función de Primas Ajustadas por Inflación: $c(t)$. {#sec-Primas_ajustadas}
 
 ::: {style="text-align:justify"}
 La prima base para enero de 2024 se establece en $c_0 = 283.00$, derivada del consenso de fuentes sectoriales (AMIS, CNSF). El ajuste por inflación se realiza mediante capitalización compuesta: $$ c(t) = c_0 \prod_{i=1}^{t} \left(1 + \pi_i\right),
@@ -19,7 +30,7 @@ La prima base para enero de 2024 se establece en $c_0 = 283.00$, derivada del co
 #### Datos de Inflación Mensual
 
 ::: {style="text-align:justify"}
-La Tabla presenta las tasas de inflación utilizadas para el periodo enero 2024 -- diciembre 2025. Los datos de 2024 son observados, mientras que las proyecciones de 2025 se basan en el consenso de analistas del Banco de México @banxico2024expectativas.
+La Tabla @tbl-inflacion presenta las tasas de inflación utilizadas para el periodo enero 2024 -- diciembre 2025. Los datos de 2024 son observados, mientras que las proyecciones de 2025 se basan en el consenso de analistas del Banco de México @banxico2024expectativas.
 :::
 
 |   Mes    | Prima mensual ajustada (MXN) |
@@ -49,13 +60,13 @@ La Tabla presenta las tasas de inflación utilizadas para el periodo enero 2024 
 | Nov 2025 |            313.81            |
 | Dic 2025 |            315.01            |
 
-: Tasas de inflación mensual en México (variación porcentual del INPC)
+: Tasas de inflación mensual en México (variación porcentual del INPC Enero 2024- Diciembre 2025). {#tbl-inflacion}
 
 ::: {style="text-align:justify"}
 Aplicando @eq-ajuste_inflacion, las primas mensuales ajustadas evolucionan de $283.00$ en enero 2024 a $315.01$ en diciembre 2025, representando un incremento acumulado del $11.3\%$, consistente con la inflación proyectada
 :::
 
-### Modelado de la tasa de inversión: $r(t)$.
+### Modelado de la tasa de inversión: $r(t)$. {#sec-inversion_mensual}
 
 ::: {style="text-align:justify"}
 Las aseguradoras mexicanas mantienen carteras conservadoras con asignación aproximada de $70\%$ en instrumentos locales (CETES, Mbonos) y $30\%$ en activos globales ([@cnsf2024panorama]). Siguiendo el marco regulatorio de la CNSF y la estructura conservadora de las carteras aseguradoras mexicanas (informe anual CNSF), modelamos $r(t)$ como combinación convexa ponderada:
@@ -77,7 +88,7 @@ $$r(t) = 0.75 \cdot \frac{0.110}{12} + 0.25 \cdot \frac{0.048}{12} = 0.007875 \t
 Este valor se ajusta a $0.78\%$ mensual para incorporar costos operativos y fiscales ($1.5$ p.p. anuales), resultando en un rendimiento neto anual de $8.9\%$.
 :::
 
-### Modelado de la volatilidad de Inversiones $\sigma(t)$.
+### Modelado de la volatilidad de Inversiones $\sigma(t)$. {#sec-volatilidad_inversiones}
 
 #### Combinación Convexa de Volatilidades
 
@@ -94,40 +105,40 @@ Los informes anuales de la CNSF sobre la composición de las inversiones del sec
 
 Dado que no hay datos mensuales oficiales públicos, se asume una asignación constante durante el periodo, basada en el último informe disponible (2023) con $w_g = 0\cdot30$, $w_l = 0\cdot70$.
 
-La componente local $\sigma_l(t)$ respecta a la Volatilidad de CETES a 28 días ue es el activo de referencia para las inversiones conservadoras en México, estimada mediante desviación estándar móvil de 30 días de las tasas diarias de Banxico:
+La componente local $\sigma_l(t)$ respecta a la Volatilidad de CETES a 28 días que es el activo de referencia para las inversiones conservadoras en México, estimada mediante desviación estándar móvil de 30 días de las tasas diarias de Banxico:
 
 $$\sigma_l(t) = 0.05\% \text{ mensual (constante)}$$
 
 Mientras que la componente global $\sigma_g(t)$ es dada por la Volatilidad del índice ILS (Artemis.bm), calculada como desviación estándar móvil de $3$ meses de los rendimientos mensuales. Presenta estacionalidad marcada por la temporada de huracanes (junio-noviembre):
 
-|   Mes    | $\sigma_g(t)$ |
-|:--------:|:-------------:|
-| Ene 2024 |     0.08%     |
-| Feb 2024 |     0.09%     |
-| Mar 2024 |     0.10%     |
-| Abr 2024 |     0.11%     |
-| May 2024 |     0.12%     |
-| Jun 2024 |     0.15%     |
-| Jul 2024 |     0.18%     |
-| Ago 2024 |     0.35%     |
-| Sep 2024 |     0.30%     |
-| Oct 2024 |     0.25%     |
-| Nov 2024 |     0.20%     |
-| Dic 2024 |     0.18%     |
-| Ene 2025 |     0.16%     |
-| Feb 2025 |     0.14%     |
-| Mar 2025 |     0.13%     |
-| Abr 2025 |     0.14%     |
-| May 2025 |     0.16%     |
-| Jun 2025 |     0.20%     |
-| Jul 2025 |     0.25%     |
-| Ago 2025 |     0.22%     |
-| Sep 2025 |     0.28%     |
-| Oct 2025 |     0.24%     |
-|  Nov-25  |     0.20%     |
-| Dic 2025 |     0.18%     |
+|   Mes    | Volatilidad global $\sigma_g(t)$ |
+|:--------:|:--------------------------------:|
+| Ene 2024 |              0.08%               |
+| Feb 2024 |              0.09%               |
+| Mar 2024 |              0.10%               |
+| Abr 2024 |              0.11%               |
+| May 2024 |              0.12%               |
+| Jun 2024 |              0.15%               |
+| Jul 2024 |              0.18%               |
+| Ago 2024 |              0.35%               |
+| Sep 2024 |              0.30%               |
+| Oct 2024 |              0.25%               |
+| Nov 2024 |              0.20%               |
+| Dic 2024 |              0.18%               |
+| Ene 2025 |              0.16%               |
+| Feb 2025 |              0.14%               |
+| Mar 2025 |              0.13%               |
+| Abr 2025 |              0.14%               |
+| May 2025 |              0.16%               |
+| Jun 2025 |              0.20%               |
+| Jul 2025 |              0.25%               |
+| Ago 2025 |              0.22%               |
+| Sep 2025 |              0.28%               |
+| Oct 2025 |              0.24%               |
+|  Nov-25  |              0.20%               |
+| Dic 2025 |              0.18%               |
 
-: Volatilidad Global, $\sigma_g(t)$ mensual
+: Tasas de volatilidad mensual en el mercado global, $\sigma_g(t)$ (Enero 2024- Diciembre 2025). {#tbl-volatilidad_global}
 
 La volatilidad total mensual resultante es :
 
@@ -158,7 +169,7 @@ La volatilidad total mensual resultante es :
 |  Nov-25  |    0.20    |    0.05    |    0.095    |
 | Dic 2025 |    0.18    |    0.05    |    0.089    |
 
-: Volatilidad Total, $\sigma$ mensual.
+: Tasas de volatilidad mensual en el mercado total, $\sigma$ (Enero 2024- Diciembre 2025). {#tbl-volatilidad_total}
 
 con promedio anual $\bar \sigma= 0.092\%$ con picos superiores a $0.14\%$ en meses de alta actividad catastrófica.
 
@@ -168,9 +179,9 @@ El proceso de siniestros $S(t)$ se descompone en dos componentes independientes 
 
 $$S(t) = S_{\text{meteo}}(t) + S_{\text{sismo}}(t) = \sum_{i=1}^{N_{\text{meteo}}(t)} Y_i^{\text{meteo}} + \sum_{j=1}^{N_{\text{sismo}}(t)} Y_j^{\text{sismo}}$$
 
-donde $N_{\text{meteo}}(t)$ sigue un proceso de Poisson no homogéneo con intensidad $\lambda{\text{meteo}}(t) = \lambda_{\text{meteo}}^{\text{anual}} \cdot \phi(t)), siendo (\phi(t)$ una función estacional mensual normalizada $\left(\frac{1}{12}\int_0^{12}\phi(s)ds = 1\right)$, y $N{\text{sismo}}(t)$ es un proceso de Poisson homogéneo con intensidad constante (\lambda\_{\text{sismo}}) debido a la ausencia de estacionalidad significativa en la ocurrencia de sismos de magnitud relevante para siniestros asegurados.
+donde $N_{\text{meteo}}(t)$ sigue un proceso de Poisson no homogéneo con intensidad $\lambda{\text{meteo}}(t) = \lambda_{\text{meteo}}^{\text{anual}} \cdot \phi(t)), siendo (\phi(t)$ una función estacional mensual normalizada $\left(\frac{1}{12}\int_0^{12}\phi(s)ds = 1\right)$, y $N{\text{sismo}}(t)$ es un proceso de Poisson homogéneo con intensidad constante $\lambda_{\text{sismo}}$ debido a la ausencia de estacionalidad significativa en la ocurrencia de sismos de magnitud relevante para siniestros asegurados.
 
-####  Estimación de la Intensidad de Siniestro.
+#### Estimación de la Intensidad de Siniestro.
 
 ##### Componente Hidrometeorológico
 
@@ -178,7 +189,7 @@ La intensidad mensual $\lambda_{\text{meteo}}(m)$ para el mes $m \in {1,\dots,12
 
 $$\lambda_{\text{meteo}}(m) = \frac{\lambda_{\text{meteo}}^{\text{anual}}}{12} \cdot \phi(m)$$
 
-donde $\lambda_{\text{meteo}}^{\text{anual}} = 8.0$ eventos/año se calibra a partir de los registros históricos de la CONAGUA de fenómenos hidrometeorológicos que generaron reclamaciones superiores a USD $100,000$ en viviendas aseguradas en la CDMX. La función estacional $\phi(m)$ se obtiene normalizando los datos mensuales de frecuencia relativa:
+donde $\lambda_{\text{meteo}}^{\text{anual}} = 8.0$ eventos/año se calibra a partir de los registros históricos de la CONAGUA (@conagua_datos) de fenómenos hidrometeorológicos que generaron reclamaciones superiores a USD $100,000$ en viviendas aseguradas en la CDMX. La función estacional $\phi(m)$ se obtiene normalizando los datos mensuales de frecuencia relativa:
 
 $$\phi(m) = \frac{f_m}{\frac{1}{12}\sum_{k=1}^{12} f_k}, \quad f = [0.3, 0.3, 0.4, 0.6, 1.0, 1.8, 2.2, 2.5, 2.8, 2.3, 1.2, 0.5]$$
 
@@ -186,7 +197,7 @@ Esta calibración refleja el pico estacional en septiembre (huracanes y lluvias 
 
 ##### Componente Sísmico
 
-Para sismos, utilizamos $\lambda_{\text{sismo}} = 0.08$ eventos/año, derivado del catálogo del Servicio Sismológico Nacional (SSN) considerando únicamente eventos con magnitud $M_w \geq 6.0$ y epicentro a menos de $300 km$ de la CDMX que históricamente han generado siniestralidad asegurada significativa (ej. sismos de 1985, 2017). Dado que la ocurrencia de sismos no presenta estacionalidad estadísticamente significativa $(p\text{-valor} > 0.15)$ en test de Kolmogorov-Smirnov para uniformidad mensual), mantenemos intensidad constante:
+Para sismos, utilizamos $\lambda_{\text{sismo}} = 0.08$ eventos/año, derivado del catálogo del Servicio Sismológico Nacional (SSN @ssn_catalogo) considerando únicamente eventos con magnitud $M_w \geq 6.0$ y epicentro a menos de $300 km$ de la CDMX que históricamente han generado siniestralidad asegurada significativa (ej. sismos de 1985, 2017). Dado que la ocurrencia de sismos no presenta estacionalidad estadísticamente significativa $(p\text{-valor} > 0.15)$ en test de Kolmogorov-Smirnov para uniformidad mensual), mantenemos intensidad constante:
 
 $$\lambda_{\text{sismo}}(m) = \frac{\lambda_{\text{sismo}}}{12} = 0.0067 \text{ eventos/mes}$$
 
@@ -194,7 +205,7 @@ $$\lambda_{\text{sismo}}(m) = \frac{\lambda_{\text{sismo}}}{12} = 0.0067 \text{ 
 
 ##### Severidad meteorológica
 
-Modelamos la severidad de los siniestros hidrometeorológicos \$Y\_{\\text{meteo}} \$ mediante una distribución normal truncada en $[0, \infty)$, denotada como
+Modelamos la severidad de los siniestros hidrometeorológicos $Y_{\text{meteo}}$ mediante una distribución normal truncada en $[0, \infty)$, denotada como
 
 $$Y_{\text{meteo}} \sim \mathcal{N}_+( \mu, \sigma^2 ),$$
 
@@ -216,7 +227,7 @@ Para los siniestros sísmicos, adoptamos también una distribución normal trunc
 
 $$Y_{\text{sismo}} \sim \mathcal{N}_+(\mu_s, \sigma_s^2).$$
 
-Los parámetros se estiman por máxima verosimilitud robusta (M-estimador o regresión cuantílica) sobre las 43 reclamaciones sísmicas registradas en el periodo 2000–2023 en la CDMX:
+Los parámetros se estiman por máxima verosimilitud robusta (M-estimador @def-M_estimador o regresión cuantílica @def-regresion_cualitica) sobre las 43 reclamaciones sísmicas registradas en el periodo 2000–2023 en la CDMX:
 
 $$\hat{\mu}_s = \ln(1{,}750{,}000) \approx 14.37, \qquad\hat{\sigma}_s = 0.65 \quad (\text{IC}_{95\%}: [0.55,\, 0.75]).$$
 
@@ -224,7 +235,11 @@ Estos valores se obtienen al ajustar una normal en escala logarítmica (como es 
 
 El valor esperado es entonces aproximadamente:
 
-$$\mathbb{E}[Y_{\text{sismo}}] \approx \exp\!\left(\mu_s + \frac{\sigma_s^2}{2}\right)= \exp\!\left(14.37 + \frac{0.65^2}{2}\right)= \exp(14.37 + 0.21125) = \exp(14.58125) \approx \text{USD } 2{,}160{,}000.$$
+$$\begin{aligned}
+\mathbb{E}[Y_{\text{sismo}}] \approx {}&  \exp\!\left(\mu_s + \frac{\sigma_s^2}{2}\right)= \exp\!\left(14.37 + \frac{0.65^2}{2}\right) \\
+& =  \exp(14.37 + 0.21125) = \exp(14.58125) \approx \text{USD } 2{,}160{,}000.
+\end{aligned}
+$$
 
 Sin embargo, si queremos mantener coherencia con el valor anterior de USD 1,750,000 con $\alpha=1.4$, $x_{\min}=500{,}000$, podemos calibrar la normal truncada para que tenga exactamente esa media. Resolvemos:
 
@@ -232,7 +247,7 @@ $$\mathbb{E}[Y] = \mu + \sigma \cdot \lambda(\alpha) = 1{,}750{,}000,$$
 
 con $\alpha = -\mu/\sigma$, y $\lambda(\alpha) = \varphi(\alpha)/(1-\Phi(\alpha))$. Dado que $\mu$ y $\sigma$ están en escala *lineal* (no log), proponemos una calibración directa:
 
-- Supongamos que la severidad sísmica tiene media $\mu_s = 1{,}750{,}000$ y desviación estándar $\sigma_s = 875{,}000$ (coeficiente de variación ≈ 0.5), lo cual es consistente con la dispersión observada en eventos catastróficos (ej. sismo 2017: reclamaciones entre $USD 0.8M y 3.2M)$.
+- Supongamos que la severidad sísmica tiene media $\mu_s = 1{,}750{,}000$ y desviación estándar $\sigma_s = 875{,}000$ (coeficiente de variación ≈ 0.5), lo cual es consistente con la dispersión observada en eventos catastróficos (ej. sismo 2017: reclamaciones entre $(0.8$ y $3.2)$ millones de dolares (USD).
 
 - Entonces, la distribución normal truncada $\mathcal{N}_+(1{,}750{,}000,; 875{,}000^2)$ tiene:
 
@@ -250,24 +265,283 @@ $$Y_{\text{sismo}} \sim \mathcal{N}_+\bigl(\mu_s = 1{,}742{,}000,\; \sigma_s = 8
 
 con $\mathbb{E}[Y_{\text{sismo}}] = \text{USD } 1{,}750{,}000$, y coeficiente de variación $= 0.50$.
 
-### Aproximación numérica del modelo de Crámer Lundberg extendido
+## Aproximación numérica del modelo de Crámer Lundberg extendido
 
 Consideramos el proceso de reservas bajo el modelo extendido de Cramér-Lundberg con inversión estocástica y saltos reescribimos @eq-modelo_extendido en forma diferencial estocástica:
 
-$$dX_t = \underbrace{\left[c(t) + r(t)X_t - \lambda_{\text{meteo}}(t)\mathbb{E}[Y^{\text{meteo}}_t \mid \mathcal{F}_t] - \lambda_{\text{sismo}}\mathbb{E}[Y^{\text{sismo}}_t \mid \mathcal{F}_t]\right]}_{\mu(t,X_t)}dt + \underbrace{\sigma(t)X_t}_{\sigma(t,X_t)}dW_t - dJ_t$$
- {#eq-eds-completa} La compensación $\lambda \mathbb{E}[Y \mid \mathcal{F}_t]$ garantiza que el proceso sin saltos reales sea una semimartingala con la deriva correcta, esencial para la convergencia del esquema numérico.
+$$dX_t = \underbrace{\left[c(t) + r(t)X_t - \lambda_{\text{meteo}}(t)\mathbb{E}[Y^{\text{meteo}}_t \mid \mathcal{F}_t] - \lambda_{\text{sismo}}\mathbb{E}[Y^{\text{sismo}}_t \mid \mathcal{F}_t]\right]}_{\mu(t,X_t)}dt + \underbrace{\sigma(t)X_t}_{\sigma(t,X_t)}dW_t - dJ_t$$ {#eq-eds-completa} La compensación $\lambda \mathbb{E}[Y \mid \mathcal{F}_t]$ garantiza que el proceso sin saltos reales sea una semimartingala (@def-Semimartingalas_saltos) con la deriva correcta, esencial para la convergencia del esquema numérico.
 
 Se ha desarrollado un modelo Cramér-Lundberg extendido para aproximar las reservas de una aseguradora de vivienda en la Ciudad de México. Este modelo incorpora parámetros dependientes del tiempo, primas ajustadas por inflación (Sección 3.1), tasas de interés estocásticas (Sección 3.2), volatilidad mediante combinación convexa (Sección 3.3) y un proceso de saltos compuesto que modela siniestros catastróficos meteorológicos y sísmicos con intensidades estacionales (Sección 3.4.1).
 
-Dada la complejidad de la ecuación diferencial estocástica con saltos resultante (EDE-S), cuya solución analítica no es viable ante la no estacionariedad de los parámetros y la estructura de saltos, se requiere métodos numéricos robustos.
+Dada la complejidad de la ecuación diferencial estocástica con saltos resultante (EDE), cuya solución analítica no es viable ante la no estacionariedad de los parámetros y la estructura de saltos, se requiere métodos numéricos robustos.
 
 Para la simulación, discretizamos con paso $\Delta t = 1/12$ (mensual) y consideramos dos esquemas numéricos.
 
-#### Implementación Numérica Métodos Milstein y Semi-Implícito.
+### Implementación Numérica Métodos Milstein y Semi-Implícito.
 
-Presentando el algoritmo de Milstein compensado (@sec-EDESJs), escrito en lenguaje natural estructurado (es decir, como un pseudocódigo), diseñado específicamente para aproximar soluciones de ecuaciones diferenciales estocásticas (EDS) con difusión y salto(@sec-EDESJs), como las que surgen en el modelo de Cramér–Lundberg (@eq-modelo_extendido) por ejemplo, con componentes de procesos compuestos de Poisson)
+Presentando el algoritmo de Milstein compensado (@sec-Milstein_compensado), escrito en lenguaje natural estructurado (es decir, como un pseudocódigo), diseñado específicamente para aproximar soluciones de ecuaciones diferenciales estocásticas (EDS) con difusión y salto (@sec-EDESJs), como las que surgen en el modelo de Cramér–Lundberg (@eq-modelo_extendido) por ejemplo, con componentes de procesos compuestos de Poisson)
 
-El pseudocódigo siguiente está pensado para ser puente conceptual entre la teoría y la implementación, y se enfoca en la versión compensada (es decir, usando el proceso de salto compensado $\tilde{N} = N_t - \lambda t$ para garantizar que el término de salto tenga esperanza cero y sea adecuado para esquemas numéricos estables.
-
-#### Pseudocódigo: Esquema de Milstein Compensado para EDS con Difusión y Salto.
+El pseudocódigo siguiente está pensado para ser puente conceptual entre la teoría y la implementación, y se enfoca en la versión compensada (es decir, usando el proceso de salto compensado (@def-med_alea_poisson) $\tilde{N} = N_t - \lambda t$) para garantizar que el término de salto tenga esperanza cero y sea adecuado para esquemas numéricos estables.
 :::
+
+### Pseudocódigo: Esquema de Milstein Compensado para EDE con Difusión y Salto.
+
+::: {#alg-milstein-entrada}
+**Algoritmo 1:** Datos de Entrada - Simulación de Reservas Cramér-Lundberg con Método de Milstein Compensado
+:::
+
+| Tipo | Parámetro | Descripción |
+|------|-----------|-------------|
+| **Entrada** | $U_0^{\text{hist}}$ | Capital inicial histórico (USD) |
+| | $T_{\text{hist}}$ | Horizonte temporal histórico (años) |
+| | $T_{\text{fc}}$ | Horizonte de pronóstico (días) |
+| | $\Delta t$ | Paso de tiempo ($1/365$) |
+| | $M_{\text{hist}}, M_{\text{fc}}$ | Número de trayectorias Monte Carlo |
+| | $N_{\text{pólizas}}$ | Número total de pólizas vigentes |
+| | $\text{ceiling}_{\text{póliza}}$ | Tope máximo de pérdida por póliza |
+| | $\text{CV}_{\text{meteo}}, \text{CV}_{\text{sismo}}$ | Coeficientes de variación |
+| | Parámetros históricos interpolados | $c_{\text{hist}}[i]$, $r_{\text{hist}}[i]$, $\sigma_{\text{hist}}[i]$, $\lambda_{m,\text{hist}}[i]$ |
+| | Parámetros pronóstico (enero) | $c_{\text{ene}}$, $r_{\text{ene}}$, $\sigma_{\text{ene}}$, $\lambda_{m,\text{ene}}$, $\lambda_s$ |
+| **Salida** | $\text{median}_{\text{hist}}$, $\text{IC}_{5,95}^{\text{hist}}$ | Estadísticas periodo histórico |
+| | $\text{median}_{\text{fc}}$, $\text{IC}_{5,95}^{\text{fc}}$ | Estadísticas pronóstico |
+| | $\text{saltos}_{\text{hist}}$, $\text{saltos}_{\text{fc}}$ | Puntos de salto detectados |
+
+::: {#alg-fase1}
+**Algoritmo 2:** Fase 1 - Simulación histórica con Milstein compensado
+:::
+
+```python
+#| label: alg-fase1-code
+#| eval: false
+N_hist ← ⌊T_hist / Δt⌋
+Inicializar X[M_hist][N_hist + 1] ← 0
+
+for m ← 1 to M_hist do
+    X[m][0] ← U_0^hist
+    
+    for i ← 0 to N_hist - 1 do
+        δ ← |X[m][i] - U_0^hist| / N_polizas
+        
+        if δ > ceiling_poliza then
+            δ ← ceiling_poliza
+        
+        # Generación y compensación de saltos
+        total_saltos ← 0
+        comp ← 0
+        
+        n_meteo ← Poisson(λ_m,hist[i])
+        
+        if n_meteo > 0 then
+            p_af ← Uniforme(0.005, 0.02)
+            n_af ← max(1, ⌊N_polizas · p_af⌋)
+            μ_pol ← δ
+            σ_pol ← CV_meteo · μ_pol
+            
+            for j ← 1 to n_af do
+                perdida ← max(0, Normal(μ_pol, σ_pol))
+                total_saltos ← total_saltos + perdida
+        
+        E_meteo ← ((0.005 + 0.02) / 2 · N_polizas) · δ
+        comp ← comp - λ_m,hist[i] · E_meteo
+        
+        n_sismo ← Poisson(λ_s / 365)
+        
+        if n_sismo > 0 then
+            p_af ← Uniforme(0.01, 0.10)
+            n_af ← max(1, ⌊N_polizas · p_af⌋)
+            μ_pol ← δ
+            σ_pol ← CV_sismo · μ_pol
+            
+            for j ← 1 to n_af do
+                perdida ← max(0, Normal(μ_pol, σ_pol))
+                total_saltos ← total_saltos + perdida
+        
+        E_sismo ← ((0.01 + 0.10) / 2 · N_polizas) · δ
+        comp ← comp - (λ_s / 365) · E_sismo
+        
+# Actualización Milstein con compensación
+ΔW ← √Δt · Normal(0, 1)
+
+drift ← c_hist[i] · Δt + r_hist[i] · X[m][i] · Δt + comp
+
+diff ← σ_hist[i] · X[m][i] · ΔW
+
+corr ← (1/2) · (σ_hist[i])² · X[m][i] · (ΔW² - Δt)
+
+X[m][i + 1] ← X[m][i] + drift + diff + corr - total_saltos
+
+# Calcular estadísticas históricas
+for i ← 0 to N_hist do
+    median_hist[i] ← Mediana(X[·][i])
+    IC_5,95^hist[i] ← [Percentil₅, Percentil₉₅](X[·][i])
+
+U_0^fc ← median_hist[N_hist]
+
+# FASE 2: Simulación pronóstico 
+# (estructura idéntica, parámetros constantes enero)
+N_fc ← T_fc
+Inicializar U[M_fc][N_fc + 1] ← 0
+
+for m ← 1 to M_fc do
+    U[m][0] ← U_0^fc
+    
+    for i ← 0 to N_fc - 1 do
+        δ ← |U[m][i] - U_0^fc| / N_polizas
+        
+        if δ > ceiling_poliza then
+            δ ← ceiling_poliza
+        
+        # Saltos con parámetros constantes de enero
+        n_meteo ← Poisson(λ_m,ene)
+        n_sismo ← Poisson(λ_s / 365)
+        
+        # ... (mismos pasos de simulación y compensación que Fase 1)
+        
+        ΔW ← √Δt · Normal(0, 1)
+        drift ← c_ene · Δt + r_ene · U[m][i] · Δt + comp
+        diff ← σ_ene · U[m][i] · ΔW
+        corr ← (1/2) · σ_ene² · U[m][i] · (ΔW² - Δt)
+        U[m][i + 1] ← U[m][i] + drift + diff + corr - total_saltos
+
+# Calcular estadísticas pronóstico
+for i ← 0 to N_fc do
+    median_fc[i] ← Mediana(U[·][i])
+    IC_5,95^fc[i] ← [Percentil₅, Percentil₉₅](U[·][i])
+
+# Detección de saltos en medianas
+log_ret_hist ← ln(median_hist[1:] / median_hist[:-1])
+
+θ_hist ← 3 · DesvEst(log_ret_hist)
+
+saltos_hist ← {(t_i, median_hist[i]) | |log_ret_hist[i]| > θ_hist}
+
+# ... (mismo procedimiento para median_fc)
+
+retornar median_hist, IC_5,95^hist, median_fc, 
+IC_5,95^fc, saltos_hist, saltos_fc    
+```
+
+### Pseudocódigo: Esquema Semi-Implícito Compensado para EDE con Difusión y Salto
+
+::: {#alg-semi-implícito}
+**Algoritmo 3:** Simulación de Reservas Cramér-Lundberg con Método Semi-Implícito Compensado
+:::
+
+| Tipo | Parámetro | Descripción |
+|------|-----------|-------------|
+| **Entrada** | $U_0$ | Capital inicial (USD) |
+| | $T$ | Horizonte temporal (años) |
+| | $\Delta t$ | Paso de tiempo (ej. $1/365$ para diario) |
+| | $M$ | Número de trayectorias Monte Carlo |
+| | $N_{\text{pólizas}}$ | Número total de pólizas vigentes |
+| | $\text{ceiling}_{\text{póliza}}$ | Tope máximo de pérdida por póliza |
+| | $\text{CV}_{\text{meteo}}, \text{CV}_{\text{sismo}}$ | Coeficientes de variación para severidad |
+| | Funciones temporales $c(t)$ | Tasa de prima ajustada por inflación |
+| | Funciones temporales $r(t)$ | Tasa de interés de inversiones |
+| | Funciones temporales $\sigma(t)$ | Volatilidad de inversiones |
+| | Funciones temporales $\lambda_m(t)$ | Intensidad estacional eventos meteorológicos |
+| | Funciones temporales $\lambda_s$ | Intensidad constante eventos sísmicos ($0.08$--$0.15$ eventos/año) |
+| **Salida** | $\mathbf{U}[M][N+1]$ | Matriz de trayectorias simuladas de reservas |
+| | $\tilde{U}[N+1]$ | Pronóstico robusto mediante mediana |
+| | $\text{IC}_{5,95}[N+1]$ | Intervalo de confianza al 90% |
+
+---
+
+::: {#alg-semi-fase1}
+**Algoritmo 4:** Fase 1 - Preprocesamiento de parámetros temporales
+:::
+
+```python
+#| label: alg-semi-fase1-code
+#| eval: false
+for i ← 0 to N do
+    mes ← DeterminarMes(t_i)
+    # Prima mensual ajustada por inflación
+    c_i ← c(t_i)
+    # Tasa CETES + componente global           
+    r_i ← r(t_i) 
+    # Combinación convexa de volatilidades         
+    σ_i ← σ(t_i)
+    # Intensidad eventos meteorológicos         
+    λ_m,i ← (λ_meteo,anual / 365) × factor_estacional[mes]  
+    # Intensidad eventos sísmicos
+    λ_s,i ← λ_sismo / 365  
+    
+
+# Almacenar parámetros en vectores indexados por i
+Inicializar U[M][N + 1] ← 0
+
+for m ← 1 to M do
+    U[m][0] ← U_0
+    
+    for i ← 0 to N - 1 do
+        # 2.1: Generación de saltos
+        n_meteo ← Poisson(λ_m,i)
+        n_sismo ← Poisson(λ_s,i)
+        
+        # 2.2: Cálculo de saltos brutos
+        total_saltos ← 0
+        δ ← |U[m][i] - U_0| / N_polizas
+        
+        if δ > ceiling_poliza then
+            δ ← ceiling_poliza
+        
+        # Eventos meteorológicos
+        if n_meteo > 0 then
+            p_af ← Uniforme(0.005, 0.02)
+            n_af ← max(1, ⌊N_polizas × p_af⌋)
+            μ_pol ← δ
+            σ_pol ← CV_meteo × μ_pol
+            
+            for j ← 1 to n_af do
+                perdida ← max(0, Normal(μ_pol, σ_pol))
+                total_saltos ← total_saltos + perdida
+        
+        # Eventos sísmicos
+        if n_sismo > 0 then
+            p_af ← Uniforme(0.01, 0.10)
+            n_af ← max(1, ⌊N_polizas × p_af⌋)
+            μ_pol ← δ
+            σ_pol ← CV_sismo × μ_pol
+            
+            for j ← 1 to n_af do
+                perdida ← max(0, Normal(μ_pol, σ_pol))
+                total_saltos ← total_saltos + perdida
+        
+        # 2.3: Cálculo de compensación (reducción de varianza)
+        E_meteo ← (N_polizas × 0.0125) × δ
+        E_sismo ← (N_polizas × 0.055) × δ
+        comp ← (-λ_m,i × E_meteo) + (-λ_s,i × E_sismo)
+        
+        # 2.4: Actualización semi-implícita con compensación
+        ΔW ← √Δt × Normal(0, 1)
+        numerador ← U[m][i] × (1 + σ_i ΔW) + c_i Δt + comp - total_saltos
+        denominador ← 1 - r_i Δt
+        
+        if denominador ≤ 0 then
+            denominador ← 10^(-12)  # Evitar división por cero
+        
+        U[m][i + 1] ← numerador / denominador
+
+for i ← 0 to N do
+    Ũ[i] ← Mediana(U[1..M][i])
+    IC_5,95[i][0] ← Percentil₅(U[1..M][i])
+    IC_5,95[i][1] ← Percentil₉₅(U[1..M][i])
+
+# FASE 4: Detección de saltos en la trayectoria mediana (opcional)
+Inicializar log_ret[N]
+
+for i ← 1 to N do
+    log_ret[i] ← ln(Ũ[i] / Ũ[i - 1])
+
+θ ← 3 × DesvEst(log_ret)
+
+Inicializar puntos_salto ← ∅
+
+for i ← 1 to N do
+    if |log_ret[i]| > θ then
+        Añadir t_i a puntos_salto
+
+retornar Ũ, IC_5,95, puntos_salto
+
+```

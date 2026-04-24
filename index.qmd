@@ -1,4 +1,31 @@
 ---
-title: "Inicio"
-lang: es
+title: ""
+unnumbered: true
+
+author:
+  - name: "Mara Dominguez Limas"
+    email: x180099@unach.mx
+    affiliations:
+      - ref: unach
+    corresponding: true
+
+  - name: "Asesor: Dr. Yofre Hernán García Gómez"
+    role: "Director de tesis"
+    email: yofre.garcia@unach.mx
+    affiliations:
+      - ref: unach
+
+affiliations:
+  - id: unach
+    name: "Universidad Autónoma de Chiapas"
 ---
+
+:::{style="text-align: justify"}
+# Resumen
+
+
+
+## Abstract
+
+
+:::
