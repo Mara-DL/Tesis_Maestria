@@ -476,9 +476,9 @@ window.Quarto = {
   <ul>
   <li><a href="#estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano" id="toc-estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano" class="nav-link active" data-scroll-target="#estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano"><span class="header-section-number">6.1</span> Estimación de Parámetros para el mercado de seguros de bienes raíces Mexicano</a>
   <ul class="collapse">
-  <li><a href="#función-de-primas-ajustadas-por-inflación-ct" id="toc-función-de-primas-ajustadas-por-inflación-ct" class="nav-link" data-scroll-target="#función-de-primas-ajustadas-por-inflación-ct"><span class="header-section-number">6.1.1</span> Función de Primas Ajustadas por Inflación: <span class="math inline">\(c(t)\)</span></a></li>
-  <li><a href="#modelado-de-la-tasa-de-inversión-rt." id="toc-modelado-de-la-tasa-de-inversión-rt." class="nav-link" data-scroll-target="#modelado-de-la-tasa-de-inversión-rt."><span class="header-section-number">6.1.2</span> Modelado de la tasa de inversión: <span class="math inline">\(r(t)\)</span>.</a></li>
-  <li><a href="#modelado-de-la-volatilidad-de-inversiones-sigmat." id="toc-modelado-de-la-volatilidad-de-inversiones-sigmat." class="nav-link" data-scroll-target="#modelado-de-la-volatilidad-de-inversiones-sigmat."><span class="header-section-number">6.1.3</span> Modelado de la volatilidad de Inversiones <span class="math inline">\(\sigma(t)\)</span>.</a></li>
+  <li><a href="#sec-Primas_ajustadas" id="toc-sec-Primas_ajustadas" class="nav-link" data-scroll-target="#sec-Primas_ajustadas"><span class="header-section-number">6.1.1</span> Función de Primas Ajustadas por Inflación: <span class="math inline">\(c(t)\)</span>.</a></li>
+  <li><a href="#sec-inversion_mensual" id="toc-sec-inversion_mensual" class="nav-link" data-scroll-target="#sec-inversion_mensual"><span class="header-section-number">6.1.2</span> Modelado de la tasa de inversión: <span class="math inline">\(r(t)\)</span>.</a></li>
+  <li><a href="#sec-volatilidad_inversiones" id="toc-sec-volatilidad_inversiones" class="nav-link" data-scroll-target="#sec-volatilidad_inversiones"><span class="header-section-number">6.1.3</span> Modelado de la volatilidad de Inversiones <span class="math inline">\(\sigma(t)\)</span>.</a></li>
   <li><a href="#pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto." id="toc-pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto." class="nav-link" data-scroll-target="#pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto."><span class="header-section-number">6.2.2</span> Pseudocódigo: Esquema de Milstein Compensado para EDE con Difusión y Salto.</a></li>
   <li><a href="#pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" id="toc-pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" class="nav-link" data-scroll-target="#pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto"><span class="header-section-number">6.2.3</span> Pseudocódigo: Esquema Semi-Implícito Compensado para EDE con Difusión y Salto</a></li>
   </ul></li>
@@ -510,8 +510,8 @@ window.Quarto = {
 
 <section id="estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="estimación-de-parámetros-para-el-mercado-de-seguros-de-bienes-raíces-mexicano"><span class="header-section-number">6.1</span> Estimación de Parámetros para el mercado de seguros de bienes raíces Mexicano</h2>
-<section id="función-de-primas-ajustadas-por-inflación-ct" class="level3" data-number="6.1.1">
-<h3 data-number="6.1.1" class="anchored" data-anchor-id="función-de-primas-ajustadas-por-inflación-ct"><span class="header-section-number">6.1.1</span> Función de Primas Ajustadas por Inflación: <span class="math inline">\(c(t)\)</span></h3>
+<section id="sec-Primas_ajustadas" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="sec-Primas_ajustadas"><span class="header-section-number">6.1.1</span> Función de Primas Ajustadas por Inflación: <span class="math inline">\(c(t)\)</span>.</h3>
 <div style="text-align:justify">
 <p>La prima base para enero de 2024 se establece en <span class="math inline">\(c_0 = 283.00\)</span>, derivada del consenso de fuentes sectoriales (AMIS, CNSF). El ajuste por inflación se realiza mediante capitalización compuesta: <span id="eq-ajuste_inflacion"><span class="math display">\[ c(t) = c_0 \prod_{i=1}^{t} \left(1 + \pi_i\right),
   \tag{6.1}\]</span></span> donde <span class="math inline">\(\pi_i\)</span> representa la tasa de inflación mensual reportada por el INEGI <span class="citation" data-cites="inegi2024inpc">INEGI (<a href="references.html#ref-inegi2024inpc" role="doc-biblioref">2024</a>)</span>.</p>
@@ -641,8 +641,8 @@ Tabla&nbsp;6.1: Tasas de inflación mensual en México (variación porcentual de
 </div>
 </section>
 </section>
-<section id="modelado-de-la-tasa-de-inversión-rt." class="level3" data-number="6.1.2">
-<h3 data-number="6.1.2" class="anchored" data-anchor-id="modelado-de-la-tasa-de-inversión-rt."><span class="header-section-number">6.1.2</span> Modelado de la tasa de inversión: <span class="math inline">\(r(t)\)</span>.</h3>
+<section id="sec-inversion_mensual" class="level3" data-number="6.1.2">
+<h3 data-number="6.1.2" class="anchored" data-anchor-id="sec-inversion_mensual"><span class="header-section-number">6.1.2</span> Modelado de la tasa de inversión: <span class="math inline">\(r(t)\)</span>.</h3>
 <div style="text-align:justify">
 <p>Las aseguradoras mexicanas mantienen carteras conservadoras con asignación aproximada de <span class="math inline">\(70\%\)</span> en instrumentos locales (CETES, Mbonos) y <span class="math inline">\(30\%\)</span> en activos globales (<span class="citation" data-cites="cnsf2024panorama">(<a href="references.html#ref-cnsf2024panorama" role="doc-biblioref">CNSF 2024</a>)</span>). Siguiendo el marco regulatorio de la CNSF y la estructura conservadora de las carteras aseguradoras mexicanas (informe anual CNSF), modelamos <span class="math inline">\(r(t)\)</span> como combinación convexa ponderada:</p>
 <p><span id="eq-tasa_inversion"><span class="math display">\[r(t) = \rho \cdot r_{\text{CETES}}(t) + (1-\rho) \cdot r_{\text{USD}}(t) \tag{6.2}\]</span></span></p>
@@ -657,7 +657,7 @@ Tabla&nbsp;6.1: Tasas de inflación mensual en México (variación porcentual de
 <p>Este valor se ajusta a <span class="math inline">\(0.78\%\)</span> mensual para incorporar costos operativos y fiscales (<span class="math inline">\(1.5\)</span> p.p. anuales), resultando en un rendimiento neto anual de <span class="math inline">\(8.9\%\)</span>.</p>
 </div>
 </section>
-<section id="modelado-de-la-volatilidad-de-inversiones-sigmat." class="level3" data-number="6.1.3">
+<section id="sec-volatilidad_inversiones" class="level3" data-number="6.1.3">
 <h3 data-number="6.1.3" class="anchored"><span class="header-section-number">6.1.3</span> Modelado de la volatilidad de Inversiones <span class="math inline">\(\sigma(t)\)</span>.</h3>
 <section id="combinación-convexa-de-volatilidades" class="level4" data-number="6.1.3.1">
 <h4 data-number="6.1.3.1" class="anchored"><span class="header-section-number">6.1.3.1</span> Combinación Convexa de Volatilidades</h4>
