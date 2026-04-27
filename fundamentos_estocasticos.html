@@ -547,9 +547,9 @@ window.Quarto = {
 </div>
 <div style="text-align:justify">
 <p>En el contexto estocástico, aplicamos este resultado al espacio de medida <span class="math display">\[(\Omega \times [0,T] \times Z, \; \mathcal{P} \otimes \mathcal{B}(Z), \; \mathbb{P} \otimes ds \otimes \nu),\]</span> que es <span class="math inline">\(\sigma\)</span>-finito si <span class="math inline">\(\nu\)</span> lo es. Esto garantiza que cualquier proceso predecible cuadrado integrable puede aproximarse en <span class="math inline">\(L^2\)</span> por procesos simples.</p>
-</div>
 <div id="thm-cont_norm_esp_Hil" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.4</strong></span> Sea <span class="math inline">\(H\)</span> un espacio de Hilbert y <span class="math inline">\(\{x_n\} \subset H\)</span> una sucesión tal que <span class="math inline">\(x_n \to x\)</span> en norma. Entonces <span class="math inline">\(\|x_n\| \to \|x\|\)</span></p>
+</div>
 </div>
 <div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>Por la desigualdad triangular inversa, <span class="math display">\[\big| \|x_n\| - \|x\| \big| \leq \|x_n - x\| \to 0.\]</span> <span class="math inline">\(\quad \square\)</span></p>
@@ -565,9 +565,11 @@ window.Quarto = {
 <p>En esta sección se introducen conceptos básicos de inferencia estadística necesarios para la calibración de los parámetros del modelo de severidad. En particular, se definen los M-estimadores y la regresión cuantílica, herramientas robustas que permiten estimar parámetros en presencia de valores atípicos o distribuciones con colas pesadas.</p>
 <section id="m-estimadores" class="level4" data-number="3.2.1.1">
 <h4 data-number="3.2.1.1" class="anchored" data-anchor-id="m-estimadores"><span class="header-section-number">3.2.1.1</span> M-estimadores</h4>
+<div style="text-align:justify">
 <div id="def-M_estimador" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.5</strong></span> (M-estimador). Sea <span class="math inline">\((\Omega, \mathcal{F}, \mathbb{P})\)</span> un espacio de probabilidad y sea <span class="math inline">\(X_1, X_2, \cdots, X_n\)</span> una muestra aleatoria independiente e idénticamente distribuida (i.i.d.) con función de distribución <span class="math inline">\(\mathcal{F}_0\)</span> perteneciente a una familia paramétrica <span class="math inline">\(\{\mathcal{F}:\theta \in Theta \subseteq \mathbb{R}\}\)</span>. Sea <span class="math inline">\(\rho: \mathbb{R}^d \times \mathbb{R}^n \rightarrow \mathbb{R}\)</span> una función de pérdida (o función de contraste) tal que: 1. <span class="math inline">\(\rho\)</span> es medible con respecto a la <span class="math inline">\(\sigma\)</span>-álgebra producto, 2. <span class="math inline">\(\rho\)</span> es convexa en el parámetro <span class="math inline">\(\theta\)</span> (para garantizar existencia y unicidad del mínimo), 3. <span class="math inline">\(\mathbb{E}[|\rho(\theta, X)|] \infty\)</span> para todo <span class="math inline">\(\theta \in \Theta\)</span>.</p>
 <p>Un M-estimador (estimador de máxima similitud o estimador de mínimo contraste) <span class="math inline">\(\hat{\theta}_n\)</span> para el parámetro <span class="math inline">\(\theta\)</span> se define como: <span class="math display">\[\hat{\theta}_n := \arg\min_{\theta \in \Theta} \frac{1}{n} \sum_{i=1}^{n} \rho(\theta, X_i).\]</span> Alternativamente, cuando la función <span class="math inline">\(\rho\)</span> es diferenciable, el M-estimador puede definirse como la solución de la ecuación de estimación: <span class="math display">\[ \sum_{i=1}^{n} \psi(\hat{\theta}_n, X_i) = 0,\]</span> donde <span class="math inline">\(\psi(\theta, x) = \nabla_\theta \rho(\theta, x)\)</span> es la función de influencia o función score.</p>
+</div>
 </div>
 <div style="text-align:justify">
 <p><strong>Observación:</strong> La elección de la función de pérdida <span class="math inline">\(\rho\)</span> determina diferentes estimadores: - Si se elige <span class="math inline">\(\rho(\theta, x) = -\log f(x;\theta)\)</span>, donde <span class="math inline">\(f\)</span> es la función de densidad de la distribución, entonces el M-estimador coincide con el estimador de máxima verosimilitud (MLE). - i se elige <span class="math inline">\(\rho(\theta, x) = |x - \theta|\)</span>, el M-estimador corresponde a la mediana muestral. - Si se elige <span class="math inline">\(\rho(\theta, x) = (x - \theta)^2\)</span>, el M-estimador corresponde a la media muestral. Para más detallesde la definición de M-estimador</p>
@@ -575,6 +577,7 @@ window.Quarto = {
 </section>
 <section id="regresión-cuantílica" class="level4" data-number="3.2.1.2">
 <h4 data-number="3.2.1.2" class="anchored" data-anchor-id="regresión-cuantílica"><span class="header-section-number">3.2.1.2</span> Regresión Cuantílica</h4>
+<div style="text-align:justify">
 <div id="def-regresion_cualitica" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.6</strong></span> Sea <span class="math inline">\((\Omega, \mathcal{F}, \mathbb{P})\)</span> un espacio de probabilidad y sea <span class="math inline">\(\{(Y_i, \mathbf{X}_i)\}_{i=1}^n\)</span> una muestra aleatoria i.i.d., donde <span class="math inline">\(Y_i \in \mathbb{R}\)</span> es la variable respuesta y <span class="math inline">\(\mathbf{X}_i \in \mathbb{R}^p\)</span> es un vector de covariables. Para un cuantil <span class="math inline">\(\tau \in (0, 1)\)</span>, la función de pérdida cuantílica (también llamada función de pérdida asimétrica de Huber o función de pérdida “check”) se define como: <span class="math display">\[\rho_\tau(u) := u \cdot (\tau - \mathbf{1}_{\{u &lt; 0\}}) =
     \begin{cases}
@@ -584,11 +587,13 @@ window.Quarto = {
 <p>El estimador de regresión cuantílica <span class="math inline">\(\hat{{\beta}}_n(\tau)\)</span> para el <span class="math inline">\(\tau\)</span>-ésimo cuantil condicional de <span class="math inline">\(Y_i\)</span> dado <span class="math inline">\(\mathbf{X}_i\)</span> se define como: <span class="math display">\[\hat{{\beta}}_n(\tau) := \arg\min_{{\beta} \in \mathbb{R}^p} \sum_{i=1}^{n} \rho_\tau\bigl(Y_i - \mathbf{X}_i^\top {\beta}\bigr).\]</span></p>
 <p>El cuantil condicional estimado de <span class="math inline">\(Y_i\)</span> dado <span class="math inline">\(\mathbf{X}_i = \mathbf{x}\)</span> viene dado por: <span class="math display">\[\hat{Q}_{Y\mid\mathbf{X}}(\tau \mid \mathbf{x}) = \mathbf{x}^\top \hat{{\beta}}_n(\tau).\]</span></p>
 </div>
+</div>
 </section>
 </section>
 </section>
 <section id="procesos-estocásticos-fundamentales" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="procesos-estocásticos-fundamentales"><span class="header-section-number">3.3</span> Procesos Estocásticos Fundamentales</h2>
+<div style="text-align:justify">
 <div id="def-Proceso_Wiener" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.7</strong></span> Sea <span class="math inline">\((\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t \geq 0}, \mathbb{P})\)</span> un espacio de probabilidad filtrado. Un proceso de Wiener es un proceso estocástico <span class="math inline">\(W = \{W(t)\}_{t \geq 0}\)</span> que satisface las siguientes propiedades:</p>
 <ol type="1">
@@ -605,6 +610,8 @@ Para todo <span class="math inline">\(0 \leq s &lt; t\)</span>, el incremento <s
 El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <span class="math inline">\(\{\mathcal{F}_t\}_{t \geq 0}\)</span>, es decir, <span class="math inline">\(W(t)\)</span> es <span class="math inline">\(\mathcal{F}_t\)</span>-medible para todo <span class="math inline">\(t \geq 0\)</span>.</p></li>
 </ol>
 </div>
+</div>
+<div style="text-align:justify">
 <div id="def-Proceso_cadlag" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.8</strong></span> Sea <span class="math inline">\((\Omega, \mathcal{F}, \mathbb{P})\)</span> un espacio de probabilidad y sea <span class="math inline">\(X = \{X_t : t \geq 0\}\)</span> un proceso estocástico con valores en <span class="math inline">\(\mathbb{R}\)</span>, es decir, para cada <span class="math inline">\(t \geq 0\)</span>, <span class="math inline">\(X_t : \Omega \to \mathbb{R}\)</span> es una variable aleatoria. Se dice que el proceso <span class="math inline">\(X\)</span> es cádlág (o RCLL) si casi todas sus trayectorias son funciones cádlág; es decir, existe un conjunto <span class="math inline">\(\Omega_0 \in \mathcal{F}\)</span> con <span class="math inline">\(\mathbb{P}(\Omega_0) = 1\)</span> tal que, para todo <span class="math inline">\(\omega \in \Omega_0\)</span>, la función<br>
 <span class="math display">\[t \mapsto X_t(\omega)\]</span> satisface las siguientes dos propiedades:</p>
@@ -619,6 +626,7 @@ El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <
 </div>
 <div id="thm-Modificacion_cadlag" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.6</strong></span> Toda martingala local en un espacio filtrado que satisface las hipótesis usuales admite una versión cádlág.</p>
+</div>
 </div>
 <div class="proof">
 <p><span class="proof-title"><em>Demostración</em>. </span>Ver demostración en <span class="citation" data-cites="tudor2022procesos">Tudor (<a href="references.html#ref-tudor2022procesos" role="doc-biblioref">2022</a>)</span> Teorema 2.5.17</p>
