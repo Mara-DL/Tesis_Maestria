@@ -1,1 +1,20 @@
 # Análisis de Resultados.
+
+## Análisis Cuantitativo de la Simulación
+
+::: {style="text-align:justify"}
+Se ejecutaron $N_{\text{sim}} = 1000$ trayectorias Monte Carlo para el periodo histórico (enero 2024 - diciembre 2025) y pronóstico de enero 2026, con semilla fija ($2026$ para histórico, $2027$ para pronóstico) para reproducibilidad. La cartera simulada corresponde a $N_{\text{pólizas}} = 6,800$ pólizas, representando aproximadamente el $40\%$ del mercado total de seguros de vivienda en la CDMX
+
+| Métrica | Milstein Compensado | Semi-Implícito Compensado | Diferencia Relativa |
+|:----------------:|:----------------:|:----------------:|:----------------:|
+| Reserva inicial ($U_0$) | $520.00$ | $520.00$ | $0.00\%$ |
+| Mediana final | $528.45$ | $540.60$ | $+2.30\%$ |
+| Límite inferior IC $90\%$ ($5\%$) | $512.30$ | $521.50$ | $+1.80\%$ |
+| Límite superior IC $90\%$ ($95\%$) | $545.80$ | $559.20$ | $+2.46\%$ |
+| Ancho IC $90\%$ | $33.50$ | $37.70$ | $+12.54\%$ |
+| Desviación estándar final | $8.21$ | $9.15$ | $+11.45\%$ |
+| Error estándar de la mediana | $0.26$ | $0.29$ | $+11.54\%$ |
+: Comparación cuantitativa de resultados para enero 2026 (millones USD).
+
+### Análisis de la Trayectoria Mediana y Estructura de Saltos
+:::
