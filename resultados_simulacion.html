@@ -82,6 +82,35 @@ ul.task-list li input[type="checkbox"] {
   });
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <meta property="og:title" content="7&nbsp; Análisis de Resultados. – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta property="og:image" content="assets/UNACH.png">
@@ -386,8 +415,14 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#análisis-cuantitativo-de-la-simulación" id="toc-análisis-cuantitativo-de-la-simulación" class="nav-link active" data-scroll-target="#análisis-cuantitativo-de-la-simulación"><span class="header-section-number">7.1</span> Análisis Cuantitativo de la Simulación</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/resultados_simulacion.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/resultados_simulacion.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -412,8 +447,86 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="análisis-cuantitativo-de-la-simulación" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="análisis-cuantitativo-de-la-simulación"><span class="header-section-number">7.1</span> Análisis Cuantitativo de la Simulación</h2>
+<div style="text-align:justify">
+<p>Se ejecutaron <span class="math inline">\(N_{\text{sim}} = 1000\)</span> trayectorias Monte Carlo para el periodo histórico (enero 2024 - diciembre 2025) y pronóstico de enero 2026, con semilla fija (<span class="math inline">\(2026\)</span> para histórico, <span class="math inline">\(2027\)</span> para pronóstico) para reproducibilidad. La cartera simulada corresponde a <span class="math inline">\(N_{\text{pólizas}} = 6,800\)</span> pólizas, representando aproximadamente el <span class="math inline">\(40\%\)</span> del mercado total de seguros de vivienda en la CDMX</p>
+<div id="tbl-comparacion_cualitativa" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-comparacion_cualitativa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;7.1: Comparación cuantitativa de resultados para enero 2026 (millones USD).
+</figcaption>
+<div aria-describedby="tbl-comparacion_cualitativa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Métrica</th>
+<th style="text-align: center;">Milstein Compensado</th>
+<th style="text-align: center;">Semi-Implícito Compensado</th>
+<th style="text-align: center;">Diferencia Relativa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Reserva inicial (<span class="math inline">\(U_0\)</span>)</td>
+<td style="text-align: center;"><span class="math inline">\(520.00\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(520.00\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.00\%\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Mediana final</td>
+<td style="text-align: center;"><span class="math inline">\(528.45\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(540.60\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(+2.30\%\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Límite inferior IC <span class="math inline">\(90\%\)</span> (<span class="math inline">\(5\%\)</span>)</td>
+<td style="text-align: center;"><span class="math inline">\(512.30\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(521.50\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(+1.80\%\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Límite superior IC <span class="math inline">\(90\%\)</span> (<span class="math inline">\(95\%\)</span>)</td>
+<td style="text-align: center;"><span class="math inline">\(545.80\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(559.20\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(+2.46\%\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Ancho IC <span class="math inline">\(90\%\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(33.50\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(37.70\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(+12.54\%\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Desviación estándar final</td>
+<td style="text-align: center;"><span class="math inline">\(8.21\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(9.15\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(+11.45\%\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Error estándar de la mediana</td>
+<td style="text-align: center;"><span class="math inline">\(0.26\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(0.29\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(+11.54\%\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<section id="análisis-de-la-trayectoria-mediana-y-estructura-de-saltos" class="level3" data-number="7.1.1">
+<h3 data-number="7.1.1" class="anchored" data-anchor-id="análisis-de-la-trayectoria-mediana-y-estructura-de-saltos"><span class="header-section-number">7.1.1</span> Análisis de la Trayectoria Mediana y Estructura de Saltos</h3>
+</section>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -846,4 +959,4 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/resultados_simulacion.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/resultados_simulacion.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/resultados_simulacion.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/resultados_simulacion.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></div></div></footer></body></html>
