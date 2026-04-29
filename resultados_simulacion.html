@@ -23,10 +23,64 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -81,6 +135,15 @@ ul.task-list li input[type="checkbox"] {
     document.body.classList.add('hypothesis-enabled');
   });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script>
+window.PlotlyConfig = {MathJaxConfig: 'local'};
+if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+</script>
+<script type="module">import "https://cdn.plot.ly/plotly-3.5.0.min"</script>
+
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -113,9 +176,11 @@ window.Quarto = {
 </script>
 
 <meta property="og:title" content="7&nbsp; Análisis de Resultados. – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta property="og:description" content="">
 <meta property="og:image" content="assets/UNACH.png">
 <meta property="og:site_name" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta name="twitter:title" content="7&nbsp; Análisis de Resultados. – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta name="twitter:description" content="">
 <meta name="twitter:image" content="assets/UNACH.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -447,17 +512,21 @@ window.Quarto = {
 </header>
 
 
+<p>El esquema de Milstein para la componente difusiva, combinado con compensación de saltos, se define como: <span id="eq-milstein_formal"><span class="math display">\[
+\begin{aligned}
+U_{n+1}^{\text{Mil}} = U_n &amp;+ \mu(t_n, U_n)\Delta t + \sigma(t_n, U_n)\Delta W_n \\
+&amp; + \frac{1}{2}\sigma(t_n, U_n)\sigma_U(t_n, U_n)\left[(\Delta W_n)^2 - \Delta t\right] - \Delta J_n + \mathcal{C}_n\Delta t,
+\end{aligned}
+\tag{7.1}\]</span></span></p>
+<p>donde <span class="math inline">\(\mathcal{C}_n = -\left[\lambda_{\text{meteo},n}\mathbb{E}[Y^{\text{meteo}}_n] + \lambda_{\text{sismo},n}\mathbb{E}[Y^{\text{sismo}}_n]\right]\)</span> es el término de compensación. Bajo las condiciones de Lipschitz y crecimiento lineal verificadas en la Sección~<span class="math inline">\(\ref{sec:saltos-estado}\)</span> (Proposición 3.1), este esquema garantiza convergencia fuerte de orden <span class="math inline">\(\mathcal{O}(\Delta t)\)</span> para la parte continua <span class="citation" data-cites="kloeden1992numerical">Kloeden y Platen (<a href="references.html#ref-kloeden1992numerical" role="doc-biblioref">1992</a>)</span>. El término de corrección <span class="math inline">\(\frac{1}{2}\sigma\sigma\_U[(\Delta W)^2 - \Delta t]\)</span> es esencial para capturar la no linealidad de la difusión <span class="math inline">\(\sigma(t)U(t)\)</span>, especialmente relevante ante la volatilidad estacional observada en <span class="math inline">\(\sigma_t\)</span> (Tabla~<span class="math inline">\(\ref{tab:volatilidad_total}\)</span>).</p>
+<p>El esquema semi-implícito trata el término de interés <span class="math inline">\(r(t)U(t)\)</span> de forma implícita: <span id="eq-semiimplicito_formal"><span class="math display">\[U_{n+1}^{\text{SI}} = \frac{U_n\left[1 + \sigma(t_n, U_n)\Delta W_n\right] + c(t_n)\Delta t + \mathcal{C}_n\Delta t - \Delta J_n^{\text{bruto}}}{1 - r(t_n)\Delta t}, \tag{7.2}\]</span></span></p>
+<p>donde <span class="math inline">\(\Delta J_n^{\text{bruto}}\)</span> es la suma no compensada de saltos ocurridos. Este esquema es incondicionalmente estable para <span class="math inline">\(r(t) &gt; 0\)</span> <span class="citation" data-cites="higham2002strong">Higham et&nbsp;al. (<a href="references.html#ref-higham2002strong" role="doc-biblioref">2002</a>)</span>, ya que el denominador <span class="math inline">\(1 - r(t_n)\Delta t &gt; 0\)</span> (dado <span class="math inline">\(r_{\max} \approx 0.6\%\)</span> mensual y <span class="math inline">\(\Delta t = 1/365\)</span>). La estabilidad numérica es crítica ante la alta sensibilidad de las reservas a fluctuaciones en <span class="math inline">\(r(t)\)</span>, como se observa en la estructura de tasas de Banxico (2024).</p>
 <section id="análisis-cuantitativo-de-la-simulación" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="análisis-cuantitativo-de-la-simulación"><span class="header-section-number">7.1</span> Análisis Cuantitativo de la Simulación</h2>
 <div style="text-align:justify">
 <p>Se ejecutaron <span class="math inline">\(N_{\text{sim}} = 1000\)</span> trayectorias Monte Carlo para el periodo histórico (enero 2024 - diciembre 2025) y pronóstico de enero 2026, con semilla fija (<span class="math inline">\(2026\)</span> para histórico, <span class="math inline">\(2027\)</span> para pronóstico) para reproducibilidad. La cartera simulada corresponde a <span class="math inline">\(N_{\text{pólizas}} = 6,800\)</span> pólizas, representando aproximadamente el <span class="math inline">\(40\%\)</span> del mercado total de seguros de vivienda en la CDMX</p>
-<div id="tbl-comparacion_cualitativa" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-comparacion_cualitativa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabla&nbsp;7.1: Comparación cuantitativa de resultados para enero 2026 (millones USD).
-</figcaption>
-<div aria-describedby="tbl-comparacion_cualitativa-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
+<caption>Comparación cuantitativa de resultados para enero 2026 (millones USD).</caption>
 <colgroup>
 <col style="width: 25%">
 <col style="width: 25%">
@@ -517,15 +586,400 @@ Tabla&nbsp;7.1: Comparación cuantitativa de resultados para enero 2026 (millone
 </tr>
 </tbody>
 </table>
-</div>
-</figure>
-</div>
 <section id="análisis-de-la-trayectoria-mediana-y-estructura-de-saltos" class="level3" data-number="7.1.1">
 <h3 data-number="7.1.1" class="anchored" data-anchor-id="análisis-de-la-trayectoria-mediana-y-estructura-de-saltos"><span class="header-section-number">7.1.1</span> Análisis de la Trayectoria Mediana y Estructura de Saltos</h3>
+<p>La Figura~<span class="math inline">\(\ref{fig:comparacion_metodos}\)</span> presenta las trayectorias medianas e intervalos de confianza. Se observan tres hallazgos críticos:</p>
+<ol type="a">
+<li><strong>Sesgo sistemático en la tendencia</strong>: El esquema semi-implícito genera reservas medianas consistentemente superiores (<span class="math inline">\(+2.30\%\)</span> al final del periodo). Esto se explica matemáticamente por la desigualdad: <span id="eq-sesgo_implicito"><span class="math display">\[\frac{1}{1 - r\Delta t} &gt; 1 + r\Delta t + \mathcal{O}((r\Delta t)^2), \quad \forall r\Delta t \in (0,1), \tag{7.3}\]</span></span></li>
+</ol>
+<p>que amplifica el efecto de capitalización del término <span class="math inline">\(r(t)U(t)\)</span>. En contextos de tasas de interés positivas (como el mexicano con <span class="math inline">\(r_{\text{prom}} \approx 5.6\%\)</span> anual), este sesgo actúa como un factor de conservadurismo deseable para gestión de solvencia.</p>
+<ol start="2" type="a">
+<li><p><strong>Patrón estacional de saltos</strong>: Ambos métodos detectan <span class="math inline">\(7\)</span> saltos significativos en la trayectoria mediana durante el periodo histórico, con concentración en agosto-septiembre (<span class="math inline">\(61.1\%\)</span> de los saltos), coincidiendo con la temporada de huracanes (Figura~<span class="math inline">\(\ref{fig:comparacion_metodos}\)</span>, marcadores rojos/azules). La coincidencia espacio-temporal de los saltos (<span class="math inline">\(94.4\%\)</span> en las mismas fechas) valida la robustez de la modelación estado-dependiente de <span class="math inline">\(c(t,x,v)\)</span>.</p></li>
+<li><p><strong>Comportamiento asintótico del intervalo de confianza</strong>: El ancho del IC <span class="math inline">\(90\%\)</span> crece un <span class="math inline">\(12.54\%\)</span> más rápido en el esquema semi-implícito. Esto refleja una mayor dispersión en las trayectorias extremas, atribuible a la no linealidad introducida por el denominador <span class="math inline">\(1 - r(t_n)\Delta t\)</span> en la Ecuación <a href="#eq-semiimplicito_formal" class="quarto-xref">Ecuación&nbsp;<span>7.2</span></a>, que amplifica las realizaciones con <span class="math inline">\(\Delta W_n &gt; 0\)</span>.</p></li>
+</ol>
+<div id="2b024542" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.graph_objects <span class="im">as</span> go</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># PARTE 0: CONFIGURACIÓN INICIAL</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">2026</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>tipo_cambio <span class="op">=</span> <span class="fl">18.5</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>dt <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> <span class="dv">365</span>  <span class="co"># Paso diario</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># PARTE 1: CALIBRACIÓN DE PARÁMETROS</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>N_polizas <span class="op">=</span> <span class="dv">6800</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>prima_base_por_poliza <span class="op">=</span> <span class="fl">850.00</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>delta <span class="op">=</span> <span class="fl">0.0015</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>X0_hist <span class="op">=</span> <span class="fl">500e6</span>  <span class="co"># Capital inicial histórico</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>U0_forecast <span class="op">=</span> <span class="fl">520e6</span>  <span class="co"># Capital inicial para pronóstico (ejemplo)</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Inflación y primas</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>inflacion_mensual <span class="op">=</span> np.array([</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.52</span>, <span class="fl">0.38</span>, <span class="fl">0.38</span>, <span class="fl">0.41</span>, <span class="fl">0.45</span>, <span class="fl">0.49</span>, <span class="fl">0.55</span>, <span class="fl">0.61</span>, <span class="fl">0.58</span>, <span class="fl">0.47</span>, <span class="fl">0.42</span>, <span class="fl">0.39</span>,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.35</span>, <span class="fl">0.50</span>, <span class="fl">0.37</span>, <span class="fl">0.40</span>, <span class="fl">0.44</span>, <span class="fl">0.48</span>, <span class="fl">0.53</span>, <span class="fl">0.59</span>, <span class="fl">0.56</span>, <span class="fl">0.46</span>, <span class="fl">0.41</span>, <span class="fl">0.38</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>]) <span class="op">/</span> <span class="fl">100.0</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> inflacion_mensual <span class="op">+</span> delta</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>cum_g <span class="op">=</span> np.cumsum(g)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>primas_por_poliza_mxn <span class="op">=</span> prima_base_por_poliza <span class="op">*</span> np.exp(cum_g)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>primas_totales_mxn <span class="op">=</span> primas_por_poliza_mxn <span class="op">*</span> N_polizas</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>c_t_mensual_usd <span class="op">=</span> primas_totales_mxn <span class="op">/</span> tipo_cambio</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>c_t_mensual_usd <span class="op">=</span> np.<span class="bu">round</span>(c_t_mensual_usd, <span class="dv">2</span>)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Intensidades calibradas ---</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>lambda_meteo_annual <span class="op">=</span> <span class="fl">6.0</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>lambda_sismo <span class="op">=</span> <span class="fl">0.15</span> <span class="co">#0.08</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>seasonal_raw <span class="op">=</span> [<span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">1.0</span>, <span class="fl">1.8</span>, <span class="fl">2.2</span>, <span class="fl">2.5</span>, <span class="fl">2.8</span>, <span class="fl">2.3</span>, <span class="fl">1.2</span>, <span class="fl">0.5</span>]</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>seasonal_norm <span class="op">=</span> np.array(seasonal_raw) <span class="op">/</span> np.mean(seasonal_raw)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Parámetros de severidad (ahora dependientes del estado) ---</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>ceiling_per_policy <span class="op">=</span> <span class="fl">5000.0</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>COEF_VARIACION_METEO <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>COEF_VARIACION_SISMO <span class="op">=</span> <span class="fl">0.2</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Rendimiento y volatilidad ---</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>r_t_mensual <span class="op">=</span> np.array([</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.606</span>, <span class="fl">0.602</span>, <span class="fl">0.600</span>, <span class="fl">0.597</span>, <span class="fl">0.593</span>, <span class="fl">0.589</span>,</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.586</span>, <span class="fl">0.582</span>, <span class="fl">0.578</span>, <span class="fl">0.574</span>, <span class="fl">0.570</span>, <span class="fl">0.566</span>,</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.562</span>, <span class="fl">0.559</span>, <span class="fl">0.555</span>, <span class="fl">0.551</span>, <span class="fl">0.547</span>, <span class="fl">0.543</span>,</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.539</span>, <span class="fl">0.535</span>, <span class="fl">0.532</span>, <span class="fl">0.528</span>, <span class="fl">0.524</span>, <span class="fl">0.520</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>]) <span class="op">/</span> <span class="fl">100.0</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>sigma_t_mensual <span class="op">=</span> np.array([</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.44</span>, <span class="fl">0.47</span>, <span class="fl">0.50</span>, <span class="fl">0.53</span>, <span class="fl">0.59</span>, <span class="fl">0.74</span>,</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.89</span>, <span class="fl">1.34</span>, <span class="fl">1.19</span>, <span class="fl">0.98</span>, <span class="fl">0.74</span>, <span class="fl">0.68</span>,</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.65</span>, <span class="fl">0.60</span>, <span class="fl">0.58</span>, <span class="fl">0.60</span>, <span class="fl">0.65</span>, <span class="fl">0.74</span>,</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.89</span>, <span class="fl">0.82</span>, <span class="fl">0.95</span>, <span class="fl">0.86</span>, <span class="fl">0.74</span>, <span class="fl">0.68</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>]) <span class="op">/</span> <span class="fl">100.0</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="co"># PARTE 2: FUNCIÓN AUXILIAR PARA LA COMPENSACIÓN</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> expected_loss_per_event(deviation, pct_low, pct_high, n_pols):</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="co">    Calcula la pérdida esperada por un evento dado el estado actual.</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>    E_pct <span class="op">=</span> (pct_low <span class="op">+</span> pct_high) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>    n_aff_mean <span class="op">=</span> n_pols <span class="op">*</span> E_pct <span class="co">#Valor esperado de la distribución uniforme para el número de afectados</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>    <span class="co"># mu_per_policy = deviation  &lt;-- This line is now redundant as deviation is used directly</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n_aff_mean <span class="op">*</span> deviation</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="co"># PARTE 3: SIMULACIÓN HISTÓRICA (Ene 2024 - Dic 2025) CON COMPENSACIÓN</span></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>T_hist <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>N_hist <span class="op">=</span> <span class="bu">int</span>(T_hist <span class="op">/</span> dt)</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>N_sim_hist <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>dias_hist <span class="op">=</span> np.linspace(<span class="dv">0</span>, T_hist, N_hist <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>meses_enteros <span class="op">=</span> np.arange(<span class="dv">24</span>)</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>r_hist <span class="op">=</span> np.interp(dias_hist[:<span class="op">-</span><span class="dv">1</span>], meses_enteros, r_t_mensual)</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>sigma_hist <span class="op">=</span> np.interp(dias_hist[:<span class="op">-</span><span class="dv">1</span>], meses_enteros, sigma_t_mensual)</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>c_hist <span class="op">=</span> np.interp(dias_hist[:<span class="op">-</span><span class="dv">1</span>], meses_enteros, c_t_mensual_usd)</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>X_hist <span class="op">=</span> np.zeros((N_sim_hist, N_hist <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>X_hist[:, <span class="dv">0</span>] <span class="op">=</span> X0_hist</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Simulando periodo histórico (Ene 2024 - Dic 2025) con Milstein y compensación..."</span>)</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sim <span class="kw">in</span> <span class="bu">range</span>(N_sim_hist):</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N_hist):</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>        t_dia <span class="op">=</span> dias_hist[i]</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>        mes_actual <span class="op">=</span> <span class="bu">int</span>(t_dia) <span class="op">%</span> <span class="dv">12</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>        lam_meteo_dia <span class="op">=</span> (lambda_meteo_annual <span class="op">/</span> <span class="dv">365</span>) <span class="op">*</span> seasonal_norm[mes_actual]</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>        lam_sismo_dia <span class="op">=</span> lambda_sismo <span class="op">/</span> <span class="dv">365</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>        n_meteo <span class="op">=</span> np.random.poisson(lam_meteo_dia)</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>        n_sismo <span class="op">=</span> np.random.poisson(lam_sismo_dia)</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>        x_current <span class="op">=</span> X_hist[sim, i]</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>        deviation <span class="op">=</span> (<span class="bu">abs</span>(x_current <span class="op">-</span> X0_hist))<span class="op">/</span>N_polizas</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> deviation <span class="op">&gt;</span> ceiling_per_policy:</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>            deviation <span class="op">=</span> ceiling_per_policy</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>        total_jump <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>        compensacion <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>        <span class="co"># --- Eventos Meteorológicos ---</span></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_meteo <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>            pct_affected <span class="op">=</span> np.random.uniform(<span class="fl">0.005</span>, <span class="fl">0.02</span>)</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>            n_affected <span class="op">=</span> <span class="bu">max</span>(<span class="dv">1</span>, <span class="bu">int</span>(N_polizas <span class="op">*</span> pct_affected))</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>            mu_per_policy <span class="op">=</span> deviation</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>            sigma_per_policy <span class="op">=</span> COEF_VARIACION_METEO <span class="op">*</span> mu_per_policy</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>            losses <span class="op">=</span> np.random.normal(mu_per_policy, sigma_per_policy, size<span class="op">=</span>n_affected)</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>            losses <span class="op">=</span> np.clip(losses, <span class="fl">0.0</span>, <span class="va">None</span>)</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>            total_jump <span class="op">+=</span> np.<span class="bu">sum</span>(losses)</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compensación meteorológica</span></span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>        E_loss_meteo <span class="op">=</span> expected_loss_per_event(</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>            deviation, <span class="fl">0.005</span>, <span class="fl">0.02</span>, N_polizas</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>        compensacion <span class="op">+=</span> (<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>lam_meteo_dia <span class="op">*</span> E_loss_meteo</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>        <span class="co"># --- Eventos Sísmicos ---</span></span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_sismo <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>            pct_affected <span class="op">=</span> np.random.uniform(<span class="fl">0.01</span>, <span class="fl">0.10</span>)</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>            n_affected <span class="op">=</span> <span class="bu">max</span>(<span class="dv">1</span>, <span class="bu">int</span>(N_polizas <span class="op">*</span> pct_affected))</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>            mu_per_policy <span class="op">=</span> deviation</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>            sigma_per_policy <span class="op">=</span> COEF_VARIACION_SISMO <span class="op">*</span> mu_per_policy</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>            losses <span class="op">=</span> np.random.normal(mu_per_policy, sigma_per_policy, size<span class="op">=</span>n_affected)</span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>            losses <span class="op">=</span> np.clip(losses, <span class="fl">0.0</span>, <span class="va">None</span>)</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>            total_jump <span class="op">+=</span> np.<span class="bu">sum</span>(losses)</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compensación sísmica</span></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>        E_loss_sismo <span class="op">=</span> expected_loss_per_event(</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>            deviation, <span class="fl">0.01</span>, <span class="fl">0.10</span>, N_polizas</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>        compensacion <span class="op">+=</span> (<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>lam_sismo_dia <span class="op">*</span> E_loss_sismo</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>        <span class="co"># --- Actualización con Milstein + Compensación ---</span></span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>        dW <span class="op">=</span> np.sqrt(dt) <span class="op">*</span> np.random.randn()</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>        drift_base <span class="op">=</span> c_hist[i] <span class="op">*</span> dt <span class="op">+</span> r_hist[i] <span class="op">*</span> x_current <span class="op">*</span> dt</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>        drift_compensado <span class="op">=</span> drift_base <span class="op">+</span> compensacion</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>        diffusion <span class="op">=</span> sigma_hist[i] <span class="op">*</span> x_current <span class="op">*</span> dW</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>        milstein_corr <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> (sigma_hist[i]<span class="op">**</span><span class="dv">2</span>) <span class="op">*</span> x_current <span class="op">*</span> (dW<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> dt)</span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>        X_hist[sim, i<span class="op">+</span><span class="dv">1</span>] <span class="op">=</span> x_current <span class="op">+</span> drift_compensado <span class="op">+</span> diffusion <span class="op">+</span> milstein_corr <span class="op">-</span> total_jump</span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>U0_forecast <span class="op">=</span> np.median(X_hist[:, <span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Condición inicial para pronóstico (Ene 2026): $</span><span class="sc">{</span>U0_forecast<span class="op">/</span><span class="fl">1e6</span><span class="sc">:.2f}</span><span class="ss">M"</span>)</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a><span class="co"># PARTE 4: SIMULACIÓN DEL PRONÓSTICO (Ene 2026) CON COMPENSACIÓN</span></span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>forecast_days <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>mes_pronostico <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a><span class="co"># Promedios para enero (mes 0 y mes 12)</span></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>c_ene_avg <span class="op">=</span> (c_t_mensual_usd[<span class="dv">0</span>] <span class="op">+</span> c_t_mensual_usd[<span class="dv">12</span>]) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>r_ene_avg <span class="op">=</span> (r_t_mensual[<span class="dv">0</span>] <span class="op">+</span> r_t_mensual[<span class="dv">12</span>]) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>sigma_ene_avg <span class="op">=</span> (sigma_t_mensual[<span class="dv">0</span>] <span class="op">+</span> sigma_t_mensual[<span class="dv">12</span>]) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>sf_ene_avg <span class="op">=</span> seasonal_norm[<span class="dv">0</span>]  <span class="co"># Enero es el mes 0</span></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>c_daily_fc <span class="op">=</span> np.full(forecast_days, c_ene_avg <span class="op">/</span> <span class="fl">30.0</span>)</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>r_daily_fc <span class="op">=</span> np.full(forecast_days, r_ene_avg)</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>sigma_daily_fc <span class="op">=</span> np.full(forecast_days, sigma_ene_avg)</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>lambda_meteo_dia_fc <span class="op">=</span> (lambda_meteo_annual <span class="op">/</span> <span class="dv">365</span>) <span class="op">*</span> sf_ene_avg</span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>lambda_sismo_dia_fc <span class="op">=</span> lambda_sismo <span class="op">/</span> <span class="dv">365</span></span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">2027</span>)</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>N_sim_fc <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>U_forecast <span class="op">=</span> np.zeros((N_sim_fc, forecast_days <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>U_forecast[:, <span class="dv">0</span>] <span class="op">=</span> U0_forecast</span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Simulando pronóstico para Enero 2026 con Milstein y compensación..."</span>)</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sim <span class="kw">in</span> <span class="bu">range</span>(N_sim_fc):</span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(forecast_days):</span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>        u_current <span class="op">=</span> U_forecast[sim, i]</span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>        deviation <span class="op">=</span> (<span class="bu">abs</span>(u_current <span class="op">-</span> U0_forecast))<span class="op">/</span>N_polizas</span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> deviation <span class="op">&gt;</span> ceiling_per_policy:</span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>            deviation <span class="op">=</span> ceiling_per_policy</span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>        total_jump <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>        compensacion <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>        <span class="co"># --- Simular eventos ---</span></span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>        n_meteo <span class="op">=</span> np.random.poisson(lambda_meteo_dia_fc)</span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>        n_sismo <span class="op">=</span> np.random.poisson(lambda_sismo_dia_fc)</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>        <span class="co"># --- Eventos Meteorológicos ---</span></span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_meteo <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>            pct_affected <span class="op">=</span> np.random.uniform(<span class="fl">0.005</span>, <span class="fl">0.02</span>)</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>            n_affected <span class="op">=</span> <span class="bu">max</span>(<span class="dv">1</span>, <span class="bu">int</span>(N_polizas <span class="op">*</span> pct_affected))</span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>            mu_per_policy <span class="op">=</span> deviation</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>            sigma_per_policy <span class="op">=</span> COEF_VARIACION_METEO <span class="op">*</span> mu_per_policy</span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>            losses <span class="op">=</span> np.random.normal(mu_per_policy, sigma_per_policy, size<span class="op">=</span>n_affected)</span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>            losses <span class="op">=</span> np.clip(losses, <span class="fl">0.0</span>, <span class="va">None</span>)</span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>            total_jump <span class="op">+=</span> np.<span class="bu">sum</span>(losses)</span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compensación meteorológica</span></span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>        E_loss_meteo <span class="op">=</span> expected_loss_per_event(</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>            deviation, <span class="fl">0.005</span>, <span class="fl">0.02</span>, N_polizas</span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>        compensacion <span class="op">+=</span> (<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>lambda_meteo_dia_fc <span class="op">*</span> E_loss_meteo</span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>        <span class="co"># --- Eventos Sísmicos ---</span></span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> n_sismo <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>            pct_affected <span class="op">=</span> np.random.uniform(<span class="fl">0.01</span>, <span class="fl">0.10</span>)</span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>            n_affected <span class="op">=</span> <span class="bu">max</span>(<span class="dv">1</span>, <span class="bu">int</span>(N_polizas <span class="op">*</span> pct_affected))</span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>            mu_per_policy <span class="op">=</span> deviation</span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a>            sigma_per_policy <span class="op">=</span> COEF_VARIACION_SISMO <span class="op">*</span> mu_per_policy</span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>            losses <span class="op">=</span> np.random.normal(mu_per_policy, sigma_per_policy, size<span class="op">=</span>n_affected)</span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>            losses <span class="op">=</span> np.clip(losses, <span class="fl">0.0</span>, <span class="va">None</span>)</span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>            total_jump <span class="op">+=</span> np.<span class="bu">sum</span>(losses)</span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Compensación sísmica</span></span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>        E_loss_sismo <span class="op">=</span> expected_loss_per_event(</span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>            deviation, <span class="fl">0.01</span>, <span class="fl">0.10</span>, N_polizas</span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>        compensacion <span class="op">+=</span>(<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span> lambda_sismo_dia_fc <span class="op">*</span> E_loss_sismo</span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>        <span class="co"># --- Actualización con Milstein + Compensación ---</span></span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a>        dW <span class="op">=</span> np.sqrt(dt) <span class="op">*</span> np.random.randn()</span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>        drift_base <span class="op">=</span> c_daily_fc[i] <span class="op">*</span> dt <span class="op">+</span> r_daily_fc[i] <span class="op">*</span> u_current <span class="op">*</span> dt</span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>        drift_compensado <span class="op">=</span> drift_base <span class="op">+</span> compensacion</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>        diffusion <span class="op">=</span> sigma_daily_fc[i] <span class="op">*</span> u_current <span class="op">*</span> dW</span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>        milstein_corr <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> (sigma_daily_fc[i]<span class="op">**</span><span class="dv">2</span>) <span class="op">*</span> u_current <span class="op">*</span> (dW<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> dt)</span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>        U_forecast[sim, i<span class="op">+</span><span class="dv">1</span>] <span class="op">=</span> u_current <span class="op">+</span> drift_compensado <span class="op">+</span> diffusion <span class="op">+</span> milstein_corr <span class="op">-</span> total_jump</span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a><span class="co"># PARTE 5: CÁLCULO DE ESTADÍSTICAS</span></span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>median_hist <span class="op">=</span> np.median(X_hist, axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> <span class="fl">1e6</span></span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>p05_hist <span class="op">=</span> np.percentile(X_hist, <span class="dv">5</span>, axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> <span class="fl">1e6</span></span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>p95_hist <span class="op">=</span> np.percentile(X_hist, <span class="dv">95</span>, axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> <span class="fl">1e6</span></span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>median_fc <span class="op">=</span> np.median(U_forecast, axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> <span class="fl">1e6</span></span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a>p05_fc <span class="op">=</span> np.percentile(U_forecast, <span class="dv">5</span>, axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> <span class="fl">1e6</span></span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>p95_fc <span class="op">=</span> np.percentile(U_forecast, <span class="dv">95</span>, axis<span class="op">=</span><span class="dv">0</span>) <span class="op">/</span> <span class="fl">1e6</span></span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a><span class="co"># PARTE 6: DETECCIÓN DE SALTOS EN LA MEDIANA</span></span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> detect_jumps(median_series):</span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Detecta saltos en una serie temporal usando umbral de 3 desviaciones estándar."""</span></span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>    median_usd <span class="op">=</span> median_series <span class="op">*</span> <span class="fl">1e6</span></span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>    log_returns <span class="op">=</span> np.log(median_usd[<span class="dv">1</span>:] <span class="op">/</span> median_usd[:<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>    threshold <span class="op">=</span> <span class="dv">3</span> <span class="op">*</span> np.std(log_returns)</span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>    jump_flags <span class="op">=</span> np.<span class="bu">abs</span>(log_returns) <span class="op">&gt;</span> threshold</span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a>    jump_indices <span class="op">=</span> np.where(jump_flags)[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a>    jump_times <span class="op">=</span> np.arange(<span class="bu">len</span>(median_series))[jump_indices]</span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>    jump_values <span class="op">=</span> median_series[jump_indices]</span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> jump_times, jump_values</span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a><span class="co"># Detectar saltos</span></span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>time_historical <span class="op">=</span> np.arange(N_hist <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>jump_times_hist, jump_values_hist <span class="op">=</span> detect_jumps(median_hist)</span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a>time_forecast <span class="op">=</span> np.arange(N_hist, N_hist <span class="op">+</span> forecast_days <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>jump_times_fc, jump_values_fc <span class="op">=</span> detect_jumps(median_fc)</span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a><span class="co"># PARTE 7: GRÁFICA INTERACTIVA CON PLOTLY</span></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> go.Figure()</span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a><span class="co"># Área de incertidumbre histórico</span></span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>fig.add_trace(go.Scatter(</span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>np.concatenate([time_historical, time_historical[::<span class="op">-</span><span class="dv">1</span>]]),</span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>np.concatenate([p95_hist, p05_hist[::<span class="op">-</span><span class="dv">1</span>]]),</span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>    fill<span class="op">=</span><span class="st">'toself'</span>,</span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>    fillcolor<span class="op">=</span><span class="st">'rgba(144, 238, 144, 0.3)'</span>,</span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>    line<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'rgba(144, 238, 144, 0)'</span>),</span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>    hoverinfo<span class="op">=</span><span class="st">"skip"</span>,</span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>    showlegend<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">'Histórico (5</span><span class="sc">%-95%</span><span class="st">)'</span></span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a><span class="co"># Mediana histórica</span></span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a>fig.add_trace(go.Scatter(</span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>time_historical,</span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>median_hist,</span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>    mode<span class="op">=</span><span class="st">'lines'</span>,</span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>    line<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'darkgreen'</span>, width<span class="op">=</span><span class="fl">2.5</span>),</span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">'Mediana (Histórico)'</span></span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a><span class="co"># Saltos en la mediana histórica</span></span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(jump_times_hist) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a>    fig.add_trace(go.Scatter(</span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>jump_times_hist,</span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span>jump_values_hist,</span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a>        mode<span class="op">=</span><span class="st">'markers'</span>,</span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a>        marker<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'red'</span>, size<span class="op">=</span><span class="dv">8</span>, symbol<span class="op">=</span><span class="st">'x'</span>),</span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">'Saltos (Histórico)'</span></span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a><span class="co"># Área de incertidumbre del pronóstico</span></span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a>fig.add_trace(go.Scatter(</span>
+<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>np.concatenate([time_forecast, time_forecast[::<span class="op">-</span><span class="dv">1</span>]]),</span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>np.concatenate([p95_fc, p05_fc[::<span class="op">-</span><span class="dv">1</span>]]),</span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a>    fill<span class="op">=</span><span class="st">'toself'</span>,</span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>    fillcolor<span class="op">=</span><span class="st">'rgba(205, 92, 92, 0.25)'</span>,</span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>    line<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'rgba(205, 92, 92, 0)'</span>),</span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>    hoverinfo<span class="op">=</span><span class="st">"skip"</span>,</span>
+<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a>    showlegend<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">'Pronóstico (5</span><span class="sc">%-95%</span><span class="st">)'</span></span>
+<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a><span class="co"># Mediana del pronóstico</span></span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>fig.add_trace(go.Scatter(</span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span>time_forecast,</span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span>median_fc,</span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a>    mode<span class="op">=</span><span class="st">'lines'</span>,</span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a>    line<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'darkred'</span>, width<span class="op">=</span><span class="fl">2.5</span>),</span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">'Mediana (Pronóstico)'</span></span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a><span class="co"># Saltos en la mediana del pronóstico</span></span>
+<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(jump_times_fc) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a>    fig.add_trace(go.Scatter(</span>
+<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>jump_times_fc <span class="op">+</span> N_hist,</span>
+<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span>jump_values_fc,</span>
+<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>        mode<span class="op">=</span><span class="st">'markers'</span>,</span>
+<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a>        marker<span class="op">=</span><span class="bu">dict</span>(color<span class="op">=</span><span class="st">'blue'</span>, size<span class="op">=</span><span class="dv">10</span>, symbol<span class="op">=</span><span class="st">'star'</span>),</span>
+<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">'Saltos (Pronóstico)'</span></span>
+<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a><span class="co"># Línea divisoria</span></span>
+<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a>fig.add_vline(x<span class="op">=</span>N_hist, line_dash<span class="op">=</span><span class="st">"dash"</span>, line_color<span class="op">=</span><span class="st">"black"</span>, annotation_text<span class="op">=</span><span class="st">"Inicio del Pronóstico"</span>)</span>
+<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a><span class="co"># Configuración final</span></span>
+<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>months_full <span class="op">=</span> [<span class="ss">f"</span><span class="sc">{</span>y<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>m<span class="sc">:02d}</span><span class="ss">"</span> <span class="cf">for</span> y <span class="kw">in</span> [<span class="dv">2024</span>, <span class="dv">2025</span>] <span class="cf">for</span> m <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">13</span>)]</span>
+<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a>month_labels <span class="op">=</span> months_full[::<span class="dv">2</span>]</span>
+<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>month_ticks <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">720</span>, <span class="dv">60</span>)</span>
+<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>all_ticks <span class="op">=</span> np.concatenate([month_ticks, [N_hist <span class="op">+</span> <span class="dv">30</span>]])</span>
+<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>all_labels <span class="op">=</span> month_labels <span class="op">+</span> [<span class="st">"2026-01"</span>]</span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a>fig.update_layout(</span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">'Reservas de la Aseguradora: Histórico (2024–2025) + Pronóstico Ene 2026&lt;br&gt;'</span></span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>          <span class="st">'&lt;sup&gt;Modelo Cramér-Lundberg con Milstein, Siniestros Realistas y Detección de Saltos (México)&lt;/sup&gt;'</span>,</span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>    xaxis_title<span class="op">=</span><span class="st">"Tiempo"</span>,</span>
+<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>    yaxis_title<span class="op">=</span><span class="st">"Reservas (Millones USD)"</span>,</span>
+<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>    xaxis<span class="op">=</span><span class="bu">dict</span>(tickmode<span class="op">=</span><span class="st">'array'</span>, tickvals<span class="op">=</span>all_ticks, ticktext<span class="op">=</span>all_labels, tickangle<span class="op">=</span><span class="dv">45</span>),</span>
+<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a>    legend<span class="op">=</span><span class="bu">dict</span>(orientation<span class="op">=</span><span class="st">"h"</span>, yanchor<span class="op">=</span><span class="st">"bottom"</span>, y<span class="op">=</span><span class="fl">1.02</span>, xanchor<span class="op">=</span><span class="st">"right"</span>, x<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a>    hovermode<span class="op">=</span><span class="st">"x unified"</span>,</span>
+<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a>    template<span class="op">=</span><span class="st">"plotly_white"</span>,</span>
+<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a>    height<span class="op">=</span><span class="dv">600</span>,</span>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="dv">1000</span></span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a>fig.show()</span>
+<span id="cb1-358"><a href="#cb1-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a><span class="co"># PARTE 8: RESUMEN DEL PRONÓSTICO</span></span>
+<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Pronóstico para Enero 2026:"</span>)</span>
+<span id="cb1-364"><a href="#cb1-364" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"- Reserva inicial: $</span><span class="sc">{</span>U0_forecast<span class="op">/</span><span class="fl">1e6</span><span class="sc">:.2f}</span><span class="ss">M"</span>)</span>
+<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"- Mediana final:  $</span><span class="sc">{</span>median_fc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">M"</span>)</span>
+<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"- IC (5%-95%):    [$</span><span class="sc">{</span>p05_fc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">M, $</span><span class="sc">{</span>p95_fc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">M]"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 </section>
 </div>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-higham2002strong" class="csl-entry" role="listitem">
+Higham, D. J., X. Mao, y A. M. Stuart. 2002. <span>«Strong convergence of Euler-type methods for nonlinear stochastic differential equations»</span>. <em>SIAM Journal on Numerical Analysis</em> 40 (3): 1041-63.
+</div>
+<div id="ref-kloeden1992numerical" class="csl-entry" role="listitem">
+Kloeden, P. E., y E. Platen. 1992. <em>Numerical solution of stochastic differential equations</em>. Springer.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->
