@@ -447,7 +447,7 @@ window.Quarto = {
   <li><a href="#modelo-de-cramérlundberg-extendido." id="toc-modelo-de-cramérlundberg-extendido." class="nav-link" data-scroll-target="#modelo-de-cramérlundberg-extendido."><span class="header-section-number">4.2</span> Modelo de Cramér–Lundberg Extendido.</a>
   <ul class="collapse">
   <li><a href="#formulación-del-modelo-base-c-l-clásico." id="toc-formulación-del-modelo-base-c-l-clásico." class="nav-link" data-scroll-target="#formulación-del-modelo-base-c-l-clásico."><span class="header-section-number">4.2.1</span> Formulación del modelo base (C-L clásico).</a></li>
-  <li><a href="#extensión-a-un-modelo-con-difusión-y-saltos." id="toc-extensión-a-un-modelo-con-difusión-y-saltos." class="nav-link" data-scroll-target="#extensión-a-un-modelo-con-difusión-y-saltos."><span class="header-section-number">4.2.2</span> Extensión a un modelo con difusión y saltos.</a></li>
+  <li><a href="#sec-modelo_c_l_extendido" id="toc-sec-modelo_c_l_extendido" class="nav-link" data-scroll-target="#sec-modelo_c_l_extendido"><span class="header-section-number">4.2.2</span> Extensión del modelo (C-L) a un modelo con difusión y saltos.</a></li>
   </ul></li>
   <li><a href="#análisis-asintótico-y-estimación-de-parámetros" id="toc-análisis-asintótico-y-estimación-de-parámetros" class="nav-link" data-scroll-target="#análisis-asintótico-y-estimación-de-parámetros"><span class="header-section-number">4.3</span> Análisis Asintótico y Estimación de Parámetros</a>
   <ul class="collapse">
@@ -652,8 +652,8 @@ x_t = x_0 &amp;+ \int_0^t b_N(s,x^N_s,\omega)\,ds
 <p>La suposición de parámetros constantes (especialmente la tasa de primas <span class="math inline">\(c\)</span> y la intensidad del proceso de Poisson <span class="math inline">\(\lambda\)</span>) limita su aplicabilidad en entornos dinámicos donde las condiciones del mercado cambian con el tiempo, como es el caso del mercado asegurador mexicano que enfrenta variaciones estacionales en los siniestros catastróficos, cambios en las tasas de inversión y fluctuaciones en la estructura de primas debido a factores macroeconómicos como la inflación.</p>
 </div>
 </section>
-<section id="extensión-a-un-modelo-con-difusión-y-saltos." class="level3" data-number="4.2.2">
-<h3 data-number="4.2.2" class="anchored" data-anchor-id="extensión-a-un-modelo-con-difusión-y-saltos."><span class="header-section-number">4.2.2</span> Extensión a un modelo con difusión y saltos.</h3>
+<section id="sec-modelo_c_l_extendido" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="sec-modelo_c_l_extendido"><span class="header-section-number">4.2.2</span> Extensión del modelo (C-L) a un modelo con difusión y saltos.</h3>
 <div style="text-align:justify">
 <p>Formalmente, extendemos el proceso de reservas <span class="math inline">\(\{U(t)\}_{t \geq 0}\)</span> del modelo (C-L) que sigue la dinámica estocástica de una ecuación diferencial con difusión y saltos (EDES).</p>
 <p>Las ecuaciones diferenciales estocásticas con saltos (EDES) constituyen una extensión natural del cálculo estocástico clásico de Itô,(<a href="fundamentos_estocasticos.html#sec-Ito" class="quarto-xref"><span>Sección 3.7</span></a>) permitiendo modelar dinámicas que combinan evolución continua con cambios abruptos discontinuos. Este marco teórico es esencial para representar fenómenos en los que coexisten tendencias suaves y eventos extremos, como es el caso de los mercados financieros y las carteras de seguros sujetas a siniestros catastróficos.</p>
