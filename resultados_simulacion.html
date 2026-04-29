@@ -448,7 +448,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodos-numericos.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Métodos Numéricos para EDES</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Métodos Numéricos para EDE</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -597,7 +597,9 @@ U_{n+1}^{\text{Mil}} = U_n &amp;+ \mu(t_n, U_n)\Delta t + \sigma(t_n, U_n)\Delta
 <li><p><strong>Patrón estacional de saltos</strong>: Ambos métodos detectan <span class="math inline">\(7\)</span> saltos significativos en la trayectoria mediana durante el periodo histórico, con concentración en agosto-septiembre (<span class="math inline">\(61.1\%\)</span> de los saltos), coincidiendo con la temporada de huracanes (Figura~<span class="math inline">\(\ref{fig:comparacion_metodos}\)</span>, marcadores rojos/azules). La coincidencia espacio-temporal de los saltos (<span class="math inline">\(94.4\%\)</span> en las mismas fechas) valida la robustez de la modelación estado-dependiente de <span class="math inline">\(c(t,x,v)\)</span>.</p></li>
 <li><p><strong>Comportamiento asintótico del intervalo de confianza</strong>: El ancho del IC <span class="math inline">\(90\%\)</span> crece un <span class="math inline">\(12.54\%\)</span> más rápido en el esquema semi-implícito. Esto refleja una mayor dispersión en las trayectorias extremas, atribuible a la no linealidad introducida por el denominador <span class="math inline">\(1 - r(t_n)\Delta t\)</span> en la Ecuación <a href="#eq-semiimplicito_formal" class="quarto-xref">Ecuación&nbsp;<span>7.2</span></a>, que amplifica las realizaciones con <span class="math inline">\(\Delta W_n &gt; 0\)</span>.</p></li>
 </ol>
-<div id="2b024542" class="cell" data-execution_count="1">
+</section>
+</div>
+<div id="bb5f5ba6" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Código</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -967,8 +969,6 @@ U_{n+1}^{\text{Mil}} = U_n &amp;+ \mu(t_n, U_n)\Delta t + \sigma(t_n, U_n)\Delta
 <span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"- Mediana final:  $</span><span class="sc">{</span>median_fc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">M"</span>)</span>
 <span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"- IC (5%-95%):    [$</span><span class="sc">{</span>p05_fc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">M, $</span><span class="sc">{</span>p95_fc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">:.2f}</span><span class="ss">M]"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-</div>
-</section>
 </div>
 
 
