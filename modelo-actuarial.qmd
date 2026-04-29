@@ -60,7 +60,7 @@ La Tabla @tbl-inflacion presenta las tasas de inflación utilizadas para el peri
 | Nov 2025 |            313.81            |
 | Dic 2025 |            315.01            |
 
-: Tasas de inflación mensual en México (variación porcentual del INPC Enero 2024- Diciembre 2025).
+: Tasas de inflación mensual en México (variación porcentual del INPC Enero 2024- Diciembre 2025). {#tbl-inflacion}
 
 ::: {style="text-align:justify"}
 Aplicando @eq-ajuste_inflacion, las primas mensuales ajustadas evolucionan de $283.00$ en enero 2024 a $315.01$ en diciembre 2025, representando un incremento acumulado del $11.3\%$, consistente con la inflación proyectada
@@ -138,7 +138,7 @@ Mientras que la componente global $\sigma_g(t)$ es dada por la Volatilidad del �
 |  Nov-25  |              0.20%               |
 | Dic 2025 |              0.18%               |
 
-: Tasas de volatilidad mensual en el mercado global, $\sigma_g(t)$ (Enero 2024- Diciembre 2025).
+: Tasas de volatilidad mensual en el mercado global, $\sigma_g(t)$ (Enero 2024- Diciembre 2025). {#tbl-volatilidad_global}
 
 La volatilidad total mensual resultante es :
 
@@ -169,7 +169,7 @@ La volatilidad total mensual resultante es :
 |  Nov-25  |    0.20    |    0.05    |    0.095    |
 | Dic 2025 |    0.18    |    0.05    |    0.089    |
 
-: Tasas de volatilidad mensual en el mercado total, $\sigma$ (Enero 2024- Diciembre 2025).
+: Tasas de volatilidad mensual en el mercado total, $\sigma$ (Enero 2024- Diciembre 2025). {#tbl-volatilidad_total}
 
 con promedio anual $\bar \sigma= 0.092\%$ con picos superiores a $0.14\%$ en meses de alta actividad catastrófica.
 
@@ -268,7 +268,9 @@ con $\mathbb{E}[Y_{\text{sismo}}] = \text{USD } 1{,}750{,}000$, y coeficiente de
 
 Consideramos el proceso de reservas bajo el modelo extendido de Cramér-Lundberg con inversión estocástica y saltos reescribimos @eq-modelo_extendido en forma diferencial estocástica:
 
-$$dX_t = \underbrace{\left[c(t) + r(t)X_t - \lambda_{\text{meteo}}(t)\mathbb{E}[Y^{\text{meteo}}_t \mid \mathcal{F}_t] - \lambda_{\text{sismo}}\mathbb{E}[Y^{\text{sismo}}_t \mid \mathcal{F}_t]\right]}_{\mu(t,X_t)}dt + \underbrace{\sigma(t)X_t}_{\sigma(t,X_t)}dW_t - dJ_t$$ {#eq-eds-completa} La compensación $\lambda \mathbb{E}[Y \mid \mathcal{F}_t]$ garantiza que el proceso sin saltos reales sea una semimartingala (@def-Semimartingalas_saltos) con la deriva correcta, esencial para la convergencia del esquema numérico.
+$$dX_t = \underbrace{\left[c(t) + r(t)X_t - \lambda_{\text{meteo}}(t)\mathbb{E}[Y^{\text{meteo}}_t \mid \mathcal{F}_t] - \lambda_{\text{sismo}}\mathbb{E}[Y^{\text{sismo}}_t \mid \mathcal{F}_t]\right]}_{\mu(t,X_t)}dt + \underbrace{\sigma(t)X_t}_{\sigma(t,X_t)}dW_t - dJ_t$$ 
+
+ La compensación $\lambda \mathbb{E}[Y \mid \mathcal{F}_t]$ garantiza que el proceso sin saltos reales sea una semimartingala (@def-Semimartingalas_saltos) con la deriva correcta, esencial para la convergencia del esquema numérico.
 
 Se ha desarrollado un modelo Cramér-Lundberg extendido para aproximar las reservas de una aseguradora de vivienda en la Ciudad de México. Este modelo incorpora parámetros dependientes del tiempo, primas ajustadas por inflación (@sec-Primas_ajustadas), tasas de interés estocásticas (@sec-inversion_mensual), volatilidad mediante combinación convexa (@sec-volatilidad_inversiones) y un proceso de saltos compuesto que modela siniestros catastróficos meteorológicos y sísmicos con intensidades estacionales (@sec-funcion_costos_met_sis).
 
@@ -290,7 +292,7 @@ El pseudocódigo siguiente está pensado para ser puente conceptual entre la teo
 :::
 
 | Tipo | Parámetro | Descripción |
-|------------------|-------------------------|-----------------------------|
+|-------------------|-------------------------|-----------------------------|
 | **Entrada** | $U_0^{\text{hist}}$ | Capital inicial histórico (USD) |
 |  | $T_{\text{hist}}$ | Horizonte temporal histórico (años) |
 |  | $T_{\text{fc}}$ | Horizonte de pronóstico (días) |
@@ -427,7 +429,7 @@ IC_5,95^fc, saltos_hist, saltos_fc
 :::
 
 | Tipo | Parámetro | Descripción |
-|------------------|-------------------------|-----------------------------|
+|-------------------|-------------------------|-----------------------------|
 | **Entrada** | $U_0$ | Capital inicial (USD) |
 |  | $T$ | Horizonte temporal (años) |
 |  | $\Delta t$ | Paso de tiempo (ej. $1/365$ para diario) |
