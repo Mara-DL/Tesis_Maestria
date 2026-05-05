@@ -314,7 +314,7 @@
     "href": "conclusiones.html",
     "title": "8  Conclusiones.",
     "section": "",
-    "text": "En esta tesis se ha desarrollado un marco integral para la aproximación numérica de ecuaciones diferenciales estocásticas con difusión y saltos (EDESJs), con aplicación al modelo de Cramér-Lundberg extendido para el cálculo de reservas técnicas en el sector asegurador de vivienda de la Ciudad de México.",
+    "text": "En esta tesis se ha desarrollado un marco integral para la aproximación numérica de ecuaciones diferenciales estocásticas con difusión y saltos (EDE), con aplicación al modelo de Cramér-Lundberg extendido para el cálculo de reservas técnicas en el sector asegurador de vivienda de la Ciudad de México.\nSe ha presentado una exposición rigurosa que integra la definición de medidas aleatorias de Poisson y su compensación (Definiciones 3.10-3.18),la isometría de Itô para la parte de saltos (Teorema 3.17), cuya demostración se realiza primero para procesos elementales simples y luego se extiende por densidad al espacio \\(L^2_{\\text{pred}}(\\tilde{N})\\) y la fórmula de Itô generalizada (Teorema 3.19) y las desigualdades de Burkholder-Davis-Gundy en espacios de Hilbert (Teoremas 3.21 y 3.22).\nSe ha implementado y analizado el esquema definido por la Ecuación (5.3). Bajo las hipótesis de Lipschitz global, crecimiento lineal, momentos finitos de saltos y condiciones iniciales adecuadas, se ha demostrado (Teorema 5.1) la convergencia fuerte de orden \\(\\gamma = 1/2\\): \\[\\max_{0 \\le n \\le N} \\left( \\mathbb{E}[|X_{t_n} - Y_n|^2] \\right)^{1/2} \\le C \\sqrt{\\Delta t}.\\]",
     "crumbs": [
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>Conclusiones.</span>"
     ]

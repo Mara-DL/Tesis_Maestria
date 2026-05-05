@@ -82,6 +82,35 @@ ul.task-list li input[type="checkbox"] {
   });
 </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <meta property="og:title" content="8&nbsp; Conclusiones. – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta property="og:image" content="assets/UNACH.png">
@@ -413,7 +442,9 @@ ul.task-list li input[type="checkbox"] {
 
 
 <div style="text-align: justify">
-<p>En esta tesis se ha desarrollado un marco integral para la aproximación numérica de ecuaciones diferenciales estocásticas con difusión y saltos (EDESJs), con aplicación al modelo de Cramér-Lundberg extendido para el cálculo de reservas técnicas en el sector asegurador de vivienda de la Ciudad de México.</p>
+<p>En esta tesis se ha desarrollado un marco integral para la aproximación numérica de ecuaciones diferenciales estocásticas con difusión y saltos (EDE), con aplicación al modelo de Cramér-Lundberg extendido para el cálculo de reservas técnicas en el sector asegurador de vivienda de la Ciudad de México.</p>
+<p>Se ha presentado una exposición rigurosa que integra la definición de medidas aleatorias de Poisson y su compensación (Definiciones 3.10-3.18),la isometría de Itô para la parte de saltos (Teorema 3.17), cuya demostración se realiza primero para procesos elementales simples y luego se extiende por densidad al espacio <span class="math inline">\(L^2_{\text{pred}}(\tilde{N})\)</span> y la fórmula de Itô generalizada (Teorema 3.19) y las desigualdades de Burkholder-Davis-Gundy en espacios de Hilbert (Teoremas 3.21 y 3.22).</p>
+<p>Se ha implementado y analizado el esquema definido por la Ecuación (5.3). Bajo las hipótesis de Lipschitz global, crecimiento lineal, momentos finitos de saltos y condiciones iniciales adecuadas, se ha demostrado (Teorema 5.1) la convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span>: <span class="math display">\[\max_{0 \le n \le N} \left( \mathbb{E}[|X_{t_n} - Y_n|^2] \right)^{1/2} \le C \sqrt{\Delta t}.\]</span></p>
 </div>
 
 
