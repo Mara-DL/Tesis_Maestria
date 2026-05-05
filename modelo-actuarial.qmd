@@ -5,7 +5,7 @@ format:
     code-overflow: scroll
   pdf:
     documentclass: scrreprt
-    latex-engine: lualatex
+    latex-engine: xelatex
     include-in-header:
       text: |
         \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
@@ -14,6 +14,7 @@ format:
         \SetKwInput{KwIn}{Entrada}
         \SetKwInput{KwOut}{Salida}
         \SetKw{Return}{retornar}
+    keep-tex: true
 ---
 
 # Implementación Numérica.
@@ -140,7 +141,7 @@ Mientras que la componente global $\sigma_g(t)$ es dada por la Volatilidad del �
 
 : Tasas de volatilidad mensual en el mercado global, $\sigma_g(t)$ (Enero 2024- Diciembre 2025). {#tbl-volatilidad_global}
 
-La volatilidad total mensual resultante es :
+Los valores están expresados en forma decimal. Por ejemplo, $\sigma (Ene 2024) = 0.059\%=0.00059$ en notación decimal. Por tanto la volatilidad total mensual resultante es:
 
 |   Mes    | $\sigma_g$ | $\sigma_l$ | $\sigma(t)$ |
 |:--------:|:----------:|:----------:|:-----------:|
@@ -264,13 +265,13 @@ $$Y_{\text{sismo}} \sim \mathcal{N}_+\bigl(\mu_s = 1{,}742{,}000,\; \sigma_s = 8
 
 con $\mathbb{E}[Y_{\text{sismo}}] = \text{USD } 1{,}750{,}000$, y coeficiente de variación $= 0.50$.
 
-## Aproximación numérica del modelo de Crámer Lundberg extendido
+## Aproximación numérica del modelo de Crámer Lundberg extendido 
 
 Consideramos el proceso de reservas bajo el modelo extendido de Cramér-Lundberg con inversión estocástica y saltos reescribimos @eq-modelo_extendido en forma diferencial estocástica:
 
-$$dX_t = \underbrace{\left[c(t) + r(t)X_t - \lambda_{\text{meteo}}(t)\mathbb{E}[Y^{\text{meteo}}_t \mid \mathcal{F}_t] - \lambda_{\text{sismo}}\mathbb{E}[Y^{\text{sismo}}_t \mid \mathcal{F}_t]\right]}_{\mu(t,X_t)}dt + \underbrace{\sigma(t)X_t}_{\sigma(t,X_t)}dW_t - dJ_t$$ 
+$$dX_t = \underbrace{\left[c(t) + r(t)X_t - \lambda_{\text{meteo}}(t)\mathbb{E}[Y^{\text{meteo}}_t \mid \mathcal{F}_t] - \lambda_{\text{sismo}}\mathbb{E}[Y^{\text{sismo}}_t \mid \mathcal{F}_t]\right]}_{\mu(t,X_t)}dt + \underbrace{\sigma(t)X_t}_{\sigma(t,X_t)}dW_t - dJ_t$$
 
- La compensación $\lambda \mathbb{E}[Y \mid \mathcal{F}_t]$ garantiza que el proceso sin saltos reales sea una semimartingala (@def-Semimartingalas_saltos) con la deriva correcta, esencial para la convergencia del esquema numérico.
+La compensación $\lambda \mathbb{E}[Y \mid \mathcal{F}_t]$ garantiza que el proceso sin saltos reales sea una semimartingala (@def-Semimartingalas_saltos) con la deriva correcta, esencial para la convergencia del esquema numérico.
 
 Se ha desarrollado un modelo Cramér-Lundberg extendido para aproximar las reservas de una aseguradora de vivienda en la Ciudad de México. Este modelo incorpora parámetros dependientes del tiempo, primas ajustadas por inflación (@sec-Primas_ajustadas), tasas de interés estocásticas (@sec-inversion_mensual), volatilidad mediante combinación convexa (@sec-volatilidad_inversiones) y un proceso de saltos compuesto que modela siniestros catastróficos meteorológicos y sísmicos con intensidades estacionales (@sec-funcion_costos_met_sis).
 
@@ -292,7 +293,7 @@ El pseudocódigo siguiente está pensado para ser puente conceptual entre la teo
 :::
 
 | Tipo | Parámetro | Descripción |
-|-------------------|-------------------------|-----------------------------|
+|-------------------|-------------------------|----------------------------|
 | **Entrada** | $U_0^{\text{hist}}$ | Capital inicial histórico (USD) |
 |  | $T_{\text{hist}}$ | Horizonte temporal histórico (años) |
 |  | $T_{\text{fc}}$ | Horizonte de pronóstico (días) |
@@ -306,6 +307,7 @@ El pseudocódigo siguiente está pensado para ser puente conceptual entre la teo
 | **Salida** | $\text{median}_{\text{hist}}$, $\text{IC}_{5,95}^{\text{hist}}$ | Estadísticas periodo histórico |
 |  | $\text{median}_{\text{fc}}$, $\text{IC}_{5,95}^{\text{fc}}$ | Estadísticas pronóstico |
 |  | $\text{saltos}_{\text{hist}}$, $\text{saltos}_{\text{fc}}$ | Puntos de salto detectados |
+
 
 ::: {#alg-fase1}
 **Algoritmo 2:** Fase 1 - Simulación histórica con Milstein compensado
@@ -321,53 +323,53 @@ for m ← 1 to M_hist do
     X[m][0] ← U_0^hist
     
     for i ← 0 to N_hist - 1 do
-        δ ← |X[m][i] - U_0^hist| / N_polizas
+        delta ← |X[m][i] - U_0^hist| / N_polizas
         
-        if δ > ceiling_poliza then
-            δ ← ceiling_poliza
+        if delta > ceiling_poliza then
+            delta ← ceiling_poliza
         
         # Generación y compensación de saltos
         total_saltos ← 0
         comp ← 0
         
-        n_meteo ← Poisson(λ_m,hist[i])
+        n_meteo ← Poisson(lambda_m,hist[i])
         
         if n_meteo > 0 then
             p_af ← Uniforme(0.005, 0.02)
             n_af ← max(1, ⌊N_polizas · p_af⌋)
-            μ_pol ← δ
-            σ_pol ← CV_meteo · μ_pol
+            mu_pol ← delta
+            sigma_pol ← CV_meteo · mu_pol
             
             for j ← 1 to n_af do
-                perdida ← max(0, Normal(μ_pol, σ_pol))
+                perdida ← max(0, Normal(mu_pol, sigma_pol))
                 total_saltos ← total_saltos + perdida
         
-        E_meteo ← ((0.005 + 0.02) / 2 · N_polizas) · δ
-        comp ← comp - λ_m,hist[i] · E_meteo
+        E_meteo ← ((0.005 + 0.02) / 2 · N_polizas) · delta
+        comp ← comp - lambda_m,hist[i] · E_meteo
         
-        n_sismo ← Poisson(λ_s / 365)
+        n_sismo ← Poisson(lambda_s / 365)
         
         if n_sismo > 0 then
             p_af ← Uniforme(0.01, 0.10)
             n_af ← max(1, ⌊N_polizas · p_af⌋)
-            μ_pol ← δ
-            σ_pol ← CV_sismo · μ_pol
+            mu_pol ← delta
+            sigma_pol ← CV_sismo · mu_pol
             
             for j ← 1 to n_af do
-                perdida ← max(0, Normal(μ_pol, σ_pol))
+                perdida ← max(0, Normal(mu_pol, sigma_pol))
                 total_saltos ← total_saltos + perdida
         
-        E_sismo ← ((0.01 + 0.10) / 2 · N_polizas) · δ
-        comp ← comp - (λ_s / 365) · E_sismo
+        E_sismo ← ((0.01 + 0.10) / 2 · N_polizas) · delta
+        comp ← comp - (lambda_s / 365) · E_sismo
         
 # Actualización Milstein con compensación
 ΔW ← √Δt · Normal(0, 1)
 
 drift ← c_hist[i] · Δt + r_hist[i] · X[m][i] · Δt + comp
 
-diff ← σ_hist[i] · X[m][i] · ΔW
+diff ← sigma_hist[i] · X[m][i] · ΔW
 
-corr ← (1/2) · (σ_hist[i])² · X[m][i] · (ΔW² - Δt)
+corr ← (1/2) · (sigma_hist[i])² · X[m][i] · (ΔW² - Δt)
 
 X[m][i + 1] ← X[m][i] + drift + diff + corr - total_saltos
 
@@ -387,21 +389,21 @@ for m ← 1 to M_fc do
     U[m][0] ← U_0^fc
     
     for i ← 0 to N_fc - 1 do
-        δ ← |U[m][i] - U_0^fc| / N_polizas
+        delta ← |U[m][i] - U_0^fc| / N_polizas
         
-        if δ > ceiling_poliza then
-            δ ← ceiling_poliza
+        if delta > ceiling_poliza then
+            delta ← ceiling_poliza
         
         # Saltos con parámetros constantes de enero
-        n_meteo ← Poisson(λ_m,ene)
-        n_sismo ← Poisson(λ_s / 365)
+        n_meteo ← Poisson(lambda_m,ene)
+        n_sismo ← Poisson(lambda_s / 365)
         
         # ... (mismos pasos de simulación y compensación que Fase 1)
         
         ΔW ← √Δt · Normal(0, 1)
         drift ← c_ene · Δt + r_ene · U[m][i] · Δt + comp
-        diff ← σ_ene · U[m][i] · ΔW
-        corr ← (1/2) · σ_ene² · U[m][i] · (ΔW² - Δt)
+        diff ← sigma_ene · U[m][i] · ΔW
+        corr ← (1/2) · sigma_ene² · U[m][i] · (ΔW² - Δt)
         U[m][i + 1] ← U[m][i] + drift + diff + corr - total_saltos
 
 # Calcular estadísticas pronóstico
@@ -422,14 +424,16 @@ retornar median_hist, IC_5,95^hist, median_fc,
 IC_5,95^fc, saltos_hist, saltos_fc    
 ```
 
+
 ### Pseudocódigo: Esquema Semi-Implícito Compensado para EDE con Difusión y Salto
+
 
 ::: {#alg-semi-implícito}
 **Algoritmo 3:** Simulación de Reservas Cramér-Lundberg con Método Semi-Implícito Compensado
 :::
 
 | Tipo | Parámetro | Descripción |
-|-------------------|-------------------------|-----------------------------|
+|-------------------|-------------------------|----------------------------|
 | **Entrada** | $U_0$ | Capital inicial (USD) |
 |  | $T$ | Horizonte temporal (años) |
 |  | $\Delta t$ | Paso de tiempo (ej. $1/365$ para diario) |
@@ -462,11 +466,11 @@ for i ← 0 to N do
     # Tasa CETES + componente global           
     r_i ← r(t_i) 
     # Combinación convexa de volatilidades         
-    σ_i ← σ(t_i)
+    sigma_i ← sigma(t_i)
     # Intensidad eventos meteorológicos         
-    λ_m,i ← (λ_meteo,anual / 365) × factor_estacional[mes]  
+    lambda_m,i ← (lambda_meteo,anual / 365) × factor_estacional[mes]  
     # Intensidad eventos sísmicos
-    λ_s,i ← λ_sismo / 365  
+    lambda_s,i ← lambda_sismo / 365  
     
 
 # Almacenar parámetros en vectores indexados por i
@@ -477,57 +481,57 @@ for m ← 1 to M do
     
     for i ← 0 to N - 1 do
         # 2.1: Generación de saltos
-        n_meteo ← Poisson(λ_m,i)
-        n_sismo ← Poisson(λ_s,i)
+        n_meteo ← Poisson(lambda_m,i)
+        n_sismo ← Poisson(lambda_s,i)
         
         # 2.2: Cálculo de saltos brutos
         total_saltos ← 0
-        δ ← |U[m][i] - U_0| / N_polizas
+        delta ← |U[m][i] - U_0| / N_polizas
         
-        if δ > ceiling_poliza then
-            δ ← ceiling_poliza
+        if delta > ceiling_poliza then
+            delta ← ceiling_poliza
         
         # Eventos meteorológicos
         if n_meteo > 0 then
             p_af ← Uniforme(0.005, 0.02)
             n_af ← max(1, ⌊N_polizas × p_af⌋)
-            μ_pol ← δ
-            σ_pol ← CV_meteo × μ_pol
+            mu_pol ← delta
+            mu_pol ← CV_meteo × mu_pol
             
             for j ← 1 to n_af do
-                perdida ← max(0, Normal(μ_pol, σ_pol))
+                perdida ← max(0, Normal(mu_pol, sigma_pol))
                 total_saltos ← total_saltos + perdida
         
         # Eventos sísmicos
         if n_sismo > 0 then
             p_af ← Uniforme(0.01, 0.10)
             n_af ← max(1, ⌊N_polizas × p_af⌋)
-            μ_pol ← δ
-            σ_pol ← CV_sismo × μ_pol
+            mu_pol ← delta
+            sigma_pol ← CV_sismo × mu_pol
             
             for j ← 1 to n_af do
-                perdida ← max(0, Normal(μ_pol, σ_pol))
+                perdida ← max(0, Normal(mu_pol, sigma_pol))
                 total_saltos ← total_saltos + perdida
         
         # 2.3: Cálculo de compensación (reducción de varianza)
-        E_meteo ← (N_polizas × 0.0125) × δ
-        E_sismo ← (N_polizas × 0.055) × δ
-        comp ← (-λ_m,i × E_meteo) + (-λ_s,i × E_sismo)
+        E_meteo ← (N_polizas × 0.0125) × delta
+        E_sismo ← (N_polizas × 0.055) × delta
+        comp ← (-lambda_m,i × E_meteo) + (-lambda_s,i × E_sismo)
         
         # 2.4: Actualización semi-implícita con compensación
         ΔW ← √Δt × Normal(0, 1)
-        numerador ← U[m][i] × (1 + σ_i ΔW) + c_i Δt + comp - total_saltos
+        numerador ← U[m][i] × (1 + sigma_i ΔW) + c_i Δt + comp - total_saltos
         denominador ← 1 - r_i Δt
         
-        if denominador ≤ 0 then
+        if denominador <= 0 then
             denominador ← 10^(-12)  # Evitar división por cero
         
         U[m][i + 1] ← numerador / denominador
 
 for i ← 0 to N do
     Ũ[i] ← Mediana(U[1..M][i])
-    IC_5,95[i][0] ← Percentil₅(U[1..M][i])
-    IC_5,95[i][1] ← Percentil₉₅(U[1..M][i])
+    IC_5,95[i][0] ← Percentil_5(U[1..M][i])
+    IC_5,95[i][1] ← Percentil_95(U[1..M][i])
 
 # FASE 4: Detección de saltos en la trayectoria mediana (opcional)
 Inicializar log_ret[N]

@@ -228,6 +228,7 @@ Sea $(\Omega, \mathcal{F}, \{\mathcal{F}_t\}_{t \geq 0}, \mathbb{P})$ un espacio
 
 5.  Adaptación:\
     El proceso $W$ es adaptado a la filtración $\{\mathcal{F}_t\}_{t \geq 0}$, es decir, $W(t)$ es $\mathcal{F}_t$-medible para todo $t \geq 0$.
+6. El proceso tiene variación cuadrática  $\langle W \rangle = t$, casi seguramente.
 :::
 :::
 
@@ -238,7 +239,7 @@ $$t \mapsto X_t(\omega)$$ satisface las siguientes dos propiedades:
 
 1.  Continuidad por la derecha: Para todo $t \geq 0$, $$\lim_{s \downarrow t} X_s(\omega) = X_t(\omega).$$
 
-2.  Existencia del límite por la izquierda: Para todo $t > 0$, el límite\
+2.  Existencia del límite por la izquierda: Para todo $t > 0$, el límite
     $$\lim_{s \uparrow t} X_s(\omega)$$ existe en $\mathbb{R}$. Este límite se denota por $X_{t-}(\omega)$.
 :::
 
@@ -416,7 +417,7 @@ $$f(\partial) = 0, \quad \int_{\{\partial\}} g(z) \, \nu(dz) = 0, \quad \text{y}
 :::
 
 ::: {#def-saltos_aislados}
-(Saltos aislados). Sea $p: \Omega \times (0, \infty) \to Z \cup \{\partial\}$ un proceso puntual (@def-proceso_puntual). Decimos que $p$ tiene saltos aislados si para casi toda $\omega \in \Omega$ y todo $T > 0$, el conjunto de tiempos de salto:\*
+(Saltos aislados). Sea $p: \Omega \times (0, \infty) \to Z \cup \{\partial\}$ un proceso puntual (@def-proceso_puntual). Decimos que $p$ tiene saltos aislados si para casi toda $\omega \in \Omega$ y todo $T > 0$, el conjunto de tiempos de salto:
 
 $$\mathcal{T}(\omega) \cap (0, T] := \{t \in (0, T] : p(t, \omega) \in Z\}$$
 
@@ -438,7 +439,11 @@ es finito o, más generalmente, discreto sin puntos de acumulación en $(0, T]$.
 :::
 
 ::: {style="text-align:justify"}
-En la anterior expresión la suma $\sum_{0 < s \leq t}$ recorre todos los instantes $s$ en el intervalo $(0,t]$. Aunque hay infinitos $s$ en principio, sólo en los tiempos donde ocurre un salto (es decir, cuando $p(s) \in Z$ el término $\mathbf{1}_U(p(s))$) puede ser distinto de cero. Gracias a la propiedad de que los saltos son aislados (@def-saltos_aislados), la suma es finita c.s. en cada intervalo $(0,t]$. El indicador $\mathbf{1}_U(p(s))$, evalúa si el tamaño (o tipo) del salto en el instante $s$, que es $p(s) \in Z$, cae dentro del conjunto $U \subset Z$. Si $p(s) \in U$, el salto cuenta para $N_p((0,t] \times U)$; si no, no se cuenta. La medida $N_p((0,t] \times U)$ es simplemente el número de saltos del proceso $p$ que ocurren hasta el tiempo $t$ y cuyo valor (localización en $Z$) está en el conjunto $U$.
+En la anterior expresión la suma $\sum_{0 < s \leq t}$ recorre todos los instantes $s$ en el intervalo $(0,t]$. 
+
+Aunque hay infinitos $s$ en principio, sólo en los tiempos donde ocurre un salto (es decir, cuando $p(s) \in Z$ el término $\mathbf{1}_U(p(s))$) puede ser distinto de cero. Gracias a la propiedad de que los saltos son aislados (@def-saltos_aislados), la suma es finita c.s. en cada intervalo $(0,t]$. 
+
+El indicador $\mathbf{1}_U(p(s))$, evalúa si el tamaño (o tipo) del salto en el instante $s$, que es $p(s) \in Z$, cae dentro del conjunto $U \subset Z$. Si $p(s) \in U$, el salto cuenta para $N_p((0,t] \times U)$; si no, no se cuenta. La medida $N_p((0,t] \times U)$ es simplemente el número de saltos del proceso $p$ que ocurren hasta el tiempo $t$ y cuyo valor (localización en $Z$) está en el conjunto $U$.
 
 Un caso particular y muy importante de proceso puntual es el proceso puntual de Poisson estacionario.
 :::
@@ -523,7 +528,7 @@ En la Isometría de Itô, el @thm-Fubinni_esperanzas permite escribir $$\mathbb{
 
 ## Espacios Funcionales para Procesos Predecibles. {#sec-proc_predecibles}
 
-Definición del espacio $L^2_{\text{pred}}(\widetilde{N})$ y su norma
+### Definición del espacio $L^2_{\text{pred}}(\widetilde{N})$ y su norma.
 
 ::: {#thm-den_esp_pro_simp_prede_L2}
 El conjunto $\mathcal{E}$ de procesos elementales simples predecibles es denso en el espacio de Hilbert
@@ -612,7 +617,7 @@ En este caso, la integral es una martingala local, pero la Isometría de Itô ya
 ## La Integral de Itô para la Parte de Saltos.
 
 ::: {#thm-Iso_Ito_saltos}
-Sea $R = R(t,z,\omega)$ un proceso previsible tal que $$\mathbb{E}\left[ \int_0^T \int_Z R(s,z)^2 \nu(dz) ds \right] < \infty.$$ Entonces $$\mathbb{E}\left[ \left( \int_0^t \int_Z R(s,z) \widetilde{N}(ds,dz) \right)^2 \right] = \mathbb{E}\left[ \int_0^t \int_Z R(s,z)^2 \nu(dz) ds \right].$$
+Sea $R = R(t,z,\omega)$ un proceso predecible $\mathcal{P}\otimes\mathcal{B}(\mathcal{Z}\text{-medible}$ tal que $$\mathbb{E}\left[ \int_0^T \int_Z R(s,z)^2 \nu(dz) ds \right] < \infty.$$ Entonces $$\mathbb{E}\left[ \left( \int_0^t \int_Z R(s,z) \widetilde{N}(ds,dz) \right)^2 \right] = \mathbb{E}\left[ \int_0^t \int_Z R(s,z)^2 \nu(dz) ds \right].$$
 :::
 
 :::: {.content-visible when-format="html"}
@@ -672,7 +677,10 @@ Ver @karatzas1991brownian Teorema 3.2.1.
 ## Variación Cuadrática y Desigualdades de Martingalas
 
 ::: {#def-variacion_cuadratica}
-Sean $M = \{M_t\}_{t \geq 0}$ una martingala local continua (como se asume en la desigualdad Burkholder-Davis-Gundy). La variación cuadrática se denota $[M]_t$ y se define como el límite en probabilidad de sumas de cuadrados de incrementos sobre particiones que se refinan $$[M]_t = \lim_{|\Pi| \to 0} \sum_{i} (M_{t_{i+1}} - M_{t_i})^2,$$ donde $\Pi = \{0 = t_0 < t_1 < \cdots < t_n = t\}$. Cuando $M$ es una martingala local continua, se tiene que $[M]$ es un proceso continuo, creciente y adaptado, pero no necesariamente previsible. La variación cuadrática previsible, denotada $\langle M \rangle$, es el único proceso creciente, continuo y previsible tal que $$M_t^2 - \langle M \rangle_{t}$$ es una martingala local.
+Sean $M = \{M_t\}_{t \geq 0}$ una martingala local continua (como se asume en la desigualdad Burkholder-Davis-Gundy). 
+La variación cuadrática se denota $[M]_t$ y se define como el límite en probabilidad de sumas de cuadrados de incrementos sobre particiones que se refinan $$[M]_t = \lim_{|\Pi| \to 0} \sum_{i} (M_{t_{i+1}} - M_{t_i})^2,$$ donde $\Pi = \{0 = t_0 < t_1 < \cdots < t_n = t\}$. 
+
+Cuando $M$ es una martingala local continua, se tiene que $[M]$ es un proceso continuo, creciente y adaptado, pero no necesariamente previsible. La variación cuadrática previsible, denotada $\langle M \rangle$, es el único proceso creciente, continuo y previsible tal que $$M_t^2 - \langle M \rangle_{t}$$ es una martingala local.
 :::
 
 ::: {#thm-des_martingalas_espacios_hilbert}

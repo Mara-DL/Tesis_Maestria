@@ -5,9 +5,9 @@ format:
   pdf: default  
 ---
 
-# Métodos Numéricos para EDES
+# Métodos Numéricos para EDE
 
-## Introducción a la Discretización de EDESJs
+## Introducción a la Discretización de EDE con difusion y salto.
 
 ::: {style="text-align:justify"}
 Las Ecuaciones Diferenciales Estocásticas (EDE) constituyen una herramienta fundamental en la modelización matemática de fenómenos dinámicos sometidos a incertidumbre. En particular, las ecuaciones diferenciales estocásticas con saltos, por sus siglas en inglés Jump-Diffusion Stochastic Differential Equations que denotaremos de ahora en adelante por (EDSEJ) extienden el marco clásico de difusión (gobernado por el movimiento browniano) al incorporar procesos de Lévy o procesos de Poisson compuestos, lo que permite capturar discontinuidades abruptas, eventos extremos o choques externos.
@@ -74,7 +74,7 @@ Y_{n+1} = Y_n &+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right]\De
 
 2.  **Crecimiento lineal**: Existe $K > 0$ tal que $$|a(t,x)| + |b(t,x)| + \left( \int_E |R(t, x, v)|^2 \phi(d v) \right)^{1/2} \leq K(1 + |x|),$$ para todo $t \in [0,T]$ y $x \in \mathbb{R}$.
 
-3.  **Momentos finitos de saltos**: $\int_E |R(t, x, v)|^2 \phi(d v) < \infty$ para todo $t \in [0,T]$ y $x \in \mathbb{R}$.
+3.  **Momentos finitos de saltos**: $\int_E |R(t, x, v)|^4 \phi(d v) < \infty$ para todo $t \in [0,T]$ y $x \in \mathbb{R}$.
 
 4.  **Condiciones iniciales**: $\mathbb{E}[|X_0|^2] < \infty$ y $Y_0 = X_0$. Entonces, existe una constante $C > 0$, independiente de $\, dt$, tal que: $$\max_{0 \leq n \leq N} \left( \mathbb{E}\left[ |X_{t_n} - Y_n|^2 \right] \right)^{1/2} \leq C \sqrt{dt}.$$ {#eq-convergencia} Es decir, el esquema converge fuertemente con orden $\gamma = 1/2$.
 :::
