@@ -168,11 +168,13 @@ window.Quarto = {
 
 <meta property="og:title" content="6&nbsp; Implementación Numérica. – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta property="og:description" content="">
-<meta property="og:image" content="modelo-actuarial_files/figure-html/fig-costo_siniestro-output-1.png">
+<meta property="og:image" content="fig-costo_siniestro.png">
 <meta property="og:site_name" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta property="og:image:alt" content="Costo mensual esperado de siniestros en seguros de vivienda (México).">
 <meta name="twitter:title" content="6&nbsp; Implementación Numérica. – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta name="twitter:description" content="">
-<meta name="twitter:image" content="modelo-actuarial_files/figure-html/fig-costo_siniestro-output-1.png">
+<meta name="twitter:image" content="fig-costo_siniestro.png">
+<meta name="twitter:image:alt" content="Costo mensual esperado de siniestros en seguros de vivienda (México).">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -974,7 +976,7 @@ Tabla&nbsp;6.3: Tasas de volatilidad mensual en el mercado total, <span class="m
 <p><span class="math display">\[\lambda_{\text{meteo}}(m) = \frac{\lambda_{\text{meteo}}^{\text{anual}}}{12} \cdot \phi(m)\]</span></p>
 <p>donde <span class="math inline">\(\lambda_{\text{meteo}}^{\text{anual}} = 8.0\)</span> eventos/año se calibra a partir de los registros históricos de la CONAGUA (<span class="citation" data-cites="conagua_datos">Comisión Nacional del Agua (CONAGUA) (<a href="references.html#ref-conagua_datos" role="doc-biblioref">2024</a>)</span>) de fenómenos hidrometeorológicos que generaron reclamaciones superiores a USD <span class="math inline">\(100,000\)</span> en viviendas aseguradas en la CDMX. La función estacional <span class="math inline">\(\phi(m)\)</span> se obtiene normalizando los datos mensuales de frecuencia relativa:</p>
 <p><span class="math display">\[\phi(m) = \frac{f_m}{\frac{1}{12}\sum_{k=1}^{12} f_k}, \quad f = [0.3, 0.3, 0.4, 0.6, 1.0, 1.8, 2.2, 2.5, 2.8, 2.3, 1.2, 0.5]\]</span></p>
-<p>Esta calibración refleja el pico estacional en septiembre (huracanes y lluvias intensas) y el mínimo en enero-febrero, consistente con el patrón climatológico del centro de México. ::: {.content-visible when-format=“pdf”} <a href="fig-costo_siniestro.png" id="fig-costo_siniestro" data-fig-pos="H" data-fig-align="center" width="600" height="400">Costo mensual esperado de siniestros en seguros de vivienda (México).</a></p>
+<p>Esta calibración refleja el pico estacional en septiembre (huracanes y lluvias intensas) y el mínimo en enero-febrero, consistente con el patrón climatológico del centro de México. ::: {.content-visible when-format=“pdf”} <img src="fig-costo_siniestro.png" id="fig-costo_siniestro" class="quarto-figure quarto-figure-center anchored" data-fig-pos="H" width="600" height="400" alt="Costo mensual esperado de siniestros en seguros de vivienda (México)."></p>
 </section>
 </section>
 </section>
