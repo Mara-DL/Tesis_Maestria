@@ -1,15 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos",
-    "section": "",
-    "text": "1 Resumen\nEn este trabajo se aborda el problema de la aproximación numérica de soluciones de ecuaciones diferenciales estocásticas con difusión y saltos (EDESJs), con aplicación al modelo de Cramér-Lundberg extendido para el cálculo de reservas técnicas en el sector asegurador de vivienda de la Ciudad de México. Se establece un marco riguroso de cálculo estocástico que incluye la demostración de existencia y unicidad de soluciones fuertes bajo condiciones de Lipschitz local y crecimiento lineal global; la isometría de Itô para la parte de saltos; y las desigualdades de Burkholder-Davis-Gundy en espacios de Hilbert.\nSe implementan y analizan dos esquemas numéricos: el método de Milstein compensado, que alcanza convergencia fuerte de orden \\(\\gamma = 1/2\\) para la componente difusiva, y el esquema Semi-implícito compensado, que trata el término de interés \\(r(t)U(t)\\) de forma implícita, garantizando estabilidad incondicional. Bajo hipótesis de regularidad de los coeficientes (Lipschitz global, crecimiento lineal, momentos finitos de saltos), se demuestra que ambos esquemas convergen fuertemente con orden \\(\\gamma = 1/2\\), utilizando técnicas de descomposición del error local, estimaciones recursivas y la desigualdad de Grönwall discreta.\nLa calibración del modelo incorpora datos reales del mercado mexicano: primas ajustadas por inflación (INEGI), tasa de inversión combinada con activos locales (CETES) y globales (bonos USD), volatilidad estacional basada en el índice ILS, e intensidades de siniestros hidrometeorológicos (CONAGUA) y sísmicos (SSN). Mediante simulación Monte Carlo (\\(N_{\\text{sim}} = 1000\\)) se comparan los esquemas en términos de mediana final, intervalos de confianza al \\(90\\%\\) y detección de saltos, validando la robustez del modelo.\nLos resultados muestran que el esquema semi-implícito compensado presenta ventajas críticas para la gestión de riesgos en la CDMX: (i). conservadurismo alineado con prudencia regulatoria (\\(+2.30\\%\\) en reserva mediana); (ii). estabilidad incondicional ante shocks en tasas de interés; (iii). eficiencia computacional (reducción del 96.7% en pasos de tiempo para horizontes extendidos). Se concluye que, para sistemas dominados por saltos catastróficos y volatilidad macroeconómica, el esquema semi-implícito es preferible sobre Milstein.\nPalabras clave: Ecuaciones diferenciales estocásticas con saltos, método de Milstein, esquema semi-implícito, convergencia fuerte, modelo de Cramér-Lundberg, simulación Monte Carlo, gestión de riesgos, seguros de vivienda, Ciudad de México.",
-    "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Resumen</span>"
-    ]
-  },
-  {
     "objectID": "index.html#abstract",
     "href": "index.html#abstract",
     "title": "Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos",
