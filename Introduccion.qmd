@@ -5,20 +5,32 @@ cSpell.language: es,es-MX
 ---
 
 ::: {style="text-align:justify"}
-La Ciudad de México (CDMX) representa uno de los mercados más relevantes para el sector asegurador mexicano. Según el Censo de Población y Vivienda 2020 del INEGI [@inegi2020censo], la CDMX contaba con $2330816$ viviendas particulares habitadas. Ajustando por un crecimiento demográfico estimado del $0.5\%$ anual, para el periodo 2024--2025 se proyecta un parque habitacional de aproximadamente $2378000$ unidades.
+La modelación matemática de fenómenos dinámicos sometidos a incertidumbre ha experimentado un desarrollo extraordinario en las últimas décadas, particularmente en el ámbito de las ecuaciones diferenciales estocásticas (EDEs). Cuando estos fenómenos presentan, además de evolución continua gobernada por procesos de difusión, discontinuidades abruptas inducidas por eventos extremos o choques externos, el marco teórico natural lo constituyen las ecuaciones diferenciales estocásticas con saltos (EDEs con saltos, o SDEJs por sus siglas en inglés: Jump-Diffusion Stochastic Differential Equations).
 
-De acuerdo con el Panorama Analítico del Sector de Seguros y Fianzas 2024 publicado por la Comisión Nacional de Seguros y Fianzas (@cnsf2024panorama), el ramo de Daños sin Automóviles registró una colocación de $12200$ millones de pesos en 2024, estimándose que aproximadamente el corresponde a seguros de vivienda, lo que equivale a primas del orden de $7320$ millones de pesos.
+El modelo clásico de Cramér-Lundberg, pilar fundamental de la teoría de riesgo actuarial desde principios del siglo XX, describe la evolución del capital de una aseguradora mediante un proceso de Poisson compuesto que captura la llegada de siniestros y una deriva determinista que representa la acumulación de primas. Sin embargo, este modelo, en su formulación original, asume parámetros constantes (tasa de primas, intensidad de saltos) y omite componentes cruciales para la gestión moderna de reservas:
 
-Estudios de la Asociación Mexicana de Instituciones de Seguros (@amis2024seguros) y consultoras especializadas (@marsh2025mercado, AON) indican que la CDMX concentra entre el $18\%$ y $22\%$ del mercado nacional de seguros de vivienda, debido a su alta densidad poblacional y valor patrimonial de los inmuebles.
+- La evolución estocástica de las inversiones de las reservas técnicas en instrumentos financieros; 
+- La dependencia temporal de parámetros debido a factores macroeconómicos (inflación, tasas de interés, volatilidad de mercados); 
+- La estacionalidad en la frecuencia de siniestros catastróficos; 
+- La no linealidad inherente a la capitalización de rendimientos.
 
-
-La modelación actuarial de reservas para seguros de vivienda en la CDMX enfrenta desafíos específicos derivados de:
+En el contexto del mercado asegurador mexicano, y particularmente para el ramo de seguros de vivienda en la Ciudad de México (CDMX), estas limitaciones son especialmente críticas. La CDMX, con aproximadamente 2.38 millones de viviendas particulares habitadas (@inegi2020censo) y una concentración del 18-22% del mercado nacional de seguros de vivienda (@amis2024seguros), enfrenta desafíos específicos:
 
 - **Exposición a riesgos catastróficos**: La ubicación geográfica de la CDMX la hace vulnerable a eventos sísmicos significativos y fenómenos hidrometeorológicos intensos, los cuales generan siniestros de magnitud considerable y frecuencia estacional.
-    
+
 - **Dinámica inflacionaria**: La erosión del poder adquisitivo afecta tanto el valor de las sumas aseguradas como los costos de reparación, requiriendo ajustes continuos en las primas @inegi2024inpc.
-    
+
 - **Volatilidad de inversiones**: Las reservas técnicas son invertidas en instrumentos financieros cuyos rendimientos presentan variabilidad temporal, impactando directamente la solvencia de la aseguradora.
-    
+
 - **Dependencia temporal de parámetros**: Los procesos estocásticos subyacentes no son estacionarios; sus parámetros (intensidad de saltos, severidad, tasas de interés) varían sistemáticamente con el tiempo.
+
+Ante esta complejidad, la extensión del modelo de Cramér-Lundberg a una EDE con difusión y saltos, con parámetros tiempo-dependientes, se impone como necesidad teórica y práctica. Formalmente, el proceso de reservas $\{U(t)\}_{t \geq 0}$ satisface:
+
+$$dU(t) = c(t)\,dt + U(t^-)r(t)\,dt + U(t^-)\sigma(t)\,dW(t) - dJ(t),$$
+
+donde $c(t)$ es la tasa de prima ajustada por inflación, $r(t)$ la tasa de inversión, $\sigma(t)$ la volatilidad de inversiones, $W(t)$ un movimiento browniano estándar, y $J(t)$ un proceso de saltos compuesto que modela siniestros catastróficos mediante medidas de Poisson compensadas.
+
+Sin embargo, la no estacionariedad de parámetros, la no linealidad del término de interés $r(t)U(t)$, y la estructura de saltos compuestos hacen que la solución analítica de esta EDE sea intratable, requiriendo métodos numéricos robustos para su aproximación.
+
+Por todo lo anterior, el presente estudio se basa en establecer fundamentos teóricos (espacios de probabilidad, medidas de Poisson, integral de Itô, fórmula de Itô, desigualdades de martingalas), demostrar existencia y unicidad de soluciones fuertes para EDE con saltos y presentar el modelo de Cramér-Lundberg extendido el cual deriva los esquemas numéricos de Milstein y semi-implícito compensados.
 :::
