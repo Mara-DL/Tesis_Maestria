@@ -373,38 +373,44 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./objetivos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Objetivos</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./fundamentos_estocasticos.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Resultados técnicos fundamentales</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Resultados técnicos fundamentales</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./edes_saltos.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas.</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Ecuaciones diferenciales estocásticas.</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./metodos-numericos.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Métodos Numéricos para EDE</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Métodos Numéricos para EDE</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./modelo-actuarial.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Implementación Numérica.</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Implementación Numérica.</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./resultados_simulacion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Análisis de Resultados.</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Análisis de Resultados.</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./conclusiones.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conclusiones.</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Conclusiones.</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -482,7 +488,7 @@ window.Quarto = {
 
 <section id="resumen" class="level1" style="text-align: justify" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Resumen</h1>
-<p>En esta tesis se aborda el problema de la aproximación numérica de soluciones de ecuaciones diferenciales estocásticas con difusión y saltos (EDESJs), con aplicación al modelo de Cramér-Lundberg extendido para el cálculo de reservas técnicas en el sector asegurador de vivienda de la Ciudad de México. Se establece un marco riguroso de cálculo estocástico que incluye la demostración de existencia y unicidad de soluciones fuertes bajo condiciones de Lipschitz local y crecimiento lineal global; la isometría de Itô para la parte de saltos; y las desigualdades de Burkholder-Davis-Gundy en espacios de Hilbert.</p>
+<p>En este trabajo se aborda el problema de la aproximación numérica de soluciones de ecuaciones diferenciales estocásticas con difusión y saltos (EDESJs), con aplicación al modelo de Cramér-Lundberg extendido para el cálculo de reservas técnicas en el sector asegurador de vivienda de la Ciudad de México. Se establece un marco riguroso de cálculo estocástico que incluye la demostración de existencia y unicidad de soluciones fuertes bajo condiciones de Lipschitz local y crecimiento lineal global; la isometría de Itô para la parte de saltos; y las desigualdades de Burkholder-Davis-Gundy en espacios de Hilbert.</p>
 <p>Se implementan y analizan dos esquemas numéricos: el método de Milstein compensado, que alcanza convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span> para la componente difusiva, y el esquema Semi-implícito compensado, que trata el término de interés <span class="math inline">\(r(t)U(t)\)</span> de forma implícita, garantizando estabilidad incondicional. Bajo hipótesis de regularidad de los coeficientes (Lipschitz global, crecimiento lineal, momentos finitos de saltos), se demuestra que ambos esquemas convergen fuertemente con orden <span class="math inline">\(\gamma = 1/2\)</span>, utilizando técnicas de descomposición del error local, estimaciones recursivas y la desigualdad de Grönwall discreta.</p>
 <p>La calibración del modelo incorpora datos reales del mercado mexicano: primas ajustadas por inflación (INEGI), tasa de inversión combinada con activos locales (CETES) y globales (bonos USD), volatilidad estacional basada en el índice ILS, e intensidades de siniestros hidrometeorológicos (CONAGUA) y sísmicos (SSN). Mediante simulación Monte Carlo (<span class="math inline">\(N_{\text{sim}} = 1000\)</span>) se comparan los esquemas en términos de mediana final, intervalos de confianza al <span class="math inline">\(90\%\)</span> y detección de saltos, validando la robustez del modelo.</p>
 <p>Los resultados muestran que el esquema semi-implícito compensado presenta ventajas críticas para la gestión de riesgos en la CDMX: (i). conservadurismo alineado con prudencia regulatoria (<span class="math inline">\(+2.30\%\)</span> en reserva mediana); (ii). estabilidad incondicional ante shocks en tasas de interés; (iii). eficiencia computacional (reducción del 96.7% en pasos de tiempo para horizontes extendidos). Se concluye que, para sistemas dominados por saltos catastróficos y volatilidad macroeconómica, el esquema semi-implícito es preferible sobre Milstein.</p>
