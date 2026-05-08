@@ -461,7 +461,7 @@ window.Quarto = {
 
 
 <div style="text-align: justify">
-<p>presente trabajo de tesis ha establecido un marco teórico-matemático riguroso para la aproximación numérica de ecuaciones diferenciales estocásticas con saltos aplicadas a la modelación de reservas técnicas en el sector asegurador de vivienda de la Ciudad de México. Los resultados obtenidos demuestran que la extensión del modelo clásico de Cramér-Lundberg mediante la incorporación de parámetros tiempo-dependientes, difusión estocástica y procesos de salto compuestos constituye una herramienta matemáticamente bien planteada y computacionalmente viable para la gestión de riesgos catastróficos en mercados emergentes.</p>
+<p>El presente trabajo de tesis ha establecido un marco teórico-matemático riguroso para la aproximación numérica de ecuaciones diferenciales estocásticas con saltos aplicadas a la modelación de reservas técnicas en el sector asegurador de vivienda de la Ciudad de México. Los resultados obtenidos demuestran que la extensión del modelo clásico de Cramér-Lundberg mediante la incorporación de parámetros tiempo-dependientes, difusión estocástica y procesos de salto compuestos constituye una herramienta matemáticamente bien planteada y computacionalmente viable para la gestión de riesgos catastróficos en mercados emergentes.</p>
 <p>En primer lugar, se demostraron teoremas de existencia y unicidad global y local de soluciones fuertes para ecuaciones diferenciales estocásticas con difusión y saltos bajo condiciones de Lipschitz y crecimiento lineal. La demostración, fundamentada en el principio de contracción de Banach aplicado al espacio de Hilbert ponderado <span class="math inline">\(S_{\mathcal{F}}^{2,\text{loc}}(\mathbb{R})\)</span> con norma:</p>
 <p><span class="math display">\[
 \| (x_{\cdot}) \|_M^2 = \sup_{t \in [0,T]} e^{-b_0 A(t)} \mathbb{E}[|x_t|^2],
@@ -471,8 +471,10 @@ window.Quarto = {
 <p>La derivación rigurosa de dos esquemas numéricos fundamentales Milstein compensado y semi-implícito compensado representa una contribución metodológica central de esta investigación. El esquema de Milstein compensado, dado por:</p>
 <p><span class="math display">\[
 \begin{aligned}
-Y_{n+1} = {}&amp; Y_n + \left[a(t_n, Y_n) - \int_E R(t_n, Y_n, v)\phi(dv)\right]\Delta t + b(t_n, Y_n)\Delta W_n \\
-&amp; + \frac{1}{2} b(t_n, Y_n)b_x(t_n, Y_n)[(\Delta W_n)^2 - \Delta t] + \sum_{i=1}^{\Delta N_n} R(t_n, Y_n, \xi_i),
+Y_{n+1} = {}&amp; Y_n + \left[a(t_n, Y_n) - \int_E R(t_n, Y_n, v)\phi(dv)\right]\Delta t  \\
+&amp; + b(t_n, Y_n)\Delta W_n \\
+&amp; + \frac{1}{2} b(t_n, Y_n)b_x(t_n, Y_n)[(\Delta W_n)^2 - \Delta t]  \\
+&amp; + \sum_{i=1}^{\Delta N_n} R(t_n, Y_n, \xi_i),
 \end{aligned}
 \]</span></p>
 <p>incorpora la corrección de segundo orden <span class="math inline">\(\frac{1}{2}\sigma\sigma_x[(\Delta W)^2 - \Delta t]\)</span> que captura las no linealidades de la difusión <span class="math inline">\(\sigma(t)U(t)\)</span>, esencial cuando <span class="math inline">\(\sigma_x \neq 0\)</span>. Por su parte, el esquema semi-implícito compensado, definido mediante:</p>
