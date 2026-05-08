@@ -4,17 +4,21 @@ format:
   html:
     code-overflow: scroll
   pdf:
-    documentclass: scrreprt
+    documentclass: article
     latex-engine: xelatex
     include-in-header:
       text: |
+        \usepackage{float}
+        \usepackage{caption}
+        \captionsetup{figuresep=colon}
         \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
         \usepackage{algorithmic}
         \usepackage{amsmath}
         \SetKwInput{KwIn}{Entrada}
         \SetKwInput{KwOut}{Salida}
         \SetKw{Return}{retornar}
-    keep-tex: true
+    tbl-cap-location: top
+jupyter: python3 
 ---
 
 # Implementación Numérica.
@@ -139,7 +143,7 @@ Mientras que la componente global $\sigma_g(t)$ es dada por la Volatilidad del �
 |  Nov-25  |              0.20%               |
 | Dic 2025 |              0.18%               |
 
-: Tasas de volatilidad mensual en el mercado global, $\sigma_g(t)$ (Enero 2024- Diciembre 2025). {#tbl-volatilidad_global}
+: Tasas de volatilidad mensual en el mercado global, $\sigma_g(t)$ (Enero 2024- Diciembre 2025). {#tbl-volatilidad_mensual}
 
 Los valores están expresados en forma decimal. Por ejemplo, $\sigma (Ene 2024) = 0.059\%=0.00059$ en notación decimal. Por tanto la volatilidad total mensual resultante es:
 
@@ -173,19 +177,23 @@ Los valores están expresados en forma decimal. Por ejemplo, $\sigma (Ene 2024) 
 : Tasas de volatilidad mensual en el mercado total, $\sigma$ (Enero 2024- Diciembre 2025). {#tbl-volatilidad_total}
 
 con promedio anual $\bar \sigma= 0.092\%$ con picos superiores a $0.14\%$ en meses de alta actividad catastrófica.
+:::
 
 ### Función de Costos de Saltos: Eventos Meteorológicos y Sísmicos. {#sec-funcion_costos_met_sis}
 
+::: {style="text-align:justify"}
 El proceso de siniestros $S(t)$ se descompone en dos componentes independientes que reflejan la naturaleza bimodal del riesgo en México:
 
 $$S(t) = S_{\text{meteo}}(t) + S_{\text{sismo}}(t) = \sum_{i=1}^{N_{\text{meteo}}(t)} Y_i^{\text{meteo}} + \sum_{j=1}^{N_{\text{sismo}}(t)} Y_j^{\text{sismo}}$$
 
 donde $N_{\text{meteo}}(t)$ sigue un proceso de Poisson no homogéneo con intensidad $\lambda{\text{meteo}}(t) = \lambda_{\text{meteo}}^{\text{anual}} \cdot \phi(t)), \text{siendo} (\phi(t)$ una función estacional mensual normalizada $\left(\frac{1}{12}\int_0^{12}\phi(s)ds = 1\right)$, y $N_{\text{sismo}}(t)$ es un proceso de Poisson homogéneo con intensidad constante $\lambda_{\text{sismo}}$ debido a la ausencia de estacionalidad significativa en la ocurrencia de sismos de magnitud relevante para siniestros asegurados.
+:::
 
 #### Estimación de la Intensidad de Siniestro.
 
 ##### Componente Hidrometeorológico
 
+::: {style="text-align:justify"}
 La intensidad mensual $\lambda_{\text{meteo}}(m)$ para el mes $m \in {1,\dots,12}$ se estima mediante:
 
 $$\lambda_{\text{meteo}}(m) = \frac{\lambda_{\text{meteo}}^{\text{anual}}}{12} \cdot \phi(m)$$
@@ -195,17 +203,77 @@ donde $\lambda_{\text{meteo}}^{\text{anual}} = 8.0$ eventos/año se calibra a pa
 $$\phi(m) = \frac{f_m}{\frac{1}{12}\sum_{k=1}^{12} f_k}, \quad f = [0.3, 0.3, 0.4, 0.6, 1.0, 1.8, 2.2, 2.5, 2.8, 2.3, 1.2, 0.5]$$
 
 Esta calibración refleja el pico estacional en septiembre (huracanes y lluvias intensas) y el mínimo en enero-febrero, consistente con el patrón climatológico del centro de México.
+:::
+
+::: {.content-visible when-format="pdf"}
+![Costo mensual esperado de siniestros en seguros de vivienda (México).](fig-costo_siniestro.png){#fig-costo_siniestro fig-pos="H" fig-align="center" width="500" height="335"}
+
+:::
+
+::: {.content-visible when-format="html"}
+```{python}
+#| label: fig-costo_siniestro
+#| fig-cap: Costo mensual esperado de siniestros en seguros de vivienda (México).
+import numpy as np
+import matplotlib.pyplot as plt
+
+# --- Parámetros del modelo para México ---
+# Frecuencia base anual (eventos significativos que generan reclamaciones > $100k)
+lambda_meteo_annual = 8.0   # eventos/año (hidrometeorológicos)
+lambda_sismo = 0.08         # eventos/año (sísmicos significativos)
+
+# Severidad: parámetros
+mu_meteo_base = 12.5        # log(USD) -> ~$270k
+sigma_meteo = 1.0
+alpha_sismo = 1.4
+x_min_sismo = 5e5           # $500,000 USD
+
+# Factor estacional (normalizado)
+seasonal_raw = [0.3, 0.3, 0.4, 0.6, 1.0, 1.8, 2.2, 2.5, 2.8, 2.3, 1.2, 0.5]
+seasonal_norm = np.array(seasonal_raw) / np.mean(seasonal_raw)
+
+# Meses
+months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun",
+          "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+
+# Calcular lambda_meteo(m) y E[Y_meteo(m)]
+lambda_meteo_m = lambda_meteo_annual / 12 * seasonal_norm
+E_Y_meteo = np.exp(mu_meteo_base + 0.5 * sigma_meteo**2)  # constante por simplicidad
+E_Y_sismo = (alpha_sismo * x_min_sismo) / (alpha_sismo - 1)
+
+# Costo mensual esperado (en USD)
+C_t = lambda_meteo_m * E_Y_meteo + (lambda_sismo / 12) * E_Y_sismo
+
+# Convertir a millones de USD
+C_t_mill = C_t / 1e6
+
+# Gráfico
+plt.figure(figsize=(10, 5))
+plt.bar(months, C_t_mill, color='steelblue')
+plt.title('Costo mensual esperado de siniestros en seguros de vivienda (México)')
+plt.ylabel('Millones de USD')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
+
+# Imprimir valores
+for m, c in zip(months, C_t_mill):
+    print(f"{m}: ${c:.2f}M")
+```
+:::
 
 ##### Componente Sísmico
 
+::: {style="text-align:justify"}
 Para sismos, utilizamos $\lambda_{\text{sismo}} = 0.08$ eventos/año, derivado del catálogo del Servicio Sismológico Nacional (SSN @ssn_catalogo) considerando únicamente eventos con magnitud $M_w \geq 6.0$ y epicentro a menos de $300 km$ de la CDMX que históricamente han generado siniestralidad asegurada significativa (ej. sismos de 1985, 2017). Dado que la ocurrencia de sismos no presenta estacionalidad estadísticamente significativa $(p\text{-valor} > 0.15)$ en test de Kolmogorov-Smirnov para uniformidad mensual), mantenemos intensidad constante:
 
 $$\lambda_{\text{sismo}}(m) = \frac{\lambda_{\text{sismo}}}{12} = 0.0067 \text{ eventos/mes}$$
+:::
 
 #### Estimación de la Distribución de Severidad.
 
 ##### Severidad meteorológica
 
+::: {style="text-align:justify"}
 Modelamos la severidad de los siniestros hidrometeorológicos $Y_{\text{meteo}}$ mediante una distribución normal truncada en $[0, \infty)$, denotada como
 
 $$Y_{\text{meteo}} \sim \mathcal{N}_+( \mu, \sigma^2 ),$$
@@ -221,9 +289,11 @@ Estos valores corresponden a la media y desviación estándar de la distribució
 $$\mathbb{E}[Y_{\text{meteo}}] = \mu + \sigma \cdot \frac{\varphi(\alpha)}{1 - \Phi(\alpha)}, \qquad \alpha = -\frac{\mu}{\sigma},$$
 
 donde $\varphi$ y $\Phi$ son la función de densidad y la función de distribución acumulada de la normal estándar, respectivamente.
+:::
 
 ##### Severidad sísmica.
 
+::: {style="text-align:justify"}
 Para los siniestros sísmicos, adoptamos también una distribución normal truncada ($\mathcal{N}_+$) en $[0, \infty)$, es decir:
 
 $$Y_{\text{sismo}} \sim \mathcal{N}_+(\mu_s, \sigma_s^2).$$
@@ -265,7 +335,7 @@ $$Y_{\text{sismo}} \sim \mathcal{N}_+\bigl(\mu_s = 1{,}742{,}000,\; \sigma_s = 8
 
 con $\mathbb{E}[Y_{\text{sismo}}] = \text{USD } 1{,}750{,}000$, y coeficiente de variación $= 0.50$.
 
-## Aproximación numérica del modelo de Crámer Lundberg extendido 
+## Aproximación numérica del modelo de Crámer Lundberg extendido
 
 Consideramos el proceso de reservas bajo el modelo extendido de Cramér-Lundberg con inversión estocástica y saltos reescribimos @eq-modelo_extendido en forma diferencial estocástica:
 
@@ -279,12 +349,13 @@ Dada la complejidad de la ecuación diferencial estocástica con saltos resultan
 
 Para la simulación, discretizamos con paso $\Delta t = 1/12$ (mensual) y consideramos dos esquemas numéricos.
 
-### Implementación Numérica Métodos Milstein y Semi-Implícito.
+## Implementación Numérica Métodos Milstein y Semi-Implícito.
 
 Presentando el algoritmo de Milstein compensado (@sec-Milstein_compensado), escrito en lenguaje natural estructurado (es decir, como un pseudocódigo), diseñado específicamente para aproximar soluciones de ecuaciones diferenciales estocásticas (EDS) con difusión y salto (@sec-EDESJs), como las que surgen en el modelo de Cramér–Lundberg (@eq-modelo_extendido) por ejemplo, con componentes de procesos compuestos de Poisson)
 
 El pseudocódigo siguiente está pensado para ser puente conceptual entre la teoría y la implementación, y se enfoca en la versión compensada (es decir, usando el proceso de salto compensado (@def-med_alea_poisson) $\tilde{N} = N_t - \lambda t$) para garantizar que el término de salto tenga esperanza cero y sea adecuado para esquemas numéricos estables.
 :::
+
 
 ### Pseudocódigo: Esquema de Milstein Compensado para EDE con Difusión y Salto.
 
@@ -307,7 +378,6 @@ El pseudocódigo siguiente está pensado para ser puente conceptual entre la teo
 | **Salida** | $\text{median}_{\text{hist}}$, $\text{IC}_{5,95}^{\text{hist}}$ | Estadísticas periodo histórico |
 |  | $\text{median}_{\text{fc}}$, $\text{IC}_{5,95}^{\text{fc}}$ | Estadísticas pronóstico |
 |  | $\text{saltos}_{\text{hist}}$, $\text{saltos}_{\text{fc}}$ | Puntos de salto detectados |
-
 
 ::: {#alg-fase1}
 **Algoritmo 2:** Fase 1 - Simulación histórica con Milstein compensado
@@ -424,9 +494,7 @@ retornar median_hist, IC_5,95^hist, median_fc,
 IC_5,95^fc, saltos_hist, saltos_fc    
 ```
 
-
 ### Pseudocódigo: Esquema Semi-Implícito Compensado para EDE con Difusión y Salto
-
 
 ::: {#alg-semi-implícito}
 **Algoritmo 3:** Simulación de Reservas Cramér-Lundberg con Método Semi-Implícito Compensado
