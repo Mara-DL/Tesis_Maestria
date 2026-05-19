@@ -526,10 +526,15 @@ window.Quarto = {
 <section id="datos-de-inflación-mensual" class="level4" data-number="7.1.1.1">
 <h4 data-number="7.1.1.1" class="anchored" data-anchor-id="datos-de-inflación-mensual"><span class="header-section-number">7.1.1.1</span> Datos de Inflación Mensual</h4>
 <div style="text-align:justify">
-<p>La Tabla <span class="quarto-unresolved-ref">?tbl-inflacion</span> presenta las tasas de inflación utilizadas para el periodo enero 2024 – diciembre 2025. Los datos de 2024 son observados, mientras que las proyecciones de 2025 se basan en el consenso de analistas del Banco de México <span class="citation" data-cites="banxico2024expectativas">Banco de México (<a href="references.html#ref-banxico2024expectativas" role="doc-biblioref">2024</a>)</span>.</p>
+<p>La Tabla <a href="#tbl-inflacion" class="quarto-xref">Tabla&nbsp;<span>7.1</span></a> presenta las tasas de inflación utilizadas para el periodo enero 2024 – diciembre 2025. Los datos de 2024 son observados, mientras que las proyecciones de 2025 se basan en el consenso de analistas del Banco de México <span class="citation" data-cites="banxico2024expectativas">Banco de México (<a href="references.html#ref-banxico2024expectativas" role="doc-biblioref">2024</a>)</span>.</p>
 </div>
+<div id="tbl-inflacion" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-inflacion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;7.1: Tasas de inflación mensual en México (variación porcentual del INPC Enero 2024- Diciembre 2025).
+</figcaption>
+<div aria-describedby="tbl-inflacion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
-<caption>Tasas de inflación mensual en México (variación porcentual del INPC Enero 2024- Diciembre 2025).</caption>
 <thead>
 <tr class="header">
 <th style="text-align: center;">Mes</th>
@@ -635,6 +640,9 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
 <div style="text-align:justify">
 <p>Aplicando <a href="#eq-ajuste_inflacion" class="quarto-xref">Ecuación&nbsp;<span>7.1</span></a>, las primas mensuales ajustadas evolucionan de <span class="math inline">\(283.00\)</span> en enero 2024 a <span class="math inline">\(315.01\)</span> en diciembre 2025, representando un incremento acumulado del <span class="math inline">\(11.3\%\)</span>, consistente con la inflación proyectada</p>
 </div>
@@ -672,8 +680,13 @@ window.Quarto = {
 <p>La componente local <span class="math inline">\(\sigma_l(t)\)</span> respecta a la Volatilidad de CETES a 28 días que es el activo de referencia para las inversiones conservadoras en México, estimada mediante desviación estándar móvil de 30 días de las tasas diarias de Banxico:</p>
 <p><span class="math display">\[\sigma_l(t) = 0.05\% \text{ mensual (constante)}\]</span></p>
 <p>Mientras que la componente global <span class="math inline">\(\sigma_g(t)\)</span> es dada por la Volatilidad del índice ILS (Artemis.bm), calculada como desviación estándar móvil de <span class="math inline">\(3\)</span> meses de los rendimientos mensuales. Presenta estacionalidad marcada por la temporada de huracanes (junio-noviembre):</p>
+<div id="tbl-volatilidad_global" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-volatilidad_global-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;7.2: Tasas de volatilidad mensual en el mercado global, <span class="math inline">\(\sigma_g(t)\)</span> (Enero 2024- Diciembre 2025).
+</figcaption>
+<div aria-describedby="tbl-volatilidad_global-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
-<caption>Tasas de volatilidad mensual en el mercado global, <span class="math inline">\(\sigma_g(t)\)</span> (Enero 2024- Diciembre 2025).</caption>
 <thead>
 <tr class="header">
 <th style="text-align: center;">Mes</th>
@@ -779,9 +792,17 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
 <p>Los valores están expresados en forma decimal. Por ejemplo, <span class="math inline">\(\sigma (Ene 2024) = 0.059\%=0.00059\)</span> en notación decimal. Por tanto la volatilidad total mensual resultante es:</p>
+<div id="tbl-volatilidad_total" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-volatilidad_total-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;7.3: Tasas de volatilidad mensual en el mercado total, <span class="math inline">\(\sigma\)</span> (Enero 2024- Diciembre 2025).
+</figcaption>
+<div aria-describedby="tbl-volatilidad_total-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
-<caption>Tasas de volatilidad mensual en el mercado total, <span class="math inline">\(\sigma\)</span> (Enero 2024- Diciembre 2025).</caption>
 <thead>
 <tr class="header">
 <th style="text-align: center;">Mes</th>
@@ -937,6 +958,9 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
 <p>con promedio anual <span class="math inline">\(\bar \sigma= 0.092\%\)</span> con picos superiores a <span class="math inline">\(0.14\%\)</span> en meses de alta actividad catastrófica.</p>
 </div>
 </section>
@@ -1088,7 +1112,7 @@ Dic: $0.12M</code></pre>
 <section id="aproximación-numérica-del-modelo-de-crámer-lundberg-extendido" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="aproximación-numérica-del-modelo-de-crámer-lundberg-extendido"><span class="header-section-number">7.2</span> Aproximación numérica del modelo de Crámer Lundberg extendido</h2>
 <p>Consideramos el proceso de reservas bajo el modelo extendido de Cramér-Lundberg con inversión estocástica y saltos reescribimos <a href="edes_saltos.html#eq-modelo_extendido" class="quarto-xref">Ecuación&nbsp;<span>5.10</span></a> en forma diferencial estocástica:</p>
-<p><span class="math display">\[dX_t = \underbrace{\left[c(t) + r(t)X_t - \lambda_{\text{meteo}}(t)\mathbb{E}[Y^{\text{meteo}}_t \mid \mathcal{F}_t] - \lambda_{\text{sismo}}\mathbb{E}[Y^{\text{sismo}}_t \mid \mathcal{F}_t]\right]}_{\mu(t,X_t)}dt + \underbrace{\sigma(t)X_t}_{\sigma(t,X_t)}dW_t - dJ_t\]</span></p>
+<p><span id="eq-proce_reser_c_l_e"><span class="math display">\[dX_t = \underbrace{\left[c(t) + r(t)X_t - \lambda_{\text{meteo}}(t)\mathbb{E}[Y^{\text{meteo}}_t \mid \mathcal{F}_t] - \lambda_{\text{sismo}}\mathbb{E}[Y^{\text{sismo}}_t \mid \mathcal{F}_t]\right]}_{\mu(t,X_t)}dt + \underbrace{\sigma(t)X_t}_{\sigma(t,X_t)}dW_t - dJ_t \tag{7.4}\]</span></span></p>
 <p>La compensación <span class="math inline">\(\lambda \mathbb{E}[Y \mid \mathcal{F}_t]\)</span> garantiza que el proceso sin saltos reales sea una semimartingala (<a href="edes_saltos.html#def-Semimartingalas_saltos" class="quarto-xref">Definición&nbsp;<span>5.1</span></a>) con la deriva correcta, esencial para la convergencia del esquema numérico.</p>
 <p>Se ha desarrollado un modelo Cramér-Lundberg extendido para aproximar las reservas de una aseguradora de vivienda en la Ciudad de México. Este modelo incorpora parámetros dependientes del tiempo, primas ajustadas por inflación (<a href="#sec-Primas_ajustadas" class="quarto-xref"><span>Sección 7.1.1</span></a>), tasas de interés estocásticas (<a href="#sec-inversion_mensual" class="quarto-xref"><span>Sección 7.1.2</span></a>), volatilidad mediante combinación convexa (<a href="#sec-volatilidad_inversiones" class="quarto-xref"><span>Sección 7.1.3</span></a>) y un proceso de saltos compuesto que modela siniestros catastróficos meteorológicos y sísmicos con intensidades estacionales (<a href="#sec-funcion_costos_met_sis" class="quarto-xref"><span>Sección 7.1.4</span></a>).</p>
 <p>Dada la complejidad de la ecuación diferencial estocástica con saltos resultante (EDE), cuya solución analítica no es viable ante la no estacionariedad de los parámetros y la estructura de saltos, se requiere métodos numéricos robustos.</p>
