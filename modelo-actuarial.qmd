@@ -65,7 +65,7 @@ La Tabla @tbl-inflacion presenta las tasas de inflación utilizadas para el peri
 | Nov 2025 |            313.81            |
 | Dic 2025 |            315.01            |
 
-: Tasas de inflación mensual en México (variación porcentual del INPC Enero 2024- Diciembre 2025). {#tbl-inflacion}
+: Tasas de inflación mensual en México (variación porcentual del INPC Enero 2024- Diciembre 2025).
 
 ::: {style="text-align:justify"}
 Aplicando @eq-ajuste_inflacion, las primas mensuales ajustadas evolucionan de $283.00$ en enero 2024 a $315.01$ en diciembre 2025, representando un incremento acumulado del $11.3\%$, consistente con la inflación proyectada
@@ -143,7 +143,7 @@ Mientras que la componente global $\sigma_g(t)$ es dada por la Volatilidad del �
 |  Nov-25  |              0.20%               |
 | Dic 2025 |              0.18%               |
 
-: Tasas de volatilidad mensual en el mercado global, $\sigma_g(t)$ (Enero 2024- Diciembre 2025). {#tbl-volatilidad_mensual}
+: Tasas de volatilidad mensual en el mercado global, $\sigma_g(t)$ (Enero 2024- Diciembre 2025).
 
 Los valores están expresados en forma decimal. Por ejemplo, $\sigma (Ene 2024) = 0.059\%=0.00059$ en notación decimal. Por tanto la volatilidad total mensual resultante es:
 
@@ -174,7 +174,7 @@ Los valores están expresados en forma decimal. Por ejemplo, $\sigma (Ene 2024) 
 |  Nov-25  |    0.20    |    0.05    |    0.095    |
 | Dic 2025 |    0.18    |    0.05    |    0.089    |
 
-: Tasas de volatilidad mensual en el mercado total, $\sigma$ (Enero 2024- Diciembre 2025). {#tbl-volatilidad_total}
+: Tasas de volatilidad mensual en el mercado total, $\sigma$ (Enero 2024- Diciembre 2025).
 
 con promedio anual $\bar \sigma= 0.092\%$ con picos superiores a $0.14\%$ en meses de alta actividad catastrófica.
 :::
@@ -186,7 +186,7 @@ El proceso de siniestros $S(t)$ se descompone en dos componentes independientes 
 
 $$S(t) = S_{\text{meteo}}(t) + S_{\text{sismo}}(t) = \sum_{i=1}^{N_{\text{meteo}}(t)} Y_i^{\text{meteo}} + \sum_{j=1}^{N_{\text{sismo}}(t)} Y_j^{\text{sismo}}$$
 
-donde $N_{\text{meteo}}(t)$ sigue un proceso de Poisson no homogéneo con intensidad $\lambda{\text{meteo}}(t) = \lambda_{\text{meteo}}^{\text{anual}} \cdot \phi(t)), \text{siendo} (\phi(t)$ una función estacional mensual normalizada $\left(\frac{1}{12}\int_0^{12}\phi(s)ds = 1\right)$, y $N_{\text{sismo}}(t)$ es un proceso de Poisson homogéneo con intensidad constante $\lambda_{\text{sismo}}$ debido a la ausencia de estacionalidad significativa en la ocurrencia de sismos de magnitud relevante para siniestros asegurados.
+donde $N_{\text{meteo}}(t)$ sigue un proceso de Poisson no homogéneo con intensidad $\lambda{\text{meteo}}(t) = \lambda_{\text{meteo}}^{\text{anual}} \cdot \phi(t)), \text{ siendo} \phi(t)$ una función estacional mensual normalizada $\left(\frac{1}{12}\int_0^{12}\phi(s)ds = 1\right)$, y $N_{\text{sismo}}(t)$ es un proceso de Poisson homogéneo con intensidad constante $\lambda_{\text{sismo}}$ debido a la ausencia de estacionalidad significativa en la ocurrencia de sismos de magnitud relevante para siniestros asegurados.
 :::
 
 #### Estimación de la Intensidad de Siniestro.
@@ -207,7 +207,6 @@ Esta calibración refleja el pico estacional en septiembre (huracanes y lluvias 
 
 ::: {.content-visible when-format="pdf"}
 ![Costo mensual esperado de siniestros en seguros de vivienda (México).](fig-costo_siniestro.png){#fig-costo_siniestro fig-pos="H" fig-align="center" width="500" height="335"}
-
 :::
 
 ::: {.content-visible when-format="html"}
@@ -355,7 +354,6 @@ Presentando el algoritmo de Milstein compensado (@sec-Milstein_compensado), escr
 
 El pseudocódigo siguiente está pensado para ser puente conceptual entre la teoría y la implementación, y se enfoca en la versión compensada (es decir, usando el proceso de salto compensado (@def-med_alea_poisson) $\tilde{N} = N_t - \lambda t$) para garantizar que el término de salto tenga esperanza cero y sea adecuado para esquemas numéricos estables.
 :::
-
 
 ### Pseudocódigo: Esquema de Milstein Compensado para EDE con Difusión y Salto.
 

@@ -29,9 +29,33 @@ Se implementan y analizan dos esquemas numéricos: el método de Milstein compen
 
 La calibración del modelo incorpora datos reales del mercado mexicano: primas ajustadas por inflación (INEGI), tasa de inversión combinada con activos locales (CETES) y globales (bonos USD), volatilidad estacional basada en el índice ILS, e intensidades de siniestros hidrometeorológicos (CONAGUA) y sísmicos (SSN). Mediante simulación Monte Carlo ($N_{\text{sim}} = 1000$) se comparan los esquemas en términos de mediana final, intervalos de confianza al $90\%$ y detección de saltos, validando la robustez del modelo.
 
-Los resultados muestran que el esquema semi-implícito compensado presenta ventajas críticas para la gestión de riesgos en la CDMX: (i). conservadurismo alineado con prudencia regulatoria ($+2.30\%$ en reserva mediana); (ii). estabilidad incondicional ante shocks en tasas de interés; (iii). eficiencia computacional (reducción del 96.7% en pasos de tiempo para horizontes extendidos). Se concluye que, para sistemas dominados por saltos catastróficos y volatilidad macroeconómica, el esquema semi-implícito es preferible sobre Milstein.
+Los resultados muestran que el esquema semi-implícito compensado presenta ventajas críticas para la gestión de riesgos en la CDMX:
+
+i.  Prudencia regulatoria ($+2.30\%$ en reserva mediana);
+
+ii.  Estabilidad incondicional ante shocks en tasas de interés;
+
+iii.  Eficiencia computacional (reducción del 96.7% en pasos de tiempo para horizontes extendidos). Se concluye que, para sistemas dominados por saltos catastróficos y volatilidad macroeconómica, el esquema semi-implícito es preferible sobre Milstein.
 
 **Palabras clave**: Ecuaciones diferenciales estocásticas con saltos, método de Milstein, esquema semi-implícito, convergencia fuerte, modelo de Cramér-Lundberg, simulación Monte Carlo, gestión de riesgos, seguros de vivienda, Ciudad de México.
 
 ## Abstract
+
+# Abstract
+
+This work addresses the numerical approximation problem of stochastic differential equations with diffusion and jumps (SDEJs), applied to an extended Cramér-Lundberg model for calculating technical reserves in the housing insurance sector in Mexico City. A rigorous stochastic calculus framework is established, including the demonstration of existence and uniqueness of strong solutions under local Lipschitz and global linear growth conditions; Itô isometry for the jump component; and Burkholder-Davis-Gundy inequalities in Hilbert spaces.
+
+Two numerical schemes are implemented and analyzed: the compensated Milstein method, which achieves strong convergence of order γ = 1/2 for the diffusive component, and the compensated semi-implicit scheme, which treats the interest term r(t)U(t) implicitly, guaranteeing unconditional stability. Under regularity hypotheses of the coefficients (global Lipschitz, linear growth, finite jump moments), it is demonstrated that both schemes converge strongly with order γ = 1/2, using local error decomposition techniques, recursive estimates, and the discrete Grönwall inequality.
+
+The model calibration incorporates real data from the Mexican market: inflation-adjusted premiums (INEGI), combined investment rate with local (CETES) and global (USD bonds) assets, seasonal volatility based on the ILS index, and intensities of hydrometeorological (CONAGUA) and seismic (SSN) claims. Through Monte Carlo simulation (N_sim = 1000), the schemes are compared in terms of final median, 90% confidence intervals, and jump detection, validating the robustness of the model.
+
+The results show that the compensated semi-implicit scheme presents critical advantages for risk management in Mexico City:
+
+i.  Regulatory prudence (+2.30% in median reserve);
+
+ii. Unconditional stability against interest rate shocks;
+
+iii. Computational efficiency (96.7% reduction in time steps for extended horizons). It is concluded that for systems dominated by catastrophic jumps and macroeconomic volatility, the semi-implicit scheme is preferable over Milstein.
+
+**Keywords:** Stochastic differential equations with jumps, Milstein method, semi-implicit scheme, strong convergence, Cramér-Lundberg model, Monte Carlo simulation, risk management, housing insurance, Mexico City.
 :::

@@ -4,15 +4,15 @@ lang: es
 cSpell.language: es,es-MX
 ---
 
-## OBJETIVO GENERAL:
+## Objetivo general:
 
 
 ::: {style="text-align:justify"}
-"Desarrollar e implementar esquemas numéricos de aproximación fuerte (Milstein compensado y semi-implícito compensado) para ecuaciones diferenciales estocásticas con saltos de tipo Cramér-Lundberg extendido, que modelen la evolución de reservas técnicas de una aseguradora de vivienda en la Ciudad de México, incorporando parámetros tiempo-dependientes (primas ajustadas por inflación, tasas de interés estocásticas, volatilidad variable) y procesos de salto compuestos que capturen siniestros catastróficos meteorológicos y sísmicos; establecer rigurosamente las condiciones de convergencia fuerte de orden $\gamma = 1/2$ bajo hipótesis de Lipschitz local y crecimiento lineal; y evaluar comparativamente el desempeño numérico de ambos esquemas en términos de estabilidad, precisión y eficiencia computacional para la gestión de riesgos de solvencia en el contexto del mercado asegurador mexicano."
+Desarrollar e implementar esquemas numéricos de aproximación fuerte (Milstein compensado y semi-implícito compensado) para ecuaciones diferenciales estocásticas con saltos de tipo Cramér-Lundberg extendido, que modelen la evolución de reservas técnicas de una aseguradora de vivienda en la Ciudad de México, incorporando parámetros tiempo-dependientes (primas ajustadas por inflación, tasas de interés estocásticas, volatilidad variable) y procesos de salto compuestos que capturen siniestros catastróficos meteorológicos y sísmicos; establecer rigurosamente las condiciones de convergencia fuerte de orden $\gamma = 1/2$ bajo hipótesis de Lipschitz local y crecimiento lineal; y evaluar comparativamente el desempeño numérico de ambos esquemas en términos de estabilidad, precisión y eficiencia computacional para la gestión de riesgos de solvencia en el contexto del mercado asegurador mexicano.
 
 :::
 
-## OBJETIVOS ESPECÍFICOS:
+## Objetivos especifícos:
 
 
 ::: {style="text-align:justify"}
