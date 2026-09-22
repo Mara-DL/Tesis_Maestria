@@ -762,6 +762,21 @@ S_{i,n} = \sum_{(i-1)\Delta &lt; t \leq i\Delta} \Delta J_t.\]</span> Por la hip
 <p>El <a href="#thm-Consistencia_estimador_intensidad" class="quarto-xref">Teorema&nbsp;<span>5.5</span></a> garantiza que <span class="math inline">\(\hat\lambda_n\)</span> (Ecuación~6.9) es un estimador consistente de la intensidad total <span class="math inline">\(\lambda\)</span>, pero es un estadístico agregado: cuenta cuántos incrementos superan el umbral <span class="math inline">\(\tau_n\)</span> sin identificar instantes contienen un salto ni tuvo cada uno. Esta sección extiende el marco de la <a href="#sec-es_umbral" class="quarto-xref"><span>Sección 5.4.1</span></a> en dos direcciones: - Se pondera el umbral por la volatilidad instantánea local <span class="math inline">\(\hat\sigma(t_{n-1})\)</span>, refinamiento introducido por <strong>mancini2009</strong> y <strong>leemykland2008</strong> sobre el umbral no ponderado de la Ecuación~6.10; - Se convierte el conteo agregado en un procedimiento a nivel de evento que recupera, para cada salto detectado, su instante y su magnitud, sobre los cuales se ajusta un modelo de distribución.</p>
 <p>Se trabaja sobre el proceso de reservas <span class="math inline">\(\{U(t)\}_{t\ge 0}\)</span> de la Ecuación~6.7, observado en la malla <span class="math inline">\(t_0&lt;t_1&lt;\dots&lt;t_n\)</span> con paso constante <span class="math inline">\(\Delta_n=t_i-t_{i-1}\)</span>, sobre <span class="math inline">\(N_{\text{sim}}\)</span> trayectorias simuladas independientes <span class="math inline">\(U^{(1)},\dots,U^{(N_{\text{sim}})}\)</span> (Sección~9.2, esquema de Milstein compensado).</p>
 </div>
+<section id="estimación-de-la-volatilidad-instantánea-local" class="level4" data-number="5.4.2.1">
+<h4 data-number="5.4.2.1" class="anchored" data-anchor-id="estimación-de-la-volatilidad-instantánea-local"><span class="header-section-number">5.4.2.1</span> Estimación de la Volatilidad Instantánea Local</h4>
+<div style="text-align:justify">
+<p>Dado que <span class="math inline">\(\sigma(t)\)</span> es tiempo-dependiente y las <span class="math inline">\(N_{\text{sim}}\)</span> trayectorias comparten la misma función determinista <span class="math inline">\(\sigma(t)\)</span>, se estima localmente mediante la variación bipotencia realizada <strong>barndorffnielsen2004</strong>, adaptada al incremento relativo <span id="eq-incremento_relativo"><span class="math display">\[
+\tilde r_i^{n,(j)} := \frac{U^{(j)}(t_i)-U^{(j)}(t_{i-1})}{U^{(j)}(t_{i-1})}.
+\tag{5.16}\]</span></span></p>
+<p>Se normaliza por <span class="math inline">\(U^{(j)}(t_{i-1})\)</span>, a diferencia del incremento absoluto <span class="math inline">\(\Delta_i^n X\)</span> de la Ecuación 6.9, porque <span class="math inline">\(U(t)\)</span> no es estacionario (crece por primas y rendimientos, Ecuación 6.7): un umbral sobre incrementos absolutos perdería sensibilidad relativa a medida que <span class="math inline">\(U(t)\)</span> aumenta.</p>
+<div id="def-Estimador_agrupado_volatilidad_instantanea" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.4</strong></span> Con ventana local <span class="math inline">\(K=O_p(\Delta_n^a)\)</span>, <span class="math inline">\(-1&lt;a&lt;-1/2\)</span>, <span id="eq-bipower_variation"><span class="math display">\[
+\hat\sigma^2(t_{i-1}) := \frac{\pi}{2}\cdot\frac{1}{K\,\Delta_n\, N_{\text{sim}}}
+\sum_{j=1}^{N_{\text{sim}}}\sum_{k=1}^{K} \left|\tilde r_{i-k}^{n,(j)}\right|\left|\tilde r_{i-k+1}^{n,(j)}\right|.
+\tag{5.17}\]</span></span></p>
+</div>
+<p>La constante <span class="math inline">\(\pi/2\)</span> corrige el sesgo de usar el valor absoluto en lugar del cuadrado <strong>(barndorffnielsen2004)</strong>; el estimador permanece consistente para la volatilidad continua incluso cuando algunos incrementos contienen saltos, siempre que <span class="math inline">\(K\)</span> satisfaga la condición asintótica anterior (el mismo principio que sustenta el Teorema~6.5, pero aplicado localmente en vez de sobre todo <span class="math inline">\([0,T]\)</span>). Se agrupa sobre las <span class="math inline">\(N_{\text{sim}}\)</span> trayectorias porque <span class="math inline">\(\sigma(t)\)</span> es una función determinista común a todas ellas (Sección~8.1.3): esto reduce la varianza del estimador sin introducir sesgo, de la misma forma en que el Teorema~6.5 utiliza <span class="math inline">\(T\to\infty\)</span> para ganar consistencia.</p>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
@@ -775,6 +790,7 @@ Lundberg, Filip. 1903. <span>«I. Approximerad Framställning af Sannolikhetsfun
 Protter, Philip E. 2005. <em>Stochastic Integration and Differential Equations</em>. 2nd ed. Vol. 21. Stochastic Modelling y Applied Probability. Springer. <a href="https://doi.org/10.1007/978-3-662-10061-5">https://doi.org/10.1007/978-3-662-10061-5</a>.
 </div>
 </div>
+</section>
 </section>
 </section>
 
