@@ -463,8 +463,8 @@ window.Quarto = {
   <li><a href="#sec-In_Sal" id="toc-sec-In_Sal" class="nav-link" data-scroll-target="#sec-In_Sal"><span class="header-section-number">5.4</span> Estimación de la Intensidad de Saltos.</a>
   <ul class="collapse">
   <li><a href="#sec-es_umbral" id="toc-sec-es_umbral" class="nav-link" data-scroll-target="#sec-es_umbral"><span class="header-section-number">5.4.1</span> Estimador <span class="math inline">\(\hat{\lambda}_n\)</span> y elección del umbral <span class="math inline">\(\tau_n = \alpha \Delta_n^{\varpi}\)</span>.</a></li>
-  <li><a href="#estimación-no-paramétrica-de-la-distribución-de-severidad-de-los-saltos" id="toc-estimación-no-paramétrica-de-la-distribución-de-severidad-de-los-saltos" class="nav-link" data-scroll-target="#estimación-no-paramétrica-de-la-distribución-de-severidad-de-los-saltos"><span class="header-section-number">5.4.2</span> Estimación No Paramétrica de la Distribución de Severidad de los Saltos</a></li>
-  <li><a href="#distribución-de-los-tiempos-entre-saltos-teoría-de-renovación-y-teorema-del-cambio-de-tiempo" id="toc-distribución-de-los-tiempos-entre-saltos-teoría-de-renovación-y-teorema-del-cambio-de-tiempo" class="nav-link" data-scroll-target="#distribución-de-los-tiempos-entre-saltos-teoría-de-renovación-y-teorema-del-cambio-de-tiempo"><span class="header-section-number">5.4.3</span> Distribución de los Tiempos entre Saltos: Teoría de Renovación y Teorema del Cambio de Tiempo</a></li>
+  <li><a href="#estimación-no-paramétrica-de-la-distribución-de-severidad-de-los-saltos." id="toc-estimación-no-paramétrica-de-la-distribución-de-severidad-de-los-saltos." class="nav-link" data-scroll-target="#estimación-no-paramétrica-de-la-distribución-de-severidad-de-los-saltos."><span class="header-section-number">5.4.2</span> Estimación No Paramétrica de la Distribución de Severidad de los Saltos.</a></li>
+  <li><a href="#distribución-de-los-tiempos-entre-saltos-teoría-de-renovación-y-teorema-del-cambio-de-tiempo." id="toc-distribución-de-los-tiempos-entre-saltos-teoría-de-renovación-y-teorema-del-cambio-de-tiempo." class="nav-link" data-scroll-target="#distribución-de-los-tiempos-entre-saltos-teoría-de-renovación-y-teorema-del-cambio-de-tiempo."><span class="header-section-number">5.4.3</span> Distribución de los Tiempos entre Saltos: Teoría de Renovación y Teorema del Cambio de Tiempo.</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/edes_saltos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/edes_saltos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
@@ -757,12 +757,12 @@ S_{i,n} = \sum_{(i-1)\Delta &lt; t \leq i\Delta} \Delta J_t.\]</span> Por la hip
 <p>Combinando las dos últimas convergencias, concluimos que <span class="math display">\[\hat{\lambda}_n \xrightarrow{\mathbb{P}} \lambda,\]</span> lo cual demuestra el <a href="#thm-Consistencia_estimador_intensidad" class="quarto-xref">Teorema&nbsp;<span>5.5</span></a>. <span class="math inline">\(\quad \square\)</span></p>
 </div>
 </section>
-<section id="estimación-no-paramétrica-de-la-distribución-de-severidad-de-los-saltos" class="level3" data-number="5.4.2">
-<h3 data-number="5.4.2" class="anchored" data-anchor-id="estimación-no-paramétrica-de-la-distribución-de-severidad-de-los-saltos"><span class="header-section-number">5.4.2</span> Estimación No Paramétrica de la Distribución de Severidad de los Saltos</h3>
+<section id="estimación-no-paramétrica-de-la-distribución-de-severidad-de-los-saltos." class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="estimación-no-paramétrica-de-la-distribución-de-severidad-de-los-saltos."><span class="header-section-number">5.4.2</span> Estimación No Paramétrica de la Distribución de Severidad de los Saltos.</h3>
 <p>El Teorema 6.5 garantiza que <span class="math inline">\(\hat\lambda_n\)</span> (Ecuación 6.9) es un estimador consistente de la <em>intensidad total</em> <span class="math inline">\(\lambda\)</span>, pero es un estadístico <em>agregado</em>: cuenta cuántos incrementos superan el umbral <span class="math inline">\(\tau_n\)</span> sin identificar <em>cuáles</em> instantes contienen un salto ni <em>qué tamaño</em> tuvo cada uno. Esta sección extiende el marco de la Sección 6.4.1 en dos direcciones: (i) se pondera el umbral por la volatilidad instantánea local <span class="math inline">\(\hat\sigma(t_{n-1})\)</span>, refinamiento introducido por <span class="citation" data-cites="mancini2009">Mancini (<a href="references.html#ref-mancini2009" role="doc-biblioref">2009</a>)</span> y 1 sobre el umbral no ponderado de la Ecuación 6.10; y (ii) se convierte el conteo agregado en un <em>procedimiento a nivel de evento</em> que recupera, para cada salto detectado, su instante y su magnitud, sobre los cuales se ajusta un modelo de distribución.</p>
 <p>Se trabaja sobre el proceso de reservas <span class="math inline">\(\{U(t)\}_{t\ge 0}\)</span> de la Ecuación 6.7, observado en la malla <span class="math inline">\(t_0&lt;t_1&lt;\dots&lt;t_n\)</span> con paso constante <span class="math inline">\(\Delta_n=t_i-t_{i-1}\)</span>, sobre <span class="math inline">\(N_{\text{sim}}\)</span> trayectorias simuladas independientes <span class="math inline">\(U^{(1)},\dots,U^{(N_{\text{sim}})}\)</span> (Sección 9.2, esquema de Milstein compensado).</p>
-<section id="estimación-de-la-volatilidad-instantánea-local" class="level4" data-number="5.4.2.1">
-<h4 data-number="5.4.2.1" class="anchored" data-anchor-id="estimación-de-la-volatilidad-instantánea-local"><span class="header-section-number">5.4.2.1</span> Estimación de la Volatilidad Instantánea Local</h4>
+<section id="estimación-de-la-volatilidad-instantánea-local." class="level4" data-number="5.4.2.1">
+<h4 data-number="5.4.2.1" class="anchored" data-anchor-id="estimación-de-la-volatilidad-instantánea-local."><span class="header-section-number">5.4.2.1</span> Estimación de la Volatilidad Instantánea Local.</h4>
 <p>Dado que <span class="math inline">\(\sigma(t)\)</span> es tiempo-dependiente (Sección 8.1.3) y las <span class="math inline">\(N_{\text{sim}}\)</span> trayectorias comparten la misma función determinista <span class="math inline">\(\sigma(t)\)</span>, se estima localmente mediante la <em>variación bipotencia realizada</em> <span class="citation" data-cites="barndorffnielsen2004">Barndorff-Nielsen y Shephard (<a href="references.html#ref-barndorffnielsen2004" role="doc-biblioref">2004</a>)</span>, adaptada al incremento relativo</p>
 <p><span id="eq-incremento_relativo"><span class="math display">\[
 \tilde r_i^{n,(j)} := \frac{U^{(j)}(t_i)-U^{(j)}(t_{i-1})}{U^{(j)}(t_{i-1})}.
@@ -771,7 +771,7 @@ S_{i,n} = \sum_{(i-1)\Delta &lt; t \leq i\Delta} \Delta J_t.\]</span> Por la hip
 <p><span class="proof-title"><em>Observación</em>. </span>Se normaliza por <span class="math inline">\(U^{(j)}(t_{i-1})\)</span>, a diferencia del incremento absoluto <span class="math inline">\(\Delta_i^n X\)</span> de la Ecuación 6.9, porque <span class="math inline">\(U(t)\)</span> no es estacionario (crece por primas y rendimientos, Ecuación 6.7): un umbral sobre incrementos absolutos perdería sensibilidad relativa a medida que <span class="math inline">\(U(t)\)</span> aumenta.</p>
 </div>
 <div id="def-bipower_variation" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.4</strong></span> <strong>Estimador agrupado de volatilidad instantánea</strong></p>
+<p><span class="theorem-title"><strong>Definición 5.4</strong></span> <strong>Estimador agrupado de volatilidad instantánea</strong>.</p>
 <p>Con ventana local <span class="math inline">\(K=O_p(\Delta_n^a)\)</span>, <span class="math inline">\(-1&lt;a&lt;-1/2\)</span>,</p>
 <p><span id="eq-bipower_variation"><span class="math display">\[
 \hat\sigma^2(t_{i-1}) := \frac{\pi}{2}\cdot\frac{1}{K\,\Delta_n\, N_{\text{sim}}}
@@ -779,14 +779,14 @@ S_{i,n} = \sum_{(i-1)\Delta &lt; t \leq i\Delta} \Delta J_t.\]</span> Por la hip
 \tag{5.17}\]</span></span></p>
 </div>
 <div class="proof remark">
-<p><span class="proof-title"><em>Observación</em>. </span><strong>Consistencia con presencia de saltos y agrupación entre trayectorias</strong></p>
+<p><span class="proof-title"><em>Observación</em>. </span><strong>Consistencia con presencia de saltos y agrupación entre trayectorias</strong>.</p>
 <p>La constante <span class="math inline">\(\pi/2\)</span> corrige el sesgo de usar el valor absoluto en lugar del cuadrado <span class="citation" data-cites="barndorffnielsen2004">Barndorff-Nielsen y Shephard (<a href="references.html#ref-barndorffnielsen2004" role="doc-biblioref">2004</a>)</span>; el estimador permanece consistente para la volatilidad continua incluso cuando algunos incrementos contienen saltos, siempre que <span class="math inline">\(K\)</span> satisfaga la condición asintótica anterior (el mismo principio que sustenta el Teorema 6.5, pero aplicado localmente en vez de sobre todo <span class="math inline">\([0,T]\)</span>). Se agrupa (<em>pooling</em>) sobre las <span class="math inline">\(N_{\text{sim}}\)</span> trayectorias porque <span class="math inline">\(\sigma(t)\)</span> es una función determinista <em>común</em> a todas ellas (Sección 8.1.3): esto reduce la varianza del estimador sin introducir sesgo, de la misma forma en que el Teorema 6.5 utiliza <span class="math inline">\(T\to\infty\)</span> para ganar consistencia.</p>
 </div>
 </section>
-<section id="construcción-del-umbral-y-el-conjunto-de-detección" class="level4" data-number="5.4.2.2">
-<h4 data-number="5.4.2.2" class="anchored" data-anchor-id="construcción-del-umbral-y-el-conjunto-de-detección"><span class="header-section-number">5.4.2.2</span> Construcción del Umbral y el Conjunto de Detección</h4>
+<section id="construcción-del-umbral-y-el-conjunto-de-detección." class="level4" data-number="5.4.2.2">
+<h4 data-number="5.4.2.2" class="anchored" data-anchor-id="construcción-del-umbral-y-el-conjunto-de-detección."><span class="header-section-number">5.4.2.2</span> Construcción del Umbral y el Conjunto de Detección.</h4>
 <div id="def-umbral_ponderado" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.5</strong></span> <strong>Umbral ponderado por volatilidad local</strong> Generalizando la Ecuación 6.10 mediante la ponderación de <span class="citation" data-cites="mancini2009">Mancini (<a href="references.html#ref-mancini2009" role="doc-biblioref">2009</a>)</span>,</p>
+<p><span class="theorem-title"><strong>Definición 5.5</strong></span> <strong>Umbral ponderado por volatilidad local</strong>. Generalizando la Ecuación 6.10 mediante la ponderación de <span class="citation" data-cites="mancini2009">Mancini (<a href="references.html#ref-mancini2009" role="doc-biblioref">2009</a>)</span>,</p>
 <p><span id="eq-umbral_ponderado"><span class="math display">\[
 \tau_n(t_{i-1}) := \alpha\,\hat\sigma(t_{i-1})\,\Delta_n^{\varpi}, \qquad \alpha&gt;0,\ \varpi\in\left(0,\tfrac12\right).
 \tag{5.18}\]</span></span></p>
@@ -797,18 +797,18 @@ S_{i,n} = \sum_{(i-1)\Delta &lt; t \leq i\Delta} \Delta J_t.\]</span> Por la hip
 \tag{5.19}\]</span></span></p>
 <p>que remueve la deriva determinista de primas y rendimientos de la Ecuación 6.7 antes de comparar contra el umbral,</p>
 <div id="def-conjunto_deteccion" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.6</strong></span> <strong>Conjunto de detección</strong></p>
+<p><span class="theorem-title"><strong>Definición 5.6</strong></span> <strong>Conjunto de detección</strong>.</p>
 <p><span id="eq-conjunto_deteccion"><span class="math display">\[
 D^{(j)} := \left\{\, i \in \{1,\dots,n\} : \left|\tilde e_i^{n,(j)}\right| &gt; \tau_n(t_{i-1}) \,\right\}.
 \tag{5.20}\]</span></span></p>
 </div>
 <div class="proof remark">
-<p><span class="proof-title"><em>Observación</em>. </span><strong>Relación con <span class="math inline">\(\hat\lambda_n\)</span></strong></p>
+<p><span class="proof-title"><em>Observación</em>. </span><strong>Relación con <span class="math inline">\(\hat\lambda_n\)</span></strong>.</p>
 <p>El estadístico de la Ecuación 6.9 es recuperable a partir de <span class="math inline">\(D^{(j)}\)</span> como <span class="math inline">\(\hat\lambda_n^{(j)}=|D^{(j)}|/T\)</span>; el Teorema 6.5 sigue garantizando la consistencia de este conteo agregado bajo las mismas condiciones asintóticas sobre <span class="math inline">\(\varpi\)</span> (propiedades (I) y (II) de la Sección 6.4.1), ahora con el umbral ponderado de la Ecuación <a href="#eq-umbral_ponderado" class="quarto-xref">Ecuación&nbsp;<span>5.18</span></a>.</p>
 </div>
 </section>
-<section id="verificación-cruzada-mediante-la-estadística-de-leemykland" class="level4" data-number="5.4.2.3">
-<h4 data-number="5.4.2.3" class="anchored" data-anchor-id="verificación-cruzada-mediante-la-estadística-de-leemykland"><span class="header-section-number">5.4.2.3</span> Verificación Cruzada mediante la Estadística de Lee–Mykland</h4>
+<section id="verificación-cruzada-mediante-la-estadística-de-leemykland." class="level4" data-number="5.4.2.3">
+<h4 data-number="5.4.2.3" class="anchored" data-anchor-id="verificación-cruzada-mediante-la-estadística-de-leemykland."><span class="header-section-number">5.4.2.3</span> Verificación Cruzada mediante la Estadística de Lee–Mykland.</h4>
 <p>Como verificación independiente de la Definición <a href="#def-conjunto_deteccion" class="quarto-xref">Definición&nbsp;<span>5.6</span></a>, se calcula el estadístico</p>
 <p><span id="eq-leemykland_stat"><span class="math display">\[
 \mathcal L_i^{(j)} := \frac{\tilde r_i^{n,(j)}}{\hat\sigma(t_{i-1})}
@@ -816,8 +816,8 @@ D^{(j)} := \left\{\, i \in \{1,\dots,n\} : \left|\tilde e_i^{n,(j)}\right| &gt; 
 <ol class="example" type="1">
 <li>Bajo ausencia de salto en <span class="math inline">\((t_{i-1},t_i]\)</span>, <span class="math inline">\(\mathcal L_i \xrightarrow{d} N(0,1/c^2)\)</span> con <span class="math inline">\(c=\mathbb E|Z|=\sqrt{2/\pi}\approx 0.7979\)</span>, <span class="math inline">\(Z\sim N(0,1)\)</span>.</li>
 </ol>
-<div id="prop-gumbel_lm">
-<p><strong>Región de rechazo vía valores extremos</strong></p>
+<div id="prp-gumbel_lm" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 5.1</strong></span> <strong>Región de rechazo vía valores extremos</strong>.</p>
 <p>Con <span class="math inline">\(n\)</span> observaciones, bajo ausencia de saltos,</p>
 <p><span id="eq-gumbel"><span class="math display">\[
 \frac{\max_i|\mathcal L_i| - C_n}{S_n} \xrightarrow{d} \xi, \qquad P(\xi\le x)=\exp(-e^{-x}),
@@ -835,24 +835,24 @@ S_n = \frac{1}{c(2\log n)^{1/2}}
 <p><span class="proof-title"><em>Observación</em>. </span>La comparación directa de <span class="math inline">\(|\mathcal L_i|\)</span> contra un valor crítico fijo (sin la normalización de la Ecuación <a href="#eq-gumbel" class="quarto-xref">Ecuación&nbsp;<span>5.22</span></a>) invalida el nivel de significancia del test, pues <span class="math inline">\(\max_i|\mathcal L_i|\)</span> no converge a una distribución degenerada sino a la ley de valores extremos de Gumbel <a href="#eq-gumbel" class="quarto-xref">Ecuación&nbsp;<span>5.22</span></a>.</p>
 </div>
 </section>
-<section id="extracción-de-la-severidad-y-verificación-de-signo" class="level4" data-number="5.4.2.4">
-<h4 data-number="5.4.2.4" class="anchored" data-anchor-id="extracción-de-la-severidad-y-verificación-de-signo"><span class="header-section-number">5.4.2.4</span> Extracción de la Severidad y Verificación de Signo</h4>
-<div id="prop-severidad_hat">
-<p><strong>Estimador de severidad</strong></p>
+<section id="extracción-de-la-severidad-y-verificación-de-signo." class="level4" data-number="5.4.2.4">
+<h4 data-number="5.4.2.4" class="anchored" data-anchor-id="extracción-de-la-severidad-y-verificación-de-signo."><span class="header-section-number">5.4.2.4</span> Extracción de la Severidad y Verificación de Signo.</h4>
+<div id="prp-severidad_hat" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 5.2</strong></span> <strong>Estimador de severidad</strong>.</p>
 <p>Para cada <span class="math inline">\(i \in D^{(j)}\)</span>,</p>
 <p><span id="eq-severidad_hat"><span class="math display">\[
 \hat Y_i^{(j)} := -\,\tilde e_i^{n,(j)} \cdot U^{(j)}(t_{i-1}).
 \tag{5.24}\]</span></span></p>
 </div>
 <div id="cor-verificacion_signo" class="theorem corollary">
-<p><span class="theorem-title"><strong>Corolario 5.1</strong></span> <strong>Verificación de signo</strong></p>
+<p><span class="theorem-title"><strong>Corolario 5.1</strong></span> <strong>Verificación de signo</strong>.</p>
 <p>Por la convención de la Ecuación 6.7, <span class="math inline">\(J(t)\)</span> resta de la reserva: un siniestro genuino produce <span class="math inline">\(\tilde e_i^n&lt;0\)</span>, de modo que <span class="math inline">\(\hat Y_i^{(j)}&gt;0\)</span>. Si <span class="math inline">\(\hat Y_i^{(j)}&lt;0\)</span> para algún <span class="math inline">\(i\in D^{(j)}\)</span>, la detección se reclasifica como falso positivo del umbral (ruido difusivo atípico, no siniestro) y se descarta de la muestra de severidades.</p>
 </div>
 </section>
 <section id="calibración-de-alphavarpi-mediante-el-criterio-de-la-meseta" class="level4" data-number="5.4.2.5">
 <h4 data-number="5.4.2.5" class="anchored" data-anchor-id="calibración-de-alphavarpi-mediante-el-criterio-de-la-meseta"><span class="header-section-number">5.4.2.5</span> Calibración de <span class="math inline">\((\alpha,\varpi)\)</span> mediante el Criterio de la Meseta</h4>
-<div id="prop-tasa_fp">
-<p><strong>Tasa de falsos positivos asintótica</strong></p>
+<div id="prp-tasa_fp" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 5.3</strong></span> <strong>Tasa de falsos positivos asintótica</strong>.</p>
 <p>Bajo ausencia de salto en <span class="math inline">\((t_{i-1},t_i]\)</span>,</p>
 <p><span id="eq-tasa_fp"><span class="math display">\[
 P\big(|\tilde e_i^n|&gt;\tau_n(t_{i-1})\big) \approx 2\left[1-\Phi\!\left(\frac{\tau_n(t_{i-1})}{\hat\sigma(t_{i-1})\sqrt{\Delta_n}}\right)\right],
@@ -860,23 +860,23 @@ P\big(|\tilde e_i^n|&gt;\tau_n(t_{i-1})\big) \approx 2\left[1-\Phi\!\left(\frac{
 <p>con <span class="math inline">\(\Phi\)</span> la función de distribución normal estándar.</p>
 </div>
 <div id="def-meseta" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.7</strong></span> <strong>Criterio de la meseta</strong></p>
+<p><span class="theorem-title"><strong>Definición 5.7</strong></span> <strong>Criterio de la meseta</strong>.</p>
 <p>Fijando <span class="math inline">\(\varpi\)</span>, se calcula la tasa de detección <span class="math inline">\(\hat N(\alpha)/N_{\text{sim}}\)</span> sobre una malla de valores de <span class="math inline">\(\alpha\)</span>. El par <span class="math inline">\((\alpha^\ast,\varpi)\)</span> se selecciona en la <em>meseta</em>: el menor <span class="math inline">\(\alpha\)</span> a partir del cual <span class="math inline">\(\hat N(\alpha)/N_{\text{sim}}\)</span> deja de cambiar más de una tolerancia relativa prefijada entre valores consecutivos de <span class="math inline">\(\alpha\)</span>, indicando que ya se han agotado los saltos genuinos y solo se pierden detecciones marginales de ruido.</p>
 </div>
 <div class="proof remark">
 <p><span class="proof-title"><em>Observación</em>. </span>Este criterio es el análogo, a nivel de calibración de umbral, de la elección de <span class="math inline">\(\varpi\in(0,1/2)\)</span> discutida en la Sección 6.4.1: ambos buscan el punto donde se equilibran las propiedades (I) (detectar saltos) y (II) (controlar falsos positivos) de la Ecuación 6.10.</p>
 </div>
 </section>
-<section id="modelo-de-mezcla-contaminada-para-la-severidad-agregada" class="level4" data-number="5.4.2.6">
-<h4 data-number="5.4.2.6" class="anchored" data-anchor-id="modelo-de-mezcla-contaminada-para-la-severidad-agregada"><span class="header-section-number">5.4.2.6</span> Modelo de Mezcla Contaminada para la Severidad Agregada</h4>
+<section id="modelo-de-mezcla-contaminada-para-la-severidad-agregada." class="level4" data-number="5.4.2.6">
+<h4 data-number="5.4.2.6" class="anchored" data-anchor-id="modelo-de-mezcla-contaminada-para-la-severidad-agregada."><span class="header-section-number">5.4.2.6</span> Modelo de Mezcla Contaminada para la Severidad Agregada.</h4>
 <p>Bajo el diseño de calibración de la Sección 8.1.4 (dos tipos de siniestro, más falsos positivos residuales que sobreviven al Corolario <a href="#cor-verificacion_signo" class="quarto-xref">Corolario&nbsp;<span>5.1</span></a>), se postula la distribución de severidad agregada</p>
 <p><span id="eq-mezcla_severidad"><span class="math display">\[
 G(z) = w_1\, F_m(z;\mu_m,\sigma_m^2) + w_2\, F_s(z;\mu_s,\sigma_s^2) + w_3\, \Psi(z),
 \qquad \sum_{k=1}^3 w_k=1,
 \tag{5.26}\]</span></span></p>
 <p>donde <span class="math inline">\(F_m,F_s\)</span> son las (log-)normales truncadas de la Sección 8.1.4.</p>
-<div id="prop-varianza_espuria">
-<p><strong>Varianza del componente espurio</strong></p>
+<div id="prp-varianza_espuria" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 5.4</strong></span> <strong>Varianza del componente espurio</strong>.</p>
 <p>El componente <span class="math inline">\(\Psi\)</span> corresponde a incrementos puramente difusivos que excedieron el umbral por azar (falsos positivos que pasaron la verificación de signo por casualidad de muestreo). Su escala natural, heredada de la parte continua del proceso, es</p>
 <p><span id="eq-varianza_espuria"><span class="math display">\[
 \Psi(z) \sim N\!\left(0,\; \big(U(t_{i-1})\hat\sigma(t_{i-1})\big)^2\Delta_n\right)\Big|_{|z|&gt;\tau_n},
@@ -884,24 +884,24 @@ G(z) = w_1\, F_m(z;\mu_m,\sigma_m^2) + w_2\, F_s(z;\mu_s,\sigma_s^2) + w_3\, \Ps
 <p>i.e., la varianza de la aproximación gaussiana del incremento continuo (Ecuación 6.7), truncada a la región de detección. En la práctica, se estima promediando <span class="math inline">\((U(t_{i-1})\hat\sigma(t_{i-1}))^2\Delta_n\)</span> sobre las propias detecciones, en lugar de estimarse libremente junto con <span class="math inline">\(w_3\)</span>.</p>
 </div>
 </section>
-<section id="estimación-por-máxima-verosimilitud-restringida-y-selección-de-orden" class="level4" data-number="5.4.2.7">
-<h4 data-number="5.4.2.7" class="anchored" data-anchor-id="estimación-por-máxima-verosimilitud-restringida-y-selección-de-orden"><span class="header-section-number">5.4.2.7</span> Estimación por Máxima Verosimilitud Restringida y Selección de Orden</h4>
-<div id="prop-label_switching">
-<p><strong>Identificabilidad y ambigüedad de etiqueta</strong></p>
+<section id="estimación-por-máxima-verosimilitud-restringida-y-selección-de-orden." class="level4" data-number="5.4.2.7">
+<h4 data-number="5.4.2.7" class="anchored" data-anchor-id="estimación-por-máxima-verosimilitud-restringida-y-selección-de-orden."><span class="header-section-number">5.4.2.7</span> Estimación por Máxima Verosimilitud Restringida y Selección de Orden.</h4>
+<div id="prp-label_switching" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 5.5</strong></span> <strong>Identificabilidad y ambigüedad de etiqueta</strong>.</p>
 <p>La verosimilitud de la Ecuación <a href="#eq-mezcla_severidad" class="quarto-xref">Ecuación&nbsp;<span>5.26</span></a> es invariante ante la permutación <span class="math inline">\((w_1,\mu_m,\sigma_m)\leftrightarrow(w_2,\mu_s,\sigma_s)\)</span>: el algoritmo EM <span class="citation" data-cites="dempster1977">Dempster et&nbsp;al. (<a href="references.html#ref-dempster1977" role="doc-biblioref">1977</a>)</span> no distingue <em>a priori</em> cuál componente es meteorológico y cuál sísmico. La ambigüedad se resuelve imponiendo la restricción de orden <span class="math inline">\(\mu_m&lt;\mu_s\)</span>, consistente con que los siniestros sísmicos calibrados en la Sección 8.1.4 son, en promedio, de mayor severidad.</p>
 </div>
 <div id="def-bic_orden" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.8</strong></span> <strong>Selección de orden vía BIC</strong> El número de componentes efectivamente sostenidos por los datos (<span class="math inline">\(k\in\{2,3\}\)</span>, incorporando o no el componente espurio de la Proposición <span class="citation" data-cites="prop-varianza_espuria">(<a href="references.html#ref-prop-varianza_espuria" role="doc-biblioref"><strong>prop-varianza_espuria?</strong></a>)</span> como componente libre adicional) se selecciona minimizando el Criterio de Información Bayesiano <span class="citation" data-cites="schwarz1978">Schwarz (<a href="references.html#ref-schwarz1978" role="doc-biblioref">1978</a>)</span></p>
+<p><span class="theorem-title"><strong>Definición 5.8</strong></span> <strong>Selección de orden vía BIC</strong>. El número de componentes efectivamente sostenidos por los datos (<span class="math inline">\(k\in\{2,3\}\)</span>, incorporando o no el componente espurio de la Proposición <a href="#prp-varianza_espuria" class="quarto-xref">Proposición&nbsp;<span>5.4</span></a> como componente libre adicional) se selecciona minimizando el Criterio de Información Bayesiano <span class="citation" data-cites="schwarz1978">Schwarz (<a href="references.html#ref-schwarz1978" role="doc-biblioref">1978</a>)</span></p>
 <p><span id="eq-bic"><span class="math display">\[
 \mathrm{BIC}(k) = -2\log\hat{\mathcal L}_k + k\log|D_{\text{val}}|,
 \tag{5.28}\]</span></span></p>
 <p>sobre la muestra de severidades válidas <span class="math inline">\(D_{\text{val}}=\{\log\hat Y_i^{(j)} : i\in D^{(j)},\, \hat Y_i^{(j)}&gt;0\}\)</span>.</p>
 </div>
 </section>
-<section id="diagnóstico-de-estacionalidad-espuria" class="level4" data-number="5.4.2.8">
-<h4 data-number="5.4.2.8" class="anchored" data-anchor-id="diagnóstico-de-estacionalidad-espuria"><span class="header-section-number">5.4.2.8</span> Diagnóstico de Estacionalidad Espuria</h4>
+<section id="diagnóstico-de-estacionalidad-espuria." class="level4" data-number="5.4.2.8">
+<h4 data-number="5.4.2.8" class="anchored" data-anchor-id="diagnóstico-de-estacionalidad-espuria."><span class="header-section-number">5.4.2.8</span> Diagnóstico de Estacionalidad Espuria.</h4>
 <div class="proof remark">
-<p><span class="proof-title"><em>Observación</em>. </span><strong>Hipótesis de homogeneidad temporal</strong></p>
+<p><span class="proof-title"><em>Observación</em>. </span><strong>Hipótesis de homogeneidad temporal</strong>.</p>
 <p>El modelo de la Ecuación <a href="#eq-mezcla_severidad" class="quarto-xref">Ecuación&nbsp;<span>5.26</span></a> asume que <span class="math inline">\(F_m,F_s\)</span> no dependen del instante calendario en que ocurre el salto. Si la estacionalidad de <span class="math inline">\(\lambda_{\text{meteo}}(t)\)</span> (Sección 8.1.4) se filtra hacia las severidades <em>detectadas</em> (por ejemplo, porque el umbral detecta más fácilmente saltos grandes en meses de alta volatilidad de fondo), esta hipótesis se viola. Se contrasta agrupando <span class="math inline">\(\{\hat Y_i^{(j)}\}\)</span> por mes calendario y aplicando la prueba no paramétrica de Kruskal–Wallis <span class="citation" data-cites="kruskalwallis1952">Kruskal y Wallis (<a href="references.html#ref-kruskalwallis1952" role="doc-biblioref">1952</a>)</span>,</p>
 <p><span id="eq-kruskal_wallis"><span class="math display">\[
 H = \frac{12}{n_T(n_T+1)}\sum_{m=1}^{12} n_m\left(\bar R_m - \frac{n_T+1}{2}\right)^2 \xrightarrow{d} \chi^2_{11} \text{ bajo } H_0,
@@ -909,17 +909,17 @@ H = \frac{12}{n_T(n_T+1)}\sum_{m=1}^{12} n_m\left(\bar R_m - \frac{n_T+1}{2}\rig
 <p>donde <span class="math inline">\(\bar R_m\)</span> es el rango promedio del mes <span class="math inline">\(m\)</span>, <span class="math inline">\(n_m\)</span> su tamaño de muestra y <span class="math inline">\(n_T=\sum_m n_m\)</span>.</p>
 </div>
 </section>
-<section id="validación-de-bondad-de-ajuste" class="level4" data-number="5.4.2.9">
-<h4 data-number="5.4.2.9" class="anchored" data-anchor-id="validación-de-bondad-de-ajuste"><span class="header-section-number">5.4.2.9</span> Validación de Bondad de Ajuste</h4>
+<section id="validación-de-bondad-de-ajuste." class="level4" data-number="5.4.2.9">
+<h4 data-number="5.4.2.9" class="anchored" data-anchor-id="validación-de-bondad-de-ajuste."><span class="header-section-number">5.4.2.9</span> Validación de Bondad de Ajuste.</h4>
 <div id="def-cvm" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.9</strong></span> <strong>Cramér–von Mises de una muestra</strong></p>
+<p><span class="theorem-title"><strong>Definición 5.9</strong></span> <strong>Cramér–von Mises de una muestra</strong>.</p>
 <p>Con <span class="math inline">\(\{y_{(1)}\le\dots\le y_{(n)}\}\)</span> la muestra ordenada de <span class="math inline">\(\log\hat Y_i^{(j)}\)</span> y <span class="math inline">\(\hat G\)</span> la mezcla ajustada,</p>
 <p><span id="eq-cramer_von_mises"><span class="math display">\[
 \omega^2 = \frac{1}{12n} + \sum_{i=1}^n \left(\hat G(y_{(i)}) - \frac{2i-1}{2n}\right)^2.
 \tag{5.30}\]</span></span></p>
 </div>
 <div id="def-anderson" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.10</strong></span> <strong>Anderson de dos muestras</strong> Cuando se dispone de los tamaños verdaderos de simulación (<em>oracle</em>), se contrasta contra la muestra detectada mediante <span class="citation" data-cites="anderson1962">(<a href="references.html#ref-anderson1962" role="doc-biblioref"><strong>anderson1962?</strong></a>)</span></p>
+<p><span class="theorem-title"><strong>Definición 5.10</strong></span> <strong>Anderson de dos muestras</strong>. Cuando se dispone de los tamaños verdaderos de simulación (<em>oracle</em>), se contrasta contra la muestra detectada mediante <span class="citation" data-cites="anderson1962">(<a href="references.html#ref-anderson1962" role="doc-biblioref"><strong>anderson1962?</strong></a>)</span></p>
 <p><span id="eq-anderson_dos_muestras"><span class="math display">\[
 T = \frac{U}{NM(N+M)} - \frac{4NM-1}{6(N+M)}, \qquad
 U = N\sum_{i=1}^N (r_i-i)^2 + M\sum_{j=1}^M (s_j-j)^2,
@@ -927,29 +927,29 @@ U = N\sum_{i=1}^N (r_i-i)^2 + M\sum_{j=1}^M (s_j-j)^2,
 <p>donde <span class="math inline">\(r_i,s_j\)</span> son los rangos, dentro de la muestra combinada y <em>ordenada</em>, de la <span class="math inline">\(i\)</span>-ésima observación <em>oracle</em> y la <span class="math inline">\(j\)</span>-ésima observación detectada respectivamente.</p>
 </div>
 </section>
-<section id="cuantificación-de-la-incertidumbre-bootstrap-por-trayectoria" class="level4" data-number="5.4.2.10">
-<h4 data-number="5.4.2.10" class="anchored" data-anchor-id="cuantificación-de-la-incertidumbre-bootstrap-por-trayectoria"><span class="header-section-number">5.4.2.10</span> Cuantificación de la Incertidumbre — Bootstrap por Trayectoria</h4>
+<section id="cuantificación-de-la-incertidumbre-bootstrap-por-trayectoria." class="level4" data-number="5.4.2.10">
+<h4 data-number="5.4.2.10" class="anchored" data-anchor-id="cuantificación-de-la-incertidumbre-bootstrap-por-trayectoria."><span class="header-section-number">5.4.2.10</span> Cuantificación de la Incertidumbre — Bootstrap por Trayectoria.</h4>
 <div id="def-bootstrap_trayectoria" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.11</strong></span> <strong>Bootstrap por trayectoria completa</strong> Se remuestrean, con reemplazo, <span class="math inline">\(N_{\text{sim}}\)</span> índices de trayectoria <span class="math inline">\(\{j_1,\dots,j_{N_{\text{sim}}}\}\subset\{1,\dots,N_{\text{sim}}\}\)</span>, y se repiten los pasos sobre las trayectorias <span class="math inline">\(U^{(j_1)},\dots,U^{(j_{N_{\text{sim}}})}\)</span> (no se remuestrean detecciones individuales sueltas). Repitiendo <span class="math inline">\(B\)</span> veces, el intervalo de confianza al <span class="math inline">\(95\%\)</span> de cualquier estadístico <span class="math inline">\(\hat\theta\)</span> (media, mediana, número de detecciones) se estima por el método de percentiles sobre las <span class="math inline">\(B\)</span> réplicas <span class="math inline">\(\hat\theta^{(1)},\dots,\hat\theta^{(B)}\)</span>.</p>
+<p><span class="theorem-title"><strong>Definición 5.11</strong></span> <strong>Bootstrap por trayectoria completa</strong>. Se remuestrean, con reemplazo, <span class="math inline">\(N_{\text{sim}}\)</span> índices de trayectoria <span class="math inline">\(\{j_1,\dots,j_{N_{\text{sim}}}\}\subset\{1,\dots,N_{\text{sim}}\}\)</span>, y se repiten los pasos sobre las trayectorias <span class="math inline">\(U^{(j_1)},\dots,U^{(j_{N_{\text{sim}}})}\)</span> (no se remuestrean detecciones individuales sueltas). Repitiendo <span class="math inline">\(B\)</span> veces, el intervalo de confianza al <span class="math inline">\(95\%\)</span> de cualquier estadístico <span class="math inline">\(\hat\theta\)</span> (media, mediana, número de detecciones) se estima por el método de percentiles sobre las <span class="math inline">\(B\)</span> réplicas <span class="math inline">\(\hat\theta^{(1)},\dots,\hat\theta^{(B)}\)</span>.</p>
 </div>
 <div class="proof remark">
 <p><span class="proof-title"><em>Observación</em>. </span>Se remuestrea la trayectoria completa, y no cada detección por separado, porque las detecciones dentro de una misma trayectoria no son independientes entre sí (comparten la misma realización del movimiento browniano y de los procesos de Poisson subyacentes de la Ecuación 6.7); remuestrear a nivel de detección individual subestimaría la verdadera varianza del estimador.</p>
 </div>
 </section>
 </section>
-<section id="distribución-de-los-tiempos-entre-saltos-teoría-de-renovación-y-teorema-del-cambio-de-tiempo" class="level3" data-number="5.4.3">
-<h3 data-number="5.4.3" class="anchored" data-anchor-id="distribución-de-los-tiempos-entre-saltos-teoría-de-renovación-y-teorema-del-cambio-de-tiempo"><span class="header-section-number">5.4.3</span> Distribución de los Tiempos entre Saltos: Teoría de Renovación y Teorema del Cambio de Tiempo</h3>
-<section id="el-proceso-de-conteo-asociado-a-las-detecciones" class="level4" data-number="5.4.3.1">
-<h4 data-number="5.4.3.1" class="anchored" data-anchor-id="el-proceso-de-conteo-asociado-a-las-detecciones"><span class="header-section-number">5.4.3.1</span> El Proceso de Conteo Asociado a las Detecciones</h4>
+<section id="distribución-de-los-tiempos-entre-saltos-teoría-de-renovación-y-teorema-del-cambio-de-tiempo." class="level3" data-number="5.4.3">
+<h3 data-number="5.4.3" class="anchored" data-anchor-id="distribución-de-los-tiempos-entre-saltos-teoría-de-renovación-y-teorema-del-cambio-de-tiempo."><span class="header-section-number">5.4.3</span> Distribución de los Tiempos entre Saltos: Teoría de Renovación y Teorema del Cambio de Tiempo.</h3>
+<section id="el-proceso-de-conteo-asociado-a-las-detecciones." class="level4" data-number="5.4.3.1">
+<h4 data-number="5.4.3.1" class="anchored" data-anchor-id="el-proceso-de-conteo-asociado-a-las-detecciones."><span class="header-section-number">5.4.3.1</span> El Proceso de Conteo Asociado a las Detecciones.</h4>
 <div id="def-proceso_conteo" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.12</strong></span> <strong>Proceso de conteo de detecciones</strong></p>
+<p><span class="theorem-title"><strong>Definición 5.12</strong></span> <strong>Proceso de conteo de detecciones</strong>.</p>
 <p>Para cada trayectoria <span class="math inline">\(j\)</span>, el conjunto de detección <span class="math inline">\(D^{(j)}=\{i_1&lt;i_2&lt;\dots&lt;i_K\}\)</span> (Definición 6.4.2.@def-conjunto_deteccion) induce los tiempos de salto <span class="math inline">\(\tau_k^{(j)}:=t_{i_k}\)</span> y el proceso de conteo</p>
 <p><span id="eq-proceso_conteo"><span class="math display">\[
 N^{(j)}(t) := \#\{k : \tau_k^{(j)}\le t\}, \qquad t\in[0,T].
 \tag{5.32}\]</span></span></p>
 </div>
-<div id="prop-doob_meyer">
-<p><strong>Descomposición de Doob–Meyer</strong></p>
+<div id="prp-doob_meyer" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 5.6</strong></span> <strong>Descomposición de Doob–Meyer</strong>.</p>
 <p>Bajo el modelo de la Ecuación 6.7, <span class="math inline">\(J(t)\)</span> es un proceso de Poisson (posiblemente) no homogéneo con intensidad <span class="math inline">\(\lambda(t)=\lambda_{\text{meteo}}(t)+\lambda_{\text{sismo}}\)</span> (Sección 8.1.4). En consecuencia,</p>
 <p><span id="eq-doob_meyer"><span class="math display">\[
 N^{(j)}(t) = \Lambda(t) + M^{(j)}(t), \qquad \Lambda(t):=\int_0^t\lambda(s)\,ds,
@@ -957,10 +957,10 @@ N^{(j)}(t) = \Lambda(t) + M^{(j)}(t), \qquad \Lambda(t):=\int_0^t\lambda(s)\,ds,
 <p>donde <span class="math inline">\(M^{(j)}\)</span> es una martingala respecto a la filtración generada por <span class="math inline">\(U^{(j)}\)</span> <span class="citation" data-cites="aalen1978">(<a href="references.html#ref-aalen1978" role="doc-biblioref"><strong>aalen1978?</strong></a>)</span>.</p>
 </div>
 </section>
-<section id="estimación-no-paramétrica-de-la-intensidad" class="level4" data-number="5.4.3.2">
-<h4 data-number="5.4.3.2" class="anchored" data-anchor-id="estimación-no-paramétrica-de-la-intensidad"><span class="header-section-number">5.4.3.2</span> Estimación No Paramétrica de la Intensidad</h4>
+<section id="estimación-no-paramétrica-de-la-intensidad." class="level4" data-number="5.4.3.2">
+<h4 data-number="5.4.3.2" class="anchored" data-anchor-id="estimación-no-paramétrica-de-la-intensidad."><span class="header-section-number">5.4.3.2</span> Estimación No Paramétrica de la Intensidad.</h4>
 <div id="def-nelson_aalen_individual" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.13</strong></span> <strong>Estimador de Nelson–Aalen por trayectoria</strong></p>
+<p><span class="theorem-title"><strong>Definición 5.13</strong></span> <strong>Estimador de Nelson–Aalen por trayectoria</strong>.</p>
 <p>Para una única trayectoria, sin censura ni conjunto en riesgo variable (se observa el intervalo completo <span class="math inline">\([0,T]\)</span>),</p>
 <p><span id="eq-nelson_aalen_individual"><span class="math display">\[
 \hat\Lambda^{(j)}(t) = N^{(j)}(t).
@@ -970,42 +970,42 @@ N^{(j)}(t) = \Lambda(t) + M^{(j)}(t), \qquad \Lambda(t):=\int_0^t\lambda(s)\,ds,
 <p><span class="proof-title"><em>Observación</em>. </span>El estimador <a href="#eq-nelson_aalen_individual" class="quarto-xref">Ecuación&nbsp;<span>5.34</span></a> es insesgado (<span class="math inline">\(\mathbb E[\hat\Lambda^{(j)}(t)]=\Lambda(t)\)</span>) pero de varianza alta cuando el número de detecciones por trayectoria es bajo: una sola trayectoria no permite recuperar la <em>forma</em> de <span class="math inline">\(\lambda(t)\)</span> de forma confiable.</p>
 </div>
 <div id="def-nelson_aalen_agrupado" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.14</strong></span> <strong>Estimador de Nelson–Aalen agrupado</strong> Dado que <span class="math inline">\(\lambda(t)\)</span> es común a las <span class="math inline">\(N_{\text{sim}}\)</span> trayectorias (mismo argumento que la Definición 6.4.2.@def-bipower_variation, caso “conjunto en riesgo <span class="math inline">\(Y(t)=N_{\text{sim}}\)</span> constante” de <span class="citation" data-cites="abgk1993">(<a href="references.html#ref-abgk1993" role="doc-biblioref"><strong>abgk1993?</strong></a>)</span>),</p>
+<p><span class="theorem-title"><strong>Definición 5.14</strong></span> <strong>Estimador de Nelson–Aalen agrupado</strong>. Dado que <span class="math inline">\(\lambda(t)\)</span> es común a las <span class="math inline">\(N_{\text{sim}}\)</span> trayectorias (mismo argumento que la Definición 6.4.2.@def-bipower_variation, caso “conjunto en riesgo <span class="math inline">\(Y(t)=N_{\text{sim}}\)</span> constante” de <span class="citation" data-cites="abgk1993">(<a href="references.html#ref-abgk1993" role="doc-biblioref"><strong>abgk1993?</strong></a>)</span>),</p>
 <p><span id="eq-nelson_aalen_agrupado"><span class="math display">\[
 \hat\Lambda(t) := \frac{1}{N_{\text{sim}}}\sum_{j=1}^{N_{\text{sim}}} N^{(j)}(t).
 \tag{5.35}\]</span></span></p>
 </div>
 <div id="def-ramlau_hansen" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.15</strong></span> <strong>Estimador de núcleo de Ramlau–Hansen, versión circular</strong> La versión suavizada de la Ecuación <a href="#eq-nelson_aalen_agrupado" class="quarto-xref">Ecuación&nbsp;<span>5.35</span></a>, explotando la periodicidad anual esperada de <span class="math inline">\(\lambda_{\text{meteo}}(t)\)</span> (Sección 8.1.4) mediante un núcleo con distancia circular <span class="math inline">\(d_{\mathrm{circ}}(t,\tau):=\min(|t-\tau|,\,365-|t-\tau|)\)</span>, es</p>
+<p><span class="theorem-title"><strong>Definición 5.15</strong></span> <strong>Estimador de núcleo de Ramlau–Hansen, versión circular</strong>. La versión suavizada de la Ecuación <a href="#eq-nelson_aalen_agrupado" class="quarto-xref">Ecuación&nbsp;<span>5.35</span></a>, explotando la periodicidad anual esperada de <span class="math inline">\(\lambda_{\text{meteo}}(t)\)</span> (Sección 8.1.4) mediante un núcleo con distancia circular <span class="math inline">\(d_{\mathrm{circ}}(t,\tau):=\min(|t-\tau|,\,365-|t-\tau|)\)</span>, es</p>
 <p><span id="eq-ramlau_hansen"><span class="math display">\[
 \hat\lambda(t) = \frac{1}{N_{\text{sim}}\, b}\sum_{j=1}^{N_{\text{sim}}}\sum_{k} K\!\left(\frac{d_{\mathrm{circ}}(t,\tau_k^{(j)})}{b}\right),
 \tag{5.36}\]</span></span></p>
 <p>con <span class="math inline">\(K\)</span> un núcleo gaussiano y <span class="math inline">\(b&gt;0\)</span> el ancho de banda <span class="citation" data-cites="ramlauhansen1983">(<a href="references.html#ref-ramlauhansen1983" role="doc-biblioref"><strong>ramlauhansen1983?</strong></a>)</span> <span class="citation" data-cites="diggle1985">Diggle (<a href="references.html#ref-diggle1985" role="doc-biblioref">1985</a>)</span>.</p>
 </div>
 </section>
-<section id="ventanas-móviles-como-estimador-local-de-la-intensidad" class="level4" data-number="5.4.3.3">
-<h4 data-number="5.4.3.3" class="anchored" data-anchor-id="ventanas-móviles-como-estimador-local-de-la-intensidad"><span class="header-section-number">5.4.3.3</span> Ventanas Móviles como Estimador Local de la Intensidad</h4>
+<section id="ventanas-móviles-como-estimador-local-de-la-intensidad." class="level4" data-number="5.4.3.3">
+<h4 data-number="5.4.3.3" class="anchored" data-anchor-id="ventanas-móviles-como-estimador-local-de-la-intensidad."><span class="header-section-number">5.4.3.3</span> Ventanas Móviles como Estimador Local de la Intensidad.</h4>
 <div id="def-ventana_movil" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.16</strong></span> <strong>Estimador de ventana rectangular deslizante</strong></p>
+<p><span class="theorem-title"><strong>Definición 5.16</strong></span> <strong>Estimador de ventana rectangular deslizante</strong>.</p>
 <p>Alternativa no suavizada a la Ecuación <a href="#eq-ramlau_hansen" class="quarto-xref">Ecuación&nbsp;<span>5.36</span></a>, para una ventana de ancho <span class="math inline">\(W\)</span> centrada en <span class="math inline">\(t\)</span>,</p>
 <p><span id="eq-ventana_movil"><span class="math display">\[
 \hat\lambda_W(t) := \frac{\#\{k,j : \tau_k^{(j)} \in [t-W/2,\, t+W/2]\}}{N_{\text{sim}}\cdot W}.
 \tag{5.37}\]</span></span></p>
 </div>
 <div class="proof remark">
-<p><span class="proof-title"><em>Observación</em>. </span><strong>Justificación teórica y límites del ancho de ventana</strong></p>
+<p><span class="proof-title"><em>Observación</em>. </span><strong>Justificación teórica y límites del ancho de ventana</strong>.</p>
 <p>Esta construcción traslada a <span class="math inline">\(\lambda(t)\)</span> el mismo principio de <em>homogeneidad local aproximada</em> que sustenta la elección de la ventana <span class="math inline">\(K\)</span> en la Definición 6.4.2.@def-bipower_variation 1 [Assumption 1] y la elección del umbral <span class="math inline">\(r(h)\)</span> en <span class="citation" data-cites="mancini2009">Mancini (<a href="references.html#ref-mancini2009" role="doc-biblioref">2009</a>)</span>: se asume que <span class="math inline">\(\lambda(t)\)</span> varía lo suficientemente lento como para tratarse como localmente constante dentro de la ventana <span class="math inline">\(W\)</span>. Ningún resultado de <span class="citation" data-cites="mancini2009">Mancini (<a href="references.html#ref-mancini2009" role="doc-biblioref">2009</a>)</span> o 1 trata directamente la estimación de <span class="math inline">\(\lambda(t)\)</span> —su teoría de ventana local es para <span class="math inline">\(\sigma(t)\)</span>— por lo que la Definición <a href="#def-ventana_movil" class="quarto-xref">Definición&nbsp;<span>5.16</span></a> es una <strong>extensión análoga</strong>, no una aplicación literal de dichos resultados. Existe el mismo compromiso sesgo–varianza que en la elección de <span class="math inline">\(K\)</span>: una ventana ancha reduce la varianza pero sesga la estimación si <span class="math inline">\(\lambda(t)\)</span> varía apreciablemente dentro de ella (relevante aquí, pues <span class="math inline">\(\lambda_{\text{meteo}}(t)\)</span> cambia sustancialmente mes a mes, Sección 8.1.4).</p>
 </div>
 </section>
-<section id="diagnóstico-de-homogeneidad-temporal" class="level4" data-number="5.4.3.4">
-<h4 data-number="5.4.3.4" class="anchored" data-anchor-id="diagnóstico-de-homogeneidad-temporal"><span class="header-section-number">5.4.3.4</span> Diagnóstico de Homogeneidad Temporal</h4>
-<div id="prop-uniformidad_poisson">
-<p><strong>Test de uniformidad bajo Poisson homogéneo</strong></p>
+<section id="diagnóstico-de-homogeneidad-temporal." class="level4" data-number="5.4.3.4">
+<h4 data-number="5.4.3.4" class="anchored" data-anchor-id="diagnóstico-de-homogeneidad-temporal."><span class="header-section-number">5.4.3.4</span> Diagnóstico de Homogeneidad Temporal.</h4>
+<div id="prp-uniformidad_poisson" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 5.7</strong></span> <strong>Test de uniformidad bajo Poisson homogéneo</strong>.</p>
 <p>Bajo <span class="math inline">\(H_0:\lambda(t)=\lambda\)</span> (constante), los tiempos de un proceso de Poisson homogéneo en <span class="math inline">\([0,T]\)</span>, condicionados al número total observado, se distribuyen <span class="math inline">\(\mathrm{Uniforme}(0,T)\)</span> <span class="citation" data-cites="coxlewis1966">(<a href="references.html#ref-coxlewis1966" role="doc-biblioref"><strong>coxlewis1966?</strong></a>)</span>. Se contrasta mediante Kolmogorov–Smirnov de una muestra sobre <span class="math inline">\(\{\tau_k^{(j)} \bmod 365\}\)</span> contra <span class="math inline">\(\mathrm{Uniforme}(0,365)\)</span> (plegando sobre el ciclo anual para acumular información de los años simulados).</p>
 </div>
 </section>
-<section id="el-teorema-del-cambio-de-tiempo-time-rescaling-theorem" class="level4" data-number="5.4.3.5">
-<h4 data-number="5.4.3.5" class="anchored" data-anchor-id="el-teorema-del-cambio-de-tiempo-time-rescaling-theorem"><span class="header-section-number">5.4.3.5</span> El Teorema del Cambio de Tiempo (Time-Rescaling Theorem)</h4>
+<section id="el-teorema-del-cambio-de-tiempo-time-rescaling-theorem." class="level4" data-number="5.4.3.5">
+<h4 data-number="5.4.3.5" class="anchored" data-anchor-id="el-teorema-del-cambio-de-tiempo-time-rescaling-theorem."><span class="header-section-number">5.4.3.5</span> El Teorema del Cambio de Tiempo (Time-Rescaling Theorem).</h4>
 <div id="thm-time_resrescaling" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 5.6</strong></span> <strong>Papangelou, 1972</strong> Sea <span class="math inline">\(\{\tau_k\}\)</span> un proceso puntual con intensidad (condicional) <span class="math inline">\(\lambda(t)\)</span> y defínase <span class="math inline">\(s_k := \Lambda(\tau_k)=\int_0^{\tau_k}\lambda(u)\,du\)</span>. Entonces <span class="math inline">\(\{s_k\}\)</span> es un proceso de Poisson homogéneo de tasa <span class="math inline">\(1\)</span> <span class="citation" data-cites="papangelou1972">(<a href="references.html#ref-papangelou1972" role="doc-biblioref"><strong>papangelou1972?</strong></a>)</span>. Equivalentemente, los incrementos <span class="math inline">\(\Delta s_k := s_k-s_{k-1}\)</span> son i.i.d. <span class="math inline">\(\mathrm{Exp}(1)\)</span>, y <span class="math inline">\(u_k := 1-e^{-\Delta s_k}\)</span> son i.i.d. <span class="math inline">\(\mathrm{Uniforme}(0,1)\)</span> <span class="citation" data-cites="brown2002">Brown et&nbsp;al. (<a href="references.html#ref-brown2002" role="doc-biblioref">2002</a>)</span>.</p>
 </div>
@@ -1013,12 +1013,12 @@ N^{(j)}(t) = \Lambda(t) + M^{(j)}(t), \qquad \Lambda(t):=\int_0^t\lambda(s)\,ds,
 <p><span class="proof-title"><em>Observación</em>. </span>Este resultado es la base del “random time change theorem” aplicado por <span class="citation" data-cites="ogata1988">(<a href="references.html#ref-ogata1988" role="doc-biblioref"><strong>ogata1988?</strong></a>)</span> al análisis de residuos de procesos sísmicos, y por <span class="citation" data-cites="bowsher2007">Bowsher (<a href="references.html#ref-bowsher2007" role="doc-biblioref">2007</a>)</span> como prueba de especificación de modelos de intensidad de eventos de mercado en econometría financiera de alta frecuencia. Se utiliza aquí como validación de que <span class="math inline">\(\hat\Lambda(t)\)</span> (Ecuación <a href="#eq-nelson_aalen_agrupado" class="quarto-xref">Ecuación&nbsp;<span>5.35</span></a>) explica la dinámica temporal de las detecciones: definiendo <span class="math inline">\(\Delta\tau_i := \hat\Lambda(\tau_i)-\hat\Lambda(\tau_{i-1})\)</span> sobre las detecciones ordenadas de cada trayectoria, bajo <span class="math inline">\(H_0\)</span> se espera <span class="math inline">\(\Delta\tau_i\sim\mathrm{Exp}(1)\)</span>.</p>
 </div>
 <div id="cor-equivalencia_ks" class="theorem corollary">
-<p><span class="theorem-title"><strong>Corolario 5.2</strong></span> <strong>Equivalencia de formulaciones del test</strong></p>
+<p><span class="theorem-title"><strong>Corolario 5.2</strong></span> <strong>Equivalencia de formulaciones del test.</strong></p>
 <p>El estadístico de Kolmogorov–Smirnov de <span class="math inline">\(\{\Delta\tau_i\}\)</span> contra <span class="math inline">\(\mathrm{Exp}(1)\)</span> coincide exactamente con el de <span class="math inline">\(\{u_i=1-e^{-\Delta\tau_i}\}\)</span> contra <span class="math inline">\(\mathrm{Uniforme}(0,1)\)</span>, por invarianza del estadístico <span class="math inline">\(D\)</span> de Kolmogorov–Smirnov ante la transformación de los datos por la función de distribución acumulada verdadera bajo <span class="math inline">\(H_0\)</span>.</p>
 </div>
 </section>
-<section id="familias-paramétricas-para-los-tiempos-de-espera-crudos" class="level4" data-number="5.4.3.6">
-<h4 data-number="5.4.3.6" class="anchored" data-anchor-id="familias-paramétricas-para-los-tiempos-de-espera-crudos"><span class="header-section-number">5.4.3.6</span> Familias Paramétricas para los Tiempos de Espera Crudos</h4>
+<section id="familias-paramétricas-para-los-tiempos-de-espera-crudos." class="level4" data-number="5.4.3.6">
+<h4 data-number="5.4.3.6" class="anchored" data-anchor-id="familias-paramétricas-para-los-tiempos-de-espera-crudos."><span class="header-section-number">5.4.3.6</span> Familias Paramétricas para los Tiempos de Espera Crudos.</h4>
 <p>Bajo <span class="math inline">\(H_0:\lambda(t)=\lambda\)</span> constante, <span class="math inline">\(\Delta\tau\sim\mathrm{Exp}(\lambda)\)</span> (teoría clásica de renovación, <span class="citation" data-cites="cox1962renewal">(<a href="references.html#ref-cox1962renewal" role="doc-biblioref"><strong>cox1962renewal?</strong></a>)</span>). Si <span class="math inline">\(\lambda(t)\)</span> es no homogénea, la distribución marginal (no condicionada al tiempo de ocurrencia) de <span class="math inline">\(\Delta\tau\)</span> deja de ser Exponencial. Se contrastan las familias</p>
 <p><span id="eq-weibull"><span class="math display">\[
 \text{Weibull:}\quad f(x;k,\theta)=\frac{k}{\theta}\left(\frac{x}{\theta}\right)^{k-1}e^{-(x/\theta)^k},
@@ -1030,33 +1030,32 @@ N^{(j)}(t) = \Lambda(t) + M^{(j)}(t), \qquad \Lambda(t):=\int_0^t\lambda(s)\,ds,
 \text{Hiperexponencial:}\quad f(x;w,\lambda_1,\lambda_2)=w\lambda_1 e^{-\lambda_1 x}+(1-w)\lambda_2 e^{-\lambda_2 x}.
 \tag{5.40}\]</span></span></p>
 <div class="proof remark">
-<p><span class="proof-title"><em>Observación</em>. </span><strong>Motivación de la hiperexponencial</strong></p>
+<p><span class="proof-title"><em>Observación</em>. </span><strong>Motivación de la hiperexponencial.</strong></p>
 <p>La superposición de dos procesos de Poisson independientes de tasas distintas —meteorológico (<span class="math inline">\(\lambda_{\text{meteo}}\approx6\)</span>/año) y sísmico (<span class="math inline">\(\lambda_{\text{sismo}}=0.15\)</span>/año), Sección 8.1.4— genera, si ambas tasas fuesen constantes, exactamente una mezcla de exponenciales en los tiempos de espera. La estacionalidad de <span class="math inline">\(\lambda_{\text{meteo}}(t)\)</span> hace que esto sea solo una aproximación de primer orden.</p>
 </div>
-<div id="prop-cv2_bound">
-<p><strong>Cota de dispersión de la hiperexponencial</strong> Toda mezcla finita de exponenciales (Ecuación <a href="#eq-hiperexp" class="quarto-xref">Ecuación&nbsp;<span>5.40</span></a>) satisface</p>
+<div id="prp-cv2_bound" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 5.8</strong></span> <strong>Cota de dispersión de la hiperexponencial.</strong> Toda mezcla finita de exponenciales (Ecuación <a href="#eq-hiperexp" class="quarto-xref">Ecuación&nbsp;<span>5.40</span></a>) satisface</p>
 <p><span id="eq-cv2_bound"><span class="math display">\[
 CV^2 := \frac{\mathrm{Var}(X)}{\mathbb E[X]^2} \ge 1,
 \tag{5.41}\]</span></span></p>
 <p>con igualdad si y solo si <span class="math inline">\(\lambda_1=\lambda_2\)</span> <span class="citation" data-cites="cox1962renewal">(<a href="references.html#ref-cox1962renewal" role="doc-biblioref"><strong>cox1962renewal?</strong></a>)</span>.</p>
 </div>
 <div class="proof">
-<p><span class="proof-title"><em>Demostración</em>. </span><strong>Justificación</strong></p>
-<p>Para <span class="math inline">\(X\)</span> con densidad <a href="#eq-hiperexp" class="quarto-xref">Ecuación&nbsp;<span>5.40</span></a>, <span class="math inline">\(\mathbb E[X]=w/\lambda_1+(1-w)/\lambda_2\)</span> y <span class="math inline">\(\mathbb E[X^2]=2w/\lambda_1^2+2(1-w)/\lambda_2^2\)</span>. Por la desigualdad de Cauchy–Schwarz aplicada a la mezcla de dos exponenciales (casos particulares de distribuciones de fase tipo <em>Coxian</em>), se obtiene <span class="math inline">\(\mathrm{Var}(X)\ge \mathbb E[X]^2\)</span>, con igualdad exactamente cuando la mezcla degenera a una única tasa.</p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Para <span class="math inline">\(X\)</span> con densidad <a href="#eq-hiperexp" class="quarto-xref">Ecuación&nbsp;<span>5.40</span></a>, <span class="math inline">\(\mathbb E[X]=w/\lambda_1+(1-w)/\lambda_2\)</span> y <span class="math inline">\(\mathbb E[X^2]=2w/\lambda_1^2+2(1-w)/\lambda_2^2\)</span>. Por la desigualdad de Cauchy–Schwarz aplicada a la mezcla de dos exponenciales (casos particulares de distribuciones de fase tipo <em>Coxian</em>), se obtiene <span class="math inline">\(\mathrm{Var}(X)\ge \mathbb E[X]^2\)</span>, con igualdad exactamente cuando la mezcla degenera a una única tasa.</p>
 </div>
 <div id="cor-regla_decision_cv2" class="theorem corollary">
-<p><span class="theorem-title"><strong>Corolario 5.3</strong></span> <strong>Regla de decisión práctica</strong></p>
+<p><span class="theorem-title"><strong>Corolario 5.3</strong></span> <strong>Regla de decisión práctica</strong>.</p>
 <p>Si el diagnóstico empírico da <span class="math inline">\(\widehat{CV^2}&lt;1\)</span> (sub-dispersión), ninguna mezcla de exponenciales puede ser el modelo generador correcto; en ese régimen, Weibull o Gamma con parámetro de forma <span class="math inline">\(k&gt;1\)</span> son las familias teóricamente adecuadas, y cualquier ajuste de la Ecuación <a href="#eq-hiperexp" class="quarto-xref">Ecuación&nbsp;<span>5.40</span></a> debe esperarse que degenere (<span class="math inline">\(\hat\lambda_1\approx\hat\lambda_2\)</span>).</p>
 </div>
 </section>
-<section id="corrección-por-censura-de-ventana-finita" class="level4" data-number="5.4.3.7">
-<h4 data-number="5.4.3.7" class="anchored" data-anchor-id="corrección-por-censura-de-ventana-finita"><span class="header-section-number">5.4.3.7</span> Corrección por Censura de Ventana Finita</h4>
+<section id="corrección-por-censura-de-ventana-finita." class="level4" data-number="5.4.3.7">
+<h4 data-number="5.4.3.7" class="anchored" data-anchor-id="corrección-por-censura-de-ventana-finita."><span class="header-section-number">5.4.3.7</span> Corrección por Censura de Ventana Finita.</h4>
 <div class="proof remark">
-<p><span class="proof-title"><em>Observación</em>. </span><strong>Sesgo de selección por ventana finita</strong></p>
+<p><span class="proof-title"><em>Observación</em>. </span><strong>Sesgo de selección por ventana finita.</strong></p>
 <p>Cuando el número esperado de detecciones por trayectoria en <span class="math inline">\([0,T]\)</span> es bajo, la mayoría de trayectorias aportan <span class="math inline">\(0\)</span> ó <span class="math inline">\(1\)</span> detección y nunca generan un incremento <span class="math inline">\(\Delta\tau_i=\tau_i-\tau_{i-1}\)</span> completo (se requieren <span class="math inline">\(\ge2\)</span> detecciones). Agrupar solo incrementos completos descarta sistemáticamente la información de las trayectorias que esperaron mucho tiempo sin una segunda detección antes de terminar la ventana —censura por la derecha clásica en análisis de supervivencia y procesos de conteo <span class="citation" data-cites="aalen1978">(<a href="references.html#ref-aalen1978" role="doc-biblioref"><strong>aalen1978?</strong></a>)</span> <span class="citation" data-cites="abgk1993">(<a href="references.html#ref-abgk1993" role="doc-biblioref"><strong>abgk1993?</strong></a>)</span>—, lo cual puede deprimir artificialmente <span class="math inline">\(\widehat{CV^2}\)</span> por debajo de su valor verdadero.</p>
 </div>
 <div id="def-verosimilitud_censurada" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.17</strong></span> <strong>Verosimilitud censurada</strong></p>
+<p><span class="theorem-title"><strong>Definición 5.17</strong></span> <strong>Verosimilitud censurada.</strong></p>
 <p>Para cada trayectoria <span class="math inline">\(j\)</span> con al menos una detección, sea <span class="math inline">\(c^{(j)}:=T-\tau_K^{(j)}\)</span> la espera final, censurada por la derecha. La verosimilitud corregida es</p>
 <p><span id="eq-verosimilitud_censurada"><span class="math display">\[
 \ell(\theta) = \sum_{\text{completos}} \log f(\Delta\tau_i;\theta) \;+\; \sum_{j} \log S\big(c^{(j)};\theta\big),
@@ -1067,25 +1066,25 @@ CV^2 := \frac{\mathrm{Var}(X)}{\mathbb E[X]^2} \ge 1,
 <p><span class="proof-title"><em>Observación</em>. </span>La Ecuación <a href="#eq-verosimilitud_censurada" class="quarto-xref">Ecuación&nbsp;<span>5.42</span></a> es la construcción estándar de máxima verosimilitud con censura por la derecha en un solo extremo, exactamente análoga a la verosimilitud de Kaplan–Meier/Nelson–Aalen <span class="citation" data-cites="aalen1978">(<a href="references.html#ref-aalen1978" role="doc-biblioref"><strong>aalen1978?</strong></a>)</span> de la que se deriva el estimador de la Definición <a href="#def-nelson_aalen_agrupado" class="quarto-xref">Definición&nbsp;<span>5.14</span></a>: ambas tratan la ausencia de un segundo evento observado como información parcial (“sabemos que la espera verdadera es al menos <span class="math inline">\(c^{(j)}\)</span>”), no como dato faltante a ignorar.</p>
 </div>
 </section>
-<section id="criterios-de-selección-de-modelo-y-validación" class="level4" data-number="5.4.3.8">
-<h4 data-number="5.4.3.8" class="anchored" data-anchor-id="criterios-de-selección-de-modelo-y-validación"><span class="header-section-number">5.4.3.8</span> Criterios de Selección de Modelo y Validación</h4>
+<section id="criterios-de-selección-de-modelo-y-validación." class="level4" data-number="5.4.3.8">
+<h4 data-number="5.4.3.8" class="anchored" data-anchor-id="criterios-de-selección-de-modelo-y-validación."><span class="header-section-number">5.4.3.8</span> Criterios de Selección de Modelo y Validación.</h4>
 <div id="def-aic" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.18</strong></span> <strong>Criterio de Información de Akaike</strong></p>
+<p><span class="theorem-title"><strong>Definición 5.18</strong></span> <strong>Criterio de Información de Akaike.</strong></p>
 <p><span id="eq-aic"><span class="math display">\[
 \mathrm{AIC}(k) = 2k - 2\log\hat{\mathcal L},
 \tag{5.43}\]</span></span></p>
 <p>donde <span class="math inline">\(k\)</span> es el número de parámetros de la familia candidata <span class="citation" data-cites="akaike1974">Akaike (<a href="references.html#ref-akaike1974" role="doc-biblioref">1974</a>)</span>.</p>
 </div>
 <div id="def-anderson_darling" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.19</strong></span> <strong>Estadístico de Anderson–Darling de una muestra</strong> {#def-anderson_darling}</p>
+<p><span class="theorem-title"><strong>Definición 5.19</strong></span> <strong>Estadístico de Anderson–Darling de una muestra.</strong> {#def-anderson_darling}</p>
 <p>Con <span class="math inline">\(\{x_{(1)}\le\dots\le x_{(n)}\}\)</span> la muestra ordenada y <span class="math inline">\(F\)</span> la CDF candidata ajustada,</p>
 <p><span id="eq-anderson_darling"><span class="math display">\[
 A^2 = -n - \frac{1}{n}\sum_{i=1}^n (2i-1)\Big[\log F(x_{(i)}) + \log\big(1-F(x_{(n+1-i)})\big)\Big].
 \tag{5.44}\]</span></span></p>
 <p>A diferencia del estadístico de Kolmogorov–Smirnov, que pondera igual toda la distribución, <span class="math inline">\(A^2\)</span> pondera más las colas.</p>
 </div>
-<div id="prop-lilliefors_bootstrap">
-<p><strong>Corrección de Lilliefors por bootstrap paramétrico</strong></p>
+<div id="prp-lilliefors_bootstrap" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 5.9</strong></span> <strong>Corrección de Lilliefors por bootstrap paramétrico.</strong></p>
 <p>Cuando los parámetros de la familia candidata se estiman de la misma muestra sobre la que se aplica el test de Kolmogorov–Smirnov, el <span class="math inline">\(p\)</span>-valor tabulado estándar no es válido: los valores críticos de la distribución de Kolmogorov asumen parámetros conocidos <em>a priori</em> <span class="citation" data-cites="lilliefors1969">Lilliefors (<a href="references.html#ref-lilliefors1969" role="doc-biblioref">1969</a>)</span>. La corrección consiste en un bootstrap paramétrico: se generan <span class="math inline">\(B\)</span> muestras sintéticas del modelo ajustado, se reajustan sus parámetros en cada réplica, se recalcula <span class="math inline">\(D^{(b)}\)</span>, y el <span class="math inline">\(p\)</span>-valor corregido es</p>
 <p><span id="eq-pvalor_bootstrap"><span class="math display">\[
 \hat p = \frac{1}{B}\sum_{b=1}^B \mathbb 1\{D^{(b)} \ge D_{\text{obs}}\}
@@ -1095,11 +1094,11 @@ A^2 = -n - \frac{1}{n}\sum_{i=1}^n (2i-1)\Big[\log F(x_{(i)}) + \log\big(1-F(x_{
 </ol>
 </div>
 </section>
-<section id="comparación-con-la-estructura-temporal-verdadera" class="level4" data-number="5.4.3.9">
-<h4 data-number="5.4.3.9" class="anchored" data-anchor-id="comparación-con-la-estructura-temporal-verdadera"><span class="header-section-number">5.4.3.9</span> Comparación con la Estructura Temporal Verdadera</h4>
+<section id="comparación-con-la-estructura-temporal-verdadera." class="level4" data-number="5.4.3.9">
+<h4 data-number="5.4.3.9" class="anchored" data-anchor-id="comparación-con-la-estructura-temporal-verdadera."><span class="header-section-number">5.4.3.9</span> Comparación con la Estructura Temporal Verdadera.</h4>
 <div class="proof remark">
-<p><span class="proof-title"><em>Observación</em>. </span><strong>Validación oracle en estudios de simulación</strong></p>
-<p>Cuando se dispone del tiempo verdadero de cada evento simulado (<em>oracle</em>, disponible únicamente por tratarse de datos sintéticos), se contrasta su distribución de día-del-año contra la de los tiempos detectados mediante Kolmogorov–Smirnov de dos muestras, análogo temporal del Corolario 6.4.2 (Definición 6.4.2.@def-anderson) para la severidad. Esto valida si el procedimiento de detección de las Definiciones 6.4.2.@def-conjunto_deteccion y <span class="citation" data-cites="prop-gumbel_lm">(<a href="references.html#ref-prop-gumbel_lm" role="doc-biblioref"><strong>prop-gumbel_lm?</strong></a>)</span> preserva la forma temporal real del proceso generador, o si introduce una distorsión sistemática (por ejemplo, menor potencia de detección en periodos de alta volatilidad de fondo <span class="math inline">\(\sigma(t)\)</span>, Sección 8.1.3).</p>
+<p><span class="proof-title"><em>Observación</em>. </span><strong>Validación oracle en estudios de simulación.</strong></p>
+<p>Cuando se dispone del tiempo verdadero de cada evento simulado (<em>oracle</em>, disponible únicamente por tratarse de datos sintéticos), se contrasta su distribución de día-del-año contra la de los tiempos detectados mediante Kolmogorov–Smirnov de dos muestras, análogo temporal del Corolario 6.4.2 (Definición 6.4.2.@def-anderson) para la severidad. Esto valida si el procedimiento de detección de las Definiciones 6.4.2.@def-conjunto_deteccion y <a href="#prp-gumbel_lm" class="quarto-xref">Proposición&nbsp;<span>5.1</span></a> preserva la forma temporal real del proceso generador, o si introduce una distorsión sistemática (por ejemplo, menor potencia de detección en periodos de alta volatilidad de fondo <span class="math inline">\(\sigma(t)\)</span>, Sección 8.1.3).</p>
 </div>
 
 
