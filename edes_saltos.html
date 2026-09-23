@@ -777,6 +777,26 @@ S_{i,n} = \sum_{(i-1)\Delta &lt; t \leq i\Delta} \Delta J_t.\]</span> Por la hip
 </div>
 <p>La constante <span class="math inline">\(\pi/2\)</span> corrige el sesgo de usar el valor absoluto en lugar del cuadrado <strong>(barndorffnielsen2004)</strong>; el estimador permanece consistente para la volatilidad continua incluso cuando algunos incrementos contienen saltos, siempre que <span class="math inline">\(K\)</span> satisfaga la condición asintótica anterior (el mismo principio que sustenta el Teorema~6.5, pero aplicado localmente en vez de sobre todo <span class="math inline">\([0,T]\)</span>). Se agrupa sobre las <span class="math inline">\(N_{\text{sim}}\)</span> trayectorias porque <span class="math inline">\(\sigma(t)\)</span> es una función determinista común a todas ellas (Sección~8.1.3): esto reduce la varianza del estimador sin introducir sesgo, de la misma forma en que el Teorema~6.5 utiliza <span class="math inline">\(T\to\infty\)</span> para ganar consistencia.</p>
 </div>
+</section>
+<section id="construcción-del-umbral-y-el-conjunto-de-detección" class="level4" data-number="5.4.2.2">
+<h4 data-number="5.4.2.2" class="anchored" data-anchor-id="construcción-del-umbral-y-el-conjunto-de-detección"><span class="header-section-number">5.4.2.2</span> Construcción del Umbral y el Conjunto de Detección</h4>
+<div id="def-Umbral_ponderado_volatilidad_local" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.5</strong></span> Generalizando la Ecuación~6.10 mediante la ponderación de (<strong>mancini2009</strong>), <span id="eq-umbral_ponderado"><span class="math display">\[
+\tau_n(t_{i-1}) := \alpha\,\hat\sigma(t_{i-1})\,\Delta_n^{\varpi}, \qquad \alpha&gt;0,\ \varpi\in\left(0,\tfrac12\right).
+\tag{5.18}\]</span></span> Definiendo el residuo <span id="eq-residuo_detrended"><span class="math display">\[ \tilde e_i^{n,(j)} := \tilde r_i^{n,(j)} - \left[\frac{c(t_{i-1})}{U^{(j)}(t_{i-1})} + r(t_{i-1})\right]\Delta_n,
+\tag{5.19}\]</span></span> que remueve la deriva determinista de primas y rendimientos de la Ecuación~6.7 antes de comparar contra el umbral.</p>
+</div>
+<div id="def-conjunto_deteccion" class="theorem definition">
+<p><span class="theorem-title"><strong>Definición 5.6</strong></span> <span class="math display">\[
+D^{(j)} := \left\{\, i \in \{1,\dots,n\} : \left|\tilde e_i^{n,(j)}\right| &gt; \tau_n(t_{i-1}) \,\right\}.
+\]</span> {eq-conjunto_deteccion}</p>
+</div>
+<div style="text-align:justify">
+<p>El estadístico de la Ecuación~6.9 es recuperable a partir de <span class="math inline">\(D^{(j)}\)</span> como <span class="math inline">\(\hat\lambda_n^{(j)}=|D^{(j)}|/T\)</span>; el Teorema~6.5 sigue garantizando la consistencia de este conteo agregado bajo las mismas condiciones asintóticas sobre <span class="math inline">\(\varpi\)</span> (propiedades~(I) y~(II) de la Sección~6.4.1), ahora con el umbral ponderado de la Ecuación~</p>
+</div>
+</section>
+<section id="verificación-cruzada-mediante-la-estadística." class="level4" data-number="5.4.2.3">
+<h4 data-number="5.4.2.3" class="anchored" data-anchor-id="verificación-cruzada-mediante-la-estadística."><span class="header-section-number">5.4.2.3</span> Verificación Cruzada mediante la Estadística.</h4>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
