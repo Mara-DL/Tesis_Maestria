@@ -919,7 +919,7 @@ H = \frac{12}{n_T(n_T+1)}\sum_{m=1}^{12} n_m\left(\bar R_m - \frac{n_T+1}{2}\rig
 \tag{5.30}\]</span></span></p>
 </div>
 <div id="def-anderson" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.10</strong></span> <strong>Anderson de dos muestras</strong>. Cuando se dispone de los tamaños verdaderos de simulación (<em>oracle</em>), se contrasta contra la muestra detectada mediante (<span class="citation" data-cites="anderson1962">(<a href="references.html#ref-anderson1962" role="doc-biblioref"><strong>anderson1962?</strong></a>)</span>)</p>
+<p><span class="theorem-title"><strong>Definición 5.10</strong></span> <strong>Anderson de dos muestras</strong>. Cuando se dispone de los tamaños verdaderos de simulación (<em>oracle</em>), se contrasta contra la muestra detectada mediante (<span class="citation" data-cites="anderson1962">Anderson (<a href="references.html#ref-anderson1962" role="doc-biblioref">1962</a>)</span>)</p>
 <p><span id="eq-anderson_dos_muestras"><span class="math display">\[
 T = \frac{U}{NM(N+M)} - \frac{4NM-1}{6(N+M)}, \qquad
 U = N\sum_{i=1}^N (r_i-i)^2 + M\sum_{j=1}^M (s_j-j)^2,
@@ -954,7 +954,7 @@ N^{(j)}(t) := \#\{k : \tau_k^{(j)}\le t\}, \qquad t\in[0,T].
 <p><span id="eq-doob_meyer"><span class="math display">\[
 N^{(j)}(t) = \Lambda(t) + M^{(j)}(t), \qquad \Lambda(t):=\int_0^t\lambda(s)\,ds,
 \tag{5.33}\]</span></span></p>
-<p>donde <span class="math inline">\(M^{(j)}\)</span> es una martingala respecto a la filtración generada por <span class="math inline">\(U^{(j)}\)</span> (<span class="citation" data-cites="aalen1978">(<a href="references.html#ref-aalen1978" role="doc-biblioref"><strong>aalen1978?</strong></a>)</span>).</p>
+<p>donde <span class="math inline">\(M^{(j)}\)</span> es una martingala respecto a la filtración generada por <span class="math inline">\(U^{(j)}\)</span> (<span class="citation" data-cites="aalen1978">Aalen (<a href="references.html#ref-aalen1978" role="doc-biblioref">1978</a>)</span>).</p>
 </div>
 </section>
 <section id="estimación-no-paramétrica-de-la-intensidad." class="level4" data-number="5.4.3.2">
@@ -970,7 +970,7 @@ N^{(j)}(t) = \Lambda(t) + M^{(j)}(t), \qquad \Lambda(t):=\int_0^t\lambda(s)\,ds,
 <p><span class="proof-title"><em>Observación</em>. </span>El estimador (<a href="#eq-nelson_aalen_individual" class="quarto-xref">Ecuación&nbsp;<span>5.34</span></a>) es insesgado (<span class="math inline">\(\mathbb E[\hat\Lambda^{(j)}(t)]=\Lambda(t)\)</span>) pero de varianza alta cuando el número de detecciones por trayectoria es bajo: una sola trayectoria no permite recuperar la <em>forma</em> de <span class="math inline">\(\lambda(t)\)</span> de forma confiable.</p>
 </div>
 <div id="def-nelson_aalen_agrupado" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.14</strong></span> <strong>Estimador de Nelson–Aalen agrupado</strong>. Dado que <span class="math inline">\(\lambda(t)\)</span> es común a las <span class="math inline">\(N_{\text{sim}}\)</span> trayectorias (mismo argumento que la Definición 6.4.2. <a href="#def-bipower_variation" class="quarto-xref">Definición&nbsp;<span>5.4</span></a>, caso “conjunto en riesgo <span class="math inline">\(Y(t)=N_{\text{sim}}\)</span> constante” de <span class="citation" data-cites="abgk1993">(<a href="references.html#ref-abgk1993" role="doc-biblioref"><strong>abgk1993?</strong></a>)</span>),</p>
+<p><span class="theorem-title"><strong>Definición 5.14</strong></span> <strong>Estimador de Nelson–Aalen agrupado</strong>. Dado que <span class="math inline">\(\lambda(t)\)</span> es común a las <span class="math inline">\(N_{\text{sim}}\)</span> trayectorias (mismo argumento que la Definición 6.4.2. <a href="#def-bipower_variation" class="quarto-xref">Definición&nbsp;<span>5.4</span></a>, caso “conjunto en riesgo <span class="math inline">\(Y(t)=N_{\text{sim}}\)</span> constante” de <span class="citation" data-cites="abgk1993">Andersen et&nbsp;al. (<a href="references.html#ref-abgk1993" role="doc-biblioref">1993</a>)</span>),</p>
 <p><span id="eq-nelson_aalen_agrupado"><span class="math display">\[
 \hat\Lambda(t) := \frac{1}{N_{\text{sim}}}\sum_{j=1}^{N_{\text{sim}}} N^{(j)}(t).
 \tag{5.35}\]</span></span></p>
@@ -980,7 +980,7 @@ N^{(j)}(t) = \Lambda(t) + M^{(j)}(t), \qquad \Lambda(t):=\int_0^t\lambda(s)\,ds,
 <p><span id="eq-ramlau_hansen"><span class="math display">\[
 \hat\lambda(t) = \frac{1}{N_{\text{sim}}\, b}\sum_{j=1}^{N_{\text{sim}}}\sum_{k} K\!\left(\frac{d_{\mathrm{circ}}(t,\tau_k^{(j)})}{b}\right),
 \tag{5.36}\]</span></span></p>
-<p>con <span class="math inline">\(K\)</span> un núcleo gaussiano y <span class="math inline">\(b&gt;0\)</span> el ancho de banda (<span class="citation" data-cites="ramlauhansen1983">(<a href="references.html#ref-ramlauhansen1983" role="doc-biblioref"><strong>ramlauhansen1983?</strong></a>)</span>, <span class="citation" data-cites="diggle1985">Diggle (<a href="references.html#ref-diggle1985" role="doc-biblioref">1985</a>)</span>).</p>
+<p>con <span class="math inline">\(K\)</span> un núcleo gaussiano y <span class="math inline">\(b&gt;0\)</span> el ancho de banda (<span class="citation" data-cites="ramlauhansen1983">Ramlau-Hansen (<a href="references.html#ref-ramlauhansen1983" role="doc-biblioref">1983</a>)</span>, <span class="citation" data-cites="diggle1985">Diggle (<a href="references.html#ref-diggle1985" role="doc-biblioref">1985</a>)</span>).</p>
 </div>
 </section>
 <section id="ventanas-móviles-como-estimador-local-de-la-intensidad." class="level4" data-number="5.4.3.3">
@@ -1001,16 +1001,16 @@ N^{(j)}(t) = \Lambda(t) + M^{(j)}(t), \qquad \Lambda(t):=\int_0^t\lambda(s)\,ds,
 <h4 data-number="5.4.3.4" class="anchored" data-anchor-id="diagnóstico-de-homogeneidad-temporal."><span class="header-section-number">5.4.3.4</span> Diagnóstico de Homogeneidad Temporal.</h4>
 <div id="prp-uniformidad_poisson" class="theorem proposition">
 <p><span class="theorem-title"><strong>Proposición 5.7</strong></span> <strong>Test de uniformidad bajo Poisson homogéneo</strong>.</p>
-<p>Bajo <span class="math inline">\(H_0:\lambda(t)=\lambda\)</span> (constante), los tiempos de un proceso de Poisson homogéneo en <span class="math inline">\([0,T]\)</span>, condicionados al número total observado, se distribuyen <span class="math inline">\(\mathrm{Uniforme}(0,T)\)</span> <span class="citation" data-cites="coxlewis1966">(<a href="references.html#ref-coxlewis1966" role="doc-biblioref"><strong>coxlewis1966?</strong></a>)</span>. Se contrasta mediante Kolmogorov–Smirnov de una muestra sobre <span class="math inline">\(\{\tau_k^{(j)} \bmod 365\}\)</span> contra <span class="math inline">\(\mathrm{Uniforme}(0,365)\)</span> (plegando sobre el ciclo anual para acumular información de los años simulados).</p>
+<p>Bajo <span class="math inline">\(H_0:\lambda(t)=\lambda\)</span> (constante), los tiempos de un proceso de Poisson homogéneo en <span class="math inline">\([0,T]\)</span>, condicionados al número total observado, se distribuyen <span class="math inline">\(\mathrm{Uniforme}(0,T)\)</span> <span class="citation" data-cites="coxlewis1966">Cox y Lewis (<a href="references.html#ref-coxlewis1966" role="doc-biblioref">1966</a>)</span>. Se contrasta mediante Kolmogorov–Smirnov de una muestra sobre <span class="math inline">\(\{\tau_k^{(j)} \bmod 365\}\)</span> contra <span class="math inline">\(\mathrm{Uniforme}(0,365)\)</span> (plegando sobre el ciclo anual para acumular información de los años simulados).</p>
 </div>
 </section>
 <section id="el-teorema-del-cambio-de-tiempo-time-rescaling-theorem." class="level4" data-number="5.4.3.5">
 <h4 data-number="5.4.3.5" class="anchored" data-anchor-id="el-teorema-del-cambio-de-tiempo-time-rescaling-theorem."><span class="header-section-number">5.4.3.5</span> El Teorema del Cambio de Tiempo (Time-Rescaling Theorem).</h4>
 <div id="thm-time_resrescaling" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 5.6</strong></span> <strong>Papangelou, 1972</strong> Sea <span class="math inline">\(\{\tau_k\}\)</span> un proceso puntual con intensidad (condicional) <span class="math inline">\(\lambda(t)\)</span> y defínase <span class="math inline">\(s_k := \Lambda(\tau_k)=\int_0^{\tau_k}\lambda(u)\,du\)</span>. Entonces <span class="math inline">\(\{s_k\}\)</span> es un proceso de Poisson homogéneo de tasa <span class="math inline">\(1\)</span> (<span class="citation" data-cites="papangelou1972">(<a href="references.html#ref-papangelou1972" role="doc-biblioref"><strong>papangelou1972?</strong></a>)</span>). Equivalentemente, los incrementos <span class="math inline">\(\Delta s_k := s_k-s_{k-1}\)</span> son i.i.d. <span class="math inline">\(\mathrm{Exp}(1)\)</span>, y <span class="math inline">\(u_k := 1-e^{-\Delta s_k}\)</span> son i.i.d. <span class="math inline">\(\mathrm{Uniforme}(0,1)\)</span> (<span class="citation" data-cites="brown2002">Brown et&nbsp;al. (<a href="references.html#ref-brown2002" role="doc-biblioref">2002</a>)</span>).</p>
+<p><span class="theorem-title"><strong>Teorema 5.6</strong></span> <strong>Papangelou, 1972</strong> Sea <span class="math inline">\(\{\tau_k\}\)</span> un proceso puntual con intensidad (condicional) <span class="math inline">\(\lambda(t)\)</span> y defínase <span class="math inline">\(s_k := \Lambda(\tau_k)=\int_0^{\tau_k}\lambda(u)\,du\)</span>. Entonces <span class="math inline">\(\{s_k\}\)</span> es un proceso de Poisson homogéneo de tasa <span class="math inline">\(1\)</span> (<span class="citation" data-cites="papangelou1972">Papangelou (<a href="references.html#ref-papangelou1972" role="doc-biblioref">1972</a>)</span>). Equivalentemente, los incrementos <span class="math inline">\(\Delta s_k := s_k-s_{k-1}\)</span> son i.i.d. <span class="math inline">\(\mathrm{Exp}(1)\)</span>, y <span class="math inline">\(u_k := 1-e^{-\Delta s_k}\)</span> son i.i.d. <span class="math inline">\(\mathrm{Uniforme}(0,1)\)</span> (<span class="citation" data-cites="brown2002">Brown et&nbsp;al. (<a href="references.html#ref-brown2002" role="doc-biblioref">2002</a>)</span>).</p>
 </div>
 <div class="proof remark">
-<p><span class="proof-title"><em>Observación</em>. </span>Este resultado es la base del “random time change theorem” aplicado por <span class="citation" data-cites="ogata1988">(<a href="references.html#ref-ogata1988" role="doc-biblioref"><strong>ogata1988?</strong></a>)</span> al análisis de residuos de procesos sísmicos, y por <span class="citation" data-cites="bowsher2007">Bowsher (<a href="references.html#ref-bowsher2007" role="doc-biblioref">2007</a>)</span> como prueba de especificación de modelos de intensidad de eventos de mercado en econometría financiera de alta frecuencia. Se utiliza aquí como validación de que <span class="math inline">\(\hat\Lambda(t)\)</span> (<a href="#eq-nelson_aalen_agrupado" class="quarto-xref">Ecuación&nbsp;<span>5.35</span></a>) explica la dinámica temporal de las detecciones: definiendo <span class="math inline">\(\Delta\tau_i := \hat\Lambda(\tau_i)-\hat\Lambda(\tau_{i-1})\)</span> sobre las detecciones ordenadas de cada trayectoria, bajo <span class="math inline">\(H_0\)</span> se espera <span class="math inline">\(\Delta\tau_i\sim\mathrm{Exp}(1)\)</span>.</p>
+<p><span class="proof-title"><em>Observación</em>. </span>Este resultado es la base del “random time change theorem” aplicado por <span class="citation" data-cites="ogata1988">Ogata (<a href="references.html#ref-ogata1988" role="doc-biblioref">1988</a>)</span> al análisis de residuos de procesos sísmicos, y por <span class="citation" data-cites="bowsher2007">Bowsher (<a href="references.html#ref-bowsher2007" role="doc-biblioref">2007</a>)</span> como prueba de especificación de modelos de intensidad de eventos de mercado en econometría financiera de alta frecuencia. Se utiliza aquí como validación de que <span class="math inline">\(\hat\Lambda(t)\)</span> (<a href="#eq-nelson_aalen_agrupado" class="quarto-xref">Ecuación&nbsp;<span>5.35</span></a>) explica la dinámica temporal de las detecciones: definiendo <span class="math inline">\(\Delta\tau_i := \hat\Lambda(\tau_i)-\hat\Lambda(\tau_{i-1})\)</span> sobre las detecciones ordenadas de cada trayectoria, bajo <span class="math inline">\(H_0\)</span> se espera <span class="math inline">\(\Delta\tau_i\sim\mathrm{Exp}(1)\)</span>.</p>
 </div>
 <div id="cor-equivalencia_ks" class="theorem corollary">
 <p><span class="theorem-title"><strong>Corolario 5.2</strong></span> <strong>Equivalencia de formulaciones del test.</strong></p>
@@ -1019,7 +1019,7 @@ N^{(j)}(t) = \Lambda(t) + M^{(j)}(t), \qquad \Lambda(t):=\int_0^t\lambda(s)\,ds,
 </section>
 <section id="familias-paramétricas-para-los-tiempos-de-espera-crudos." class="level4" data-number="5.4.3.6">
 <h4 data-number="5.4.3.6" class="anchored" data-anchor-id="familias-paramétricas-para-los-tiempos-de-espera-crudos."><span class="header-section-number">5.4.3.6</span> Familias Paramétricas para los Tiempos de Espera Crudos.</h4>
-<p>Bajo <span class="math inline">\(H_0:\lambda(t)=\lambda\)</span> constante, <span class="math inline">\(\Delta\tau\sim\mathrm{Exp}(\lambda)\)</span> (teoría clásica de renovación, <span class="citation" data-cites="cox1962renewal">(<a href="references.html#ref-cox1962renewal" role="doc-biblioref"><strong>cox1962renewal?</strong></a>)</span>). Si <span class="math inline">\(\lambda(t)\)</span> es no homogénea, la distribución marginal (no condicionada al tiempo de ocurrencia) de <span class="math inline">\(\Delta\tau\)</span> deja de ser Exponencial. Se contrastan las familias</p>
+<p>Bajo <span class="math inline">\(H_0:\lambda(t)=\lambda\)</span> constante, <span class="math inline">\(\Delta\tau\sim\mathrm{Exp}(\lambda)\)</span> (teoría clásica de renovación, <span class="citation" data-cites="cox1962renewal">Cox (<a href="references.html#ref-cox1962renewal" role="doc-biblioref">1962</a>)</span>). Si <span class="math inline">\(\lambda(t)\)</span> es no homogénea, la distribución marginal (no condicionada al tiempo de ocurrencia) de <span class="math inline">\(\Delta\tau\)</span> deja de ser Exponencial. Se contrastan las familias</p>
 <p><span id="eq-weibull"><span class="math display">\[
 \text{Weibull:}\quad f(x;k,\theta)=\frac{k}{\theta}\left(\frac{x}{\theta}\right)^{k-1}e^{-(x/\theta)^k},
 \tag{5.38}\]</span></span></p>
@@ -1038,7 +1038,7 @@ N^{(j)}(t) = \Lambda(t) + M^{(j)}(t), \qquad \Lambda(t):=\int_0^t\lambda(s)\,ds,
 <p><span id="eq-cv2_bound"><span class="math display">\[
 CV^2 := \frac{\mathrm{Var}(X)}{\mathbb E[X]^2} \ge 1,
 \tag{5.41}\]</span></span></p>
-<p>con igualdad si y solo si <span class="math inline">\(\lambda_1=\lambda_2\)</span> (<span class="citation" data-cites="cox1962renewal">(<a href="references.html#ref-cox1962renewal" role="doc-biblioref"><strong>cox1962renewal?</strong></a>)</span>).</p>
+<p>con igualdad si y solo si <span class="math inline">\(\lambda_1=\lambda_2\)</span> (<span class="citation" data-cites="cox1962renewal">Cox (<a href="references.html#ref-cox1962renewal" role="doc-biblioref">1962</a>)</span>).</p>
 </div>
 <div class="proof">
 <p><span class="proof-title"><em>Demostración</em>. </span>Para <span class="math inline">\(X\)</span> con densidad <a href="#eq-hiperexp" class="quarto-xref">Ecuación&nbsp;<span>5.40</span></a>, <span class="math inline">\(\mathbb E[X]=w/\lambda_1+(1-w)/\lambda_2\)</span> y <span class="math inline">\(\mathbb E[X^2]=2w/\lambda_1^2+2(1-w)/\lambda_2^2\)</span>. Por la desigualdad de Cauchy–Schwarz aplicada a la mezcla de dos exponenciales (casos particulares de distribuciones de fase tipo <em>Coxian</em>), se obtiene <span class="math inline">\(\mathrm{Var}(X)\ge \mathbb E[X]^2\)</span>, con igualdad exactamente cuando la mezcla degenera a una única tasa.</p>
@@ -1052,7 +1052,7 @@ CV^2 := \frac{\mathrm{Var}(X)}{\mathbb E[X]^2} \ge 1,
 <h4 data-number="5.4.3.7" class="anchored" data-anchor-id="corrección-por-censura-de-ventana-finita."><span class="header-section-number">5.4.3.7</span> Corrección por Censura de Ventana Finita.</h4>
 <div class="proof remark">
 <p><span class="proof-title"><em>Observación</em>. </span><strong>Sesgo de selección por ventana finita.</strong></p>
-<p>Cuando el número esperado de detecciones por trayectoria en <span class="math inline">\([0,T]\)</span> es bajo, la mayoría de trayectorias aportan <span class="math inline">\(0\)</span> ó <span class="math inline">\(1\)</span> detección y nunca generan un incremento <span class="math inline">\(\Delta\tau_i=\tau_i-\tau_{i-1}\)</span> completo (se requieren <span class="math inline">\(\ge2\)</span> detecciones). Agrupar solo incrementos completos descarta sistemáticamente la información de las trayectorias que esperaron mucho tiempo sin una segunda detección antes de terminar la ventana —censura por la derecha clásica en análisis de supervivencia y procesos de conteo (<span class="citation" data-cites="aalen1978">(<a href="references.html#ref-aalen1978" role="doc-biblioref"><strong>aalen1978?</strong></a>)</span> <span class="citation" data-cites="abgk1993">(<a href="references.html#ref-abgk1993" role="doc-biblioref"><strong>abgk1993?</strong></a>)</span>)—, lo cual puede deprimir artificialmente <span class="math inline">\(\widehat{CV^2}\)</span> por debajo de su valor verdadero.</p>
+<p>Cuando el número esperado de detecciones por trayectoria en <span class="math inline">\([0,T]\)</span> es bajo, la mayoría de trayectorias aportan <span class="math inline">\(0\)</span> ó <span class="math inline">\(1\)</span> detección y nunca generan un incremento <span class="math inline">\(\Delta\tau_i=\tau_i-\tau_{i-1}\)</span> completo (se requieren <span class="math inline">\(\ge2\)</span> detecciones). Agrupar solo incrementos completos descarta sistemáticamente la información de las trayectorias que esperaron mucho tiempo sin una segunda detección antes de terminar la ventana —censura por la derecha clásica en análisis de supervivencia y procesos de conteo (<span class="citation" data-cites="aalen1978">Aalen (<a href="references.html#ref-aalen1978" role="doc-biblioref">1978</a>)</span> <span class="citation" data-cites="abgk1993">Andersen et&nbsp;al. (<a href="references.html#ref-abgk1993" role="doc-biblioref">1993</a>)</span>)—, lo cual puede deprimir artificialmente <span class="math inline">\(\widehat{CV^2}\)</span> por debajo de su valor verdadero.</p>
 </div>
 <div id="def-verosimilitud_censurada" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 5.17</strong></span> <strong>Verosimilitud censurada.</strong></p>
@@ -1063,7 +1063,7 @@ CV^2 := \frac{\mathrm{Var}(X)}{\mathbb E[X]^2} \ge 1,
 <p>donde <span class="math inline">\(S=1-F\)</span> es la función de supervivencia de la familia candidata.</p>
 </div>
 <div class="proof remark">
-<p><span class="proof-title"><em>Observación</em>. </span>La <a href="#eq-verosimilitud_censurada" class="quarto-xref">Ecuación&nbsp;<span>5.42</span></a> es la construcción estándar de máxima verosimilitud con censura por la derecha en un solo extremo, exactamente análoga a la verosimilitud de Kaplan–Meier/Nelson–Aalen <span class="citation" data-cites="aalen1978">(<a href="references.html#ref-aalen1978" role="doc-biblioref"><strong>aalen1978?</strong></a>)</span> de la que se deriva el estimador de la <a href="#def-nelson_aalen_agrupado" class="quarto-xref">Definición&nbsp;<span>5.14</span></a>: ambas tratan la ausencia de un segundo evento observado como información parcial (“sabemos que la espera verdadera es al menos <span class="math inline">\(c^{(j)}\)</span>”), no como dato faltante a ignorar.</p>
+<p><span class="proof-title"><em>Observación</em>. </span>La <a href="#eq-verosimilitud_censurada" class="quarto-xref">Ecuación&nbsp;<span>5.42</span></a> es la construcción estándar de máxima verosimilitud con censura por la derecha en un solo extremo, exactamente análoga a la verosimilitud de Kaplan–Meier/Nelson–Aalen <span class="citation" data-cites="aalen1978">Aalen (<a href="references.html#ref-aalen1978" role="doc-biblioref">1978</a>)</span> de la que se deriva el estimador de la <a href="#def-nelson_aalen_agrupado" class="quarto-xref">Definición&nbsp;<span>5.14</span></a>: ambas tratan la ausencia de un segundo evento observado como información parcial (“sabemos que la espera verdadera es al menos <span class="math inline">\(c^{(j)}\)</span>”), no como dato faltante a ignorar.</p>
 </div>
 </section>
 <section id="criterios-de-selección-de-modelo-y-validación." class="level4" data-number="5.4.3.8">
@@ -1103,11 +1103,20 @@ A^2 = -n - \frac{1}{n}\sum_{i=1}^n (2i-1)\Big[\log F(x_{(i)}) + \log\big(1-F(x_{
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-aalen1978" class="csl-entry" role="listitem">
+Aalen, Odd O. 1978. <span>«Nonparametric Inference for a Family of Counting Processes»</span>. <em>The Annals of Statistics</em> 6 (4): 701-26.
+</div>
 <div id="ref-ait2009testing" class="csl-entry" role="listitem">
 Aı̈t-Sahalia, Yacine, y Jean Jacod. 2009. <span>«Testing for jumps in a discretely observed process»</span>. <em>The Annals of Statistics</em> 37 (1): 184-222. <a href="https://doi.org/10.1214/07-AOS568">https://doi.org/10.1214/07-AOS568</a>.
 </div>
 <div id="ref-akaike1974" class="csl-entry" role="listitem">
 Akaike, Hirotugu. 1974. <span>«A New Look at the Statistical Model Identification»</span>. <em>IEEE Transactions on Automatic Control</em> 19 (6): 716-23.
+</div>
+<div id="ref-abgk1993" class="csl-entry" role="listitem">
+Andersen, Per Kragh, Ørnulf Borgan, Richard D. Gill, y Niels Keiding. 1993. <em>Statistical Models Based on Counting Processes</em>. Springer-Verlag.
+</div>
+<div id="ref-anderson1962" class="csl-entry" role="listitem">
+Anderson, T. W. 1962. <span>«On the Distribution of the Two-Sample Cramer-von Mises Criterion»</span>. <em>The Annals of Mathematical Statistics</em> 33 (3): 1148-59.
 </div>
 <div id="ref-barndorffnielsen2004" class="csl-entry" role="listitem">
 Barndorff-Nielsen, Ole E., y Neil Shephard. 2004. <span>«Power and Bipower Variation with Stochastic Volatility and Jumps»</span>. <em>Journal of Financial Econometrics</em> 2 (1): 1-48.
@@ -1117,6 +1126,12 @@ Bowsher, Clive G. 2007. <span>«Modelling security market events in continuous t
 </div>
 <div id="ref-brown2002" class="csl-entry" role="listitem">
 Brown, Emery N., Riccardo Barbieri, Valérie Ventura, Robert E. Kass, y Loren M. Frank. 2002. <span>«The Time-Rescaling Theorem and Its Application to Neural Spike Train Data Analysis»</span>. <em>Neural Computation</em> 14 (2): 325-46. <a href="https://doi.org/10.1162/08997660252741149">https://doi.org/10.1162/08997660252741149</a>.
+</div>
+<div id="ref-cox1962renewal" class="csl-entry" role="listitem">
+Cox, David R. 1962. <em>Renewal Theory</em>. Methuen.
+</div>
+<div id="ref-coxlewis1966" class="csl-entry" role="listitem">
+Cox, David R., y Peter A. W. Lewis. 1966. <em>The Statistical Analysis of Series of Events</em>. Methuen.
 </div>
 <div id="ref-dempster1977" class="csl-entry" role="listitem">
 Dempster, Arthur P., Nan M. Laird, y Donald B. Rubin. 1977. <span>«Maximum Likelihood from Incomplete Data via the <span>EM</span> Algorithm»</span>. <em>Journal of the Royal Statistical Society, Series B</em> 39 (1): 1-38.
@@ -1139,8 +1154,17 @@ Lundberg, Filip. 1903. <span>«I. Approximerad Framställning af Sannolikhetsfun
 <div id="ref-mancini2009" class="csl-entry" role="listitem">
 Mancini, Cecilia. 2009. <span>«Non-parametric Threshold Estimation for Models with Stochastic Diffusion Coefficient and Jumps»</span>. <em>Scandinavian Journal of Statistics</em> 36 (2): 270-96. <a href="https://doi.org/10.1111/j.1467-9469.2008.00622.x">https://doi.org/10.1111/j.1467-9469.2008.00622.x</a>.
 </div>
+<div id="ref-ogata1988" class="csl-entry" role="listitem">
+Ogata, Yosihiko. 1988. <span>«Statistical Models for Earthquake Occurrences and Residual Analysis for Point Processes»</span>. <em>Journal of the American Statistical Association</em> 83 (401): 9-27.
+</div>
+<div id="ref-papangelou1972" class="csl-entry" role="listitem">
+Papangelou, Frederic. 1972. <span>«Integrability of Expected Increments of Point Processes and a Related Random Change of Scale»</span>. <em>Transactions of the American Mathematical Society</em> 165: 483-506.
+</div>
 <div id="ref-protter2005stochastic" class="csl-entry" role="listitem">
 Protter, Philip E. 2005. <em>Stochastic Integration and Differential Equations</em>. 2nd ed. Vol. 21. Stochastic Modelling y Applied Probability. Springer. <a href="https://doi.org/10.1007/978-3-662-10061-5">https://doi.org/10.1007/978-3-662-10061-5</a>.
+</div>
+<div id="ref-ramlauhansen1983" class="csl-entry" role="listitem">
+Ramlau-Hansen, Henrik. 1983. <span>«Smoothing Counting Process Intensities by Means of Kernel Functions»</span>. <em>The Annals of Statistics</em> 11 (2): 453-66.
 </div>
 <div id="ref-schwarz1978" class="csl-entry" role="listitem">
 Schwarz, Gideon. 1978. <span>«Estimating the Dimension of a Model»</span>. <em>The Annals of Statistics</em> 6 (2): 461-64.
