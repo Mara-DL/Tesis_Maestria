@@ -768,7 +768,7 @@ S_{i,n} = \sum_{(i-1)\Delta &lt; t \leq i\Delta} \Delta J_t.\]</span> Por la hip
 \tilde r_i^{n,(j)} := \frac{U^{(j)}(t_i)-U^{(j)}(t_{i-1})}{U^{(j)}(t_{i-1})}.
 \tag{5.16}\]</span></span></p>
 <div class="proof remark">
-<p><span class="proof-title"><em>Observación</em>. </span>Se normaliza por <span class="math inline">\(U^{(j)}(t_{i-1})\)</span>, a diferencia del incremento absoluto <span class="math inline">\(\Delta_i^n X\)</span> de la Ecuación 6.9, porque <span class="math inline">\(U(t)\)</span> no es estacionario (crece por primas y rendimientos): un umbral sobre incrementos absolutos perdería sensibilidad relativa a medida que <span class="math inline">\(U(t)\)</span> aumenta.</p>
+<p><span class="proof-title"><em>Observación</em>. </span>Se normaliza por <span class="math inline">\(U^{(j)}(t_{i-1})\)</span>, a diferencia del incremento absoluto <span class="math inline">\(\Delta_i^n X\)</span> de la <a href="#eq-umbral" class="quarto-xref">Ecuación&nbsp;<span>5.11</span></a>, porque <span class="math inline">\(U(t)\)</span> no es estacionario (crece por primas y rendimientos): un umbral sobre incrementos absolutos perdería sensibilidad relativa a medida que <span class="math inline">\(U(t)\)</span> aumenta.</p>
 </div>
 <div id="def-bipower_variation" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 5.4</strong></span> <strong>Estimador agrupado de volatilidad instantánea</strong>.</p>
@@ -786,7 +786,7 @@ S_{i,n} = \sum_{(i-1)\Delta &lt; t \leq i\Delta} \Delta J_t.\]</span> Por la hip
 <section id="construcción-del-umbral-y-el-conjunto-de-detección." class="level4" data-number="5.4.2.2">
 <h4 data-number="5.4.2.2" class="anchored" data-anchor-id="construcción-del-umbral-y-el-conjunto-de-detección."><span class="header-section-number">5.4.2.2</span> Construcción del Umbral y el Conjunto de Detección.</h4>
 <div id="def-umbral_ponderado" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 5.5</strong></span> <strong>Umbral ponderado por volatilidad local</strong>. Generalizando la Ecuación 6.10 mediante la ponderación de <span class="citation" data-cites="mancini2009">Mancini (<a href="references.html#ref-mancini2009" role="doc-biblioref">2009</a>)</span>,</p>
+<p><span class="theorem-title"><strong>Definición 5.5</strong></span> <strong>Umbral ponderado por volatilidad local</strong>. Generalizando la <a href="#eq-estimador" class="quarto-xref">Ecuación&nbsp;<span>5.12</span></a> mediante la ponderación de <span class="citation" data-cites="mancini2009">Mancini (<a href="references.html#ref-mancini2009" role="doc-biblioref">2009</a>)</span>,</p>
 <p><span id="eq-umbral_ponderado"><span class="math display">\[
 \tau_n(t_{i-1}) := \alpha\,\hat\sigma(t_{i-1})\,\Delta_n^{\varpi}, \qquad \alpha&gt;0,\ \varpi\in\left(0,\tfrac12\right).
 \tag{5.18}\]</span></span></p>
@@ -804,12 +804,12 @@ D^{(j)} := \left\{\, i \in \{1,\dots,n\} : \left|\tilde e_i^{n,(j)}\right| &gt; 
 </div>
 <div class="proof remark">
 <p><span class="proof-title"><em>Observación</em>. </span><strong>Relación con <span class="math inline">\(\hat\lambda_n\)</span></strong>.</p>
-<p>El estadístico de la Ecuación 6.9 es recuperable a partir de <span class="math inline">\(D^{(j)}\)</span> como <span class="math inline">\(\hat\lambda_n^{(j)}=|D^{(j)}|/T\)</span>; el Teorema 6.5 sigue garantizando la consistencia de este conteo agregado bajo las mismas condiciones asintóticas sobre <span class="math inline">\(\varpi\)</span> (propiedades (I) y (II) de la Sección 6.4.1), ahora con el umbral ponderado de la Ecuación <a href="#eq-umbral_ponderado" class="quarto-xref">Ecuación&nbsp;<span>5.18</span></a>.</p>
+<p>El estadístico de la <a href="#eq-umbral" class="quarto-xref">Ecuación&nbsp;<span>5.11</span></a> es recuperable a partir de <span class="math inline">\(D^{(j)}\)</span> como <span class="math inline">\(\hat\lambda_n^{(j)}=|D^{(j)}|/T\)</span>; el Teorema 6.5 sigue garantizando la consistencia de este conteo agregado bajo las mismas condiciones asintóticas sobre <span class="math inline">\(\varpi\)</span> (propiedades (I) y (II) de la Sección 6.4.1), ahora con el umbral ponderado de la <a href="#eq-umbral_ponderado" class="quarto-xref">Ecuación&nbsp;<span>5.18</span></a>.</p>
 </div>
 </section>
 <section id="verificación-cruzada-mediante-la-estadística-de-leemykland." class="level4" data-number="5.4.2.3">
 <h4 data-number="5.4.2.3" class="anchored" data-anchor-id="verificación-cruzada-mediante-la-estadística-de-leemykland."><span class="header-section-number">5.4.2.3</span> Verificación Cruzada mediante la Estadística de Lee–Mykland.</h4>
-<p>Como verificación independiente de la Definición <a href="#def-conjunto_deteccion" class="quarto-xref">Definición&nbsp;<span>5.6</span></a>, se calcula el estadístico</p>
+<p>Como verificación independiente de la <a href="#def-conjunto_deteccion" class="quarto-xref">Definición&nbsp;<span>5.6</span></a>, se calcula el estadístico</p>
 <p><span id="eq-leemykland_stat"><span class="math display">\[
 \mathcal L_i^{(j)} := \frac{\tilde r_i^{n,(j)}}{\hat\sigma(t_{i-1})}
 \tag{5.21}\]</span></span></p>
@@ -864,7 +864,7 @@ P\big(|\tilde e_i^n|&gt;\tau_n(t_{i-1})\big) \approx 2\left[1-\Phi\!\left(\frac{
 <p>Fijando <span class="math inline">\(\varpi\)</span>, se calcula la tasa de detección <span class="math inline">\(\hat N(\alpha)/N_{\text{sim}}\)</span> sobre una malla de valores de <span class="math inline">\(\alpha\)</span>. El par <span class="math inline">\((\alpha^\ast,\varpi)\)</span> se selecciona en la <em>meseta</em>: el menor <span class="math inline">\(\alpha\)</span> a partir del cual <span class="math inline">\(\hat N(\alpha)/N_{\text{sim}}\)</span> deja de cambiar más de una tolerancia relativa prefijada entre valores consecutivos de <span class="math inline">\(\alpha\)</span>, indicando que ya se han agotado los saltos genuinos y solo se pierden detecciones marginales de ruido.</p>
 </div>
 <div class="proof remark">
-<p><span class="proof-title"><em>Observación</em>. </span>Este criterio es el análogo, a nivel de calibración de umbral, de la elección de <span class="math inline">\(\varpi\in(0,1/2)\)</span> discutida en la Sección 6.4.1: ambos buscan el punto donde se equilibran las propiedades (I) (detectar saltos) y (II) (controlar falsos positivos) de la Ecuación 6.10.</p>
+<p><span class="proof-title"><em>Observación</em>. </span>Este criterio es el análogo, a nivel de calibración de umbral, de la elección de <span class="math inline">\(\varpi\in(0,1/2)\)</span> discutida en la Sección 6.4.1: ambos buscan el punto donde se equilibran las propiedades (I) (detectar saltos) y (II) (controlar falsos positivos) de la <a href="#eq-estimador" class="quarto-xref">Ecuación&nbsp;<span>5.12</span></a>.</p>
 </div>
 </section>
 <section id="modelo-de-mezcla-contaminada-para-la-severidad-agregada." class="level4" data-number="5.4.2.6">
