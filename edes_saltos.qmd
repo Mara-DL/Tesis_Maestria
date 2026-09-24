@@ -128,7 +128,7 @@ De la @eq-4 se sigue que $$(dt\bigotimes\mathbb{P})(N) = \int_0^T \mathbb{P}(x^{
 
 Como $N$ tiene medida cero se puede decir que $x^\prime_t = x_t$ para $(dt\bigotimes\mathbb{P})$- casi todo $(t,\omega)$.
 
-Ahora, consideremos el conjunto denso $D:=\mathbb{Q}\cap[0,T]$ . Definimos el evento $$\Omega_0 := \bigcap_{t \in D} \left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \right\}.$$ Dado que $D$ es numerable y $\mathbb{P}(x_t = x'_t) = 1$ para cada $t \in D$, se tiene $\mathbb{P}(\Omega_0) = 1$. Fijemos $\omega \in \Omega_0$, como ambas trayectorias $t \mapsto x_t(\omega)$ y $t \mapsto x'_t(\omega)$ son RCLL (continuas por la derecha con límites por la izquierda) y coinciden en el conjunto denso $D$, se sigue que $$x_t(\omega) = x'_t(\omega) \quad \text{para todo } t \in [0,T].$$ Por lo tanto, el conjunto $$\left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \text{ para todo } t \in [0,T] \right\}$$ contiene a $\Omega_0$, y en consecuencia tiene probabilidad uno. Por lo tanto, coinciden para todo \$ t \in \[0,T\].\$ Por lo que se concluye que la solución de la ecuación estocástica diferencial con saltos es única por trayectoria. Además, como los coeficientes $b$, $\sigma$ y $R$ son $\mathcal{F}_t^{W,\widetilde{N}}$-adaptados, se sigue la solución es fuerte.$\quad \square$
+Ahora, consideremos el conjunto denso $D:=\mathbb{Q}\cap[0,T]$ . Definimos el evento $$\Omega_0 := \bigcap_{t \in D} \left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \right\}.$$ Dado que $D$ es numerable y $\mathbb{P}(x_t = x'_t) = 1$ para cada $t \in D$, se tiene $\mathbb{P}(\Omega_0) = 1$. Fijemos $\omega \in \Omega_0$, como ambas trayectorias $t \mapsto x_t(\omega)$ y $t \mapsto x'_t(\omega)$ son RCLL (continuas por la derecha con límites por la izquierda) y coinciden en el conjunto denso $D$, se sigue que $$x_t(\omega) = x'_t(\omega) \quad \text{para todo } t \in [0,T].$$ Por lo tanto, el conjunto $$\left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \text{ para todo } t \in [0,T] \right\}$$ contiene a $\Omega_0$, y en consecuencia tiene probabilidad uno. Por lo tanto, coinciden para todo $ t \in [0,T].$ Por lo que se concluye que la solución de la ecuación estocástica diferencial con saltos es única por trayectoria. Además, como los coeficientes $b$, $\sigma$ y $R$ son $\mathcal{F}_t^{W,\widetilde{N}}$-adaptados, se sigue la solución es fuerte.$\quad \square$
 :::
 ::::
 
@@ -149,7 +149,7 @@ $$+ \int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz).$$ Aplicando valor esperado y
 + 2 \int_0^t \int_Z Y_s \, \Delta R_s(s,z) \tilde{N}(ds, dz)\right]
 \end{aligned}$$ $$\mathbb{E}\left[\int_0^t \int_Z |\Delta R_s(z)|^2 \, N(ds, dz)\right]$$ Dado que los valores esperados de las integrales respecto a $dW_s$ y $\widetilde{N}$ son martingalas, $$\mathbb{E}\left[ \int_0^t Y_s \, \Delta \sigma_s \, dW_s \right] = 0,$$ $$\mathbb{E} \left[  \int_0^t \int_Z Y_s \, \Delta R_s(z) \, \tilde{N}(ds, dz)\right]  = 0,$$ y puesto que $\mathbb{E}[N(ds,dz)] = \pi(dz)ds,$ se reduce a $$\mathbb{E}[|Y_t|^2] = \mathbb{E}\left[\int_0^t \left(2Y_s \, \Delta b(s) \, + |\Delta \sigma(s)|^2 + \int_Z |\Delta R_s(s,z)|^2 \, \pi ( dz)\right) ds\right].$$ Nótese que para el primer término, al aplicar la desigualdad de Cauchy-Schwarz $2Y_s\Delta b(s)\leq 2|Y_s||\Delta b(s)|,$ y por las hipótesis de Lipschitz
 
-$$|\Delta b(s) |\leq \widetilde{c}(s)|X_s|, \ \ |\Delta \sigma(s)|^2 + \int_z |\Delta R(s.z)|^2 \pi(dz) \leq \widetilde{c}(s)|X_s|^2.$$ Además usando la desigualdad $2ab \leq a^2 + b^2$, se tiene que $$2Y_s\Delta b(s) \leq 2|Y_s |\widetilde{c}(s)|X_s| \leq \widetilde{c}(s)(|Y_s|^2 + |X_s|^2),$$ aplicando valor esperado y tomando el supremo $$\mathbb{E}[|{Y_t}|^2] \leq \int_0^t \widetilde{c}(s) \left( \mathbb{E}[|{Y_s}|^2] + \mathbb{E}[|{X_s}|^2] \right) ds.$$ $$\mathbb{E}\!\left[ \sup_{0 \leq r \leq t} |{Y_r}|^2 \right] \leq \int_0^t \widetilde{c}(s) \left( \mathbb{E}\!\left[ \sup_{0 \leq r \leq s} |{Y_r}|^2 \right] + \!\left[ \sup_{0 \leq r \leq s} |{X_r}|^2 \right] \right) ds.$$ {#eq-3}
+$$|\Delta b(s) |\leq \widetilde{c}(s)|X_s|, \ \ |\Delta \sigma(s)|^2 + \int_z |\Delta R(s.z)|^2 \pi(dz) \leq \widetilde{c}(s)|X_s|^2.$$ Además usando la desigualdad $2ab \leq a^2 + b^2$, se tiene que $$2Y_s\Delta b(s) \leq 2|Y_s |\widetilde{c}(s)|X_s| \leq \widetilde{c}(s)(|Y_s|^2 + |X_s|^2),$$ aplicando valor esperado y tomando el supremo $$\mathbb{E}[|{Y_t}|^2] \leq \int_0^t \widetilde{c}(s) \left( \mathbb{E}[|{Y_s}|^2] + \mathbb{E}[|{X_s}|^2] \right) ds.$$ $$\mathbb{E}\!\left[ \sup_{0 \leq r \leq t} |{Y_r}|^2 \right] \leq \int_0^t \widetilde{c}(s) \left( \mathbb{E}\!\left[ \sup_{0 \leq r \leq s} |{Y_r}|^2 \right] + \!\left[ \sup_{0 \leq r \leq s} |{X_r}|^2 \right] \right) ds.$$
 
 Como se ha eliminado la parte estocástica al tomar el valor esperado anteriormente, se procederá a obtener un acotamiento determinista.
 
@@ -208,15 +208,13 @@ y_t = x_0 &+ \int_0^t b(s,x^{\prime}_s,\omega)\,ds
            + \int_0^t \sigma(s,x^{\prime}_s,\omega)\,dw_s \\
           & \ \ \ \ \ \ \ \ \ \ \ +  \int_0^t\!\int_Z R(s,x^{\prime}_{s-},z,\omega)\,\tilde{N}_t(ds,dz),
           \qquad t\in [0,T].
-\end{align*}$$ Dado que $x^{\prime}$ es una versión RCLL de un proceso adaptado, por el teorema (*)* $x^{\prime}$ es adaptado. \\ Puesto que $x_t \in L^2(\Omega \times [0,T])$ y ademas ambos procesos son medibles como funciones $(t,\omega) \mapsto x_t(\omega)$ con respecto a la $\sigma-$álgebra producto $\mathcal{B}([0,T])\bigotimes\mathcal{F}.$ Entonces para cada $t$, $|x^{\prime}_t - x_t|^2 =0$ casi seguramente, es decir $$\mathbb{E}[|x^{\prime}_t - x_t|^2] = 0, \quad \text{para todo } t \in [0,T]. $$ Ahora, bajo la suposición de medibilidad conjunta (que se cumple si, por ejemplo, los procesos son progresivamente medibles, lo cual es cierto para soluciones de SDEs con coeficientes medibles), podemos aplicar el (teorema de Fubini), 
-$$\mathbb{E}[\int_0^T|x^{\prime}_t - x_t|^2dt] = \int_0^T\mathbb{E}[|x^{\prime}_t - x_t|^2]dt =0.$$ Consideremos el conjunto donde los procesos no coinciden $$N := \{(t,\omega) \in [0,T]\times \Omega : x^{\prime}_t(\omega)\neq x_t(\omega)\},$$ {#eq-4} 
-este conjunto es medible en $\mathcal{B}([0,T])\bigotimes\mathcal{F}$ ya que $x^{\prime}_t(\omega) - x_t(\omega)$ es una función medible y además es equivalente a $N = \{(t,\omega) : |x^{\prime}_t(\omega)- x_t(\omega)|^2>0\}.$
+\end{align*}$$ Dado que $x^{\prime}$ es una versión RCLL de un proceso adaptado, por el teorema (*)* $x^{\prime}$ es adaptado. \\ Puesto que $x_t \in L^2(\Omega \times [0,T])$ y ademas ambos procesos son medibles como funciones $(t,\omega) \mapsto x_t(\omega)$ con respecto a la $\sigma-$álgebra producto $\mathcal{B}([0,T])\bigotimes\mathcal{F}.$ Entonces para cada $t$, $|x^{\prime}_t - x_t|^2 =0$ casi seguramente, es decir $$\mathbb{E}[|x^{\prime}_t - x_t|^2] = 0, \quad \text{para todo } t \in [0,T]. $$ Ahora, bajo la suposición de medibilidad conjunta (que se cumple si, por ejemplo, los procesos son progresivamente medibles, lo cual es cierto para soluciones de SDEs con coeficientes medibles), podemos aplicar el (teorema de Fubini), $$\mathbb{E}[\int_0^T|x^{\prime}_t - x_t|^2dt] = \int_0^T\mathbb{E}[|x^{\prime}_t - x_t|^2]dt =0.$$ Consideremos el conjunto donde los procesos no coinciden $$N := \{(t,\omega) \in [0,T]\times \Omega : x^{\prime}_t(\omega)\neq x_t(\omega)\},$$ este conjunto es medible en $\mathcal{B}([0,T])\bigotimes\mathcal{F}$ ya que $x^{\prime}_t(\omega) - x_t(\omega)$ es una función medible y además es equivalente a $N = \{(t,\omega) : |x^{\prime}_t(\omega)- x_t(\omega)|^2>0\}.$
 
 De la @eq-4 se sigue que $$(dt\bigotimes\mathbb{P})(N) = \int_0^T \mathbb{P}(x^{\prime}_t\neq x_t)dt = \mathbb{E} \left[\int_0^T 1_N(t,\omega)dt\right]= 0.$$
 
 Como $N$ tiene medida cero se puede decir que $x^\prime_t = x_t$ para $(dt\bigotimes\mathbb{P})$- casi todo $(t,\omega)$.
 
-Ahora, consideremos el conjunto denso $D:=\mathbb{Q}\cap[0,T]$ . Definimos el evento $$\Omega_0 := \bigcap_{t \in D} \left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \right\}.$$ Dado que $D$ es numerable y $\mathbb{P}(x_t = x'_t) = 1$ para cada $t \in D$, se tiene $\mathbb{P}(\Omega_0) = 1$. Fijemos $\omega \in \Omega_0$, como ambas trayectorias $t \mapsto x_t(\omega)$ y $t \mapsto x'_t(\omega)$ son RCLL (continuas por la derecha con límites por la izquierda) y coinciden en el conjunto denso $D$, se sigue que $$x_t(\omega) = x'_t(\omega) \quad \text{para todo } t \in [0,T].$$ Por lo tanto, el conjunto $$\left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \text{ para todo } t \in [0,T] \right\}$$ contiene a $\Omega_0$, y en consecuencia tiene probabilidad uno. Por lo tanto, coinciden para todo \$ t \in \[0,T\].\$ Por lo que se concluye que la solución de la ecuación estocástica diferencial con saltos es única por trayectoria. Además, como los coeficientes $b$, $\sigma$ y $R$ son $\mathcal{F}_t^{W,\widetilde{N}}$-adaptados, se sigue la solución es fuerte.
+Ahora, consideremos el conjunto denso $D:=\mathbb{Q}\cap[0,T]$ . Definimos el evento $$\Omega_0 := \bigcap_{t \in D} \left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \right\}.$$ Dado que $D$ es numerable y $\mathbb{P}(x_t = x'_t) = 1$ para cada $t \in D$, se tiene $\mathbb{P}(\Omega_0) = 1$. Fijemos $\omega \in \Omega_0$, como ambas trayectorias $t \mapsto x_t(\omega)$ y $t \mapsto x'_t(\omega)$ son RCLL (continuas por la derecha con límites por la izquierda) y coinciden en el conjunto denso $D$, se sigue que $$x_t(\omega) = x'_t(\omega) \quad \text{para todo } t \in [0,T].$$ Por lo tanto, el conjunto $$\left\{ \omega \in \Omega : x_t(\omega) = x'_t(\omega) \text{ para todo } t \in [0,T] \right\}$$ contiene a $\Omega_0$, y en consecuencia tiene probabilidad uno. Por lo tanto, coinciden para todo $ t \in [0,T].$ Por lo que se concluye que la solución de la ecuación estocástica diferencial con saltos es única por trayectoria. Además, como los coeficientes $b$, $\sigma$ y $R$ son $\mathcal{F}_t^{W,\widetilde{N}}$-adaptados, se sigue la solución es fuerte.
 :::
 ::::
 
@@ -391,7 +389,7 @@ En el contexto actuarial, esta estructura matemática permite integrar de manera
 
 - $W(t)$ es un movimiento browniano estándar que modela el riesgo de mercado continuo;
 
-- $J(t)$: Proceso de saltos compuesto que modela siniestros catastróficos. 
+- $J(t)$: Proceso de saltos compuesto que modela siniestros catastróficos.
 
 Por tanto las soluciones del proceso de reservas presentado por la ecuación (@eq-modelo_extendido) bajo las especificaciones del modelo (con tasas de prima, interés y volatilidad acotadas), cumple con las condiciones de Lipschitz y crecimiento lineal que garantizan existencia y unicidad de soluciones fuertes para el proceso de reservas.
 
@@ -440,15 +438,15 @@ S_{i,n} = \sum_{(i-1)\Delta < t \leq i\Delta} \Delta J_t.$$ Por la hipótesis de
 - **Hipótesis 3** *(Integrabilidad)* $$\int_0^1 \sigma^2(t)\,dt < \infty \quad \text{casi seguramente}.$$
 :::
 
-::: {style="text-align:justify"}
+:::: {style="text-align:justify"}
 ::: {#thm-Cons_variacion_bipotencia}
-Bajo las Hipótesis $1$--$3$ y la condición de actividad finita de los saltos, se cumple: $$BV_n \xrightarrow[n\to\infty]{\mathbb{P}} \int_0^1 \sigma^2(t)\,dt.$$ Es decir, la variación de bipotencia es un estimador consistente en probabilidad de la varianza integrada. 
+Bajo las Hipótesis $1$--$3$ y la condición de actividad finita de los saltos, se cumple: $$BV_n \xrightarrow[n\to\infty]{\mathbb{P}} \int_0^1 \sigma^2(t)\,dt.$$ Es decir, la variación de bipotencia es un estimador consistente en probabilidad de la varianza integrada.
 
 Sea $(\Omega, \mathcal{F}, (\mathcal{F}_t)_{t \in [0,1]}, \mathbb{P})$ un espacio de probabilidad filtrado que satisface las \textit{condiciones usuales} (completo y continuo por la derecha).
 
 Supongamos que $\sigma^2 = (\sigma^2(t))_{t \in [0,1]}$ es un proceso estocástico. Definimos la partición regular del intervalo $[0,1]$ como $t_i^n := \frac{i}{n}, \quad i = 0,1,\dots,n.$ La suma de Riemann izquierda asociada a $\sigma^2$ es $$S_n := \frac{1}{n} \sum_{i=1}^n \sigma^2\!\left(t_{i-1}^n\right) = \frac{1}{n} \sum_{i=1}^n \sigma^2\!\left(\frac{i-1}{n}\right).$$ Denotamos el límite objetivo como la varianza integrada $$IV := \int_0^1 \sigma^2(t)\,dt.$$ se busca demostrar que, para todo $\varepsilon > 0$, $$\lim_{n \to \infty} \mathbb{P}\bigl( |S_n - IV| > \varepsilon \bigr) = 0,$$ es decir, $S_n \xrightarrow[n \to \infty]{\mathbb{P}} IV$.
 :::
-:::
+::::
 
 :::: {.content-visible when-format="pdf"}
 ::: {.proof style="text-align:justify"}
@@ -458,7 +456,8 @@ Definimos el proceso truncado $$\sigma_m^2(t) := \sigma^2(t) \cdot \mathbf{1}_{\
 
 Entonces: $\sigma_m^2$ es uniformemente acotado por $m$, - $\sigma_m^2(t) \to \sigma^2(t)$ c.s. para cada $t$, cuando $m \to \infty$, - $IV_m := \int_0^1 \sigma_m^2(t)\,dt \to IV$ c.s. por el teorema de convergencia monótona.
 
-Definimos la suma de Riemann asociada al proceso truncado: $$S_n^{(m)} := \frac{1}{n} \sum_{i=1}^n \sigma_m^2\!\left(\frac{i-1}{n}\right).$$ Del Paso 1, para cada $m$ fijo, $$S_n^{(m)} \xrightarrow[n \to \infty]{\mathbb{P}} IV_m.$$ Además, como $\sigma_m^2 \to \sigma^2$ c.s. y ambas son acotadas por una función integrable ($\sigma^2$), se tiene: $$|S_n^{(m)} - S_n| \leq \frac{1}{n} \sum_{i=1}^n |\sigma_m^2(t_{i-1}^n) - \sigma^2(t_{i-1}^n)| \xrightarrow[m \to \infty]{} 0 \quad \text{c.s.}$$ Fijemos $\varepsilon > 0$. Queremos mostrar: $$\lim_{n \to \infty} \mathbb{P}(|S_n - IV| > \varepsilon) = 0.$$ Por la desigualdad triangular, $$|S_n - IV| \leq |S_n - S_n^{(m)}| + |S_n^{(m)} - IV_m| + |IV_m - IV|.$$ Luego, para cualquier $m$, $$\begin{aligned}
+Definimos la suma de Riemann asociada al proceso truncado: $$S_n^{(m)} := \frac{1}{n} \sum_{i=1}^n \sigma_m^2\!\left(\frac{i-1}{n}\right).$$ Del Paso 1, para cada $m$ fijo, $$S_n^{(m)} \xrightarrow[n \to \infty]{\mathbb{P}} IV_m.$$ Además, como $\sigma_m^2 \to \sigma^2$ c.s. y ambas son acotadas por una función integrable ($\sigma^2$), se tiene: $$|S_n^{(m)} - S_n| \leq \frac{1}{n} \sum_{i=1}^n |\sigma_m^2(t_{i-1}^n) - \sigma^2(t_{i-1}^n)| \xrightarrow[m \to \infty]{} 0 \quad \text{c.s.}$$ Fijemos $\varepsilon > 0$. Queremos mostrar: $$\lim_{n \to \infty} \mathbb{P}(|S_n - IV| > \varepsilon) = 0.$$ Por la desigualdad triangular, $$|S_n - IV| \leq |S_n - S_n^{(m)}| + |S_n^{(m)} - IV_m| + |IV_m - IV|.$$ Luego, para cualquier $m$, 
+$$\begin{aligned}
 \mathbb{P}(|S_n - IV| > {}& \varepsilon) \leq 
 \mathbb{P}(|S_n - S_n^{(m)}| > \varepsilon /3) +
 \mathbb{P}(|S_n^{(m)} - IV_m| > \varepsilon /3) \\ 
@@ -483,35 +482,33 @@ Definimos la suma de Riemann asociada al proceso truncado: $$S_n^{(m)} := \frac{
 \mathbb{P}(|S_n - S_n^{(m)}| > \varepsilon /3) +
 \mathbb{P}(|S_n^{(m)} - IV_m| > \varepsilon /3) \\ 
 & \ \ \ \ +\mathbb{P}(|IV_m - IV| > \varepsilon /3).
-\end{aligned}$$ {#eq-10}
+\end{aligned}$$
 
 Por construcción, $\sigma_m^2(t) \to \sigma^2(t)$ c.s. para cada $t \in [0,1]$ cuando $m \to \infty$. Además, como $\sigma^2$ es localmente acotado y $\int_0^1 \sigma^2(t)\,dt < \infty$ c.s., existe una variable integrable que domina la secuencia $(\sigma_m^2)_{m \geq 1}$. En efecto, para todo $m$, $$0 \leq \sigma_m^2(t) \leq \sigma^2(t) + m \cdot \mathbf{1}_{\{t > \tau_m\}} \leq \sigma^2(t) + C,$$ para alguna constante $C$, y $\sigma^2$ es integrable c.s., luego $\sigma^2 + C \in L^1(\Omega \times [0,1])$. Por el teorema de convergencia dominada $$IV_m = \int_0^1 \sigma_m^2(t)\,dt \xrightarrow[m \to \infty]{\text{c.s.}} \int_0^1 \sigma^2(t)\,dt = IV.$$ La convergencia casi segura implica convergencia en probabilidad, por lo que $$\mathbb{P}(|IV_m - IV| > \varepsilon/3) \xrightarrow[m \to \infty]{} 0.$$ Por lo tanto, existe $m_0$ tal que para todo $m \geq m_0$, $$\mathbb{P}(|IV_m - IV| > \varepsilon/3) < \frac{\varepsilon}{3}.$$ Para el segundo termino se tiene que $$|S_n - S_n^{(m)}| \leq \frac{1}{n} \sum_{i=1}^n \left| \sigma^2\!\left(\frac{i-1}{n}\right) - \sigma_m^2\!\left(\frac{i-1}{n}\right) \right|.$$ Tomando esperanza y usando la linealidad $$\mathbb{E}[|S_n - S_n^{(m)}|] \leq \frac{1}{n} \sum_{i=1}^n \mathbb{E}\left[ \left| \sigma^2\!\left(\frac{i-1}{n}\right) - \sigma_m^2\!\left(\frac{i-1}{n}\right) \right| \right].$$ Dado que la partición es fina y la función $t \mapsto |\sigma^2(t) - \sigma_m^2(t)|$ es no negativa, la suma de Riemann está acotada por la integral $$\frac{1}{n} \sum_{i=1}^n \mathbb{E}\left[ \left| \sigma^2\!\left(\frac{i-1}{n}\right) - \sigma_m^2\!\left(\frac{i-1}{n}\right) \right| \right]
 \leq \mathbb{E}\left[ \int_0^1 |\sigma^2(t) - \sigma_m^2(t)|\,dt \right].$$ Nuevamente, por el teorema de convergencia dominada, el lado derecho tiende a 0 cuando $m \to \infty$, y esta cota no depende de $n$. Por lo tanto $$\sup_{n \geq 1} \mathbb{E}[|S_n - S_n^{(m)}|] \xrightarrow[m \to \infty]{} 0.$$ Aplicando la desigualdad de Markov(citar) $$\mathbb{P}(|S_n - S_n^{(m)}| > \varepsilon/3) \leq \frac{\mathbb{E}[|S_n - S_n^{(m)}|]}{\varepsilon/3} \leq \frac{\sup_n \mathbb{E}[|S_n - S_n^{(m)}|]}{\varepsilon/3}.$$ Como el numerador tiende a $0$ uniformemente en $n$, se concluye $$\sup_{n \geq 1} \mathbb{P}(|S_n - S_n^{(m)}| > \varepsilon/3) \xrightarrow[m \to \infty]{} 0.$$ Así, para el mismo para $m_0$ $$\mathbb{P}(|S_n - S_n^{(m)}| > \varepsilon/3) < \frac{\varepsilon}{3} \quad \text{para todo } n$$ Ahora para $m$ fijo, $\sigma_m^2$ es uniformemente acotado por $m$, cádlág y predecible. Por lo tanto, para cada $\omega \in \Omega$, la función $t \mapsto \sigma_m^2(t,\omega)$ es Riemann-integrable en $[0,1]$, pues posee a lo sumo un número numerable de discontinuidades. Por lo que para cada $\omega$, la suma de Riemann izquierda converge a la integral $$S_n^{(m)}(\omega) \xrightarrow[n \to \infty]{} IV_m(\omega).$$ Esto implica $S_n^{(m)} \xrightarrow{\text{c.s.}} IV_m$. Dado que la convergencia casi segura implica convergencia en probabilidad, luego $$\mathbb{P}(|S_n^{(m)} - IV_m| > \varepsilon/3) \xrightarrow[n \to \infty]{} 0.$$ Para el $m_0$ elegido anteriormente, existe $N \in \mathbb{N}$ tal que $\forall n \geq N$, $$\mathbb{P}(|S_n^{(m_0)} - IV_{m_0}| > \varepsilon/3) < \varepsilon/3.$$ Sustituyendo en (2), para todo $n \geq N$, $$\mathbb{P}(|S_n - IV| > \varepsilon) < \frac{\varepsilon}{3} + \frac{\varepsilon}{3} + \frac{\varepsilon}{3} = \varepsilon.$$ Como $\varepsilon > 0$ fue arbitrario, concluimos $$\lim_{n \to \infty} \mathbb{P}(|S_n - IV| > \varepsilon) = 0.$$ es decir, $S_n \xrightarrow{\mathbb{P}} IV. \quad \square$
 :::
 ::::
 
-## Estimación de la Intensidad de Saltos.
+## Estimación de la Intensidad de Saltos. {#sec-In_Sal}
 
-### Estimador $\hat{\lambda}_n$ y elección del umbral $\tau_n = \alpha \Delta_n^{\varpi}$ .
+### Estimador $\hat{\lambda}_n$ y elección del umbral $\tau_n = \alpha \Delta_n^{\varpi}$. {#sec-es_umbral}
 
-::: {style="text-align:justify"}
+:::: {style="text-align:justify"}
 Definimos el estimador de intensidad de saltos mediante el método de conteo con umbral: $$\hat{\lambda}_n := \frac{1}{T} \sum_{i=1}^n \mathbf{1}_{\{ |\Delta_i^n X| > \tau_n \}},$$ {#eq-umbral}
 
 donde $\tau_n > 0$ es un umbral determinista que depende de $n$. Siguiendo la metodología de (@ait2009testing) (ver Sección 4.3 y la ecuación (24)), elegimos el umbral de la forma $$ \tau_n = \alpha \Delta_n^{\varpi}, \quad \alpha > 0, \quad \varpi \in \left(0, \frac{1}{2}\right).
- $$ {#eq-estimador} 
- Esta elección es crucial y satisface dos propiedades asintóticas fundamentales: 
- 
- (I) **Detección de saltos:** $\tau_n \to 0$ cuando $n \to \infty$. Esto asegura que, asintóticamente, cualquier salto de tamaño fijo (no nulo) será detectado, ya que su magnitud superará al umbral. 
- 
- (II) **Eliminación del ruido difusivo:** $\tau_n / \sqrt{\Delta_n} = \alpha \Delta_n^{\varpi - 1/2} \to \infty$. Esto asegura que los incrementos correspondientes a la parte continua del proceso (de orden estocástico $\sqrt{\Delta_n}$) rara vez superarán el umbral, controlando así los falsos positivos.
+ $$ {#eq-estimador} Esta elección es crucial y satisface dos propiedades asintóticas fundamentales:
 
+(I) **Detección de saltos:** $\tau_n \to 0$ cuando $n \to \infty$. Esto asegura que, asintóticamente, cualquier salto de tamaño fijo (no nulo) será detectado, ya que su magnitud superará al umbral.
+
+(II) **Eliminación del ruido difusivo:** $\tau_n / \sqrt{\Delta_n} = \alpha \Delta_n^{\varpi - 1/2} \to \infty$. Esto asegura que los incrementos correspondientes a la parte continua del proceso (de orden estocástico $\sqrt{\Delta_n}$) rara vez superarán el umbral, controlando así los falsos positivos.
 
 ::: {#thm-Consistencia_estimador_intensidad}
-(Consistencia del estimador de intensidad). Supongamos que el proceso $X$ satisface el modelo (@eq-sdej) bajo el Assumption 1 de (@ait2009testing) y tiene actividad finita de saltos, $\lambda = \int_E \lambda(dx) < \infty$. 
+(Consistencia del estimador de intensidad). Supongamos que el proceso $X$ satisface el modelo (@eq-sdej) bajo el Assumption 1 de (@ait2009testing) y tiene actividad finita de saltos, $\lambda = \int_E \lambda(dx) < \infty$.
 
 Considérese un régimen asintótico de alta frecuencia en el que $\Delta_n \to 0$ y $T = n \Delta_n \to \infty$ cuando $n \to \infty$. Entonces, bajo la elección del umbral (@eq-umbral) con $\varpi \in (0, 1/2)$, el estimador (@eq-estimador) es consistente en probabilidad para $\lambda$, es decir, $$\hat{\lambda}_n \xrightarrow{\mathbb{P}} \lambda.$$
 :::
-:::
+::::
 
 :::: {.content-visible when-format="html"}
 ::: {.proof style="text-align:justify"}
@@ -534,3 +531,453 @@ Esta desigualdad implica que la parte continua del incremento es de orden $O_p(\
 Combinando las dos últimas convergencias, concluimos que $$\hat{\lambda}_n \xrightarrow{\mathbb{P}} \lambda,$$ lo cual demuestra el @thm-Consistencia_estimador_intensidad.
 :::
 ::::
+
+### Estimación No Paramétrica de la Distribución de Severidad de los Saltos.
+
+El @thm-Consistencia_estimador_intensidad garantiza que $\hat\lambda_n$ (@eq-umbral) es un estimador consistente de la *intensidad total* $\lambda$, pero es un estadístico *agregado*: cuenta cuántos incrementos superan el umbral $\tau_n$ sin identificar *cuáles* instantes contienen un salto ni *qué tamaño* tuvo cada uno. Esta sección extiende el marco de la @sec-In_Sal en dos direcciones: (i) se pondera el umbral por la volatilidad instantánea local $\hat\sigma(t_{n-1})$, refinamiento introducido por @mancini2009 y @lee2008 sobre el umbral no ponderado de la @eq-estimador; y (ii) se convierte el conteo agregado en un *procedimiento a nivel de evento* que recupera, para cada salto detectado, su instante y su magnitud, sobre los cuales se ajusta un modelo de distribución.
+
+Se trabaja sobre el proceso de reservas $\{U(t)\}_{t\ge 0}$ de la @eq-modelo_extendido, observado en la malla $t_0<t_1<\dots<t_n$ con paso constante $\Delta_n=t_i-t_{i-1}$, sobre $N_{\text{sim}}$ trayectorias simuladas independientes $U^{(1)},\dots,U^{(N_{\text{sim}})}$ (@sec-Mil_comp).
+
+#### Estimación de la Volatilidad Instantánea Local.
+
+Dado que $\sigma(t)$ es tiempo-dependiente y las $N_{\text{sim}}$ trayectorias comparten la misma función determinista $\sigma(t)$, se estima localmente mediante la *variación bipotencia realizada* @barndorffnielsen2004, adaptada al incremento relativo
+
+$$
+\tilde r_i^{n,(j)} := \frac{U^{(j)}(t_i)-U^{(j)}(t_{i-1})}{U^{(j)}(t_{i-1})}.
+$$ {#eq-incremento_relativo}
+
+::: {.remark}
+Se normaliza por $U^{(j)}(t_{i-1})$, a diferencia del incremento absoluto $\Delta_i^n X$ de la @eq-umbral, porque $U(t)$ no es estacionario (crece por primas y rendimientos): un umbral sobre incrementos absolutos perdería sensibilidad relativa a medida que $U(t)$ aumenta.
+:::
+
+::: {#def-bipower_variation}
+**Estimador agrupado de volatilidad instantánea**.
+
+Con ventana local $K=O_p(\Delta_n^a)$, $-1<a<-1/2$,
+
+$$
+\hat\sigma^2(t_{i-1}) := \frac{\pi}{2}\cdot\frac{1}{K\,\Delta_n\, N_{\text{sim}}}
+\sum_{j=1}^{N_{\text{sim}}}\sum_{k=1}^{K} \left|\tilde r_{i-k}^{n,(j)}\right|\left|\tilde r_{i-k+1}^{n,(j)}\right|.
+$$ {#eq-bipower_variation}
+:::
+
+::: {.remark}
+**Consistencia con presencia de saltos y agrupación entre trayectorias**.
+
+La constante $\pi/2$ corrige el sesgo de usar el valor absoluto en lugar del cuadrado @barndorffnielsen2004; el estimador permanece consistente para la volatilidad continua incluso cuando algunos incrementos contienen saltos, siempre que $K$ satisfaga la condición asintótica anterior (el mismo principio que sustenta el  @thm-Consistencia_estimador_intensidad, pero aplicado localmente en vez de sobre todo $[0,T]$). Se agrupa (*pooling*) sobre las $N_{\text{sim}}$ trayectorias porque $\sigma(t)$ es una función determinista *común* a todas ellas: esto reduce la varianza del estimador sin introducir sesgo, de la misma forma en que el @thm-Consistencia_estimador_intensidad utiliza $T\to\infty$ para ganar consistencia.
+:::
+
+#### Construcción del Umbral y el Conjunto de Detección.
+
+::: {#def-umbral_ponderado}
+**Umbral ponderado por volatilidad local**. 
+Generalizando la @eq-estimador mediante la ponderación de @mancini2009,
+
+$$
+\tau_n(t_{i-1}) := \alpha\,\hat\sigma(t_{i-1})\,\Delta_n^{\varpi}, \qquad \alpha>0,\ \varpi\in\left(0,\tfrac12\right).
+$$ {#eq-umbral_ponderado}
+:::
+
+Definiendo el residuo *detrended*
+
+$$
+\tilde e_i^{n,(j)} := \tilde r_i^{n,(j)} - \left[\frac{c(t_{i-1})}{U^{(j)}(t_{i-1})} + r(t_{i-1})\right]\Delta_n,
+$$ {#eq-residuo_detrended}
+
+que remueve la deriva determinista de primas y rendimientos de la @eq-modelo_extendido antes de comparar contra el umbral,
+
+::: {#def-conjunto_deteccion}
+**Conjunto de detección**.
+
+$$
+D^{(j)} := \left\{\, i \in \{1,\dots,n\} : \left|\tilde e_i^{n,(j)}\right| > \tau_n(t_{i-1}) \,\right\}.
+$$ {#eq-conjunto_deteccion}
+:::
+
+::: {.remark}
+**Relación con $\hat\lambda_n$**.
+
+El estadístico de la @eq-umbral es recuperable a partir de $D^{(j)}$ como $\hat\lambda_n^{(j)}=|D^{(j)}|/T$; el @thm-Consistencia_estimador_intensidad sigue garantizando la consistencia de este conteo agregado bajo las mismas condiciones asintóticas sobre $\varpi$ (propiedades (I) y (II) de la @sec-In_Sal), ahora con el umbral ponderado de la @eq-umbral_ponderado.
+:::
+
+#### Verificación Cruzada mediante la Estadística de Lee--Mykland.
+
+Como verificación independiente de la @def-conjunto_deteccion, se calcula el estadístico
+
+$$
+\mathcal L_i^{(j)} := \frac{\tilde r_i^{n,(j)}}{\hat\sigma(t_{i-1})}.
+$$ {#eq-leemykland_stat}
+
+Bajo ausencia de salto en $(t_{i-1},t_i]$, $\mathcal L_i \xrightarrow{d} N(0,1/c^2)$ con $c=\mathbb E|Z|=\sqrt{2/\pi}\approx 0.7979$, $Z\sim N(0,1)$.
+
+::: {#prp-gumbel_lm}
+**Región de rechazo vía valores extremos**.
+
+Con $n$ observaciones, bajo ausencia de saltos,
+
+$$
+\frac{\max_i|\mathcal L_i| - C_n}{S_n} \xrightarrow{d} \xi, \qquad P(\xi\le x)=\exp(-e^{-x}),
+$$ {#eq-gumbel}
+
+donde
+
+$$
+C_n = \frac{(2\log n)^{1/2}}{c} - \frac{\log\pi+\log(\log n)}{2c(2\log n)^{1/2}}, \qquad
+S_n = \frac{1}{c(2\log n)^{1/2}}.
+$$ {#eq-gumbel_constantes}
+
+Para un nivel de significancia $\alpha_n$, se declara salto en $i$ si $(|\mathcal L_i|-C_n)/S_n > \beta^\ast=-\log(-\log(1-\alpha_n))$.
+:::
+
+::: {.remark}
+La comparación directa de $|\mathcal L_i|$ contra un valor crítico fijo (sin la normalización de la  @eq-gumbel) invalida el nivel de significancia del test, pues $\max_i|\mathcal L_i|$ no converge a una distribución degenerada sino a la ley de valores extremos de Gumbel (@eq-gumbel).
+:::
+
+#### Extracción de la Severidad y Verificación de Signo.
+
+::: {#prp-severidad_hat}
+**Estimador de severidad**. 
+
+Para cada $i \in D^{(j)}$,
+
+$$
+\hat Y_i^{(j)} := -\,\tilde e_i^{n,(j)} \cdot U^{(j)}(t_{i-1}).
+$$ {#eq-severidad_hat}
+:::
+
+::: {#cor-verificacion_signo}
+**Verificación de signo**. 
+
+Por la convención de la @eq-modelo_extendido, $J(t)$ resta de la reserva: un siniestro genuino produce $\tilde e_i^n<0$, de modo que $\hat Y_i^{(j)}>0$. Si $\hat Y_i^{(j)}<0$ para algún $i\in D^{(j)}$, la detección se reclasifica como falso positivo del umbral (ruido difusivo atípico, no siniestro) y se descarta de la muestra de severidades.
+:::
+
+#### Calibración de $(\alpha,\varpi)$ mediante el Criterio de la Meseta
+
+::: {#prp-tasa_fp}
+**Tasa de falsos positivos asintótica**. 
+
+Bajo ausencia de salto en $(t_{i-1},t_i]$,
+
+$$
+P\big(|\tilde e_i^n|>\tau_n(t_{i-1})\big) \approx 2\left[1-\Phi\!\left(\frac{\tau_n(t_{i-1})}{\hat\sigma(t_{i-1})\sqrt{\Delta_n}}\right)\right],
+$$ {#eq-tasa_fp}
+
+con $\Phi$ la función de distribución normal estándar.
+:::
+
+::: {#def-meseta}
+**Criterio de la meseta**. 
+
+Fijando $\varpi$, se calcula la tasa de detección $\hat N(\alpha)/N_{\text{sim}}$ sobre una malla de valores de $\alpha$. El par $(\alpha^\ast,\varpi)$ se selecciona en la *meseta*: el menor $\alpha$ a partir del cual $\hat N(\alpha)/N_{\text{sim}}$ deja de cambiar más de una tolerancia relativa prefijada entre valores consecutivos de $\alpha$, indicando que ya se han agotado los saltos genuinos y solo se pierden detecciones marginales de ruido.
+:::
+
+::: {.remark}
+Este criterio es el análogo, a nivel de calibración de umbral, de la elección de $\varpi\in(0,1/2)$ discutida en la @sec-In_Sal: ambos buscan el punto donde se equilibran las propiedades (I) (detectar saltos) y (II) (controlar falsos positivos) de la @eq-estimador.
+:::
+
+#### Modelo de Mezcla Contaminada para la Severidad Agregada.
+
+Bajo el diseño de calibración de la @sec-funcion_costos_met_sis (dos tipos de siniestro, más falsos positivos residuales que sobreviven al @cor-verificacion_signo), se postula la distribución de severidad agregada
+
+
+$$
+G(z) = w_1\, F_m(z;\mu_m,\sigma_m^2) + w_2\, F_s(z;\mu_s,\sigma_s^2) + w_3\, \Psi(z),
+\qquad \sum_{k=1}^3 w_k=1,
+$$ {#eq-mezcla_severidad}
+
+donde $F_m,F_s$ son las (log-)normales truncadas de la Sección 8.1.4.
+
+:::  {#prp-varianza_espuria}
+**Varianza del componente espurio**.
+
+El componente $\Psi$ corresponde a incrementos puramente difusivos que excedieron el umbral por azar (falsos positivos que pasaron la verificación de signo por casualidad de muestreo). Su escala natural, heredada de la parte continua del proceso, es
+
+$$
+\Psi(z) \sim N\!\left(0,\; \big(U(t_{i-1})\hat\sigma(t_{i-1})\big)^2\Delta_n\right)\Big|_{|z|>\tau_n},
+$$ {#eq-varianza_espuria}
+
+i.e., la varianza de la aproximación gaussiana del incremento continuo (@eq-modelo_extendido), truncada a la región de detección. En la práctica, se estima promediando $(U(t_{i-1})\hat\sigma(t_{i-1}))^2\Delta_n$ sobre las propias detecciones, en lugar de estimarse libremente junto con $w_3$.
+:::
+
+#### Estimación por Máxima Verosimilitud Restringida y Selección de Orden.
+
+::: {#prp-label_switching}
+**Identificabilidad y ambigüedad de etiqueta**. 
+
+La verosimilitud de la @eq-mezcla_severidad es invariante ante la permutación $(w_1,\mu_m,\sigma_m)\leftrightarrow(w_2,\mu_s,\sigma_s)$: el algoritmo EM (@dempster1977) no distingue *a priori* cuál componente es meteorológico y cuál sísmico. La ambigüedad se resuelve imponiendo la restricción de orden $\mu_m<\mu_s$, consistente con que los siniestros sísmicos calibrados en la Sección 8.1.4 son, en promedio, de mayor severidad.
+:::
+
+::: {#def-bic_orden}
+**Selección de orden vía BIC**. 
+El número de componentes efectivamente sostenidos por los datos ($k\in\{2,3\}$, incorporando o no el componente espurio de la @prp-varianza_espuria como componente libre adicional) se selecciona minimizando el Criterio de Información Bayesiano (@schwarz1978)
+
+$$
+\mathrm{BIC}(k) = -2\log\hat{\mathcal L}_k + k\log|D_{\text{val}}|,
+$$ {#eq-bic}
+
+sobre la muestra de severidades válidas $D_{\text{val}}=\{\log\hat Y_i^{(j)} : i\in D^{(j)},\, \hat Y_i^{(j)}>0\}$.
+:::
+
+#### Diagnóstico de Estacionalidad Espuria.
+
+::: {.remark}
+**Hipótesis de homogeneidad temporal**.
+
+El modelo de la @eq-mezcla_severidad asume que $F_m,F_s$ no dependen del instante calendario en que ocurre el salto. Si la estacionalidad de $\lambda_{\text{meteo}}(t)$ (Sección 8.1.4) se filtra hacia las severidades *detectadas* (por ejemplo, porque el umbral detecta más fácilmente saltos grandes en meses de alta volatilidad de fondo), esta hipótesis se viola. Se contrasta agrupando $\{\hat Y_i^{(j)}\}$ por mes calendario y aplicando la prueba no paramétrica de Kruskal--Wallis (@kruskalwallis1952),
+
+$$
+H = \frac{12}{n_T(n_T+1)}\sum_{m=1}^{12} n_m\left(\bar R_m - \frac{n_T+1}{2}\right)^2 \xrightarrow{d} \chi^2_{11} \text{ bajo } H_0,
+$$ {#eq-kruskal_wallis}
+
+donde $\bar R_m$ es el rango promedio del mes $m$, $n_m$ su tamaño de muestra y $n_T=\sum_m n_m$.
+:::
+
+#### Validación de Bondad de Ajuste.
+
+::: {#def-cvm}
+**Cramér--von Mises de una muestra**.
+
+Con $\{y_{(1)}\le\dots\le y_{(n)}\}$ la muestra ordenada de $\log\hat Y_i^{(j)}$ y $\hat G$ la mezcla ajustada,
+
+$$
+\omega^2 = \frac{1}{12n} + \sum_{i=1}^n \left(\hat G(y_{(i)}) - \frac{2i-1}{2n}\right)^2.
+$$ {#eq-cramer_von_mises}
+:::
+
+::: {#def-anderson}
+**Anderson de dos muestras**. 
+Cuando se dispone de los tamaños verdaderos de simulación (*oracle*), se contrasta contra la muestra detectada mediante (@anderson1962)
+
+$$
+T = \frac{U}{NM(N+M)} - \frac{4NM-1}{6(N+M)}, \qquad
+U = N\sum_{i=1}^N (r_i-i)^2 + M\sum_{j=1}^M (s_j-j)^2,
+$$ {#eq-anderson_dos_muestras}
+
+donde $r_i,s_j$ son los rangos, dentro de la muestra combinada y *ordenada*, de la $i$-ésima observación *oracle* y la $j$-ésima observación detectada respectivamente.
+:::
+
+#### Cuantificación de la Incertidumbre — Bootstrap por Trayectoria.
+
+::: {#def-bootstrap_trayectoria}
+**Bootstrap por trayectoria completa**. 
+Se remuestrean, con reemplazo, $N_{\text{sim}}$ índices de trayectoria $\{j_1,\dots,j_{N_{\text{sim}}}\}\subset\{1,\dots,N_{\text{sim}}\}$, y se repiten los pasos sobre las trayectorias $U^{(j_1)},\dots,U^{(j_{N_{\text{sim}}})}$ (no se remuestrean detecciones individuales sueltas). Repitiendo $B$ veces, el intervalo de confianza al $95\%$ de cualquier estadístico $\hat\theta$ (media, mediana, número de detecciones) se estima por el método de percentiles sobre las $B$ réplicas $\hat\theta^{(1)},\dots,\hat\theta^{(B)}$.
+:::
+
+::: {.remark}
+Se remuestrea la trayectoria completa, y no cada detección por separado, porque las detecciones dentro de una misma trayectoria no son independientes entre sí (comparten la misma realización del movimiento browniano y de los procesos de Poisson subyacentes de la @eq-modelo_extendido); remuestrear a nivel de detección individual subestimaría la verdadera varianza del estimador.
+:::
+
+### Distribución de los Tiempos entre Saltos: Teoría de Renovación y Teorema del Cambio de Tiempo.
+
+
+#### El Proceso de Conteo Asociado a las Detecciones.
+
+::: {#def-proceso_conteo}
+**Proceso de conteo de detecciones**. 
+
+Para cada trayectoria $j$, el conjunto de detección $D^{(j)}=\{i_1<i_2<\dots<i_K\}$ (@def-conjunto_deteccion) induce los tiempos de salto $\tau_k^{(j)}:=t_{i_k}$ y el proceso de conteo
+
+$$
+N^{(j)}(t) := \#\{k : \tau_k^{(j)}\le t\}, \qquad t\in[0,T].
+$$ {#eq-proceso_conteo}
+:::
+
+::: {#prp-doob_meyer}
+**Descomposición de Doob--Meyer**. 
+
+Bajo el modelo de la @eq-modelo_extendido, $J(t)$ es un proceso de Poisson (posiblemente) no homogéneo con intensidad $\lambda(t)=\lambda_{\text{meteo}}(t)+\lambda_{\text{sismo}}$ (@sec-funcion_costos_met_sis). En consecuencia,
+
+$$
+N^{(j)}(t) = \Lambda(t) + M^{(j)}(t), \qquad \Lambda(t):=\int_0^t\lambda(s)\,ds,
+$$ {#eq-doob_meyer}
+
+donde $M^{(j)}$ es una martingala respecto a la filtración generada por $U^{(j)}$ (@aalen1978).
+:::
+
+#### Estimación No Paramétrica de la Intensidad.
+
+::: {#def-nelson_aalen_individual}
+**Estimador de Nelson--Aalen por trayectoria**. 
+
+Para una única trayectoria, sin censura ni conjunto en riesgo variable (se observa el intervalo completo $[0,T]$),
+
+$$
+\hat\Lambda^{(j)}(t) = N^{(j)}(t).
+$$ {#eq-nelson_aalen_individual}
+:::
+
+::: {.remark}
+El estimador (@eq-nelson_aalen_individual) es insesgado ($\mathbb E[\hat\Lambda^{(j)}(t)]=\Lambda(t)$) pero de varianza alta cuando el número de detecciones por trayectoria es bajo: una sola trayectoria no permite recuperar la *forma* de $\lambda(t)$ de forma confiable.
+:::
+
+::: {#def-nelson_aalen_agrupado}
+**Estimador de Nelson--Aalen agrupado**. 
+Dado que $\lambda(t)$ es común a las $N_{\text{sim}}$ trayectorias (mismo argumento que la  @def-bipower_variation, caso "conjunto en riesgo $Y(t)=N_{\text{sim}}$ constante" de @abgk1993),
+
+$$
+\hat\Lambda(t) := \frac{1}{N_{\text{sim}}}\sum_{j=1}^{N_{\text{sim}}} N^{(j)}(t).
+$$ {#eq-nelson_aalen_agrupado}
+:::
+
+:::{#def-ramlau_hansen}
+**Estimador de núcleo de Ramlau--Hansen, versión circular**. 
+La versión suavizada de la @eq-nelson_aalen_agrupado, explotando la periodicidad anual esperada de $\lambda_{\text{meteo}}(t)$ (@sec-funcion_costos_met_sis) mediante un núcleo con distancia circular $d_{\mathrm{circ}}(t,\tau):=\min(|t-\tau|,\,365-|t-\tau|)$, es
+
+$$
+\hat\lambda(t) = \frac{1}{N_{\text{sim}}\, b}\sum_{j=1}^{N_{\text{sim}}}\sum_{k} K\!\left(\frac{d_{\mathrm{circ}}(t,\tau_k^{(j)})}{b}\right),
+$$ {#eq-ramlau_hansen}
+
+con $K$ un núcleo gaussiano y $b>0$ el ancho de banda (@ramlauhansen1983, @diggle1985).
+:::
+
+#### Ventanas Móviles como Estimador Local de la Intensidad.
+
+::: {#def-ventana_movil}
+**Estimador de ventana rectangular deslizante**. 
+
+Alternativa no suavizada a la @eq-ramlau_hansen, para una ventana de ancho $W$ centrada en $t$,
+
+$$
+\hat\lambda_W(t) := \frac{\#\{k,j : \tau_k^{(j)} \in [t-W/2,\, t+W/2]\}}{N_{\text{sim}}\cdot W}.
+$$ {#eq-ventana_movil}
+:::
+
+::: {.remark}
+**Justificación teórica y límites del ancho de ventana**.
+
+Esta construcción traslada a $\lambda(t)$ el mismo principio de *homogeneidad local aproximada* que sustenta la elección de la ventana $K$ en la @def-bipower_variation (@lee2008) [Assumption 1] y la elección del umbral $r(h)$ en @mancini2009: se asume que $\lambda(t)$ varía lo suficientemente lento como para tratarse como localmente constante dentro de la ventana $W$. Ningún resultado de @mancini2009 o @lee2008 trata directamente la estimación de $\lambda(t)$ —su teoría de ventana local es para $\sigma(t)$— por lo que la @def-ventana_movil es una **extensión análoga**, no una aplicación literal de dichos resultados. Existe el mismo compromiso sesgo--varianza que en la elección de $K$: una ventana ancha reduce la varianza pero sesga la estimación si $\lambda(t)$ varía apreciablemente dentro de ella (relevante aquí, pues $\lambda_{\text{meteo}}(t)$ cambia sustancialmente mes a mes,  @sec-funcion_costos_met_sis).
+:::
+
+#### Diagnóstico de Homogeneidad Temporal.
+
+::: {#prp-uniformidad_poisson}
+**Test de uniformidad bajo Poisson homogéneo**. 
+
+Bajo $H_0:\lambda(t)=\lambda$ (constante), los tiempos de un proceso de Poisson homogéneo en $[0,T]$, condicionados al número total observado, se distribuyen $\mathrm{Uniforme}(0,T)$ @coxlewis1966. Se contrasta mediante Kolmogorov--Smirnov de una muestra sobre $\{\tau_k^{(j)} \bmod 365\}$ contra $\mathrm{Uniforme}(0,365)$ (plegando sobre el ciclo anual para acumular información de los años simulados).
+:::
+
+#### El Teorema del Cambio de Tiempo (Time-Rescaling Theorem).
+
+::: {#thm-time_resrescaling}
+**Papangelou, 1972** 
+Sea $\{\tau_k\}$ un proceso puntual con intensidad (condicional) $\lambda(t)$ y defínase $s_k := \Lambda(\tau_k)=\int_0^{\tau_k}\lambda(u)\,du$. Entonces $\{s_k\}$ es un proceso de Poisson homogéneo de tasa $1$ (@papangelou1972). Equivalentemente, los incrementos $\Delta s_k := s_k-s_{k-1}$ son i.i.d. $\mathrm{Exp}(1)$, y $u_k := 1-e^{-\Delta s_k}$ son i.i.d. $\mathrm{Uniforme}(0,1)$ (@brown2002).
+:::
+
+::: {.remark}
+Este resultado es la base del "random time change theorem" aplicado por @ogata1988 al análisis de residuos de procesos sísmicos, y por @bowsher2007 como prueba de especificación de modelos de intensidad de eventos de mercado en econometría financiera de alta frecuencia. Se utiliza aquí como validación de que $\hat\Lambda(t)$ (@eq-nelson_aalen_agrupado) explica la dinámica temporal de las detecciones: definiendo $\Delta\tau_i := \hat\Lambda(\tau_i)-\hat\Lambda(\tau_{i-1})$ sobre las detecciones ordenadas de cada trayectoria, bajo $H_0$ se espera $\Delta\tau_i\sim\mathrm{Exp}(1)$.
+:::
+
+::: {#cor-equivalencia_ks}
+**Equivalencia de formulaciones del test.** 
+
+El estadístico de Kolmogorov--Smirnov de $\{\Delta\tau_i\}$ contra $\mathrm{Exp}(1)$ coincide exactamente con el de $\{u_i=1-e^{-\Delta\tau_i}\}$ contra $\mathrm{Uniforme}(0,1)$, por invarianza del estadístico $D$ de Kolmogorov--Smirnov ante la transformación de los datos por la función de distribución acumulada verdadera bajo $H_0$.
+:::
+
+#### Familias Paramétricas para los Tiempos de Espera Crudos.
+
+Bajo $H_0:\lambda(t)=\lambda$ constante, $\Delta\tau\sim\mathrm{Exp}(\lambda)$ (teoría clásica de renovación, @cox1962renewal). Si $\lambda(t)$ es no homogénea, la distribución marginal (no condicionada al tiempo de ocurrencia) de $\Delta\tau$ deja de ser Exponencial. Se contrastan las familias
+
+$$
+\text{Weibull:}\quad f(x;k,\theta)=\frac{k}{\theta}\left(\frac{x}{\theta}\right)^{k-1}e^{-(x/\theta)^k},
+$$ {#eq-weibull}
+
+$$
+\text{Gamma:}\quad f(x;k,\theta)=\frac{1}{\Gamma(k)\theta^k}x^{k-1}e^{-x/\theta},
+$$ {#eq-gamma}
+
+$$
+\text{Hiperexponencial:}\quad f(x;w,\lambda_1,\lambda_2)=w\lambda_1 e^{-\lambda_1 x}+(1-w)\lambda_2 e^{-\lambda_2 x}.
+$$ {#eq-hiperexp}
+
+::: {.remark}
+**Motivación de la hiperexponencial.**
+
+La superposición de dos procesos de Poisson independientes de tasas distintas —meteorológico ($\lambda_{\text{meteo}}\approx6$/año) y sísmico ($\lambda_{\text{sismo}}=0.15$/año), @sec-funcion_costos_met_sis— genera, si ambas tasas fuesen constantes, exactamente una mezcla de exponenciales en los tiempos de espera. La estacionalidad de $\lambda_{\text{meteo}}(t)$ hace que esto sea solo una aproximación de primer orden.
+:::
+
+::: {#prp-cv2_bound}
+**Cota de dispersión de la hiperexponencial.** 
+Toda mezcla finita de exponenciales (@eq-hiperexp) satisface
+
+$$
+CV^2 := \frac{\mathrm{Var}(X)}{\mathbb E[X]^2} \ge 1,
+$$ {#eq-cv2_bound}
+
+con igualdad si y solo si $\lambda_1=\lambda_2$ (@cox1962renewal).
+:::
+
+::: {.proof}
+Para $X$ con densidad @eq-hiperexp, $\mathbb E[X]=w/\lambda_1+(1-w)/\lambda_2$ y $\mathbb E[X^2]=2w/\lambda_1^2+2(1-w)/\lambda_2^2$. Por la desigualdad de Cauchy--Schwarz aplicada a la mezcla de dos exponenciales (casos particulares de distribuciones de fase tipo *Coxian*), se obtiene $\mathrm{Var}(X)\ge \mathbb E[X]^2$, con igualdad exactamente cuando la mezcla degenera a una única tasa.
+:::
+
+::: {#cor-regla_decision_cv2}
+**Regla de decisión práctica**. 
+
+Si el diagnóstico empírico da $\widehat{CV^2}<1$ (sub-dispersión), ninguna mezcla de exponenciales puede ser el modelo generador correcto; en ese régimen, Weibull o Gamma con parámetro de forma $k>1$ son las familias teóricamente adecuadas, y cualquier ajuste de la @eq-hiperexp debe esperarse que degenere ($\hat\lambda_1\approx\hat\lambda_2$).
+:::
+
+#### Corrección por Censura de Ventana Finita.
+
+::: {.remark}
+**Sesgo de selección por ventana finita.**
+
+Cuando el número esperado de detecciones por trayectoria en $[0,T]$ es bajo, la mayoría de trayectorias aportan $0$ ó $1$ detección y nunca generan un incremento $\Delta\tau_i=\tau_i-\tau_{i-1}$ completo (se requieren $\ge2$ detecciones). Agrupar solo incrementos completos descarta sistemáticamente la información de las trayectorias que esperaron mucho tiempo sin una segunda detección antes de terminar la ventana —censura por la derecha clásica en análisis de supervivencia y procesos de conteo (@aalen1978 @abgk1993)—, lo cual puede deprimir artificialmente $\widehat{CV^2}$ por debajo de su valor verdadero.
+:::
+
+::: {#def-verosimilitud_censurada}
+**Verosimilitud censurada.** 
+
+Para cada trayectoria $j$ con al menos una detección, sea $c^{(j)}:=T-\tau_K^{(j)}$ la espera final, censurada por la derecha. La verosimilitud corregida es
+
+$$
+\ell(\theta) = \sum_{\text{completos}} \log f(\Delta\tau_i;\theta) \;+\; \sum_{j} \log S\big(c^{(j)};\theta\big),
+$$ {#eq-verosimilitud_censurada}
+
+donde $S=1-F$ es la función de supervivencia de la familia candidata.
+:::
+
+::: {.remark}
+La @eq-verosimilitud_censurada es la construcción estándar de máxima verosimilitud con censura por la derecha en un solo extremo, exactamente análoga a la verosimilitud de Kaplan--Meier/Nelson--Aalen @aalen1978 de la que se deriva el estimador de la @def-nelson_aalen_agrupado: ambas tratan la ausencia de un segundo evento observado como información parcial ("sabemos que la espera verdadera es al menos $c^{(j)}$"), no como dato faltante a ignorar.
+:::
+
+#### Criterios de Selección de Modelo y Validación.
+
+::: {#def-aic}
+**Criterio de Información de Akaike.** 
+
+$$
+\mathrm{AIC}(k) = 2k - 2\log\hat{\mathcal L},
+$$ {#eq-aic}
+
+donde $k$ es el número de parámetros de la familia candidata (@akaike1974).
+:::
+
+:::{#def-anderson_darling}
+**Estadístico de Anderson--Darling de una muestra.** 
+
+Con $\{x_{(1)}\le\dots\le x_{(n)}\}$ la muestra ordenada y $F$ la CDF candidata ajustada,
+
+$$
+A^2 = -n - \frac{1}{n}\sum_{i=1}^n (2i-1)\Big[\log F(x_{(i)}) + \log\big(1-F(x_{(n+1-i)})\big)\Big].
+$$ {#eq-anderson_darling}
+
+A diferencia del estadístico de Kolmogorov--Smirnov, que pondera igual toda la distribución, $A^2$ pondera más las colas.
+:::
+
+::: {#prp-lilliefors_bootstrap}
+**Corrección de Lilliefors por bootstrap paramétrico.** 
+
+Cuando los parámetros de la familia candidata se estiman de la misma muestra sobre la que se aplica el test de Kolmogorov--Smirnov, el $p$-valor tabulado estándar no es válido: los valores críticos de la distribución de Kolmogorov asumen parámetros conocidos *a priori* (@lilliefors1969). La corrección consiste en un bootstrap paramétrico (@Efrontibshirani1993): se generan $B$ muestras sintéticas del modelo ajustado, se reajustan sus parámetros en cada réplica, se recalcula $D^{(b)}$, y el $p$-valor corregido es
+
+$$
+\hat p = \frac{1}{B}\sum_{b=1}^B \mathbb 1\{D^{(b)} \ge D_{\text{obs}}\}
+$$ {#eq-pvalor_bootstrap}.
+:::
+
+#### Comparación con la Estructura Temporal Verdadera.
+
+::: {.remark}
+**Validación oracle en estudios de simulación.**
+
+Cuando se dispone del tiempo verdadero de cada evento simulado (*oracle*, disponible únicamente por tratarse de datos sintéticos), se contrasta su distribución de día-del-año contra la de los tiempos detectados mediante Kolmogorov--Smirnov de dos muestras, análogo temporal del Corolario 6.4.2 (@def-anderson) para la severidad. Esto valida si el procedimiento de detección de la @def-conjunto_deteccion y @prp-gumbel_lm preserva la forma temporal real del proceso generador, o si introduce una distorsión sistemática (por ejemplo, menor potencia de detección en periodos de alta volatilidad de fondo $\sigma(t)$).
+:::
