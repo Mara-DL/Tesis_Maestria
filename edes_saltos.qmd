@@ -532,7 +532,7 @@ Combinando las dos últimas convergencias, concluimos que $$\hat{\lambda}_n \xri
 :::
 ::::
 
-### Estimación No Paramétrica de la Distribución de Severidad de los Saltos.
+### Estimación No Paramétrica de la Distribución de Severidad de los Saltos. {#sec-Es_N_Pa_D_S_S}
 
 El @thm-Consistencia_estimador_intensidad garantiza que $\hat\lambda_n$ (@eq-umbral) es un estimador consistente de la *intensidad total* $\lambda$, pero es un estadístico *agregado*: cuenta cuántos incrementos superan el umbral $\tau_n$ sin identificar *cuáles* instantes contienen un salto ni *qué tamaño* tuvo cada uno. Esta sección extiende el marco de la @sec-In_Sal en dos direcciones: (i) se pondera el umbral por la volatilidad instantánea local $\hat\sigma(t_{n-1})$, refinamiento introducido por @mancini2009 y @lee2008 sobre el umbral no ponderado de la @eq-estimador; y (ii) se convierte el conteo agregado en un *procedimiento a nivel de evento* que recupera, para cada salto detectado, su instante y su magnitud, sobre los cuales se ajusta un modelo de distribución.
 
@@ -767,7 +767,7 @@ Se remuestrean, con reemplazo, $N_{\text{sim}}$ índices de trayectoria $\{j_1,\
 Se remuestrea la trayectoria completa, y no cada detección por separado, porque las detecciones dentro de una misma trayectoria no son independientes entre sí (comparten la misma realización del movimiento browniano y de los procesos de Poisson subyacentes de la @eq-modelo_extendido); remuestrear a nivel de detección individual subestimaría la verdadera varianza del estimador.
 :::
 
-### Distribución de los Tiempos entre Saltos: Teoría de Renovación y Teorema del Cambio de Tiempo.
+### Distribución de los Tiempos entre Saltos: Teoría de Renovación y Teorema del Cambio de Tiempo. {#sec-Distr_tiempos_saltos}
 
 
 #### El Proceso de Conteo Asociado a las Detecciones.

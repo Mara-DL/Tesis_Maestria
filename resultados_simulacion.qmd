@@ -315,8 +315,7 @@ El esquema de Milstein sin compensación es teóricamente válido y converge con
 ## Milstein compensado. {#sec-Mil_comp}
 
 ::: {style="text-align:justify"}
-El esquema de Milstein para la componente difusiva, combinado con compensación de saltos, se define como: 
-$$\begin{aligned}
+El esquema de Milstein para la componente difusiva, combinado con compensación de saltos, se define como: $$\begin{aligned}
 U_{n+1}^{\text{Mil}} = U_n &+ \mu(t_n, U_n)\Delta t + \sigma(t_n, U_n)\Delta W_n \\
 & + \frac{1}{2}\sigma(t_n, U_n)\sigma_U(t_n, U_n)\left[(\Delta W_n)^2 - \Delta t\right] - \Delta J_n + \mathcal{C}_n\Delta t,
 \end{aligned}$$ {#eq-milstein_formal}
@@ -348,6 +347,7 @@ En el cual se ejecutaron $N_{\text{sim}} = 1000$ trayectorias Monte Carlo para e
 | Error estándar de la mediana | $0.26$ | $0.29$ | $+11.54\%$ |
 
 : Comparación cuantitativa de resultados para enero 2026 Milstein vs. Semi-Implícito (millones USD).
+
 :::
 
 :::: {.content-visible when-format="pdf"}
@@ -377,6 +377,143 @@ La elección de la mediana como estadístico de pronóstico es rigurosamente jus
 - **Robustez ante colas pesadas**: La distribución de reservas presenta asimetría negativa ($\gamma_1 \approx -0.85$) debido a los saltos catastróficos. La mediana es invariante ante transformaciones monótonas y menos sensible a outliers que la media (@huber2004robust), crucial para evitar subestimación de riesgos extremos.
 - **Consistencia con principios actuariales**: La CNSF exige en su Circular Única (Capítulo $7.3.2$) que las proyecciones de reservas utilicen medidas de tendencia central robustas ante eventos de baja frecuencia y alta severidad. La mediana satisface este requisito regulatorio.
 - **Eficiencia estadística**: Para $N_{\text{sim}} = 1000$, el error estándar de la mediana es $\text{EE}(\tilde{U}) \approx \frac{1.253\sigma}{\sqrt{N_{\text{sim}}}}$ \autocite{kenney1951mathematics}, comparable al error de la media ($\sigma/\sqrt{N_{\text{sim}}}$) pero con menor sesgo ante no normalidad. Los resultados muestran $\text{EE}^{\text{Mil}} = 0.26$ y $\text{EE}^{\text{SI}} = 0.29$, dentro de márgenes aceptables para toma de decisiones.
+
+## Distribución de Severidad de los saltos detectados mediante la implementación del Milstein Compensado
+
+Aplicando la metodología de la @sec-Es_N_Pa_D_S_S sobre las $N_{\text{sim}}=1000$ trayectorias, con calibración de umbral $(\alpha^\ast,\varpi^\ast)=(3.5,\,0.45)$ (obtenida por el criterio de meseta sobre la tasa de detección $\hat N(\alpha)/N_{\text{sim}}$), se detectan $1{,}508$ saltos ($1{,}506$ severidades válidas tras la verificación de signo, con $27$ falsos positivos descartados), frente a $12{,}451$ eventos verdaderos simulados (\emph{oracle}) — una tasa de detección del $\sim 12\%$, esperable dado que el umbral solo captura saltos que superan claramente el ruido difusivo de fondo.
+
+| **Componente** | **Peso $\hat w$** | **$\hat\mu$ (log)** | **$\hat\sigma$ (log)** |
+|---|---|---|---|
+| Meteorológico ($\hat\mu$ menor) | 0.616 | 14.066 | 0.290 |
+| Sísmico ($\hat\mu$ mayor) | 0.384 | 14.649 | 0.399 |
+| Espurio | 0.000 | --- | --- |
+
+: Mezcla de severidad estimada (escala log, $\log \hat Y$) {#tbl-mezcla_severidad}
+
+::: {.remark}
+**Selección de orden.**
+El BIC seleccionó $k=2$ componentes (no $3$): con la cantidad de detecciones disponible no hay evidencia suficiente para sostener un tercer componente de falsos positivos residuales por separado del componente meteorológico.
+:::
+
+| **Estadístico** | **Estimado** | **IC 95% inf.** | **IC 95% sup.** |
+|---|---|---|---|
+| Severidad media (USD) | 1,777,840 | 1,728,773 | 1,822,022 |
+| Severidad mediana (USD) | 1,524,761 | 1,475,356 | 1,579,858 |
+| N.º de saltos detectados | 1,513 | 1,428 | 1,603 |
+
+: Estimación puntual e intervalo de confianza (bootstrap por trayectoria, $B=50$) {#tbl-bootstrap_severidad}
+
+| **Prueba** | **Estadístico** |
+|---|---|
+| Cramér--von Mises ($\omega^2$), umbral vs. mezcla ajustada | 0.0524 |
+| Anderson dos muestras, *oracle* vs. umbral ($T$) | 193.59 |
+| Kruskal--Wallis, severidad por mes calendario ($H$) | 153.49 ($p<0.0001$) |
+
+: Métricas de validación {#tbl-validacion_severidad}
+
+
+::: {.remark}
+Los valores estimados $(\hat\mu_m,\hat\mu_s)$ implican medias de $\approx\mathrm{USD}\ 1{,}29\mathrm{M}$ y $\approx\mathrm{USD}\ 2{,}30\mathrm{M}$ respectivamente, notablemente distintas de los valores de calibración de la Sección 8.1.4 (USD~442k y USD~1.75M). Esto es esperable por dos razones: (i) el umbral detecta preferentemente los saltos de mayor tamaño (sesgo de selección inherente al método no paramétrico), y (ii) el test de Kruskal--Wallis (@tbl-validacion_severidad) detecta variación significativa de la severidad por mes calendario ($p<0.0001$), lo que indica que la estacionalidad de $\lambda_{\text{meteo}}(t)$ está parcialmente filtrándose hacia la severidad detectada (@sec-sec-Distr_tiempos_saltos), un artefacto conocido del método de umbral bajo intensidad no homogénea.
+:::
+
+### Distribución de los Tiempos entre Saltos Detectados {#sec-9.5.3_tiempos_resultados}
+
+#### Diagnóstico de Dispersión
+
+| **Estadístico** | **Valor** | **Interpretación** |
+|---|---|---|
+| Media | 194.46 | --- |
+| Mediana | 151.00 | --- |
+| $CV^2$ | 0.653 | Sub-dispersión ($<1$) |
+
+: Estadísticos descriptivos de $\Delta\tau$ crudo (días, $n=722$) {#tbl-descriptivos_delta_tau}
+
+::: {.remark}
+**Diagnóstico.**
+El $CV^2=0.653<1$ indica sub-dispersión respecto a la Exponencial. Por la @prp-cv2_bound, ninguna mezcla de exponenciales puede alcanzar $CV^2<1$: la hiperexponencial queda descartada *a priori* como modelo generador, y se anticipa que degenere hacia $\lambda_1\approx\lambda_2$ al ajustarse. Gamma y Weibull con forma $>1$ son las familias teóricamente adecuadas en este régimen.
+:::
+
+#### Ajuste de Distribuciones.
+
+| **Familia** | **AIC** | **$A^2$** | **KS $D$** | **$p$ (bootstrap)** | **Parámetros** |
+|---|---|---|---|---|---|
+| Exponencial | 9056.20 | 4.805 | 0.0499 | 0.000 | $1/\lambda=194.5$d |
+| **Weibull** | **9037.89** | 3.325 | 0.0536 | 0.000 | $k=1.151$, $\theta=203.9$d |
+| Gamma | 9044.85 | **3.319** | 0.0518 | 0.000 | $k\approx1.07$ |
+| Hiperexponencial | 9060.20 | 4.805 | 0.0499 | 0.000 | $w=0.298$, $1/\lambda_1\approx1/\lambda_2\approx194.5$d (degenerada) |
+
+: Comparación de familias paramétricas para $\Delta\tau$ crudo {#tbl-ajuste_delta_tau}
+
+::: {.remark}
+**Selección de modelo.**
+Weibull obtiene el menor AIC (9037.89); Gamma obtiene el menor Anderson--Darling (3.319), por un margen mínimo frente a Weibull (3.325) — ambas son prácticamente indistinguibles y son, junto con la Exponencial, las únicas familias no descartadas por la @prp-cv2_bound. Ninguna familia pasa el KS estricto ($p\approx0$ corregido por bootstrap paramétrico, problema de Lilliefors): con $n=722$ el KS tiene potencia suficiente para detectar desviaciones finas que AIC y $A^2$ no penalizan de la misma forma. La hiperexponencial degenera ($\lambda_1\approx\lambda_2$), confirmando la @prp-cv2_bound de manera directa: el optimizador no encuentra evidencia para sostener dos tasas distintas.
+:::
+
+#### Corrección por Ventana Finita
+
+| **Familia** | **AIC** | **Parámetros** |
+|---|---|---|
+| Exponencial | 10315.02 | $1/\lambda=464.8$d |
+| **Weibull** | **10313.57** | $k=1.059$, $\theta=454.3$d |
+| Gamma | 10314.23 | $k=1.072$, $\theta=420.6$d |
+| Hiperexponencial | 10319.02 | $w=0.618$, $1/\lambda_1\approx1/\lambda_2\approx465$d (degenerada) |
+
+: Familias re-ajustadas con verosimilitud censurada (@eq-verosimilitud_censurada); $n_{\text{completos}}=722$, $n_{\text{censurados}}=784$ {#tbl-ajuste_censurado}
+
+::: {.remark}
+**Robustez del resultado.**
+La corrección por censura no cambia el ranking (Weibull sigue ganando), y la hiperexponencial sigue degenerando incluso corrigiendo el sesgo de ventana finita. Se concluye honestamente que, con la cantidad de saltos detectados en este horizonte de simulación, no hay evidencia estadística suficiente para sostener una estructura de mezcla de dos tasas en los tiempos entre saltos, a pesar de que el proceso generador subyacente (Sección 8.1.4) sí combina dos tipos de eventos con escalas de tiempo distintas.
+:::
+
+
+#### Validación del Teorema de Reescalamiento Temporal
+
+| **Prueba** | **Estadístico** | **$p$-valor** |
+|---|---|---|
+| KS: $\Delta\tau_i=\hat\Lambda(t_i)-\hat\Lambda(t_{i-1})$ vs. $\mathrm{Exp}(1)$ | $D=0.311$ | $6.9\times10^{-101}$ |
+| Media empírica de $\Delta\tau_i$ (esperado 1.0 bajo $H_0$) | 0.416 | --- |
+| KS dos muestras, *oracle* vs. detectado (día del año) | $D=0.185$ | $1.5\times10^{-40}$ |
+
+: Validación del time-rescaling theorem (@thm-time_rescaling) {#tbl-time_rescaling_validacion}
+
+::: {.remark}
+**Resultado honesto: el modelo de intensidad no se valida completamente.**
+A diferencia de lo que podría anticiparse, el test de reescalamiento *rechaza* fuertemente $H_0$. Esto no invalida la metodología, sino que señala una limitación real: con solo $1.51$ detecciones promedio por trayectoria, el estimador $\hat\Lambda(t)$ (@eq-nelson_aalen) tiene varianza alta y no captura completamente la forma verdadera de $\lambda(t)$ (error absoluto medio de $0.0127$ saltos/día contra la intensidad verdadera de calibración). El resultado se reporta sin atenuantes: es evidencia de que la potencia de detección del umbral, a esta frecuencia de muestreo diario, es insuficiente para una validación completa del modelo de intensidad — una limitación consistente con lo discutido en @leemykland2008 sobre la necesidad de datos de alta frecuencia para reducir la tasa de error de clasificación.
+:::
+![Histograma de $\Delta\tau$ crudo (días) con las cuatro familias ajustadas superpuestas; Weibull resaltada como mejor ajuste por AIC.](histograma_De_saltos_crudos.png){#fig-saltos_crudos_pdf fig-pos="H" fig-align="center" width="600" height="400"}
+
+![Q-Q plot de $\Delta\tau$ empírico contra la Weibull ajustada ($k=1.151$, $\theta=203.9$).](Q_Q_plot_emp%C3%ADrico_vs_Weibull.png){#fig-saltos_crudos_pdf fig-pos="H" fig-align="center" width="600" height="400"}
+
+### Estimación de la Intensidad Estacional $\lambda(t)$: Kernel de Ramlau--Hansen y Ventanas Trimestrales {#sec:9.5.4_lambda_resultados}
+
+| **Trimestre** | **Saltos detectados** |
+|---|---|
+| Q1 (ene--mar) | 236 |
+| Q2 (abr--jun) | 461 |
+| Q3 (jul--sep) | 473 |
+| Q4 (oct--dic) | 336 |
+| **Chi-cuadrado de homogeneidad** | $\chi^2=100.49$, $p=1.22\times10^{-21}$ |
+| **KS vs. Uniforme(0,365) (día del año)** | $D=0.1015$, $p=5.8\times10^{-14}$ |
+
+: Diagnóstico de estacionalidad y saltos detectados por trimestre calendario {#tbl-trimestres}
+
+::: {.remark}
+Ambas pruebas rechazan $H_0$ (tasa constante) con margen amplio, confirmando cuantitativamente la estacionalidad esperada por diseño en $\lambda_{\text{meteo}}(t)$ (Sección 8.1.4): el pico de detecciones ocurre en Q2--Q3, consistente con la temporada de huracanes.
+:::
+
+| **Ancho de ventana** | **MSE** |
+|---|---|
+| Mes (30d) | $3.592\times10^{-4}$ |
+| Bimestre (60d) | $3.464\times10^{-4}$ |
+| Trimestre (91d) | $3.441\times10^{-4}$ |
+| Semestre (182d) | $3.393\times10^{-4}$ |
+
+: Comparación de anchos de ventana móvil para $\hat\lambda(t)$ (calibración por MSE contra intensidad verdadera de simulación) {#tbl:anchos_ventana}
+
+::: {.remark}
+**Sobre la elección del trimestre.**
+El semestre obtiene el MSE marginalmente menor, pero la diferencia con el trimestre es mínima ($1.4\%$ relativo) mientras que el trimestre preserva mayor resolución temporal (relevante para distinguir el pico de huracanes de la temporada baja). La comparación de MSE contra la verdad solo es posible en este estudio de simulación con datos sintéticos; en una aplicación con datos reales, la elección del ancho debería sustituirse por validación cruzada o por el criterio de meseta ya usado para calibrar $(\alpha^\ast,\varpi^\ast)$ en la Sección @sec:9.5.2_severidad_resultados. Se recomienda el trimestre como compromiso razonable entre resolución y estabilidad estadística.
+:::
 
 ## Implicaciones para la Gestión de Riesgos en el Contexto de la CDMX
 
@@ -1245,6 +1382,8 @@ La elección de la mediana como estadístico de pronóstico es rigurosamente jus
 - **Robustez ante colas pesadas**: La distribución de reservas presenta asimetría negativa ($\gamma_1 \approx -0.85$) debido a los saltos catastróficos. La mediana es invariante ante transformaciones monótonas y menos sensible a outliers que la media (@huber2004robust), crucial para evitar subestimación de riesgos extremos.
 - **Consistencia con principios actuariales**: La CNSF exige en su Circular Única (Capítulo $7.3.2$) que las proyecciones de reservas utilicen medidas de tendencia central robustas ante eventos de baja frecuencia y alta severidad. La mediana satisface este requisito regulatorio.
 - **Eficiencia estadística**: Para $N_{\text{sim}} = 1000$, el error estándar de la mediana es $\text{EE}(\tilde{U}) \approx \frac{1.253\sigma}{\sqrt{N_{\text{sim}}}}$ (@kenney1951mathematics), comparable al error de la media ($\sigma/\sqrt{N_{\text{sim}}}$) pero con menor sesgo ante no normalidad. Los resultados muestran $\text{EE}^{\text{Mil}} = 0.26$ y $\text{EE}^{\text{SI}} = 0.29$, dentro de márgenes aceptables para toma de decisiones.
+
+
 
 ## Implicaciones para la Gestión de Riesgos en el Contexto de la CDMX
 
