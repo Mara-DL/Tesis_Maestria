@@ -463,7 +463,7 @@ window.Quarto = {
   <li><a href="#sec-In_Sal" id="toc-sec-In_Sal" class="nav-link" data-scroll-target="#sec-In_Sal"><span class="header-section-number">5.4</span> Estimación de la Intensidad de Saltos.</a>
   <ul class="collapse">
   <li><a href="#sec-es_umbral" id="toc-sec-es_umbral" class="nav-link" data-scroll-target="#sec-es_umbral"><span class="header-section-number">5.4.1</span> Estimador <span class="math inline">\(\hat{\lambda}_n\)</span> y elección del umbral <span class="math inline">\(\tau_n = \alpha \Delta_n^{\varpi}\)</span>.</a></li>
-  <li><a href="#sec-Es_N_Pa_D_S_S" id="toc-sec-Es_N_Pa_D_S_S" class="nav-link" data-scroll-target="#sec-Es_N_Pa_D_S_S"><span class="header-section-number">5.4.2</span> Estimación No Paramétrica de la Distribución de Severidad de los Saltos.</a></li>
+  <li><a href="#sec-Es_N_Pa_D_S_S" id="toc-sec-Es_N_Pa_D_S_S" class="nav-link" data-scroll-target="#sec-Es_N_Pa_D_S_S"><span class="header-section-number">5.4.2</span> Estimación no paramétrica de la distribución de severidad de los saltos.</a></li>
   <li><a href="#sec-Distr_tiempos_saltos" id="toc-sec-Distr_tiempos_saltos" class="nav-link" data-scroll-target="#sec-Distr_tiempos_saltos"><span class="header-section-number">5.4.3</span> Distribución de los Tiempos entre Saltos: Teoría de Renovación y Teorema del Cambio de Tiempo.</a></li>
   </ul></li>
   </ul>
@@ -512,14 +512,21 @@ x_t = x_0 &amp;+ \int_0^t b(s,x_s,\omega)\,ds
            + \int_0^t \sigma(s,x_s,\omega)\,dw_s \\
           &amp; \ \ \ \ \ \ \ \ \ \ \ +  \int_0^t\int_Z R(s,x_{s-},z,\omega)\,\tilde{N}_t(ds,dz),
           \qquad t\geq 0
-\end{split} \tag{5.1}\]</span></span> si y solo si <span class="math inline">\(\{x_t\}_{t\geq}0\)</span> satisface la <a href="#eq-1" class="quarto-xref">Ecuación&nbsp;<span>5.1</span></a>. en el caso que <span class="math inline">\(x_t\in \mathcal{F}_t^{\omega_s}, \forall t \geq 0,\)</span> donde <span class="math inline">\(\mathcal{F}_t^{\omega_s}\)</span> es la <span class="math inline">\(\sigma\)</span>-álgebra generada por <span class="math inline">\(\omega_s, s\leq t\)</span>, es una solución fuerte</p>
+\end{split} \tag{5.1}\]</span></span></p>
+<p>si y solo si <span class="math inline">\(\{x_t\}_{t\geq}0\)</span> satisface la <a href="#eq-1" class="quarto-xref">Ecuación&nbsp;<span>5.1</span></a>. en el caso que <span class="math inline">\(x_t\in \mathcal{F}_t^{\omega_s}, \forall t \geq 0,\)</span> donde <span class="math inline">\(\mathcal{F}_t^{\omega_s}\)</span> es la <span class="math inline">\(\sigma\)</span>-álgebra generada por <span class="math inline">\(\omega_s, s\leq t\)</span>, es una solución fuerte</p>
 </div>
 <div style="text-align:justify">
-<p>Consideramos el espacio: <span id="eq-2"><span class="math display">\[\begin{split}
-      \small S_{\mathcal{F}}^{2,loc}(R) = \left\lbrace\begin{array}{c}f(t,\omega):f(t,\omega) \text{\ es \ } \mathcal{F}_t- \text{adaptada, de valor real, tal que}
-       \\
-     \mathbb{E} [sup_{t\in[0,T]} |f(t,\omega)|]^2 &lt; \infty, \forall T &lt; \infty  \end{array}\right\rbrace
-\end{split} \tag{5.2}\]</span></span></p>
+<p>Consideramos el espacio:</p>
+</div>
+<div style="text-align:justify;font-size:0.92em">
+<p><span id="eq-2"><span class="math display">\[
+S_{\mathcal{F}}^{2,loc}(R) = \left\{
+\begin{array}{c}
+f(t,\omega) : f(t,\omega) \text{ es } \mathcal{F}_t\text{-adaptada, de valor real, tal que} \\
+\mathbb{E}\left[\sup_{t\in[0,T]}|f(t,\omega)|\right]^2 &lt; \infty, \; \forall\, T &lt; \infty
+\end{array}
+\right\}
+\tag{5.2}\]</span></span></p>
 </div>
 <div id="thm-exis_uni_glo_fuerte_SDE" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 5.1</strong></span> ( Existencia y unicidad global de una solución fuerte (condiciones de Lipschitz y crecimiento lineal global).). Suponga que:</p>
@@ -758,9 +765,16 @@ S_{i,n} = \sum_{(i-1)\Delta &lt; t \leq i\Delta} \Delta J_t.\]</span> Por la hip
 </div>
 </section>
 <section id="sec-Es_N_Pa_D_S_S" class="level3" data-number="5.4.2">
-<h3 data-number="5.4.2" class="anchored" data-anchor-id="sec-Es_N_Pa_D_S_S"><span class="header-section-number">5.4.2</span> Estimación No Paramétrica de la Distribución de Severidad de los Saltos.</h3>
-<p>El <a href="#thm-Consistencia_estimador_intensidad" class="quarto-xref">Teorema&nbsp;<span>5.5</span></a> garantiza que <span class="math inline">\(\hat\lambda_n\)</span> (<a href="#eq-umbral" class="quarto-xref">Ecuación&nbsp;<span>5.11</span></a>) es un estimador consistente de la <em>intensidad total</em> <span class="math inline">\(\lambda\)</span>, pero es un estadístico <em>agregado</em>: cuenta cuántos incrementos superan el umbral <span class="math inline">\(\tau_n\)</span> sin identificar <em>cuáles</em> instantes contienen un salto ni <em>qué tamaño</em> tuvo cada uno. Esta sección extiende el marco de la <a href="#sec-In_Sal" class="quarto-xref"><span>Sección 5.4</span></a> en dos direcciones: (i) se pondera el umbral por la volatilidad instantánea local <span class="math inline">\(\hat\sigma(t_{n-1})\)</span>, refinamiento introducido por <span class="citation" data-cites="mancini2009">Mancini (<a href="references.html#ref-mancini2009" role="doc-biblioref">2009</a>)</span> y <span class="citation" data-cites="lee2008">Lee y Mykland (<a href="references.html#ref-lee2008" role="doc-biblioref">2008</a>)</span> sobre el umbral no ponderado de la <a href="#eq-estimador" class="quarto-xref">Ecuación&nbsp;<span>5.12</span></a>; y (ii) se convierte el conteo agregado en un <em>procedimiento a nivel de evento</em> que recupera, para cada salto detectado, su instante y su magnitud, sobre los cuales se ajusta un modelo de distribución.</p>
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="sec-Es_N_Pa_D_S_S"><span class="header-section-number">5.4.2</span> Estimación no paramétrica de la distribución de severidad de los saltos.</h3>
+<p>La estimación de la intensidad de saltos desarrollada en la Sección 6.4.1 permite identificar, mediante un procedimiento basado en umbrales, los incrementos de la trayectoria observada cuya magnitud resulta incompatible con la variación continua esperada. Sin embargo, el conteo de dichos incrementos proporciona únicamente información acerca de la frecuencia de ocurrencia de los eventos detectados y no caracteriza la magnitud de los saltos.</p>
+<p>En esta sección se desarrolla el procedimiento estadístico necesario para obtener, a partir de las detecciones identificadas por el umbral, una estimación no paramétrica de la distribución de severidad. El procedimiento se formula sobre la trayectoria del proceso de reservas y no requiere especificar previamente una familia paramétrica para la distribución de las magnitudes de los saltos.</p>
+<p>La formulación se desarrolla inicialmente para una trayectoria genérica y posteriormente puede aplicarse de manera idéntica a cada uno de los esquemas numéricos considerados en el Capítulo 7.</p>
+<p>El Teorema <a href="#thm-Consistencia_estimador_intensidad" class="quarto-xref">Teorema&nbsp;<span>5.5</span></a> garantiza que <span class="math inline">\(\hat\lambda_n\)</span> (<a href="#eq-umbral" class="quarto-xref">Ecuación&nbsp;<span>5.11</span></a>) es un estimador consistente de la <em>intensidad total</em> <span class="math inline">\(\lambda\)</span>, pero es un estadístico <em>agregado</em>: cuenta cuántos incrementos superan el umbral <span class="math inline">\(\tau_n\)</span> sin identificar <em>cuáles</em> instantes contienen un salto ni <em>qué tamaño</em> tuvo cada uno. Esta sección extiende el marco de la <a href="#sec-In_Sal" class="quarto-xref"><span>Sección 5.4</span></a> en dos direcciones: Se pondera el umbral por la volatilidad instantánea local <span class="math inline">\(\hat\sigma(t_{n-1})\)</span>, refinamiento introducido por <span class="citation" data-cites="mancini2009">Mancini (<a href="references.html#ref-mancini2009" role="doc-biblioref">2009</a>)</span> y <span class="citation" data-cites="lee2008">Lee y Mykland (<a href="references.html#ref-lee2008" role="doc-biblioref">2008</a>)</span> sobre el umbral no ponderado de la <a href="#eq-estimador" class="quarto-xref">Ecuación&nbsp;<span>5.12</span></a>; y se convierte el conteo agregado en un <em>procedimiento a nivel de evento</em> que recupera, para cada salto detectado, su instante y su magnitud, sobre los cuales se ajusta un modelo de distribución <strong>agregada</strong>, sin requerir identificación del tipo de siniestro (meteorológico o sísmico).</p>
 <p>Se trabaja sobre el proceso de reservas <span class="math inline">\(\{U(t)\}_{t\ge 0}\)</span> de la <a href="#eq-modelo_extendido" class="quarto-xref">Ecuación&nbsp;<span>5.10</span></a>, observado en la malla <span class="math inline">\(t_0&lt;t_1&lt;\dots&lt;t_n\)</span> con paso constante <span class="math inline">\(\Delta_n=t_i-t_{i-1}\)</span>, sobre <span class="math inline">\(N_{\text{sim}}\)</span> trayectorias simuladas independientes <span class="math inline">\(U^{(1)},\dots,U^{(N_{\text{sim}})}\)</span> (<a href="resultados_simulacion.html#sec-Mil_comp" class="quarto-xref"><span>Sección 8.2</span></a>).</p>
+<p>Debido a que el proceso <span class="math inline">\(U(t)\)</span> puede presentar una escala dependiente del nivel de reservas, resulta conveniente trabajar con incrementos relativos. Para <span class="math inline">\(U(t_{i-1})\neq0\)</span>, se define</p>
+<p><span class="math display">\[
+r_i^n = \frac{U(t_i)-U(t_{i-1})}{U(t_{i-1})}.
+\]</span></p>
 <section id="estimación-de-la-volatilidad-instantánea-local." class="level4" data-number="5.4.2.1">
 <h4 data-number="5.4.2.1" class="anchored" data-anchor-id="estimación-de-la-volatilidad-instantánea-local."><span class="header-section-number">5.4.2.1</span> Estimación de la Volatilidad Instantánea Local.</h4>
 <p>Dado que <span class="math inline">\(\sigma(t)\)</span> es tiempo-dependiente y las <span class="math inline">\(N_{\text{sim}}\)</span> trayectorias comparten la misma función determinista <span class="math inline">\(\sigma(t)\)</span>, se estima localmente mediante la <em>variación bipotencia realizada</em> <span class="citation" data-cites="barndorffnielsen2004">Barndorff-Nielsen y Shephard (<a href="references.html#ref-barndorffnielsen2004" role="doc-biblioref">2004</a>)</span>, adaptada al incremento relativo</p>
