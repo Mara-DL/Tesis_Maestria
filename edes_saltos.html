@@ -808,7 +808,7 @@ i=1,\ldots,n,
 \quad
 j=1,\ldots,N_{\mathrm{sim}}.
 \tag{5.17}\]</span></span></p>
-<p>Esta normalización permite expresar los cambios de la reserva en términos relativos a su nivel inmediatamente anterior. La estimación de la escala local asociada a la componente continua se obtiene mediante una versión agregada de la variación bipotencia realizada, siguiendo la construcción de variación bipotencia propuesta para separar la variación continua de la contribución de saltos <span class="citation" data-cites="barndorff2004">(<a href="references.html#ref-barndorff2004" role="doc-biblioref"><strong>barndorff2004?</strong></a>)</span>. Para una ventana de <span class="math inline">\(K\)</span> observaciones se define</p>
+<p>Esta normalización permite expresar los cambios de la reserva en términos relativos a su nivel inmediatamente anterior. La estimación de la escala local asociada a la componente continua se obtiene mediante una versión agregada de la variación bipotencia realizada, siguiendo la construcción de variación bipotencia propuesta para separar la variación continua de la contribución de saltos <span class="citation" data-cites="barndorffnielsen2004">(<a href="references.html#ref-barndorffnielsen2004" role="doc-biblioref">Barndorff-Nielsen y Shephard 2004</a>)</span>. Para una ventana de <span class="math inline">\(K\)</span> observaciones se define</p>
 <p><span id="eq-volatilidad-local"><span class="math display">\[
 \widehat\sigma^2(t_{i-1})
 :=
@@ -829,7 +829,7 @@ j=1,\ldots,N_{\mathrm{sim}}.
 :=
 \sqrt{\widehat\sigma^2(t_{i-1})}.
 \tag{5.19}\]</span></span></p>
-<p>La agregación sobre las trayectorias es coherente con la implementación numérica, en la cual la componente de difusión utiliza la misma función de volatilidad para las trayectorias simuladas. En este sentido, el <em>pooling</em> permite utilizar conjuntamente las réplicas Monte Carlo para estimar la escala local común. El estimador se emplea como una medida local de escala para distinguir fluctuaciones ordinarias de incrementos cuya magnitud resulta incompatible con la dinámica continua en la escala temporal considerada <span class="citation" data-cites="barndorff2004">(<a href="references.html#ref-barndorff2004" role="doc-biblioref"><strong>barndorff2004?</strong></a>)</span>.</p>
+<p>La agregación sobre las trayectorias es coherente con la implementación numérica, en la cual la componente de difusión utiliza la misma función de volatilidad para las trayectorias simuladas. En este sentido, el <em>pooling</em> permite utilizar conjuntamente las réplicas Monte Carlo para estimar la escala local común. El estimador se emplea como una medida local de escala para distinguir fluctuaciones ordinarias de incrementos cuya magnitud resulta incompatible con la dinámica continua en la escala temporal considerada <span class="citation" data-cites="barndorffnielsen2004">(<a href="references.html#ref-barndorffnielsen2004" role="doc-biblioref">Barndorff-Nielsen y Shephard 2004</a>)</span>.</p>
 </div>
 </section>
 <section id="umbral-de-detección-de-saltos-1" class="level4" data-number="5.4.2.2">
@@ -1077,7 +1077,7 @@ AIC
 <section id="incertidumbre-mediante-bootstrap-por-trayectoria-2" class="level4" data-number="5.4.2.9">
 <h4 data-number="5.4.2.9" class="anchored" data-anchor-id="incertidumbre-mediante-bootstrap-por-trayectoria-2"><span class="header-section-number">5.4.2.9</span> Incertidumbre mediante bootstrap por trayectoria</h4>
 <div style="text-align:justify">
-<p>Debido a que varias detecciones pueden proceder de una misma trayectoria, las observaciones de severidad no se consideran automáticamente independientes. Para preservar la estructura de dependencia intra-trayectoria, el procedimiento bootstrap se realiza remuestreando trayectorias completas. El uso del bootstrap para cuantificar incertidumbre sigue la formulación general de Efron y Tibshirani <span class="citation" data-cites="efrontibshirani1993">(<a href="references.html#ref-efrontibshirani1993" role="doc-biblioref"><strong>efrontibshirani1993?</strong></a>)</span>.</p>
+<p>Debido a que varias detecciones pueden proceder de una misma trayectoria, las observaciones de severidad no se consideran automáticamente independientes. Para preservar la estructura de dependencia intra-trayectoria, el procedimiento bootstrap se realiza remuestreando trayectorias completas. El uso del bootstrap para cuantificar incertidumbre sigue la formulación general de Efron y Tibshirani <span class="citation" data-cites="Efrontibshirani1993">(<a href="references.html#ref-Efrontibshirani1993" role="doc-biblioref">Efron y Tibshirani 1993</a>)</span>.</p>
 <p>En cada réplica bootstrap se seleccionan <span class="math inline">\(N_{\mathrm{sim}}\)</span> trayectorias con reemplazo y se reconstruye el conjunto de severidades detectadas correspondiente a la muestra remuestreada. Para un estadístico <span class="math inline">\(\theta\)</span> de interés, se obtiene una colección</p>
 <p><span id="eq-replicas-bootstrap-severidad"><span class="math display">\[
 \widehat\theta^{(1)},
@@ -1128,7 +1128,7 @@ k:
 \qquad
 t\in[0,T].
 \tag{5.43}\]</span></span></p>
-<p>Este proceso cuenta exclusivamente los eventos que han sido identificados por el detector y constituye la base para el análisis de intensidad y de tiempos entre detecciones. La formulación mediante procesos de conteo es el marco natural para describir tiempos de ocurrencia y sus intensidades <span class="citation" data-cites="aalen1978 andersen1993">(<a href="references.html#ref-aalen1978" role="doc-biblioref">Aalen 1978</a>; <a href="references.html#ref-andersen1993" role="doc-biblioref"><strong>andersen1993?</strong></a>)</span>.</p>
+<p>Este proceso cuenta exclusivamente los eventos que han sido identificados por el detector y constituye la base para el análisis de intensidad y de tiempos entre detecciones. La formulación mediante procesos de conteo es el marco natural para describir tiempos de ocurrencia y sus intensidades <span class="citation" data-cites="aalen1978 abgk1993">(<a href="references.html#ref-aalen1978" role="doc-biblioref">Aalen 1978</a>; <a href="references.html#ref-abgk1993" role="doc-biblioref">Andersen et&nbsp;al. 1993</a>)</span>.</p>
 </div>
 </section>
 <section id="intensidad-temporal-no-paramétrica-1" class="level4" data-number="5.4.3.2">
@@ -1183,7 +1183,7 @@ d_{\mathrm{circ}}(t,\tau_k^{(j)})
 k=2,\ldots,K_j.
 \tag{5.46}\]</span></span></p>
 <p>La colección de todas las cantidades <span class="math inline">\(\Delta\tau_k^{(j)}\)</span> constituye la muestra utilizada para caracterizar la distribución marginal de los tiempos entre detecciones.</p>
-<p>En el caso particular de un proceso de Poisson homogéneo con intensidad constante <span class="math inline">\(\lambda\)</span>, los tiempos entre eventos son variables aleatorias independientes con distribución exponencial. Esta propiedad es un resultado fundamental de la teoría de procesos de conteo y de la teoría de renovación <span class="citation" data-cites="andersen1993">(<a href="references.html#ref-andersen1993" role="doc-biblioref"><strong>andersen1993?</strong></a>)</span>.</p>
+<p>En el caso particular de un proceso de Poisson homogéneo con intensidad constante <span class="math inline">\(\lambda\)</span>, los tiempos entre eventos son variables aleatorias independientes con distribución exponencial. Esta propiedad es un resultado fundamental de la teoría de procesos de conteo y de la teoría de renovación <span class="citation" data-cites="abgk1993">(<a href="references.html#ref-abgk1993" role="doc-biblioref">Andersen et&nbsp;al. 1993</a>)</span>.</p>
 <p><span id="eq-exponencial-tiempo"><span class="math display">\[
 \Delta\tau
 \sim
@@ -1257,9 +1257,9 @@ S(x)
 :=
 \mathbb P(\Delta\tau&gt;x).
 \tag{5.52}\]</span></span></p>
-<p>Para representar descriptivamente esta función bajo la presencia de observaciones censuradas se utiliza el estimador de Kaplan–Meier, introducido por Kaplan y Meier para la estimación no paramétrica bajo observaciones incompletas <span class="citation" data-cites="kaplanmeier1958">(<a href="references.html#ref-kaplanmeier1958" role="doc-biblioref"><strong>kaplanmeier1958?</strong></a>)</span>.</p>
+<p>Para representar descriptivamente esta función bajo la presencia de observaciones censuradas se utiliza el estimador de Kaplan–Meier, introducido por Kaplan y Meier para la estimación no paramétrica bajo observaciones incompletas <span class="citation" data-cites="kaplanmeier1958">(<a href="references.html#ref-kaplanmeier1958" role="doc-biblioref">Kaplan y Meier 1958</a>)</span>.</p>
 <p>El estimador de Kaplan–Meier permite conservar la información proporcionada por las observaciones censuradas sin considerarlas como eventos completos. En este contexto, su interpretación es descriptiva y se refiere a la distribución marginal de los tiempos entre detecciones.</p>
-<p>Debe señalarse que las detecciones sucesivas de una misma trayectoria pueden presentar dependencia temporal. El marco de procesos de conteo y análisis de supervivencia permite formular explícitamente esta estructura <span class="citation" data-cites="aalen1978 andersen1993">(<a href="references.html#ref-aalen1978" role="doc-biblioref">Aalen 1978</a>; <a href="references.html#ref-andersen1993" role="doc-biblioref"><strong>andersen1993?</strong></a>)</span>. Por esta razón, la utilización de Kaplan–Meier no implica que la colección de todos los gaps constituya una muestra independiente e idénticamente distribuida. La estimación se emplea como herramienta descriptiva para caracterizar la supervivencia marginal.</p>
+<p>Debe señalarse que las detecciones sucesivas de una misma trayectoria pueden presentar dependencia temporal. El marco de procesos de conteo y análisis de supervivencia permite formular explícitamente esta estructura <span class="citation" data-cites="aalen1978 abgk1993">(<a href="references.html#ref-aalen1978" role="doc-biblioref">Aalen 1978</a>; <a href="references.html#ref-abgk1993" role="doc-biblioref">Andersen et&nbsp;al. 1993</a>)</span>. Por esta razón, la utilización de Kaplan–Meier no implica que la colección de todos los gaps constituya una muestra independiente e idénticamente distribuida. La estimación se emplea como herramienta descriptiva para caracterizar la supervivencia marginal.</p>
 </div>
 </section>
 <section id="máxima-verosimilitud-con-observaciones-censuradas-1" class="level4" data-number="5.4.3.8">
@@ -1301,7 +1301,7 @@ S(c_j;\theta).
 \arg\max_{\theta}
 \ell(\theta).
 \tag{5.56}\]</span></span></p>
-<p>Esta formulación se aplica por separado a las familias Exponencial, Weibull y Gamma consideradas en <a href="#eq-densidad-exponencial" class="quarto-xref">Ecuación&nbsp;<span>5.48</span></a>, <a href="#eq-weibull-tiempo" class="quarto-xref">Ecuación&nbsp;<span>5.49</span></a> y <a href="#eq-gamma-tiempo" class="quarto-xref">Ecuación&nbsp;<span>5.50</span></a>. La contribución <span class="math inline">\(S(c_j;\theta)\)</span> de una observación censurada es la forma estándar de incorporar a la verosimilitud la información de que el tiempo de espera excede el último intervalo observado <span class="citation" data-cites="kaplanmeier1958 andersen1993">(<a href="references.html#ref-kaplanmeier1958" role="doc-biblioref"><strong>kaplanmeier1958?</strong></a>; <a href="references.html#ref-andersen1993" role="doc-biblioref"><strong>andersen1993?</strong></a>)</span>.</p>
+<p>Esta formulación se aplica por separado a las familias Exponencial, Weibull y Gamma consideradas en <a href="#eq-densidad-exponencial" class="quarto-xref">Ecuación&nbsp;<span>5.48</span></a>, <a href="#eq-weibull-tiempo" class="quarto-xref">Ecuación&nbsp;<span>5.49</span></a> y <a href="#eq-gamma-tiempo" class="quarto-xref">Ecuación&nbsp;<span>5.50</span></a>. La contribución <span class="math inline">\(S(c_j;\theta)\)</span> de una observación censurada es la forma estándar de incorporar a la verosimilitud la información de que el tiempo de espera excede el último intervalo observado <span class="citation" data-cites="kaplanmeier1958 abgk1993">(<a href="references.html#ref-kaplanmeier1958" role="doc-biblioref">Kaplan y Meier 1958</a>; <a href="references.html#ref-abgk1993" role="doc-biblioref">Andersen et&nbsp;al. 1993</a>)</span>.</p>
 </div>
 </section>
 <section id="comparación-mediante-el-criterio-de-información-de-akaike-1" class="level4" data-number="5.4.3.9">
@@ -1429,7 +1429,7 @@ D
 <section id="incertidumbre-mediante-bootstrap-por-trayectoria-3" class="level4" data-number="5.4.3.13">
 <h4 data-number="5.4.3.13" class="anchored" data-anchor-id="incertidumbre-mediante-bootstrap-por-trayectoria-3"><span class="header-section-number">5.4.3.13</span> Incertidumbre mediante bootstrap por trayectoria</h4>
 <div style="text-align:justify">
-<p>La incertidumbre de las estadísticas descriptivas de los tiempos entre detecciones se cuantifica mediante bootstrap por trayectoria, siguiendo el principio general de remuestreo para inferencia estadística <span class="citation" data-cites="efrontibshirani1993">(<a href="references.html#ref-efrontibshirani1993" role="doc-biblioref"><strong>efrontibshirani1993?</strong></a>)</span>. En cada réplica se seleccionan con reemplazo trayectorias completas y se reconstruye la colección correspondiente de tiempos entre detecciones y de observaciones censuradas.</p>
+<p>La incertidumbre de las estadísticas descriptivas de los tiempos entre detecciones se cuantifica mediante bootstrap por trayectoria, siguiendo el principio general de remuestreo para inferencia estadística <span class="citation" data-cites="Efrontibshirani1993">(<a href="references.html#ref-Efrontibshirani1993" role="doc-biblioref">Efron y Tibshirani 1993</a>)</span>. En cada réplica se seleccionan con reemplazo trayectorias completas y se reconstruye la colección correspondiente de tiempos entre detecciones y de observaciones censuradas.</p>
 <p>Para un estadístico <span class="math inline">\(\theta\)</span>, como la media, mediana o <span class="math inline">\(CV^2\)</span>, se obtiene</p>
 <p><span id="eq-bootstrap-tiempo-replicas"><span class="math display">\[
 \widehat\theta^{(1)},
@@ -1467,8 +1467,20 @@ Aı̈t-Sahalia, Yacine, y Jean Jacod. 2009. <span>«Testing for jumps in a discr
 <div id="ref-akaike1974" class="csl-entry" role="listitem">
 Akaike, Hirotugu. 1974. <span>«A New Look at the Statistical Model Identification»</span>. <em>IEEE Transactions on Automatic Control</em> 19 (6): 716-23.
 </div>
+<div id="ref-abgk1993" class="csl-entry" role="listitem">
+Andersen, Per Kragh, Ørnulf Borgan, Richard D. Gill, y Niels Keiding. 1993. <em>Statistical Models Based on Counting Processes</em>. Springer-Verlag.
+</div>
+<div id="ref-barndorffnielsen2004" class="csl-entry" role="listitem">
+Barndorff-Nielsen, Ole E., y Neil Shephard. 2004. <span>«Power and Bipower Variation with Stochastic Volatility and Jumps»</span>. <em>Journal of Financial Econometrics</em> 2 (1): 1-48.
+</div>
 <div id="ref-brown2002" class="csl-entry" role="listitem">
 Brown, Emery N., Riccardo Barbieri, Valérie Ventura, Robert E. Kass, y Loren M. Frank. 2002. <span>«The Time-Rescaling Theorem and Its Application to Neural Spike Train Data Analysis»</span>. <em>Neural Computation</em> 14 (2): 325-46. <a href="https://doi.org/10.1162/08997660252741149">https://doi.org/10.1162/08997660252741149</a>.
+</div>
+<div id="ref-Efrontibshirani1993" class="csl-entry" role="listitem">
+Efron, Bradley, y Robert J. Tibshirani. 1993. <em>An Introduction to the Bootstrap</em>. Chapman &amp; Hall/CRC.
+</div>
+<div id="ref-kaplanmeier1958" class="csl-entry" role="listitem">
+Kaplan, E. L., y Paul Meier. 1958. <span>«Nonparametric Estimation from Incomplete Observations»</span>. <em>Journal of the American Statistical Association</em> 53 (282): 457-81. <a href="https://doi.org/10.1080/01621459.1958.10501452">https://doi.org/10.1080/01621459.1958.10501452</a>.
 </div>
 <div id="ref-lee2008" class="csl-entry" role="listitem">
 Lee, Suzanne S., y Per A. Mykland. 2008. <span>«Jumps in Financial Markets: A New Nonparametric Test and Jump Dynamics»</span>. <em>The Review of Financial Studies</em> 21 (6): 2535-63. <a href="https://doi.org/10.1093/rfs/hhm056">https://doi.org/10.1093/rfs/hhm056</a>.
