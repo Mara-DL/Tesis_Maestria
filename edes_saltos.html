@@ -888,7 +888,7 @@ i\in\{1,\ldots,n\}:
 \tau_n(t_{i-1})
 \right\}.
 \tag{5.24}\]</span></span></p>
-<p>La condición anterior constituye el criterio principal de detección utilizado en los programas de simulación. La construcción es consistente con los procedimientos de detección no paramétrica por umbral desarrollados para procesos observados discretamente <span class="citation" data-cites="mancini2009 leemykland2008">(<a href="references.html#ref-mancini2009" role="doc-biblioref">Mancini 2009</a>; <a href="references.html#ref-leemykland2008" role="doc-biblioref"><strong>leemykland2008?</strong></a>)</span>.</p>
+<p>La condición anterior constituye el criterio principal de detección utilizado en los programas de simulación. La construcción es consistente con los procedimientos de detección no paramétrica por umbral desarrollados para procesos observados discretamente <span class="citation" data-cites="mancini2009 lee2008">(<a href="references.html#ref-mancini2009" role="doc-biblioref">Mancini 2009</a>; <a href="references.html#ref-lee2008" role="doc-biblioref">Lee y Mykland 2008</a>)</span>.</p>
 <div id="prp-deteccion-umbral" class="theorem proposition">
 <p><span class="theorem-title"><strong>Proposición 5.1</strong></span> Bajo el esquema de detección anterior, la clasificación de un incremento como evento detectado depende únicamente de la trayectoria observada, del estimador local de escala y de los parámetros <span class="math inline">\((\alpha,\varpi)\)</span>. En consecuencia, el procedimiento es aplicable tanto a las trayectorias simuladas como, una vez observadas las variables correspondientes, a datos empíricos en los cuales no se disponga de información sobre la causa física del evento.</p>
 </div>
@@ -907,7 +907,7 @@ i\in\{1,\ldots,n\}:
 \widehat\sigma(t_{i-1})
 }.
 \tag{5.25}\]</span></span></p>
-<p>Bajo ausencia de saltos y bajo las condiciones de regularidad requeridas por la aproximación asintótica correspondiente, este estadístico permite utilizar una escala aproximadamente gaussiana como referencia para evaluar la magnitud de las fluctuaciones. La construcción de estadísticas normalizadas para detectar saltos en procesos observados discretamente está relacionada con el procedimiento de Lee–Mykland <span class="citation" data-cites="leemykland2008">(<a href="references.html#ref-leemykland2008" role="doc-biblioref"><strong>leemykland2008?</strong></a>)</span>.</p>
+<p>Bajo ausencia de saltos y bajo las condiciones de regularidad requeridas por la aproximación asintótica correspondiente, este estadístico permite utilizar una escala aproximadamente gaussiana como referencia para evaluar la magnitud de las fluctuaciones. La construcción de estadísticas normalizadas para detectar saltos en procesos observados discretamente está relacionada con el procedimiento de Lee–Mykland <span class="citation" data-cites="lee2008">(<a href="references.html#ref-lee2008" role="doc-biblioref">Lee y Mykland 2008</a>)</span>.</p>
 <p>En particular, las cantidades asociadas a la aproximación de falsos positivos deben interpretarse como medidas diagnósticas y no como probabilidades exactas de error de clasificación para el procedimiento completo.</p>
 </div>
 </section>
@@ -1158,7 +1158,7 @@ d_{\mathrm{circ}}(t,\tau_k^{(j)})
 \right).
 \tag{5.45}\]</span></span></p>
 <p>El factor <span class="math inline">\(1/N_{\mathrm{sim}}\)</span> produce una intensidad media por trayectoria, mientras que el factor <span class="math inline">\(1/h\)</span> corresponde a la normalización del estimador de núcleo.</p>
-<p>La ecuación <a href="#eq-intensidad-kernel-circular" class="quarto-xref">Ecuación&nbsp;<span>5.45</span></a> representa el estimador efectivamente utilizado en los programas. Su construcción pertenece a la familia de estimadores de intensidad por núcleo <span class="citation" data-cites="ramlauhansen1983">(<a href="references.html#ref-ramlauhansen1983" role="doc-biblioref">Ramlau-Hansen 1983</a>)</span>. Por tanto, no se identifica este estimador con el estimador clásico de Nelson–Aalen.</p>
+<p>La <a href="#eq-intensidad-kernel-circular" class="quarto-xref">Ecuación&nbsp;<span>5.45</span></a> representa el estimador efectivamente utilizado en los programas. Su construcción pertenece a la familia de estimadores de intensidad por núcleo <span class="citation" data-cites="ramlauhansen1983">(<a href="references.html#ref-ramlauhansen1983" role="doc-biblioref">Ramlau-Hansen 1983</a>)</span>. Por tanto, no se identifica este estimador con el estimador clásico de Nelson–Aalen.</p>
 </div>
 </section>
 <section id="análisis-de-sensibilidad-del-ancho-de-banda-1" class="level4" data-number="5.4.3.3">
@@ -1301,7 +1301,7 @@ S(c_j;\theta).
 \arg\max_{\theta}
 \ell(\theta).
 \tag{5.56}\]</span></span></p>
-<p>Esta formulación se aplica por separado a las familias Exponencial, Weibull y Gamma consideradas en <a href="#eq-densidad-exponencial" class="quarto-xref">Ecuación&nbsp;<span>5.48</span></a>, <a href="#eq-weibull-tiempo" class="quarto-xref">Ecuación&nbsp;<span>5.49</span></a> y <a href="#eq-gamma-tiempo" class="quarto-xref">Ecuación&nbsp;<span>5.50</span></a>. La contribución <span class="math inline">\(S(c_j;\theta)\)</span> de una observación censurada es la forma estándar de incorporar a la verosimilitud la información de que el tiempo de espera excede el último intervalo observado <span class="citation" data-cites="kaplanmeier1958 abgk1993">(<a href="references.html#ref-kaplanmeier1958" role="doc-biblioref">Kaplan y Meier 1958</a>; <a href="references.html#ref-abgk1993" role="doc-biblioref">Andersen et&nbsp;al. 1993</a>)</span>.</p>
+<p>Esta formulación se aplica por separado a las familias Exponencial, Weibull y Gamma consideradas en la <a href="#eq-densidad-exponencial" class="quarto-xref">Ecuación&nbsp;<span>5.48</span></a>, <a href="#eq-weibull-tiempo" class="quarto-xref">Ecuación&nbsp;<span>5.49</span></a> y <a href="#eq-gamma-tiempo" class="quarto-xref">Ecuación&nbsp;<span>5.50</span></a>. La contribución <span class="math inline">\(S(c_j;\theta)\)</span> de una observación censurada es la forma estándar de incorporar a la verosimilitud la información de que el tiempo de espera excede el último intervalo observado <span class="citation" data-cites="kaplanmeier1958 abgk1993">(<a href="references.html#ref-kaplanmeier1958" role="doc-biblioref">Kaplan y Meier 1958</a>; <a href="references.html#ref-abgk1993" role="doc-biblioref">Andersen et&nbsp;al. 1993</a>)</span>.</p>
 </div>
 </section>
 <section id="comparación-mediante-el-criterio-de-información-de-akaike-1" class="level4" data-number="5.4.3.9">
@@ -1365,7 +1365,7 @@ s_k-s_{k-1}
 \Lambda(\tau_{k-1}).
 \tag{5.62}\]</span></span></p>
 <div id="thm-cambio-tiempo" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 5.6</strong></span> <strong>Teorema (cambio de tiempo).</strong> Bajo las condiciones de regularidad del teorema de cambio de tiempo y utilizando el compensador verdadero del proceso puntual, los incrementos transformados <a href="#eq-tiempo-reescalado" class="quarto-xref">Ecuación&nbsp;<span>5.62</span></a> presentan distribución exponencial unitaria <span class="citation" data-cites="brown2002">(<a href="references.html#ref-brown2002" role="doc-biblioref">Brown et&nbsp;al. 2002</a>)</span>. La formulación del cambio de tiempo para procesos puntuales también constituye la base de los procedimientos de análisis de residuos de procesos de eventos desarrollados en la literatura de procesos de conteo.</p>
+<p><span class="theorem-title"><strong>Teorema 5.6</strong></span> <strong>(cambio de tiempo).</strong> Bajo las condiciones de regularidad del teorema de cambio de tiempo y utilizando el compensador verdadero del proceso puntual, los incrementos transformados (<a href="#eq-tiempo-reescalado" class="quarto-xref">Ecuación&nbsp;<span>5.62</span></a>) presentan distribución exponencial unitaria <span class="citation" data-cites="brown2002">(<a href="references.html#ref-brown2002" role="doc-biblioref">Brown et&nbsp;al. 2002</a>)</span>. La formulación del cambio de tiempo para procesos puntuales también constituye la base de los procedimientos de análisis de residuos de procesos de eventos desarrollados en la literatura de procesos de conteo.</p>
 <p><span id="eq-exp-uno"><span class="math display">\[
 \Delta s_k
 \sim
