@@ -1,0 +1,29 @@
+{
+  "metodo": "Milstein Compensado",
+  "seed": 2026,
+  "N_sim": 1000,
+  "T_years": 2.0,
+  "dt_years": 0.0027397260273972603,
+  "K_bipower": 27,
+  "alpha": 3.5,
+  "varpi": 0.45,
+  "n_detecciones_validas": 1422,
+  "severidad_media": 1792982.7366053427,
+  "severidad_mediana": 1513050.2346284273,
+  "IC95_media": [
+    1733759.1923597187,
+    1854807.1328461615
+  ],
+  "IC95_mediana": [
+    1466575.0356680243,
+    1566256.614067431
+  ],
+  "n_gaps_completos": 673,
+  "n_censuras_terminales": 749,
+  "media_gap_dias": 196.59732540861813,
+  "mediana_gap_dias": 147.0,
+  "CV2_gap_descriptivo": 0.6772076376021184,
+  "familia_severidad_AIC_min": "Lognormal",
+  "familia_tiempo_AIC_min": "Exponencial",
+  "D_time_rescaling_diagnostico": 0.07602656000628982
+}

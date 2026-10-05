@@ -23,15 +23,24 @@ x_t = x_0 &+ \int_0^t b(s,x_s,\omega)\,ds
            + \int_0^t \sigma(s,x_s,\omega)\,dw_s \\
           & \ \ \ \ \ \ \ \ \ \ \ +  \int_0^t\int_Z R(s,x_{s-},z,\omega)\,\tilde{N}_t(ds,dz),
           \qquad t\geq 0
-\end{split}$$ {#eq-1} si y solo si $\{x_t\}_{t\geq}0$ satisface la @eq-1. en el caso que $x_t\in \mathcal{F}_t^{\omega_s}, \forall t \geq 0,$ donde $\mathcal{F}_t^{\omega_s}$ es la $\sigma$-álgebra generada por $\omega_s, s\leq t$, es una solución fuerte
+\end{split}$$ {#eq-1} 
+
+si y solo si $\{x_t\}_{t\geq}0$ satisface la @eq-1. en el caso que $x_t\in \mathcal{F}_t^{\omega_s}, \forall t \geq 0,$ donde $\mathcal{F}_t^{\omega_s}$ es la $\sigma$-álgebra generada por $\omega_s, s\leq t$, es una solución fuerte
 :::
 
 ::: {style="text-align:justify"}
-Consideramos el espacio: $$\begin{split}
-      \small S_{\mathcal{F}}^{2,loc}(R) = \left\lbrace\begin{array}{c}f(t,\omega):f(t,\omega) \text{\ es \ } \mathcal{F}_t- \text{adaptada, de valor real, tal que}
-       \\
-     \mathbb{E} [sup_{t\in[0,T]} |f(t,\omega)|]^2 < \infty, \forall T < \infty  \end{array}\right\rbrace
-\end{split}$$ {#eq-2}
+Consideramos el espacio: 
+:::
+
+::: {style="text-align:justify;font-size:0.92em"}
+$$
+S_{\mathcal{F}}^{2,loc}(R) = \left\{
+\begin{array}{c}
+f(t,\omega) : f(t,\omega) \text{ es } \mathcal{F}_t\text{-adaptada, de valor real, tal que} \\
+\mathbb{E}\left[\sup_{t\in[0,T]}|f(t,\omega)|\right]^2 < \infty, \; \forall\, T < \infty
+\end{array}
+\right\}
+$$ {#eq-2}
 :::
 
 ::: {#thm-exis_uni_glo_fuerte_SDE}
@@ -532,452 +541,1818 @@ Combinando las dos últimas convergencias, concluimos que $$\hat{\lambda}_n \xri
 :::
 ::::
 
-### Estimación No Paramétrica de la Distribución de Severidad de los Saltos. {#sec-Es_N_Pa_D_S_S}
+:::: {.content-visible when-format="pdf"}
+### Estimación no paramétrica de la distribución de severidad de los saltos. {#sec-Es_N_Pa_D_S_S}
 
-El @thm-Consistencia_estimador_intensidad garantiza que $\hat\lambda_n$ (@eq-umbral) es un estimador consistente de la *intensidad total* $\lambda$, pero es un estadístico *agregado*: cuenta cuántos incrementos superan el umbral $\tau_n$ sin identificar *cuáles* instantes contienen un salto ni *qué tamaño* tuvo cada uno. Esta sección extiende el marco de la @sec-In_Sal en dos direcciones: (i) se pondera el umbral por la volatilidad instantánea local $\hat\sigma(t_{n-1})$, refinamiento introducido por @mancini2009 y @lee2008 sobre el umbral no ponderado de la @eq-estimador; y (ii) se convierte el conteo agregado en un *procedimiento a nivel de evento* que recupera, para cada salto detectado, su instante y su magnitud, sobre los cuales se ajusta un modelo de distribución.
+:::: {style="text-align:justify"}
+La estimación de la intensidad de saltos desarrollada en la Sección 6.4.1 permite identificar, mediante un procedimiento basado en umbrales, los incrementos de la trayectoria observada cuya magnitud resulta incompatible con la variación continua esperada. Sin embargo, el conteo de dichos incrementos proporciona únicamente información acerca de la frecuencia de ocurrencia de los eventos detectados y no caracteriza la magnitud de los saltos.
+
+En esta sección se desarrolla el procedimiento estadístico necesario para obtener, a partir de las detecciones identificadas por el umbral, una estimación no paramétrica de la distribución de severidad. El procedimiento se formula sobre la trayectoria del proceso de reservas y no requiere especificar previamente una familia paramétrica para la distribución de las magnitudes de los saltos.
+
+La formulación se desarrolla inicialmente para una trayectoria genérica y posteriormente puede aplicarse de manera idéntica a cada uno de los esquemas numéricos considerados en el Capítulo 7.
+
+El @thm-Consistencia_estimador_intensidad garantiza que $\hat\lambda_n$ (@eq-umbral) es un estimador consistente de la *intensidad total* $\lambda$, pero es un estadístico *agregado*: cuenta cuántos incrementos superan el umbral $\tau_n$ sin identificar *cuáles* instantes contienen un salto ni *qué tamaño* tuvo cada uno. Esta sección extiende el marco de la @sec-In_Sal en dos direcciones: Se pondera el umbral por la volatilidad instantánea local $\hat\sigma(t_{n-1})$, refinamiento introducido por @mancini2009 y @lee2008 sobre el umbral no ponderado de la @eq-estimador; y se convierte el conteo agregado en un *procedimiento a nivel de evento* que recupera, para cada salto detectado, su instante y su magnitud, sobre los cuales se ajusta un modelo de distribución **agregada**, sin requerir identificación del tipo de siniestro (meteorológico o sísmico).
 
 Se trabaja sobre el proceso de reservas $\{U(t)\}_{t\ge 0}$ de la @eq-modelo_extendido, observado en la malla $t_0<t_1<\dots<t_n$ con paso constante $\Delta_n=t_i-t_{i-1}$, sobre $N_{\text{sim}}$ trayectorias simuladas independientes $U^{(1)},\dots,U^{(N_{\text{sim}})}$ (@sec-Mil_comp).
 
-#### Estimación de la Volatilidad Instantánea Local.
+::::
 
-Dado que $\sigma(t)$ es tiempo-dependiente y las $N_{\text{sim}}$ trayectorias comparten la misma función determinista $\sigma(t)$, se estima localmente mediante la *variación bipotencia realizada* @barndorffnielsen2004, adaptada al incremento relativo
+:::: {style="text-align:justify"}
 
-$$
-\tilde r_i^{n,(j)} := \frac{U^{(j)}(t_i)-U^{(j)}(t_{i-1})}{U^{(j)}(t_{i-1})}.
-$$ {#eq-incremento_relativo}
+La estimación de la distribución de severidad se realiza directamente a partir de las trayectorias simuladas del proceso de reserva y de los incrementos identificados por el procedimiento de detección de saltos descrito previamente. El procedimiento es común a los esquemas numéricos considerados, por lo que se aplica de manera independiente a las trayectorias obtenidas mediante el método de Milstein compensado y mediante el método semi-implícito compensado.
 
-::: {.remark}
-Se normaliza por $U^{(j)}(t_{i-1})$, a diferencia del incremento absoluto $\Delta_i^n X$ de la @eq-umbral, porque $U(t)$ no es estacionario (crece por primas y rendimientos): un umbral sobre incrementos absolutos perdería sensibilidad relativa a medida que $U(t)$ aumenta.
-:::
+En particular, la inferencia no paramétrica no utiliza información acerca de la causa física del evento. Por consiguiente, las observaciones utilizadas en esta sección corresponden exclusivamente a los decrementos detectados en las trayectorias agregadas. Las etiquetas utilizadas durante la simulación para distinguir los mecanismos generadores de los saltos, cuando se dispone de ellas, se reservan exclusivamente para la validación de la capacidad de detección y no intervienen en la construcción de los estimadores.
 
-::: {#def-bipower_variation}
-**Estimador agrupado de volatilidad instantánea**.
-
-Con ventana local $K=O_p(\Delta_n^a)$, $-1<a<-1/2$,
+Sea
 
 $$
-\hat\sigma^2(t_{i-1}) := \frac{\pi}{2}\cdot\frac{1}{K\,\Delta_n\, N_{\text{sim}}}
-\sum_{j=1}^{N_{\text{sim}}}\sum_{k=1}^{K} \left|\tilde r_{i-k}^{n,(j)}\right|\left|\tilde r_{i-k+1}^{n,(j)}\right|.
-$$ {#eq-bipower_variation}
-:::
+0=t_0<t_1<\cdots<t_n=T,
+\qquad
+\Delta_n=t_i-t_{i-1},
+$$ {#eq-malla-temporal-severidad}
 
-::: {.remark}
-**Consistencia con presencia de saltos y agrupación entre trayectorias**.
-
-La constante $\pi/2$ corrige el sesgo de usar el valor absoluto en lugar del cuadrado @barndorffnielsen2004; el estimador permanece consistente para la volatilidad continua incluso cuando algunos incrementos contienen saltos, siempre que $K$ satisfaga la condición asintótica anterior (el mismo principio que sustenta el  @thm-Consistencia_estimador_intensidad, pero aplicado localmente en vez de sobre todo $[0,T]$). Se agrupa (*pooling*) sobre las $N_{\text{sim}}$ trayectorias porque $\sigma(t)$ es una función determinista *común* a todas ellas: esto reduce la varianza del estimador sin introducir sesgo, de la misma forma en que el @thm-Consistencia_estimador_intensidad utiliza $T\to\infty$ para ganar consistencia.
-:::
-
-#### Construcción del Umbral y el Conjunto de Detección.
-
-::: {#def-umbral_ponderado}
-**Umbral ponderado por volatilidad local**. 
-Generalizando la @eq-estimador mediante la ponderación de @mancini2009,
+la partición temporal utilizada para la simulación, y sea
 
 $$
-\tau_n(t_{i-1}) := \alpha\,\hat\sigma(t_{i-1})\,\Delta_n^{\varpi}, \qquad \alpha>0,\ \varpi\in\left(0,\tfrac12\right).
-$$ {#eq-umbral_ponderado}
-:::
+U^{(j)}(t_i),
+\qquad
+j=1,\ldots,N_{\mathrm{sim}},
+$$
 
-Definiendo el residuo *detrended*
+la trayectoria $j$-ésima del proceso de reserva, con $N_{\mathrm{sim}}=1000$.
+
+La metodología se desarrolla mediante las siguientes etapas: construcción de incrementos relativos, estimación local de la volatilidad, definición del umbral de detección, identificación de incrementos anómalos, extracción de las severidades detectadas, estimación de su distribución empírica y de su densidad mediante KDE, ajuste paramétrico auxiliar y cuantificación de incertidumbre mediante bootstrap por trayectorias.
+
+::::
+
+#### Incrementos relativos y estimación local de la volatilidad
+
+:::: {style="text-align:justify"}
+
+Para cada trayectoria se define el incremento relativo
 
 $$
-\tilde e_i^{n,(j)} := \tilde r_i^{n,(j)} - \left[\frac{c(t_{i-1})}{U^{(j)}(t_{i-1})} + r(t_{i-1})\right]\Delta_n,
-$$ {#eq-residuo_detrended}
+\widetilde r_{n,i}^{(j)}
+:=
+\frac{
+U^{(j)}(t_i)-U^{(j)}(t_{i-1})
+}{
+U^{(j)}(t_{i-1})
+},
+\qquad
+i=1,\ldots,n,
+\quad
+j=1,\ldots,N_{\mathrm{sim}}.
+$$ {#eq-incremento-relativo}
 
-que remueve la deriva determinista de primas y rendimientos de la @eq-modelo_extendido antes de comparar contra el umbral,
-
-::: {#def-conjunto_deteccion}
-**Conjunto de detección**.
-
-$$
-D^{(j)} := \left\{\, i \in \{1,\dots,n\} : \left|\tilde e_i^{n,(j)}\right| > \tau_n(t_{i-1}) \,\right\}.
-$$ {#eq-conjunto_deteccion}
-:::
-
-::: {.remark}
-**Relación con $\hat\lambda_n$**.
-
-El estadístico de la @eq-umbral es recuperable a partir de $D^{(j)}$ como $\hat\lambda_n^{(j)}=|D^{(j)}|/T$; el @thm-Consistencia_estimador_intensidad sigue garantizando la consistencia de este conteo agregado bajo las mismas condiciones asintóticas sobre $\varpi$ (propiedades (I) y (II) de la @sec-In_Sal), ahora con el umbral ponderado de la @eq-umbral_ponderado.
-:::
-
-#### Verificación Cruzada mediante la Estadística de Lee--Mykland.
-
-Como verificación independiente de la @def-conjunto_deteccion, se calcula el estadístico
+Esta normalización permite expresar los cambios de la reserva en términos relativos a su nivel inmediatamente anterior. La estimación de la escala local asociada a la componente continua se obtiene mediante una versión agregada de la variación bipotencia realizada, siguiendo la construcción de variación bipotencia propuesta para separar la variación continua de la contribución de saltos [@barndorffnielsen2004]. Para una ventana de $K$ observaciones se define
 
 $$
-\mathcal L_i^{(j)} := \frac{\tilde r_i^{n,(j)}}{\hat\sigma(t_{i-1})}.
-$$ {#eq-leemykland_stat}
+\widehat\sigma^2(t_{i-1})
+:=
+\frac{\pi}{2}
+\frac{1}{K\Delta_nN_{\mathrm{sim}}}
+\sum_{j=1}^{N_{\mathrm{sim}}}
+\sum_{k=1}^{K}
+\left|
+\widetilde r_{n,i-k}^{(j)}
+\right|
+\left|
+\widetilde r_{n,i-k+1}^{(j)}
+\right|.
+$$ {#eq-volatilidad-local}
 
-Bajo ausencia de salto en $(t_{i-1},t_i]$, $\mathcal L_i \xrightarrow{d} N(0,1/c^2)$ con $c=\mathbb E|Z|=\sqrt{2/\pi}\approx 0.7979$, $Z\sim N(0,1)$.
-
-::: {#prp-gumbel_lm}
-**Región de rechazo vía valores extremos**.
-
-Con $n$ observaciones, bajo ausencia de saltos,
-
-$$
-\frac{\max_i|\mathcal L_i| - C_n}{S_n} \xrightarrow{d} \xi, \qquad P(\xi\le x)=\exp(-e^{-x}),
-$$ {#eq-gumbel}
-
-donde
-
-$$
-C_n = \frac{(2\log n)^{1/2}}{c} - \frac{\log\pi+\log(\log n)}{2c(2\log n)^{1/2}}, \qquad
-S_n = \frac{1}{c(2\log n)^{1/2}}.
-$$ {#eq-gumbel_constantes}
-
-Para un nivel de significancia $\alpha_n$, se declara salto en $i$ si $(|\mathcal L_i|-C_n)/S_n > \beta^\ast=-\log(-\log(1-\alpha_n))$.
-:::
-
-::: {.remark}
-La comparación directa de $|\mathcal L_i|$ contra un valor crítico fijo (sin la normalización de la  @eq-gumbel) invalida el nivel de significancia del test, pues $\max_i|\mathcal L_i|$ no converge a una distribución degenerada sino a la ley de valores extremos de Gumbel (@eq-gumbel).
-:::
-
-#### Extracción de la Severidad y Verificación de Signo.
-
-::: {#prp-severidad_hat}
-**Estimador de severidad**. 
-
-Para cada $i \in D^{(j)}$,
+La correspondiente estimación de la escala local es
 
 $$
-\hat Y_i^{(j)} := -\,\tilde e_i^{n,(j)} \cdot U^{(j)}(t_{i-1}).
-$$ {#eq-severidad_hat}
-:::
+\widehat\sigma(t_{i-1})
+:=
+\sqrt{\widehat\sigma^2(t_{i-1})}.
+$$ {#eq-raiz-volatilidad-local}
 
-::: {#cor-verificacion_signo}
-**Verificación de signo**. 
+La agregación sobre las trayectorias es coherente con la implementación numérica, en la cual la componente de difusión utiliza la misma función de volatilidad para las trayectorias simuladas. En este sentido, el *pooling* permite utilizar conjuntamente las réplicas Monte Carlo para estimar la escala local común. El estimador se emplea como una medida local de escala para distinguir fluctuaciones ordinarias de incrementos cuya magnitud resulta incompatible con la dinámica continua en la escala temporal considerada [@barndorffnielsen2004].
 
-Por la convención de la @eq-modelo_extendido, $J(t)$ resta de la reserva: un siniestro genuino produce $\tilde e_i^n<0$, de modo que $\hat Y_i^{(j)}>0$. Si $\hat Y_i^{(j)}<0$ para algún $i\in D^{(j)}$, la detección se reclasifica como falso positivo del umbral (ruido difusivo atípico, no siniestro) y se descarta de la muestra de severidades.
-:::
+::::
 
-#### Calibración de $(\alpha,\varpi)$ mediante el Criterio de la Meseta
+#### Umbral de detección de saltos
 
-::: {#prp-tasa_fp}
-**Tasa de falsos positivos asintótica**. 
+:::: {style="text-align:justify"}
 
-Bajo ausencia de salto en $(t_{i-1},t_i]$,
+A partir de la estimación local de volatilidad se define el umbral dependiente del tamaño de la malla mediante
 
 $$
-P\big(|\tilde e_i^n|>\tau_n(t_{i-1})\big) \approx 2\left[1-\Phi\!\left(\frac{\tau_n(t_{i-1})}{\hat\sigma(t_{i-1})\sqrt{\Delta_n}}\right)\right],
-$$ {#eq-tasa_fp}
+\tau_n(t_{i-1})
+:=
+\alpha
+\widehat\sigma(t_{i-1})
+\Delta_n^{\varpi},
+\qquad
+\alpha>0,
+\qquad
+\varpi\in\left(0,\frac12\right).
+$$ {#eq-umbral-ponderado}
 
-con $\Phi$ la función de distribución normal estándar.
-:::
-
-::: {#def-meseta}
-**Criterio de la meseta**. 
-
-Fijando $\varpi$, se calcula la tasa de detección $\hat N(\alpha)/N_{\text{sim}}$ sobre una malla de valores de $\alpha$. El par $(\alpha^\ast,\varpi)$ se selecciona en la *meseta*: el menor $\alpha$ a partir del cual $\hat N(\alpha)/N_{\text{sim}}$ deja de cambiar más de una tolerancia relativa prefijada entre valores consecutivos de $\alpha$, indicando que ya se han agotado los saltos genuinos y solo se pierden detecciones marginales de ruido.
-:::
-
-::: {.remark}
-Este criterio es el análogo, a nivel de calibración de umbral, de la elección de $\varpi\in(0,1/2)$ discutida en la @sec-In_Sal: ambos buscan el punto donde se equilibran las propiedades (I) (detectar saltos) y (II) (controlar falsos positivos) de la @eq-estimador.
-:::
-
-#### Modelo de Mezcla Contaminada para la Severidad Agregada.
-
-Bajo el diseño de calibración de la @sec-funcion_costos_met_sis (dos tipos de siniestro, más falsos positivos residuales que sobreviven al @cor-verificacion_signo), se postula la distribución de severidad agregada
-
+La elección del exponente $\varpi$ responde a dos requerimientos asintóticos. En primer lugar,
 
 $$
-G(z) = w_1\, F_m(z;\mu_m,\sigma_m^2) + w_2\, F_s(z;\mu_s,\sigma_s^2) + w_3\, \Psi(z),
-\qquad \sum_{k=1}^3 w_k=1,
-$$ {#eq-mezcla_severidad}
+\Delta_n^{\varpi}\longrightarrow0
+\qquad
+\text{cuando}
+\qquad
+\Delta_n\longrightarrow0,
+$$ {#eq-umbral-convergencia-cero}
 
-donde $F_m,F_s$ son las (log-)normales truncadas de la Sección 8.1.4.
-
-:::  {#prp-varianza_espuria}
-**Varianza del componente espurio**.
-
-El componente $\Psi$ corresponde a incrementos puramente difusivos que excedieron el umbral por azar (falsos positivos que pasaron la verificación de signo por casualidad de muestreo). Su escala natural, heredada de la parte continua del proceso, es
+mientras que
 
 $$
-\Psi(z) \sim N\!\left(0,\; \big(U(t_{i-1})\hat\sigma(t_{i-1})\big)^2\Delta_n\right)\Big|_{|z|>\tau_n},
-$$ {#eq-varianza_espuria}
+\frac{\Delta_n^\varpi}{\sqrt{\Delta_n}}
+=
+\Delta_n^{\varpi-\frac12}
+\longrightarrow\infty.
+$$ {#eq-umbral-dominancia-difusion}
 
-i.e., la varianza de la aproximación gaussiana del incremento continuo (@eq-modelo_extendido), truncada a la región de detección. En la práctica, se estima promediando $(U(t_{i-1})\hat\sigma(t_{i-1}))^2\Delta_n$ sobre las propias detecciones, en lugar de estimarse libremente junto con $w_3$.
-:::
+Por consiguiente, el umbral tiende a cero, pero lo hace más lentamente que la escala de las fluctuaciones continuas de orden $\sqrt{\Delta_n}$. Esta propiedad constituye la base de los procedimientos de detección por umbral: bajo las condiciones de regularidad apropiadas, permite separar incrementos asociados a saltos de las fluctuaciones producidas por la componente continua [@mancini2009].
 
-#### Estimación por Máxima Verosimilitud Restringida y Selección de Orden.
-
-::: {#prp-label_switching}
-**Identificabilidad y ambigüedad de etiqueta**. 
-
-La verosimilitud de la @eq-mezcla_severidad es invariante ante la permutación $(w_1,\mu_m,\sigma_m)\leftrightarrow(w_2,\mu_s,\sigma_s)$: el algoritmo EM (@dempster1977) no distingue *a priori* cuál componente es meteorológico y cuál sísmico. La ambigüedad se resuelve imponiendo la restricción de orden $\mu_m<\mu_s$, consistente con que los siniestros sísmicos calibrados en la Sección 8.1.4 son, en promedio, de mayor severidad.
-:::
-
-::: {#def-bic_orden}
-**Selección de orden vía BIC**. 
-El número de componentes efectivamente sostenidos por los datos ($k\in\{2,3\}$, incorporando o no el componente espurio de la @prp-varianza_espuria como componente libre adicional) se selecciona minimizando el Criterio de Información Bayesiano (@schwarz1978)
+Para eliminar, en la medida de lo posible, la contribución regular de la dinámica de la reserva, se define el residuo relativo
 
 $$
-\mathrm{BIC}(k) = -2\log\hat{\mathcal L}_k + k\log|D_{\text{val}}|,
-$$ {#eq-bic}
+\widetilde e_{n,i}^{(j)}
+:=
+\widetilde r_{n,i}^{(j)}
+-
+\left[
+\frac{c(t_{i-1})}{U^{(j)}(t_{i-1})}
++
+r(t_{i-1})
+\right]\Delta_n.
+$$ {#eq-residuo-relativo}
 
-sobre la muestra de severidades válidas $D_{\text{val}}=\{\log\hat Y_i^{(j)} : i\in D^{(j)},\, \hat Y_i^{(j)}>0\}$.
-:::
-
-#### Diagnóstico de Estacionalidad Espuria.
-
-::: {.remark}
-**Hipótesis de homogeneidad temporal**.
-
-El modelo de la @eq-mezcla_severidad asume que $F_m,F_s$ no dependen del instante calendario en que ocurre el salto. Si la estacionalidad de $\lambda_{\text{meteo}}(t)$ (Sección 8.1.4) se filtra hacia las severidades *detectadas* (por ejemplo, porque el umbral detecta más fácilmente saltos grandes en meses de alta volatilidad de fondo), esta hipótesis se viola. Se contrasta agrupando $\{\hat Y_i^{(j)}\}$ por mes calendario y aplicando la prueba no paramétrica de Kruskal--Wallis (@kruskalwallis1952),
-
-$$
-H = \frac{12}{n_T(n_T+1)}\sum_{m=1}^{12} n_m\left(\bar R_m - \frac{n_T+1}{2}\right)^2 \xrightarrow{d} \chi^2_{11} \text{ bajo } H_0,
-$$ {#eq-kruskal_wallis}
-
-donde $\bar R_m$ es el rango promedio del mes $m$, $n_m$ su tamaño de muestra y $n_T=\sum_m n_m$.
-:::
-
-#### Validación de Bondad de Ajuste.
-
-::: {#def-cvm}
-**Cramér--von Mises de una muestra**.
-
-Con $\{y_{(1)}\le\dots\le y_{(n)}\}$ la muestra ordenada de $\log\hat Y_i^{(j)}$ y $\hat G$ la mezcla ajustada,
+El conjunto de índices identificados como detecciones en la trayectoria $j$ se define entonces mediante
 
 $$
-\omega^2 = \frac{1}{12n} + \sum_{i=1}^n \left(\hat G(y_{(i)}) - \frac{2i-1}{2n}\right)^2.
-$$ {#eq-cramer_von_mises}
+D^{(j)}
+:=
+\left\{
+i\in\{1,\ldots,n\}:
+\left|
+\widetilde e_{n,i}^{(j)}
+\right|
+>
+\tau_n(t_{i-1})
+\right\}.
+$$ {#eq-conjunto-deteccion}
+
+La condición anterior constituye el criterio principal de detección utilizado en los programas de simulación. La construcción es consistente con los procedimientos de detección no paramétrica por umbral desarrollados para procesos observados discretamente [@mancini2009; @lee2008].
+
+::: {#prp-deteccion-umbral}
+Bajo el esquema de detección anterior, la clasificación de un incremento como evento detectado depende únicamente de la trayectoria observada, del estimador local de escala y de los parámetros $(\alpha,\varpi)$. En consecuencia, el procedimiento es aplicable tanto a las trayectorias simuladas como, una vez observadas las variables correspondientes, a datos empíricos en los cuales no se disponga de información sobre la causa física del evento.
 :::
 
-::: {#def-anderson}
-**Anderson de dos muestras**. 
-Cuando se dispone de los tamaños verdaderos de simulación (*oracle*), se contrasta contra la muestra detectada mediante (@anderson1962)
+::::
+
+#### Estadístico normalizado para diagnóstico
+
+:::: {style="text-align:justify"}
+
+Como medida complementaria para caracterizar la magnitud relativa de los incrementos se utiliza el estadístico normalizado
 
 $$
-T = \frac{U}{NM(N+M)} - \frac{4NM-1}{6(N+M)}, \qquad
-U = N\sum_{i=1}^N (r_i-i)^2 + M\sum_{j=1}^M (s_j-j)^2,
-$$ {#eq-anderson_dos_muestras}
+\mathcal L_i^{(j)}
+:=
+\frac{
+\widetilde r_{n,i}^{(j)}
+}{
+\widehat\sigma(t_{i-1})
+}.
+$$ {#eq-estadistico-LM}
 
-donde $r_i,s_j$ son los rangos, dentro de la muestra combinada y *ordenada*, de la $i$-ésima observación *oracle* y la $j$-ésima observación detectada respectivamente.
-:::
+Bajo ausencia de saltos y bajo las condiciones de regularidad requeridas por la aproximación asintótica correspondiente, este estadístico permite utilizar una escala aproximadamente gaussiana como referencia para evaluar la magnitud de las fluctuaciones. La construcción de estadísticas normalizadas para detectar saltos en procesos observados discretamente está relacionada con el procedimiento de Lee--Mykland [@lee2008]. 
 
-#### Cuantificación de la Incertidumbre — Bootstrap por Trayectoria.
+En particular, las cantidades asociadas a la aproximación de falsos positivos deben interpretarse como medidas diagnósticas y no como probabilidades exactas de error de clasificación para el procedimiento completo.
 
-::: {#def-bootstrap_trayectoria}
-**Bootstrap por trayectoria completa**. 
-Se remuestrean, con reemplazo, $N_{\text{sim}}$ índices de trayectoria $\{j_1,\dots,j_{N_{\text{sim}}}\}\subset\{1,\dots,N_{\text{sim}}\}$, y se repiten los pasos sobre las trayectorias $U^{(j_1)},\dots,U^{(j_{N_{\text{sim}}})}$ (no se remuestrean detecciones individuales sueltas). Repitiendo $B$ veces, el intervalo de confianza al $95\%$ de cualquier estadístico $\hat\theta$ (media, mediana, número de detecciones) se estima por el método de percentiles sobre las $B$ réplicas $\hat\theta^{(1)},\dots,\hat\theta^{(B)}$.
-:::
+::::
 
-::: {.remark}
-Se remuestrea la trayectoria completa, y no cada detección por separado, porque las detecciones dentro de una misma trayectoria no son independientes entre sí (comparten la misma realización del movimiento browniano y de los procesos de Poisson subyacentes de la @eq-modelo_extendido); remuestrear a nivel de detección individual subestimaría la verdadera varianza del estimador.
-:::
+#### Extracción de las severidades detectadas
 
-### Distribución de los Tiempos entre Saltos: Teoría de Renovación y Teorema del Cambio de Tiempo. {#sec-Distr_tiempos_saltos}
+:::: {style="text-align:justify"}
 
-
-#### El Proceso de Conteo Asociado a las Detecciones.
-
-::: {#def-proceso_conteo}
-**Proceso de conteo de detecciones**. 
-
-Para cada trayectoria $j$, el conjunto de detección $D^{(j)}=\{i_1<i_2<\dots<i_K\}$ (@def-conjunto_deteccion) induce los tiempos de salto $\tau_k^{(j)}:=t_{i_k}$ y el proceso de conteo
+Una vez identificado el conjunto $D^{(j)}$, se obtiene para cada índice detectado una estimación de la magnitud monetaria del decremento residual. Para ello se define
 
 $$
-N^{(j)}(t) := \#\{k : \tau_k^{(j)}\le t\}, \qquad t\in[0,T].
-$$ {#eq-proceso_conteo}
-:::
+\widehat Y_i^{(j)}
+:=
+-
+\widetilde e_{n,i}^{(j)}
+U^{(j)}(t_{i-1}),
+\qquad
+i\in D^{(j)}.
+$$ {#eq-severidad-detectada}
 
-::: {#prp-doob_meyer}
-**Descomposición de Doob--Meyer**. 
-
-Bajo el modelo de la @eq-modelo_extendido, $J(t)$ es un proceso de Poisson (posiblemente) no homogéneo con intensidad $\lambda(t)=\lambda_{\text{meteo}}(t)+\lambda_{\text{sismo}}$ (@sec-funcion_costos_met_sis). En consecuencia,
-
-$$
-N^{(j)}(t) = \Lambda(t) + M^{(j)}(t), \qquad \Lambda(t):=\int_0^t\lambda(s)\,ds,
-$$ {#eq-doob_meyer}
-
-donde $M^{(j)}$ es una martingala respecto a la filtración generada por $U^{(j)}$ (@aalen1978).
-:::
-
-#### Estimación No Paramétrica de la Intensidad.
-
-::: {#def-nelson_aalen_individual}
-**Estimador de Nelson--Aalen por trayectoria**. 
-
-Para una única trayectoria, sin censura ni conjunto en riesgo variable (se observa el intervalo completo $[0,T]$),
+Se conservan únicamente las observaciones que satisfacen
 
 $$
-\hat\Lambda^{(j)}(t) = N^{(j)}(t).
-$$ {#eq-nelson_aalen_individual}
-:::
+\widehat Y_i^{(j)}>0.
+$$ {#eq-condicion-severidad-positiva}
 
-::: {.remark}
-El estimador (@eq-nelson_aalen_individual) es insesgado ($\mathbb E[\hat\Lambda^{(j)}(t)]=\Lambda(t)$) pero de varianza alta cuando el número de detecciones por trayectoria es bajo: una sola trayectoria no permite recuperar la *forma* de $\lambda(t)$ de forma confiable.
-:::
+La cantidad $\widehat Y_i^{(j)}$ debe interpretarse como una **severidad detectada**: representa la magnitud monetaria del decremento residual que el procedimiento atribuye al intervalo $(t_{i-1},t_i]$.
 
-::: {#def-nelson_aalen_agrupado}
-**Estimador de Nelson--Aalen agrupado**. 
-Dado que $\lambda(t)$ es común a las $N_{\text{sim}}$ trayectorias (mismo argumento que la  @def-bipower_variation, caso "conjunto en riesgo $Y(t)=N_{\text{sim}}$ constante" de @abgk1993),
+Esta distinción es importante porque la detección se realiza sobre una trayectoria discretizada. Si varios saltos físicos ocurren dentro de un mismo intervalo de discretización, el procedimiento opera sobre el incremento agregado de dicho intervalo y, por tanto, una única observación $\widehat Y_i^{(j)}$ puede representar la contribución conjunta de varios eventos no resolubles temporalmente en la malla utilizada.
+
+En consecuencia, sea
 
 $$
-\hat\Lambda(t) := \frac{1}{N_{\text{sim}}}\sum_{j=1}^{N_{\text{sim}}} N^{(j)}(t).
-$$ {#eq-nelson_aalen_agrupado}
-:::
+\mathcal Y
+:=
+\left\{
+\widehat Y_i^{(j)}:
+j=1,\ldots,N_{\mathrm{sim}},
+\ i\in D^{(j)},
+\ \widehat Y_i^{(j)}>0
+\right\},
+$$ {#eq-conjunto-severidades}
 
-:::{#def-ramlau_hansen}
-**Estimador de núcleo de Ramlau--Hansen, versión circular**. 
-La versión suavizada de la @eq-nelson_aalen_agrupado, explotando la periodicidad anual esperada de $\lambda_{\text{meteo}}(t)$ (@sec-funcion_costos_met_sis) mediante un núcleo con distancia circular $d_{\mathrm{circ}}(t,\tau):=\min(|t-\tau|,\,365-|t-\tau|)$, es
+y sea $N_Y:=|\mathcal Y|$ el número total de severidades detectadas. La inferencia de esta sección se realiza sobre la distribución agregada de $\mathcal Y$.
 
-$$
-\hat\lambda(t) = \frac{1}{N_{\text{sim}}\, b}\sum_{j=1}^{N_{\text{sim}}}\sum_{k} K\!\left(\frac{d_{\mathrm{circ}}(t,\tau_k^{(j)})}{b}\right),
-$$ {#eq-ramlau_hansen}
-
-con $K$ un núcleo gaussiano y $b>0$ el ancho de banda (@ramlauhansen1983, @diggle1985).
-:::
-
-#### Ventanas Móviles como Estimador Local de la Intensidad.
-
-::: {#def-ventana_movil}
-**Estimador de ventana rectangular deslizante**. 
-
-Alternativa no suavizada a la @eq-ramlau_hansen, para una ventana de ancho $W$ centrada en $t$,
+::: {#def-distribucion-severidad-detectada}
+La función de distribución de severidad detectada se define por
 
 $$
-\hat\lambda_W(t) := \frac{\#\{k,j : \tau_k^{(j)} \in [t-W/2,\, t+W/2]\}}{N_{\text{sim}}\cdot W}.
-$$ {#eq-ventana_movil}
+F_Y(y)
+:=
+\mathbb P(\widehat Y\leq y\mid D=1),
+$$ {#eq-distribucion-severidad-detectada}
+
+donde $D=1$ indica que el incremento fue clasificado como una detección válida por el procedimiento definido en @eq-conjunto-deteccion y que la severidad satisface @eq-condicion-severidad-positiva.
 :::
 
-::: {.remark}
-**Justificación teórica y límites del ancho de ventana**.
+::::
 
-Esta construcción traslada a $\lambda(t)$ el mismo principio de *homogeneidad local aproximada* que sustenta la elección de la ventana $K$ en la @def-bipower_variation (@lee2008) [Assumption 1] y la elección del umbral $r(h)$ en @mancini2009: se asume que $\lambda(t)$ varía lo suficientemente lento como para tratarse como localmente constante dentro de la ventana $W$. Ningún resultado de @mancini2009 o @lee2008 trata directamente la estimación de $\lambda(t)$ —su teoría de ventana local es para $\sigma(t)$— por lo que la @def-ventana_movil es una **extensión análoga**, no una aplicación literal de dichos resultados. Existe el mismo compromiso sesgo--varianza que en la elección de $K$: una ventana ancha reduce la varianza pero sesga la estimación si $\lambda(t)$ varía apreciablemente dentro de ella (relevante aquí, pues $\lambda_{\text{meteo}}(t)$ cambia sustancialmente mes a mes,  @sec-funcion_costos_met_sis).
-:::
+#### Sensibilidad respecto de los parámetros del detector
 
-#### Diagnóstico de Homogeneidad Temporal.
+:::: {style="text-align:justify"}
 
-::: {#prp-uniformidad_poisson}
-**Test de uniformidad bajo Poisson homogéneo**. 
+El procedimiento depende de los parámetros $\alpha$ y $\varpi$. Por esta razón, antes de fijar los valores utilizados para la comparación entre los métodos numéricos se realiza un análisis de sensibilidad sobre una malla de valores candidatos.
 
-Bajo $H_0:\lambda(t)=\lambda$ (constante), los tiempos de un proceso de Poisson homogéneo en $[0,T]$, condicionados al número total observado, se distribuyen $\mathrm{Uniforme}(0,T)$ @coxlewis1966. Se contrasta mediante Kolmogorov--Smirnov de una muestra sobre $\{\tau_k^{(j)} \bmod 365\}$ contra $\mathrm{Uniforme}(0,365)$ (plegando sobre el ciclo anual para acumular información de los años simulados).
-:::
-
-#### El Teorema del Cambio de Tiempo (Time-Rescaling Theorem).
-
-::: {#thm-time_resrescaling}
-**Papangelou, 1972** 
-Sea $\{\tau_k\}$ un proceso puntual con intensidad (condicional) $\lambda(t)$ y defínase $s_k := \Lambda(\tau_k)=\int_0^{\tau_k}\lambda(u)\,du$. Entonces $\{s_k\}$ es un proceso de Poisson homogéneo de tasa $1$ (@papangelou1972). Equivalentemente, los incrementos $\Delta s_k := s_k-s_{k-1}$ son i.i.d. $\mathrm{Exp}(1)$, y $u_k := 1-e^{-\Delta s_k}$ son i.i.d. $\mathrm{Uniforme}(0,1)$ (@brown2002).
-:::
-
-::: {.remark}
-Este resultado es la base del "random time change theorem" aplicado por @ogata1988 al análisis de residuos de procesos sísmicos, y por @bowsher2007 como prueba de especificación de modelos de intensidad de eventos de mercado en econometría financiera de alta frecuencia. Se utiliza aquí como validación de que $\hat\Lambda(t)$ (@eq-nelson_aalen_agrupado) explica la dinámica temporal de las detecciones: definiendo $\Delta\tau_i := \hat\Lambda(\tau_i)-\hat\Lambda(\tau_{i-1})$ sobre las detecciones ordenadas de cada trayectoria, bajo $H_0$ se espera $\Delta\tau_i\sim\mathrm{Exp}(1)$.
-:::
-
-::: {#cor-equivalencia_ks}
-**Equivalencia de formulaciones del test.** 
-
-El estadístico de Kolmogorov--Smirnov de $\{\Delta\tau_i\}$ contra $\mathrm{Exp}(1)$ coincide exactamente con el de $\{u_i=1-e^{-\Delta\tau_i}\}$ contra $\mathrm{Uniforme}(0,1)$, por invarianza del estadístico $D$ de Kolmogorov--Smirnov ante la transformación de los datos por la función de distribución acumulada verdadera bajo $H_0$.
-:::
-
-#### Familias Paramétricas para los Tiempos de Espera Crudos.
-
-Bajo $H_0:\lambda(t)=\lambda$ constante, $\Delta\tau\sim\mathrm{Exp}(\lambda)$ (teoría clásica de renovación, @cox1962renewal). Si $\lambda(t)$ es no homogénea, la distribución marginal (no condicionada al tiempo de ocurrencia) de $\Delta\tau$ deja de ser Exponencial. Se contrastan las familias
+Para una combinación $(\alpha,\varpi)$ se registra el número de detecciones y, cuando corresponde, las estadísticas descriptivas asociadas. La tasa media de detección se expresa como
 
 $$
-\text{Weibull:}\quad f(x;k,\theta)=\frac{k}{\theta}\left(\frac{x}{\theta}\right)^{k-1}e^{-(x/\theta)^k},
-$$ {#eq-weibull}
+R(\alpha,\varpi)
+:=
+\frac{
+N_{\mathrm{det}}(\alpha,\varpi)
+}{
+N_{\mathrm{sim}}
+},
+$$ {#eq-tasa-deteccion}
+
+donde $N_{\mathrm{det}}(\alpha,\varpi)$ representa el número medio de detecciones por trayectoria bajo la combinación considerada.
+::::
+
+#### Función de distribución empírica de las severidades
+
+:::: {style="text-align:justify"}
+
+La estimación no paramétrica de la función de distribución de severidad se realiza mediante la función de distribución empírica asociada al conjunto $\mathcal Y$ definido en @eq-conjunto-severidades. Esta representación evita imponer una familia paramétrica para la distribución de severidades [@aalen1978]. Sea $Y_1,\ldots,Y_{N_Y}$ una enumeración de dicho conjunto. Entonces,
 
 $$
-\text{Gamma:}\quad f(x;k,\theta)=\frac{1}{\Gamma(k)\theta^k}x^{k-1}e^{-x/\theta},
-$$ {#eq-gamma}
+\widehat F_Y(y)
+=
+\frac{1}{N_Y}
+\sum_{\ell=1}^{N_Y}
+\mathbf 1_{\{Y_\ell\leq y\}}.
+$$ {#eq-ecdf-severidad}
+
+La función $\widehat F_Y$ constituye el estimador no paramétrico principal de la distribución de severidad detectada. No requiere especificar una familia paramétrica para la distribución subyacente.
+
+La comparación entre los métodos numéricos se realiza utilizando las funciones empíricas obtenidas a partir de sus respectivas colecciones de severidades detectadas. Las diferencias entre ambas funciones deben interpretarse como diferencias en la distribución de las severidades recuperadas por el procedimiento de detección aplicado a cada esquema numérico.
+
+::::
+
+#### Estimación no paramétrica de la densidad mediante KDE en escala logarítmica
+
+:::: {style="text-align:justify"}
+
+Dado que las severidades son positivas y pueden presentar asimetría y colas derechas, la densidad se estima mediante una transformación logarítmica. Sea
 
 $$
-\text{Hiperexponencial:}\quad f(x;w,\lambda_1,\lambda_2)=w\lambda_1 e^{-\lambda_1 x}+(1-w)\lambda_2 e^{-\lambda_2 x}.
-$$ {#eq-hiperexp}
+Z_\ell:=\log(Y_\ell),
+\qquad
+\ell=1,\ldots,N_Y.
+$$ {#eq-transformacion-log-severidad}
 
-::: {.remark}
-**Motivación de la hiperexponencial.**
-
-La superposición de dos procesos de Poisson independientes de tasas distintas —meteorológico ($\lambda_{\text{meteo}}\approx6$/año) y sísmico ($\lambda_{\text{sismo}}=0.15$/año), @sec-funcion_costos_met_sis— genera, si ambas tasas fuesen constantes, exactamente una mezcla de exponenciales en los tiempos de espera. La estacionalidad de $\lambda_{\text{meteo}}(t)$ hace que esto sea solo una aproximación de primer orden.
-:::
-
-::: {#prp-cv2_bound}
-**Cota de dispersión de la hiperexponencial.** 
-Toda mezcla finita de exponenciales (@eq-hiperexp) satisface
+Sobre la escala transformada se utiliza un estimador de densidad por núcleo. La estimación de densidades mediante métodos de núcleo constituye una técnica no paramétrica estándar; su formulación y propiedades generales pueden consultarse en Silverman [@silverman1986].
 
 $$
-CV^2 := \frac{\mathrm{Var}(X)}{\mathbb E[X]^2} \ge 1,
-$$ {#eq-cv2_bound}
+\widehat f_Z(z)
+=
+\frac{1}{N_Yh}
+\sum_{\ell=1}^{N_Y}
+K\left(
+\frac{z-Z_\ell}{h}
+\right),
+$$ {#eq-kde-log-severidad}
 
-con igualdad si y solo si $\lambda_1=\lambda_2$ (@cox1962renewal).
-:::
+donde $K$ es una función núcleo y $h>0$ es el ancho de banda.
 
-::: {.proof}
-Para $X$ con densidad @eq-hiperexp, $\mathbb E[X]=w/\lambda_1+(1-w)/\lambda_2$ y $\mathbb E[X^2]=2w/\lambda_1^2+2(1-w)/\lambda_2^2$. Por la desigualdad de Cauchy--Schwarz aplicada a la mezcla de dos exponenciales (casos particulares de distribuciones de fase tipo *Coxian*), se obtiene $\mathrm{Var}(X)\ge \mathbb E[X]^2$, con igualdad exactamente cuando la mezcla degenera a una única tasa.
-:::
-
-::: {#cor-regla_decision_cv2}
-**Regla de decisión práctica**. 
-
-Si el diagnóstico empírico da $\widehat{CV^2}<1$ (sub-dispersión), ninguna mezcla de exponenciales puede ser el modelo generador correcto; en ese régimen, Weibull o Gamma con parámetro de forma $k>1$ son las familias teóricamente adecuadas, y cualquier ajuste de la @eq-hiperexp debe esperarse que degenere ($\hat\lambda_1\approx\hat\lambda_2$).
-:::
-
-#### Corrección por Censura de Ventana Finita.
-
-::: {.remark}
-**Sesgo de selección por ventana finita.**
-
-Cuando el número esperado de detecciones por trayectoria en $[0,T]$ es bajo, la mayoría de trayectorias aportan $0$ ó $1$ detección y nunca generan un incremento $\Delta\tau_i=\tau_i-\tau_{i-1}$ completo (se requieren $\ge2$ detecciones). Agrupar solo incrementos completos descarta sistemáticamente la información de las trayectorias que esperaron mucho tiempo sin una segunda detección antes de terminar la ventana —censura por la derecha clásica en análisis de supervivencia y procesos de conteo (@aalen1978 @abgk1993)—, lo cual puede deprimir artificialmente $\widehat{CV^2}$ por debajo de su valor verdadero.
-:::
-
-::: {#def-verosimilitud_censurada}
-**Verosimilitud censurada.** 
-
-Para cada trayectoria $j$ con al menos una detección, sea $c^{(j)}:=T-\tau_K^{(j)}$ la espera final, censurada por la derecha. La verosimilitud corregida es
+Por la transformación $z=\log(y)$, se tiene
 
 $$
-\ell(\theta) = \sum_{\text{completos}} \log f(\Delta\tau_i;\theta) \;+\; \sum_{j} \log S\big(c^{(j)};\theta\big),
-$$ {#eq-verosimilitud_censurada}
+\frac{\mathrm d z}{\mathrm d y}
+=
+\frac{1}{y},
+\qquad y>0.
+$$ {#eq-jacobiano-log-severidad}
 
-donde $S=1-F$ es la función de supervivencia de la familia candidata.
-:::
-
-::: {.remark}
-La @eq-verosimilitud_censurada es la construcción estándar de máxima verosimilitud con censura por la derecha en un solo extremo, exactamente análoga a la verosimilitud de Kaplan--Meier/Nelson--Aalen @aalen1978 de la que se deriva el estimador de la @def-nelson_aalen_agrupado: ambas tratan la ausencia de un segundo evento observado como información parcial ("sabemos que la espera verdadera es al menos $c^{(j)}$"), no como dato faltante a ignorar.
-:::
-
-#### Criterios de Selección de Modelo y Validación.
-
-::: {#def-aic}
-**Criterio de Información de Akaike.** 
+Por consiguiente, la densidad estimada sobre la escala original de las severidades es
 
 $$
-\mathrm{AIC}(k) = 2k - 2\log\hat{\mathcal L},
-$$ {#eq-aic}
+\widehat f_Y(y)
+=
+\frac{1}{y}
+\widehat f_Z(\log y),
+\qquad
+y>0.
+$$ {#eq-kde-severidad}
 
-donde $k$ es el número de parámetros de la familia candidata (@akaike1974).
-:::
+Esta transformación es la que corresponde a la implementación computacional. La estimación KDE constituye una representación suavizada de la densidad asociada a la distribución empírica, mientras que @eq-ecdf-severidad continúa siendo el estimador no paramétrico directo de la función de distribución.
 
-:::{#def-anderson_darling}
-**Estadístico de Anderson--Darling de una muestra.** 
+::::
 
-Con $\{x_{(1)}\le\dots\le x_{(n)}\}$ la muestra ordenada y $F$ la CDF candidata ajustada,
+#### Ajustes paramétricos auxiliares de la distribución de severidad
 
-$$
-A^2 = -n - \frac{1}{n}\sum_{i=1}^n (2i-1)\Big[\log F(x_{(i)}) + \log\big(1-F(x_{(n+1-i)})\big)\Big].
-$$ {#eq-anderson_darling}
+:::: {style="text-align:justify"}
 
-A diferencia del estadístico de Kolmogorov--Smirnov, que pondera igual toda la distribución, $A^2$ pondera más las colas.
-:::
+Con el propósito de disponer de representaciones paramétricas de referencia, se ajustan mediante máxima verosimilitud las distribuciones Lognormal, Gamma y Weibull. Estos modelos se consideran únicamente como familias auxiliares para describir la muestra detectada y comparar representaciones paramétricas. Estos ajustes son complementarios a la estimación no paramétrica y no implican que alguna de las familias consideradas constituya el mecanismo generador verdadero de las severidades.
 
-::: {#prp-lilliefors_bootstrap}
-**Corrección de Lilliefors por bootstrap paramétrico.** 
-
-Cuando los parámetros de la familia candidata se estiman de la misma muestra sobre la que se aplica el test de Kolmogorov--Smirnov, el $p$-valor tabulado estándar no es válido: los valores críticos de la distribución de Kolmogorov asumen parámetros conocidos *a priori* (@lilliefors1969). La corrección consiste en un bootstrap paramétrico (@Efrontibshirani1993): se generan $B$ muestras sintéticas del modelo ajustado, se reajustan sus parámetros en cada réplica, se recalcula $D^{(b)}$, y el $p$-valor corregido es
+Para la distribución Lognormal se utiliza
 
 $$
-\hat p = \frac{1}{B}\sum_{b=1}^B \mathbb 1\{D^{(b)} \ge D_{\text{obs}}\}
-$$ {#eq-pvalor_bootstrap}.
+f(y;\mu,\sigma)
+=
+\frac{1}{y\sigma\sqrt{2\pi}}
+\exp\left[
+-\frac{(\log y-\mu)^2}{2\sigma^2}
+\right],
+\qquad
+y>0.
+$$ {#eq-lognormal-severidad}
+
+Para la distribución Gamma,
+
+$$
+f(y;k,\theta)
+=
+\frac{1}{\Gamma(k)\theta^k}
+y^{k-1}
+e^{-y/\theta},
+\qquad
+y>0,
+$$ {#eq-gamma-severidad}
+
+y para la distribución Weibull,
+
+$$
+f(y;k,\theta)
+=
+\frac{k}{\theta}
+\left(
+\frac{y}{\theta}
+\right)^{k-1}
+\exp\left[
+-\left(
+\frac{y}{\theta}
+\right)^k
+\right],
+\qquad
+y>0.
+$$ {#eq-weibull-severidad}
+
+Sea $\widehat\ell$ el valor máximo de la log-verosimilitud y sea $p$ el número de parámetros estimados. El criterio de información de Akaike, introducido como una medida de selección de modelos basada en información, se define mediante [@akaike1974]
+
+$$
+AIC
+=
+2p-2\widehat\ell.
+$$ {#eq-aic-severidad}
+
+El AIC se utiliza exclusivamente como criterio de comparación entre las familias paramétricas consideradas, de acuerdo con el propósito original del criterio de Akaike [@akaike1974]. La estimación no paramétrica de @eq-ecdf-severidad y @eq-kde-severidad no depende de seleccionar una de estas familias.
+
+::::
+
+####  Incertidumbre mediante bootstrap por trayectoria
+
+:::: {style="text-align:justify"}
+
+Debido a que varias detecciones pueden proceder de una misma trayectoria, las observaciones de severidad no se consideran automáticamente independientes. Para preservar la estructura de dependencia intra-trayectoria, el procedimiento bootstrap se realiza remuestreando trayectorias completas. El uso del bootstrap para cuantificar incertidumbre sigue la formulación general de Efron y Tibshirani [@Efrontibshirani1993].
+
+En cada réplica bootstrap se seleccionan $N_{\mathrm{sim}}$ trayectorias con reemplazo y se reconstruye el conjunto de severidades detectadas correspondiente a la muestra remuestreada. Para un estadístico $\theta$ de interés, se obtiene una colección
+
+$$
+\widehat\theta^{(1)},
+\ldots,
+\widehat\theta^{(B)},
+$$ {#eq-replicas-bootstrap-severidad}
+
+donde $B$ es el número de réplicas bootstrap.
+
+El intervalo percentil de nivel de confianza $1-\gamma$ se define mediante
+
+$$
+IC_{1-\gamma}
+=
+\left[
+\widehat\theta^{\,(\gamma/2)},
+\widehat\theta^{\,(1-\gamma/2)}
+\right],
+$$ {#eq-bootstrap-percentil-severidad}
+
+donde $\widehat\theta^{\,(q)}$ representa el cuantil $q$ de la distribución empírica de las réplicas bootstrap.
+
+Estos intervalos cuantifican la variabilidad asociada al muestreo de las trayectorias bajo el procedimiento de detección y los parámetros $(\alpha,\varpi)$ fijados. No incorporan incertidumbre adicional derivada de una eventual selección de estos parámetros.
+
+::::
+
+
+### Distribución de los tiempos entre saltos detectados. {#sec-Dis_tiem_entre_saltos}
+
+:::: {style="text-align:justify"}
+
+En esta sección se estudia la distribución de los tiempos entre detecciones, así como la intensidad temporal de los eventos detectados.
+
+El procedimiento de estimación opera sobre la información disponible en las trayectorias discretizadas; por tanto, los tiempos utilizados en esta sección son los tiempos de los incrementos clasificados como detecciones por el criterio de @eq-conjunto-deteccion.
+
+::::
+
+#### Tiempos de detección y proceso de conteo
+
+:::: {style="text-align:justify"}
+
+Para cada trayectoria $j$, sean
+
+$$
+\tau_k^{(j)}
+:=
+t_{i_k},
+\qquad
+k=1,\ldots,K_j,
+$$ {#eq-tiempos-deteccion}
+
+los tiempos correspondientes a los índices $i_k\in D^{(j)}$, ordenados de manera creciente. Aquí $K_j$ denota el número de detecciones de la trayectoria $j$.
+
+El proceso de conteo de detecciones se define por
+
+$$
+N^{(j)}(t)
+:=
+\#\left\{
+k:
+\tau_k^{(j)}\leq t
+\right\},
+\qquad
+t\in[0,T].
+$$ {#eq-conteo-detecciones}
+
+Este proceso cuenta exclusivamente los eventos que han sido identificados por el detector y constituye la base para el análisis de intensidad y de tiempos entre detecciones. La formulación mediante procesos de conteo es el marco natural para describir tiempos de ocurrencia y sus intensidades [@aalen1978; @abgk1993].
+
+::::
+
+#### Intensidad temporal no paramétrica
+
+:::: {style="text-align:justify"}
+
+Debido a la periodicidad anual incorporada en la estructura temporal del modelo, la intensidad de las detecciones se estima mediante un suavizamiento de núcleo sobre un dominio periódico.
+
+Sea $P=365$ el periodo anual expresado en días. Para $t,\tau\in[0,P)$ se define la distancia circular
+
+$$
+d_{\mathrm{circ}}(t,\tau)
+:=
+\min\left\{
+|t-\tau|,
+P-|t-\tau|
+\right\}.
+$$ {#eq-distancia-circular}
+
+Sea $h>0$ el ancho de banda. El estimador de intensidad por núcleo circular utilizado en la implementación es
+
+$$
+\widehat\lambda_h(t)
+=
+\frac{1}{N_{\mathrm{sim}}h}
+\sum_{j=1}^{N_{\mathrm{sim}}}
+\sum_{k=1}^{K_j}
+K\left(
+\frac{
+d_{\mathrm{circ}}(t,\tau_k^{(j)})
+}{h}
+\right).
+$$ {#eq-intensidad-kernel-circular}
+
+El factor $1/N_{\mathrm{sim}}$ produce una intensidad media por trayectoria, mientras que el factor $1/h$ corresponde a la normalización del estimador de núcleo.
+
+La ecuación @eq-intensidad-kernel-circular representa el estimador efectivamente utilizado en los programas. Su construcción pertenece a la familia de estimadores de intensidad por núcleo [@ramlauhansen1983]. Por tanto, no se identifica este estimador con el estimador clásico de Nelson--Aalen.
+
+::::
+
+#### Análisis de sensibilidad del ancho de banda
+
+:::: {style="text-align:justify"}
+
+El ancho de banda $h$ controla el grado de suavizamiento de la intensidad estimada. Valores pequeños permiten identificar variaciones temporales más localizadas, mientras que valores grandes producen una representación más suave. Este compromiso entre suavizamiento y variabilidad es inherente a los estimadores de intensidad por núcleo [@ramlauhansen1983].
+
+Para evaluar la estabilidad de la estructura temporal, se consideran distintos valores de $h$, incluyendo los utilizados en la implementación computacional. La comparación de las curvas $\widehat\lambda_h(t)$ permite determinar si las características estacionales principales permanecen estables frente a cambios razonables en el nivel de suavizamiento.
+
+Este análisis se interpreta como un estudio de sensibilidad y no como un procedimiento automático de selección óptima del ancho de banda.
+
+::::
+
+#### Tiempos entre detecciones
+
+:::: {style="text-align:justify"}
+
+Para cada trayectoria con al menos dos detecciones se define el tiempo entre detecciones consecutivas mediante
+
+$$
+\Delta\tau_k^{(j)}
+:=
+\tau_k^{(j)}
+-
+\tau_{k-1}^{(j)},
+\qquad
+k=2,\ldots,K_j.
+$$ {#eq-tiempo-entre-saltos}
+
+La colección de todas las cantidades $\Delta\tau_k^{(j)}$ constituye la muestra utilizada para caracterizar la distribución marginal de los tiempos entre detecciones.
+
+En el caso particular de un proceso de Poisson homogéneo con intensidad constante $\lambda$, los tiempos entre eventos son variables aleatorias independientes con distribución exponencial. Esta propiedad es un resultado fundamental de la teoría de procesos de conteo y de la teoría de renovación [@abgk1993].
+
+$$
+\Delta\tau
+\sim
+\operatorname{Exp}(\lambda).
+$$ {#eq-exponencial-tiempo}
+
+Por el contrario, cuando la intensidad depende del tiempo, los tiempos en la escala cronológica original no tienen, en general, una distribución exponencial con parámetro constante. Por esta razón, la comparación con una distribución exponencial debe entenderse como una hipótesis de referencia correspondiente al caso homogéneo.
+
+::::
+
+#### Distribuciones paramétricas de referencia
+
+:::: {style="text-align:justify"}
+
+Para describir de manera complementaria la distribución de los tiempos entre detecciones se consideran las familias Exponencial, Weibull y Gamma.
+
+La densidad exponencial está dada por
+
+$$
+f(x;\lambda)
+=
+\lambda e^{-\lambda x},
+\qquad
+x>0,
+\quad
+\lambda>0.
+$$ {#eq-densidad-exponencial}
+
+La densidad Weibull se define mediante
+
+$$
+f(x;k,\theta)
+=
+\frac{k}{\theta}
+\left(
+\frac{x}{\theta}
+\right)^{k-1}
+\exp\left[
+-\left(
+\frac{x}{\theta}
+\right)^k
+\right],
+\qquad
+x>0.
+$$ {#eq-weibull-tiempo}
+
+La densidad Gamma está dada por
+
+$$
+f(x;k,\theta)
+=
+\frac{1}{\Gamma(k)\theta^k}
+x^{k-1}e^{-x/\theta},
+\qquad
+x>0.
+$$ {#eq-gamma-tiempo}
+
+Los parámetros de las tres familias se estiman mediante máxima verosimilitud incorporando el tratamiento de censura descrito en la siguiente sección.
+
+::::
+
+#### Censura administrativa por la derecha
+
+:::: {style="text-align:justify"}
+
+El horizonte de observación es finito y está dado por $[0,T]$. Si una trayectoria presenta una última detección en $\tau_{K_j}^{(j)}$ y no se observa una detección posterior antes de $T$, el tiempo entre esta última detección y el siguiente evento es desconocido. Por tanto, no debe tratarse como una observación completa.
+
+El tiempo observado hasta el final del horizonte se define mediante
+
+$$
+c^{(j)}
+:=
+T-\tau_{K_j}^{(j)}.
+$$ {#eq-censura-final}
+
+Esta cantidad constituye una observación censurada por la derecha del siguiente tiempo entre eventos.
+
+La inclusión explícita de estas observaciones evita introducir artificialmente un último tiempo entre detecciones igual al intervalo restante hasta $T$.
+
+::::
+
+#### Estimación descriptiva de la supervivencia
+
+:::: {style="text-align:justify"}
+
+La función de supervivencia de los tiempos entre detecciones se define como
+
+$$
+S(x)
+:=
+\mathbb P(\Delta\tau>x).
+$$ {#eq-supervivencia-gaps}
+
+Para representar descriptivamente esta función bajo la presencia de observaciones censuradas se utiliza el estimador de Kaplan--Meier, introducido por Kaplan y Meier para la estimación no paramétrica bajo observaciones incompletas [@kaplanmeier1958].
+
+El estimador de Kaplan--Meier permite conservar la información proporcionada por las observaciones censuradas sin considerarlas como eventos completos. En este contexto, su interpretación es descriptiva y se refiere a la distribución marginal de los tiempos entre detecciones.
+
+Debe señalarse que las detecciones sucesivas de una misma trayectoria pueden presentar dependencia temporal. El marco de procesos de conteo y análisis de supervivencia permite formular explícitamente esta estructura [@aalen1978; @abgk1993]. Por esta razón, la utilización de Kaplan--Meier no implica que la colección de todos los gaps constituya una muestra independiente e idénticamente distribuida. La estimación se emplea como herramienta descriptiva para caracterizar la supervivencia marginal.
+
+::::
+
+#### Máxima verosimilitud con observaciones censuradas
+
+:::: {style="text-align:justify"}
+
+Sea $f(x;\theta)$ la densidad de una familia paramétrica de tiempos entre detecciones y sea
+
+$$
+S(x;\theta)
+=
+1-F(x;\theta)
+$$
+
+su función de supervivencia.
+
+Si $\Delta\tau_i$ representa una observación completa y $c_j$ una observación censurada por la derecha, la contribución de una observación completa a la verosimilitud es
+
+$$
+L_i(\theta)
+=
+f(\Delta\tau_i;\theta),
+$$ {#eq-verosimilitud-completa-gap}
+
+mientras que la contribución de una observación censurada es
+
+$$
+L_j^{\mathrm{cens}}(\theta)
+=
+S(c_j;\theta).
+$$ {#eq-verosimilitud-censurada-gap}
+
+Por tanto, la log-verosimilitud correspondiente a la muestra completa es
+
+$$
+\ell(\theta)
+=
+\sum_{\text{completos}}
+\log f(\Delta\tau_i;\theta)
++
+\sum_{\text{censurados}}
+\log S(c_j;\theta).
+$$ {#eq-loglik-censurada}
+
+Los estimadores de máxima verosimilitud se obtienen mediante
+
+$$
+\widehat\theta
+=
+\arg\max_{\theta}
+\ell(\theta).
+$$ {#eq-mle-censurada}
+
+Esta formulación se aplica por separado a las familias Exponencial, Weibull y Gamma consideradas en la @eq-densidad-exponencial, @eq-weibull-tiempo y @eq-gamma-tiempo. La contribución $S(c_j;\theta)$ de una observación censurada es la forma estándar de incorporar a la verosimilitud la información de que el tiempo de espera excede el último intervalo observado [@kaplanmeier1958; @abgk1993].
+
+::::
+
+####  Comparación mediante el criterio de información de Akaike
+
+:::: {style="text-align:justify"}
+
+Para comparar los modelos paramétricos ajustados se utiliza el criterio de información de Akaike [@akaike1974],
+
+$$
+AIC
+=
+2p-2\widehat\ell,
+$$ {#eq-aic-tiempo}
+
+donde $p$ es el número de parámetros libres del modelo y $\widehat\ell$ es el valor máximo de la log-verosimilitud censurada.
+
+El AIC proporciona una medida relativa de ajuste penalizada por complejidad dentro del conjunto de modelos considerados. Su utilización no demuestra que alguno de los modelos sea el verdadero mecanismo generador de los tiempos entre detecciones; únicamente permite comparar las representaciones paramétricas consideradas bajo el mismo conjunto de observaciones y tratamiento de censura.
+
+::::
+
+#### Coeficiente de variación al cuadrado
+
+:::: {style="text-align:justify"}
+
+Una medida descriptiva adicional de la dispersión relativa de los tiempos entre detecciones es el coeficiente de variación al cuadrado,
+
+$$
+CV^2
+:=
+\frac{
+\operatorname{Var}(\Delta\tau)
+}{
+[\mathbb E(\Delta\tau)]^2
+}.
+$$ {#eq-cv2-tiempos}
+
+Para una distribución exponencial,
+
+$$
+CV^2=1.
+$$ {#eq-cv2-exponencial}
+
+Por consiguiente, el valor de $CV^2$ puede utilizarse como indicador descriptivo de la dispersión relativa. Sin embargo, una diferencia respecto de uno no constituye por sí misma una prueba formal de no-Poissonidad, debido a que la distribución de los tiempos entre eventos también puede estar afectada por heterogeneidad temporal de la intensidad, dependencia entre eventos, censura y el propio procedimiento de detección.
+
+::::
+
+#### Teorema de cambio de tiempo
+
+:::: {style="text-align:justify"}
+
+Sea $N(t)$ un proceso de conteo simple con intensidad condicional $\lambda(t\mid\mathcal F_{t^-})$ y compensador
+
+$$
+\Lambda(t)
+:=
+\int_0^t
+\lambda(s\mid\mathcal F_{s^-})
+\,\mathrm ds.
+$$ {#eq-intensidad-acumulada}
+
+Bajo las condiciones del teorema de cambio de tiempo para procesos puntuales, si $\tau_k$ y $\tau_{k-1}$ son tiempos de eventos consecutivos, los incrementos del tiempo transformado se definen mediante
+
+$$
+s_k
+:=
+\Lambda(\tau_k)
+$$ {#eq-tiempo-transformado}
+
+y
+
+$$
+\Delta s_k
+:=
+s_k-s_{k-1}
+=
+\Lambda(\tau_k)
+-
+\Lambda(\tau_{k-1}).
+$$ {#eq-tiempo-reescalado}
+
+::: {#thm-cambio-tiempo}
+**Teorema (cambio de tiempo).** Bajo las condiciones de regularidad del teorema de cambio de tiempo y utilizando el compensador verdadero del proceso puntual, los incrementos transformados @eq-tiempo-reescalado presentan distribución exponencial unitaria [@brown2002]. La formulación del cambio de tiempo para procesos puntuales también constituye la base de los procedimientos de análisis de residuos de procesos de eventos desarrollados en la literatura de procesos de conteo.
+
+$$
+\Delta s_k
+\sim
+\operatorname{Exp}(1).
+$$ {#eq-exp-uno}
+
+En consecuencia, mediante la transformación de la distribución exponencial a la uniforme,
+
+$$
+u_k
+=
+1-e^{-\Delta s_k},
+$$ {#eq-transformacion-uniforme}
+
+se obtiene
+
+$$
+u_k\sim\operatorname{Uniforme}(0,1).
+$$ {#eq-uniforme-rescaling}
+
+**Demostración.** El resultado se obtiene aplicando el teorema de cambio de tiempo al proceso puntual con intensidad condicional $\lambda(t\mid\mathcal F_{t^-})$ [@brown2002]. La transformación mediante el compensador verdadero convierte el proceso en una escala temporal en la cual los eventos presentan intensidad unitaria. Por tanto, los incrementos entre eventos consecutivos siguen una distribución exponencial de parámetro uno. Finalmente, si $E\sim\operatorname{Exp}(1)$, entonces $1-e^{-E}\sim\operatorname{Uniforme}(0,1)$. $\square$
 :::
 
-#### Comparación con la Estructura Temporal Verdadera.
+::::
 
-::: {.remark}
-**Validación oracle en estudios de simulación.**
+#### Diagnóstico de cambio de tiempo mediante la intensidad estimada
 
-Cuando se dispone del tiempo verdadero de cada evento simulado (*oracle*, disponible únicamente por tratarse de datos sintéticos), se contrasta su distribución de día-del-año contra la de los tiempos detectados mediante Kolmogorov--Smirnov de dos muestras, análogo temporal del Corolario 6.4.2 (@def-anderson) para la severidad. Esto valida si el procedimiento de detección de la @def-conjunto_deteccion y @prp-gumbel_lm preserva la forma temporal real del proceso generador, o si introduce una distorsión sistemática (por ejemplo, menor potencia de detección en periodos de alta volatilidad de fondo $\sigma(t)$).
+:::: {style="text-align:justify"}
+
+En la aplicación computacional, la intensidad verdadera $\lambda(t)$ y su compensador $\Lambda(t)$ no se conocen. Por ello, el procedimiento sustituye el compensador verdadero por uno obtenido a partir de la intensidad estimada mediante @eq-intensidad-kernel-circular.
+
+Se define numéricamente
+
+$$
+\widehat\Lambda(t)
+:=
+\int_0^t
+\widehat\lambda_h(s)\,\mathrm ds,
+$$ {#eq-intensidad-acumulada-estimada}
+
+o, en la implementación sobre una malla temporal, mediante la correspondiente aproximación discreta de la integral.
+
+Los incrementos transformados estimados son entonces
+
+$$
+\widehat{\Delta s}_k
+=
+\widehat\Lambda(\tau_k)
+-
+\widehat\Lambda(\tau_{k-1}).
+$$ {#eq-tiempo-reescalado-estimado}
+
+A partir de ellos se construye
+
+$$
+\widehat u_k
+=
+1-e^{-\widehat{\Delta s}_k}.
+$$ {#eq-uniforme-rescaling-estimado}
+
+Si el modelo de intensidad utilizado para construir $\widehat\lambda_h$ describe adecuadamente la estructura temporal de las detecciones y la estimación del compensador es suficientemente precisa, los valores $\widehat u_k$ deberían presentar un comportamiento compatible con una distribución uniforme.
+
+Es fundamental distinguir este procedimiento del teorema anterior: la propiedad exacta $\Delta s_k\sim\operatorname{Exp}(1)$ corresponde al compensador verdadero $\Lambda$, mientras que $\widehat{\Delta s}_k$ constituye un diagnóstico basado en un compensador estimado. La interpretación como diagnóstico de especificación mediante tiempo reescalado sigue la literatura de análisis de procesos puntuales [@brown2002].
+
+Como medida descriptiva de discrepancia se registra el estadístico $D$ de Kolmogorov--Smirnov,
+
+$$
+D
+:=
+\sup_{0\leq u\leq1}
+\left|
+\widehat F_{\widehat u}(u)-u
+\right|,
+$$ {#eq-ks-rescaling}
+
+donde $\widehat F_{\widehat u}$ es la función de distribución empírica de los valores $\widehat u_k$.
+
+En la implementación considerada, este estadístico se utiliza como diagnóstico descriptivo. No se interpreta como un p-valor exacto de una prueba clásica de uniformidad, debido a que la intensidad utilizada para construir los residuos ha sido estimada a partir de los mismos datos.
+
+::::
+
+#### Incertidumbre mediante bootstrap por trayectoria
+
+:::: {style="text-align:justify"}
+
+La incertidumbre de las estadísticas descriptivas de los tiempos entre detecciones se cuantifica mediante bootstrap por trayectoria, siguiendo el principio general de remuestreo para inferencia estadística [@Efrontibshirani1993]. En cada réplica se seleccionan con reemplazo trayectorias completas y se reconstruye la colección correspondiente de tiempos entre detecciones y de observaciones censuradas.
+
+Para un estadístico $\theta$, como la media, mediana o $CV^2$, se obtiene
+
+$$
+\widehat\theta^{(1)},
+\ldots,
+\widehat\theta^{(B)}.
+$$ {#eq-bootstrap-tiempo-replicas}
+
+El intervalo percentil de nivel $1-\gamma$ se define por
+
+$$
+IC_{1-\gamma}
+=
+\left[
+\widehat\theta^{\,(\gamma/2)},
+\widehat\theta^{\,(1-\gamma/2)}
+\right].
+$$ {#eq-bootstrap-percentil-tiempo}
+
+El remuestreo de trayectorias completas preserva, en la medida permitida por el esquema bootstrap, la dependencia temporal existente entre las detecciones de una misma trayectoria y evita tratar cada gap como una observación independiente por construcción.
+
+::::
+
+#### Validación mediante información conocida en la simulación
+
+:::: {style="text-align:justify"}
+
+Al igual que en el análisis de severidades, la simulación permite conservar información sobre los tiempos de los eventos generados por el mecanismo conocido. Esta información puede utilizarse para evaluar la capacidad del detector para recuperar la estructura temporal subyacente.
+
+Esta comparación constituye una validación *oracle* y no participa en la estimación de $\widehat\lambda_h$, en la construcción de la distribución de $\Delta\tau$, en la estimación de los modelos paramétricos ni en el cálculo de los intervalos bootstrap.
+
+Por tanto, el procedimiento de inferencia permanece basado exclusivamente en las detecciones obtenidas a partir de las trayectorias simuladas, reproduciendo la situación de aplicación a datos reales en la cual únicamente se dispone de la trayectoria observada y no de la causa física ni del instante verdadero de cada salto no observado.
+
+::::
+
+::::
+
+:::: {.content-visible when-format="html"}
+### Estimación no paramétrica de la distribución de severidad de los saltos. {#sec-Es_N_Pa_D_S_S_html}
+
+:::: {style="text-align:justify"}
+La estimación de la intensidad de saltos desarrollada en la Sección 6.4.1 permite identificar, mediante un procedimiento basado en umbrales, los incrementos de la trayectoria observada cuya magnitud resulta incompatible con la variación continua esperada. Sin embargo, el conteo de dichos incrementos proporciona únicamente información acerca de la frecuencia de ocurrencia de los eventos detectados y no caracteriza la magnitud de los saltos.
+
+En esta sección se desarrolla el procedimiento estadístico necesario para obtener, a partir de las detecciones identificadas por el umbral, una estimación no paramétrica de la distribución de severidad. El procedimiento se formula sobre la trayectoria del proceso de reservas y no requiere especificar previamente una familia paramétrica para la distribución de las magnitudes de los saltos.
+
+La formulación se desarrolla inicialmente para una trayectoria genérica y posteriormente puede aplicarse de manera idéntica a cada uno de los esquemas numéricos considerados en el Capítulo 7.
+
+El @thm-Consistencia_estimador_intensidad garantiza que $\hat\lambda_n$ (@eq-umbral) es un estimador consistente de la *intensidad total* $\lambda$, pero es un estadístico *agregado*: cuenta cuántos incrementos superan el umbral $\tau_n$ sin identificar *cuáles* instantes contienen un salto ni *qué tamaño* tuvo cada uno. Esta sección extiende el marco de la @sec-In_Sal en dos direcciones: Se pondera el umbral por la volatilidad instantánea local $\hat\sigma(t_{n-1})$, refinamiento introducido por @mancini2009 y @lee2008 sobre el umbral no ponderado de la @eq-estimador; y se convierte el conteo agregado en un *procedimiento a nivel de evento* que recupera, para cada salto detectado, su instante y su magnitud, sobre los cuales se ajusta un modelo de distribución **agregada**, sin requerir identificación del tipo de siniestro (meteorológico o sísmico).
+
+Se trabaja sobre el proceso de reservas $\{U(t)\}_{t\ge 0}$ de la @eq-modelo_extendido, observado en la malla $t_0<t_1<\dots<t_n$ con paso constante $\Delta_n=t_i-t_{i-1}$, sobre $N_{\text{sim}}$ trayectorias simuladas independientes $U^{(1)},\dots,U^{(N_{\text{sim}})}$ (@sec-Mil_comp).
+
+::::
+
+:::: {style="text-align:justify"}
+
+La estimación de la distribución de severidad se realiza directamente a partir de las trayectorias simuladas del proceso de reserva y de los incrementos identificados por el procedimiento de detección de saltos descrito previamente. El procedimiento es común a los esquemas numéricos considerados, por lo que se aplica de manera independiente a las trayectorias obtenidas mediante el método de Milstein compensado y mediante el método semi-implícito compensado.
+
+En particular, la inferencia no paramétrica no utiliza información acerca de la causa física del evento. Por consiguiente, las observaciones utilizadas en esta sección corresponden exclusivamente a los decrementos detectados en las trayectorias agregadas. Las etiquetas utilizadas durante la simulación para distinguir los mecanismos generadores de los saltos, cuando se dispone de ellas, se reservan exclusivamente para la validación de la capacidad de detección y no intervienen en la construcción de los estimadores.
+
+Sea
+
+$$
+0=t_0<t_1<\cdots<t_n=T,
+\qquad
+\Delta_n=t_i-t_{i-1},
+$$ {#eq-malla-temporal-severidad}
+
+la partición temporal utilizada para la simulación, y sea
+
+$$
+U^{(j)}(t_i),
+\qquad
+j=1,\ldots,N_{\mathrm{sim}},
+$$
+
+la trayectoria $j$-ésima del proceso de reserva, con $N_{\mathrm{sim}}=1000$.
+
+La metodología se desarrolla mediante las siguientes etapas: construcción de incrementos relativos, estimación local de la volatilidad, definición del umbral de detección, identificación de incrementos anómalos, extracción de las severidades detectadas, estimación de su distribución empírica y de su densidad mediante KDE, ajuste paramétrico auxiliar y cuantificación de incertidumbre mediante bootstrap por trayectorias.
+
+::::
+
+#### Incrementos relativos y estimación local de la volatilidad
+
+:::: {style="text-align:justify"}
+
+Para cada trayectoria se define el incremento relativo
+
+$$
+\widetilde r_{n,i}^{(j)}
+:=
+\frac{
+U^{(j)}(t_i)-U^{(j)}(t_{i-1})
+}{
+U^{(j)}(t_{i-1})
+},
+\qquad
+i=1,\ldots,n,
+\quad
+j=1,\ldots,N_{\mathrm{sim}}.
+$$ {#eq-incremento-relativo}
+
+Esta normalización permite expresar los cambios de la reserva en términos relativos a su nivel inmediatamente anterior. La estimación de la escala local asociada a la componente continua se obtiene mediante una versión agregada de la variación bipotencia realizada, siguiendo la construcción de variación bipotencia propuesta para separar la variación continua de la contribución de saltos [@barndorffnielsen2004]. Para una ventana de $K$ observaciones se define
+
+$$
+\widehat\sigma^2(t_{i-1})
+:=
+\frac{\pi}{2}
+\frac{1}{K\Delta_nN_{\mathrm{sim}}}
+\sum_{j=1}^{N_{\mathrm{sim}}}
+\sum_{k=1}^{K}
+\left|
+\widetilde r_{n,i-k}^{(j)}
+\right|
+\left|
+\widetilde r_{n,i-k+1}^{(j)}
+\right|.
+$$ {#eq-volatilidad-local}
+
+La correspondiente estimación de la escala local es
+
+$$
+\widehat\sigma(t_{i-1})
+:=
+\sqrt{\widehat\sigma^2(t_{i-1})}.
+$$ {#eq-raiz-volatilidad-local}
+
+La agregación sobre las trayectorias es coherente con la implementación numérica, en la cual la componente de difusión utiliza la misma función de volatilidad para las trayectorias simuladas. En este sentido, el *pooling* permite utilizar conjuntamente las réplicas Monte Carlo para estimar la escala local común. El estimador se emplea como una medida local de escala para distinguir fluctuaciones ordinarias de incrementos cuya magnitud resulta incompatible con la dinámica continua en la escala temporal considerada [@barndorffnielsen2004].
+
+::::
+
+#### Umbral de detección de saltos
+
+:::: {style="text-align:justify"}
+
+A partir de la estimación local de volatilidad se define el umbral dependiente del tamaño de la malla mediante
+
+$$
+\tau_n(t_{i-1})
+:=
+\alpha
+\widehat\sigma(t_{i-1})
+\Delta_n^{\varpi},
+\qquad
+\alpha>0,
+\qquad
+\varpi\in\left(0,\frac12\right).
+$$ {#eq-umbral-ponderado}
+
+La elección del exponente $\varpi$ responde a dos requerimientos asintóticos. En primer lugar,
+
+$$
+\Delta_n^{\varpi}\longrightarrow0
+\qquad
+\text{cuando}
+\qquad
+\Delta_n\longrightarrow0,
+$$ {#eq-umbral-convergencia-cero}
+
+mientras que
+
+$$
+\frac{\Delta_n^\varpi}{\sqrt{\Delta_n}}
+=
+\Delta_n^{\varpi-\frac12}
+\longrightarrow\infty.
+$$ {#eq-umbral-dominancia-difusion}
+
+Por consiguiente, el umbral tiende a cero, pero lo hace más lentamente que la escala de las fluctuaciones continuas de orden $\sqrt{\Delta_n}$. Esta propiedad constituye la base de los procedimientos de detección por umbral: bajo las condiciones de regularidad apropiadas, permite separar incrementos asociados a saltos de las fluctuaciones producidas por la componente continua [@mancini2009].
+
+Para eliminar, en la medida de lo posible, la contribución regular de la dinámica de la reserva, se define el residuo relativo
+
+$$
+\widetilde e_{n,i}^{(j)}
+:=
+\widetilde r_{n,i}^{(j)}
+-
+\left[
+\frac{c(t_{i-1})}{U^{(j)}(t_{i-1})}
++
+r(t_{i-1})
+\right]\Delta_n.
+$$ {#eq-residuo-relativo}
+
+El conjunto de índices identificados como detecciones en la trayectoria $j$ se define entonces mediante
+
+$$
+D^{(j)}
+:=
+\left\{
+i\in\{1,\ldots,n\}:
+\left|
+\widetilde e_{n,i}^{(j)}
+\right|
+>
+\tau_n(t_{i-1})
+\right\}.
+$$ {#eq-conjunto-deteccion}
+
+La condición anterior constituye el criterio principal de detección utilizado en los programas de simulación. La construcción es consistente con los procedimientos de detección no paramétrica por umbral desarrollados para procesos observados discretamente [@mancini2009; @lee2008].
+
+::: {#prp-deteccion-umbral}
+Bajo el esquema de detección anterior, la clasificación de un incremento como evento detectado depende únicamente de la trayectoria observada, del estimador local de escala y de los parámetros $(\alpha,\varpi)$. En consecuencia, el procedimiento es aplicable tanto a las trayectorias simuladas como, una vez observadas las variables correspondientes, a datos empíricos en los cuales no se disponga de información sobre la causa física del evento.
 :::
+
+::::
+
+#### Estadístico normalizado para diagnóstico
+
+:::: {style="text-align:justify"}
+
+Como medida complementaria para caracterizar la magnitud relativa de los incrementos se utiliza el estadístico normalizado
+
+$$
+\mathcal L_i^{(j)}
+:=
+\frac{
+\widetilde r_{n,i}^{(j)}
+}{
+\widehat\sigma(t_{i-1})
+}.
+$$ {#eq-estadistico-LM}
+
+Bajo ausencia de saltos y bajo las condiciones de regularidad requeridas por la aproximación asintótica correspondiente, este estadístico permite utilizar una escala aproximadamente gaussiana como referencia para evaluar la magnitud de las fluctuaciones. La construcción de estadísticas normalizadas para detectar saltos en procesos observados discretamente está relacionada con el procedimiento de Lee--Mykland [@lee2008]. 
+
+En particular, las cantidades asociadas a la aproximación de falsos positivos deben interpretarse como medidas diagnósticas y no como probabilidades exactas de error de clasificación para el procedimiento completo.
+
+::::
+
+#### Extracción de las severidades detectadas
+
+:::: {style="text-align:justify"}
+
+Una vez identificado el conjunto $D^{(j)}$, se obtiene para cada índice detectado una estimación de la magnitud monetaria del decremento residual. Para ello se define
+
+$$
+\widehat Y_i^{(j)}
+:=
+-
+\widetilde e_{n,i}^{(j)}
+U^{(j)}(t_{i-1}),
+\qquad
+i\in D^{(j)}.
+$$ {#eq-severidad-detectada}
+
+Se conservan únicamente las observaciones que satisfacen
+
+$$
+\widehat Y_i^{(j)}>0.
+$$ {#eq-condicion-severidad-positiva}
+
+La cantidad $\widehat Y_i^{(j)}$ debe interpretarse como una **severidad detectada**: representa la magnitud monetaria del decremento residual que el procedimiento atribuye al intervalo $(t_{i-1},t_i]$.
+
+Esta distinción es importante porque la detección se realiza sobre una trayectoria discretizada. Si varios saltos físicos ocurren dentro de un mismo intervalo de discretización, el procedimiento opera sobre el incremento agregado de dicho intervalo y, por tanto, una única observación $\widehat Y_i^{(j)}$ puede representar la contribución conjunta de varios eventos no resolubles temporalmente en la malla utilizada.
+
+En consecuencia, sea
+
+$$
+\mathcal Y
+:=
+\left\{
+\widehat Y_i^{(j)}:
+j=1,\ldots,N_{\mathrm{sim}},
+\ i\in D^{(j)},
+\ \widehat Y_i^{(j)}>0
+\right\},
+$$ {#eq-conjunto-severidades}
+
+y sea $N_Y:=|\mathcal Y|$ el número total de severidades detectadas. La inferencia de esta sección se realiza sobre la distribución agregada de $\mathcal Y$.
+
+::: {#def-distribucion-severidad-detectada}
+La función de distribución de severidad detectada se define por
+
+$$
+F_Y(y)
+:=
+\mathbb P(\widehat Y\leq y\mid D=1),
+$$ {#eq-distribucion-severidad-detectada}
+
+donde $D=1$ indica que el incremento fue clasificado como una detección válida por el procedimiento definido en @eq-conjunto-deteccion y que la severidad satisface @eq-condicion-severidad-positiva.
+:::
+
+::::
+
+#### Sensibilidad respecto de los parámetros del detector
+
+:::: {style="text-align:justify"}
+
+El procedimiento depende de los parámetros $\alpha$ y $\varpi$. Por esta razón, antes de fijar los valores utilizados para la comparación entre los métodos numéricos se realiza un análisis de sensibilidad sobre una malla de valores candidatos.
+
+Para una combinación $(\alpha,\varpi)$ se registra el número de detecciones y, cuando corresponde, las estadísticas descriptivas asociadas. La tasa media de detección se expresa como
+
+$$
+R(\alpha,\varpi)
+:=
+\frac{
+N_{\mathrm{det}}(\alpha,\varpi)
+}{
+N_{\mathrm{sim}}
+},
+$$ {#eq-tasa-deteccion}
+
+donde $N_{\mathrm{det}}(\alpha,\varpi)$ representa el número medio de detecciones por trayectoria bajo la combinación considerada.
+::::
+
+#### Función de distribución empírica de las severidades
+
+:::: {style="text-align:justify"}
+
+La estimación no paramétrica de la función de distribución de severidad se realiza mediante la función de distribución empírica asociada al conjunto $\mathcal Y$ definido en @eq-conjunto-severidades. Esta representación evita imponer una familia paramétrica para la distribución de severidades [@aalen1978]. Sea $Y_1,\ldots,Y_{N_Y}$ una enumeración de dicho conjunto. Entonces,
+
+$$
+\widehat F_Y(y)
+=
+\frac{1}{N_Y}
+\sum_{\ell=1}^{N_Y}
+\mathbf 1_{\{Y_\ell\leq y\}}.
+$$ {#eq-ecdf-severidad}
+
+La función $\widehat F_Y$ constituye el estimador no paramétrico principal de la distribución de severidad detectada. No requiere especificar una familia paramétrica para la distribución subyacente.
+
+La comparación entre los métodos numéricos se realiza utilizando las funciones empíricas obtenidas a partir de sus respectivas colecciones de severidades detectadas. Las diferencias entre ambas funciones deben interpretarse como diferencias en la distribución de las severidades recuperadas por el procedimiento de detección aplicado a cada esquema numérico.
+
+::::
+
+#### Estimación no paramétrica de la densidad mediante KDE en escala logarítmica
+
+:::: {style="text-align:justify"}
+
+Dado que las severidades son positivas y pueden presentar asimetría y colas derechas, la densidad se estima mediante una transformación logarítmica. Sea
+
+$$
+Z_\ell:=\log(Y_\ell),
+\qquad
+\ell=1,\ldots,N_Y.
+$$ {#eq-transformacion-log-severidad}
+
+Sobre la escala transformada se utiliza un estimador de densidad por núcleo. La estimación de densidades mediante métodos de núcleo constituye una técnica no paramétrica estándar; su formulación y propiedades generales pueden consultarse en Silverman [@silverman1986].
+
+$$
+\widehat f_Z(z)
+=
+\frac{1}{N_Yh}
+\sum_{\ell=1}^{N_Y}
+K\left(
+\frac{z-Z_\ell}{h}
+\right),
+$$ {#eq-kde-log-severidad}
+
+donde $K$ es una función núcleo y $h>0$ es el ancho de banda.
+
+Por la transformación $z=\log(y)$, se tiene
+
+$$
+\frac{\mathrm d z}{\mathrm d y}
+=
+\frac{1}{y},
+\qquad y>0.
+$$ {#eq-jacobiano-log-severidad}
+
+Por consiguiente, la densidad estimada sobre la escala original de las severidades es
+
+$$
+\widehat f_Y(y)
+=
+\frac{1}{y}
+\widehat f_Z(\log y),
+\qquad
+y>0.
+$$ {#eq-kde-severidad}
+
+Esta transformación es la que corresponde a la implementación computacional. La estimación KDE constituye una representación suavizada de la densidad asociada a la distribución empírica, mientras que @eq-ecdf-severidad continúa siendo el estimador no paramétrico directo de la función de distribución.
+
+::::
+
+#### Ajustes paramétricos auxiliares de la distribución de severidad
+
+:::: {style="text-align:justify"}
+
+Con el propósito de disponer de representaciones paramétricas de referencia, se ajustan mediante máxima verosimilitud las distribuciones Lognormal, Gamma y Weibull. Estos modelos se consideran únicamente como familias auxiliares para describir la muestra detectada y comparar representaciones paramétricas. Estos ajustes son complementarios a la estimación no paramétrica y no implican que alguna de las familias consideradas constituya el mecanismo generador verdadero de las severidades.
+
+Para la distribución Lognormal se utiliza
+
+$$
+f(y;\mu,\sigma)
+=
+\frac{1}{y\sigma\sqrt{2\pi}}
+\exp\left[
+-\frac{(\log y-\mu)^2}{2\sigma^2}
+\right],
+\qquad
+y>0.
+$$ {#eq-lognormal-severidad}
+
+Para la distribución Gamma,
+
+$$
+f(y;k,\theta)
+=
+\frac{1}{\Gamma(k)\theta^k}
+y^{k-1}
+e^{-y/\theta},
+\qquad
+y>0,
+$$ {#eq-gamma-severidad}
+
+y para la distribución Weibull,
+
+$$
+f(y;k,\theta)
+=
+\frac{k}{\theta}
+\left(
+\frac{y}{\theta}
+\right)^{k-1}
+\exp\left[
+-\left(
+\frac{y}{\theta}
+\right)^k
+\right],
+\qquad
+y>0.
+$$ {#eq-weibull-severidad}
+
+Sea $\widehat\ell$ el valor máximo de la log-verosimilitud y sea $p$ el número de parámetros estimados. El criterio de información de Akaike, introducido como una medida de selección de modelos basada en información, se define mediante [@akaike1974]
+
+$$
+AIC
+=
+2p-2\widehat\ell.
+$$ {#eq-aic-severidad}
+
+El AIC se utiliza exclusivamente como criterio de comparación entre las familias paramétricas consideradas, de acuerdo con el propósito original del criterio de Akaike [@akaike1974]. La estimación no paramétrica de @eq-ecdf-severidad y @eq-kde-severidad no depende de seleccionar una de estas familias.
+
+::::
+
+####  Incertidumbre mediante bootstrap por trayectoria
+
+:::: {style="text-align:justify"}
+
+Debido a que varias detecciones pueden proceder de una misma trayectoria, las observaciones de severidad no se consideran automáticamente independientes. Para preservar la estructura de dependencia intra-trayectoria, el procedimiento bootstrap se realiza remuestreando trayectorias completas. El uso del bootstrap para cuantificar incertidumbre sigue la formulación general de Efron y Tibshirani [@Efrontibshirani1993].
+
+En cada réplica bootstrap se seleccionan $N_{\mathrm{sim}}$ trayectorias con reemplazo y se reconstruye el conjunto de severidades detectadas correspondiente a la muestra remuestreada. Para un estadístico $\theta$ de interés, se obtiene una colección
+
+$$
+\widehat\theta^{(1)},
+\ldots,
+\widehat\theta^{(B)},
+$$ {#eq-replicas-bootstrap-severidad}
+
+donde $B$ es el número de réplicas bootstrap.
+
+El intervalo percentil de nivel de confianza $1-\gamma$ se define mediante
+
+$$
+IC_{1-\gamma}
+=
+\left[
+\widehat\theta^{\,(\gamma/2)},
+\widehat\theta^{\,(1-\gamma/2)}
+\right],
+$$ {#eq-bootstrap-percentil-severidad}
+
+donde $\widehat\theta^{\,(q)}$ representa el cuantil $q$ de la distribución empírica de las réplicas bootstrap.
+
+Estos intervalos cuantifican la variabilidad asociada al muestreo de las trayectorias bajo el procedimiento de detección y los parámetros $(\alpha,\varpi)$ fijados. No incorporan incertidumbre adicional derivada de una eventual selección de estos parámetros.
+
+::::
+
+
+### Distribución de los tiempos entre saltos detectados. {#sec-Dis_tiem_entre_saltos}
+
+
+:::: {style="text-align:justify"}
+
+En esta sección se estudia la distribución de los tiempos entre detecciones, así como la intensidad temporal de los eventos detectados.
+
+El procedimiento de estimación opera sobre la información disponible en las trayectorias discretizadas; por tanto, los tiempos utilizados en esta sección son los tiempos de los incrementos clasificados como detecciones por el criterio de @eq-conjunto-deteccion.
+
+::::
+
+#### Tiempos de detección y proceso de conteo
+
+:::: {style="text-align:justify"}
+
+Para cada trayectoria $j$, sean
+
+$$
+\tau_k^{(j)}
+:=
+t_{i_k},
+\qquad
+k=1,\ldots,K_j,
+$$ {#eq-tiempos-deteccion}
+
+los tiempos correspondientes a los índices $i_k\in D^{(j)}$, ordenados de manera creciente. Aquí $K_j$ denota el número de detecciones de la trayectoria $j$.
+
+El proceso de conteo de detecciones se define por
+
+$$
+N^{(j)}(t)
+:=
+\#\left\{
+k:
+\tau_k^{(j)}\leq t
+\right\},
+\qquad
+t\in[0,T].
+$$ {#eq-conteo-detecciones}
+
+Este proceso cuenta exclusivamente los eventos que han sido identificados por el detector y constituye la base para el análisis de intensidad y de tiempos entre detecciones. La formulación mediante procesos de conteo es el marco natural para describir tiempos de ocurrencia y sus intensidades [@aalen1978; @abgk1993].
+
+::::
+
+#### Intensidad temporal no paramétrica
+
+:::: {style="text-align:justify"}
+
+Debido a la periodicidad anual incorporada en la estructura temporal del modelo, la intensidad de las detecciones se estima mediante un suavizamiento de núcleo sobre un dominio periódico.
+
+Sea $P=365$ el periodo anual expresado en días. Para $t,\tau\in[0,P)$ se define la distancia circular
+
+$$
+d_{\mathrm{circ}}(t,\tau)
+:=
+\min\left\{
+|t-\tau|,
+P-|t-\tau|
+\right\}.
+$$ {#eq-distancia-circular}
+
+Sea $h>0$ el ancho de banda. El estimador de intensidad por núcleo circular utilizado en la implementación es
+
+$$
+\widehat\lambda_h(t)
+=
+\frac{1}{N_{\mathrm{sim}}h}
+\sum_{j=1}^{N_{\mathrm{sim}}}
+\sum_{k=1}^{K_j}
+K\left(
+\frac{
+d_{\mathrm{circ}}(t,\tau_k^{(j)})
+}{h}
+\right).
+$$ {#eq-intensidad-kernel-circular}
+
+El factor $1/N_{\mathrm{sim}}$ produce una intensidad media por trayectoria, mientras que el factor $1/h$ corresponde a la normalización del estimador de núcleo.
+
+La @eq-intensidad-kernel-circular representa el estimador efectivamente utilizado en los programas. Su construcción pertenece a la familia de estimadores de intensidad por núcleo [@ramlauhansen1983]. Por tanto, no se identifica este estimador con el estimador clásico de Nelson--Aalen.
+
+::::
+
+#### Análisis de sensibilidad del ancho de banda
+
+:::: {style="text-align:justify"}
+
+El ancho de banda $h$ controla el grado de suavizamiento de la intensidad estimada. Valores pequeños permiten identificar variaciones temporales más localizadas, mientras que valores grandes producen una representación más suave. Este compromiso entre suavizamiento y variabilidad es inherente a los estimadores de intensidad por núcleo [@ramlauhansen1983].
+
+Para evaluar la estabilidad de la estructura temporal, se consideran distintos valores de $h$, incluyendo los utilizados en la implementación computacional. La comparación de las curvas $\widehat\lambda_h(t)$ permite determinar si las características estacionales principales permanecen estables frente a cambios razonables en el nivel de suavizamiento.
+
+Este análisis se interpreta como un estudio de sensibilidad y no como un procedimiento automático de selección óptima del ancho de banda.
+
+::::
+
+#### Tiempos entre detecciones
+
+:::: {style="text-align:justify"}
+
+Para cada trayectoria con al menos dos detecciones se define el tiempo entre detecciones consecutivas mediante
+
+$$
+\Delta\tau_k^{(j)}
+:=
+\tau_k^{(j)}
+-
+\tau_{k-1}^{(j)},
+\qquad
+k=2,\ldots,K_j.
+$$ {#eq-tiempo-entre-saltos}
+
+La colección de todas las cantidades $\Delta\tau_k^{(j)}$ constituye la muestra utilizada para caracterizar la distribución marginal de los tiempos entre detecciones.
+
+En el caso particular de un proceso de Poisson homogéneo con intensidad constante $\lambda$, los tiempos entre eventos son variables aleatorias independientes con distribución exponencial. Esta propiedad es un resultado fundamental de la teoría de procesos de conteo y de la teoría de renovación [@abgk1993].
+
+$$
+\Delta\tau
+\sim
+\operatorname{Exp}(\lambda).
+$$ {#eq-exponencial-tiempo}
+
+Por el contrario, cuando la intensidad depende del tiempo, los tiempos en la escala cronológica original no tienen, en general, una distribución exponencial con parámetro constante. Por esta razón, la comparación con una distribución exponencial debe entenderse como una hipótesis de referencia correspondiente al caso homogéneo.
+
+::::
+
+#### Distribuciones paramétricas de referencia
+
+:::: {style="text-align:justify"}
+
+Para describir de manera complementaria la distribución de los tiempos entre detecciones se consideran las familias Exponencial, Weibull y Gamma.
+
+La densidad exponencial está dada por
+
+$$
+f(x;\lambda)
+=
+\lambda e^{-\lambda x},
+\qquad
+x>0,
+\quad
+\lambda>0.
+$$ {#eq-densidad-exponencial}
+
+La densidad Weibull se define mediante
+
+$$
+f(x;k,\theta)
+=
+\frac{k}{\theta}
+\left(
+\frac{x}{\theta}
+\right)^{k-1}
+\exp\left[
+-\left(
+\frac{x}{\theta}
+\right)^k
+\right],
+\qquad
+x>0.
+$$ {#eq-weibull-tiempo}
+
+La densidad Gamma está dada por
+
+$$
+f(x;k,\theta)
+=
+\frac{1}{\Gamma(k)\theta^k}
+x^{k-1}e^{-x/\theta},
+\qquad
+x>0.
+$$ {#eq-gamma-tiempo}
+
+Los parámetros de las tres familias se estiman mediante máxima verosimilitud incorporando el tratamiento de censura descrito en la siguiente sección.
+
+::::
+
+#### Censura administrativa por la derecha
+
+:::: {style="text-align:justify"}
+
+El horizonte de observación es finito y está dado por $[0,T]$. Si una trayectoria presenta una última detección en $\tau_{K_j}^{(j)}$ y no se observa una detección posterior antes de $T$, el tiempo entre esta última detección y el siguiente evento es desconocido. Por tanto, no debe tratarse como una observación completa.
+
+El tiempo observado hasta el final del horizonte se define mediante
+
+$$
+c^{(j)}
+:=
+T-\tau_{K_j}^{(j)}.
+$$ {#eq-censura-final}
+
+Esta cantidad constituye una observación censurada por la derecha del siguiente tiempo entre eventos.
+
+La inclusión explícita de estas observaciones evita introducir artificialmente un último tiempo entre detecciones igual al intervalo restante hasta $T$.
+
+::::
+
+#### Estimación descriptiva de la supervivencia
+
+:::: {style="text-align:justify"}
+
+La función de supervivencia de los tiempos entre detecciones se define como
+
+$$
+S(x)
+:=
+\mathbb P(\Delta\tau>x).
+$$ {#eq-supervivencia-gaps}
+
+Para representar descriptivamente esta función bajo la presencia de observaciones censuradas se utiliza el estimador de Kaplan--Meier, introducido por Kaplan y Meier para la estimación no paramétrica bajo observaciones incompletas [@kaplanmeier1958].
+
+El estimador de Kaplan--Meier permite conservar la información proporcionada por las observaciones censuradas sin considerarlas como eventos completos. En este contexto, su interpretación es descriptiva y se refiere a la distribución marginal de los tiempos entre detecciones.
+
+Debe señalarse que las detecciones sucesivas de una misma trayectoria pueden presentar dependencia temporal. El marco de procesos de conteo y análisis de supervivencia permite formular explícitamente esta estructura [@aalen1978; @abgk1993]. Por esta razón, la utilización de Kaplan--Meier no implica que la colección de todos los gaps constituya una muestra independiente e idénticamente distribuida. La estimación se emplea como herramienta descriptiva para caracterizar la supervivencia marginal.
+
+::::
+
+#### Máxima verosimilitud con observaciones censuradas
+
+:::: {style="text-align:justify"}
+
+Sea $f(x;\theta)$ la densidad de una familia paramétrica de tiempos entre detecciones y sea
+
+$$
+S(x;\theta)
+=
+1-F(x;\theta)
+$$
+
+su función de supervivencia.
+
+Si $\Delta\tau_i$ representa una observación completa y $c_j$ una observación censurada por la derecha, la contribución de una observación completa a la verosimilitud es
+
+$$
+L_i(\theta)
+=
+f(\Delta\tau_i;\theta),
+$$ {#eq-verosimilitud-completa-gap}
+
+mientras que la contribución de una observación censurada es
+
+$$
+L_j^{\mathrm{cens}}(\theta)
+=
+S(c_j;\theta).
+$$ {#eq-verosimilitud-censurada-gap}
+
+Por tanto, la log-verosimilitud correspondiente a la muestra completa es
+
+$$
+\ell(\theta)
+=
+\sum_{\text{completos}}
+\log f(\Delta\tau_i;\theta)
++
+\sum_{\text{censurados}}
+\log S(c_j;\theta).
+$$ {#eq-loglik-censurada}
+
+Los estimadores de máxima verosimilitud se obtienen mediante
+
+$$
+\widehat\theta
+=
+\arg\max_{\theta}
+\ell(\theta).
+$$ {#eq-mle-censurada}
+
+Esta formulación se aplica por separado a las familias Exponencial, Weibull y Gamma consideradas en la @eq-densidad-exponencial, @eq-weibull-tiempo y @eq-gamma-tiempo. La contribución $S(c_j;\theta)$ de una observación censurada es la forma estándar de incorporar a la verosimilitud la información de que el tiempo de espera excede el último intervalo observado [@kaplanmeier1958; @abgk1993].
+
+::::
+
+####  Comparación mediante el criterio de información de Akaike
+
+:::: {style="text-align:justify"}
+
+Para comparar los modelos paramétricos ajustados se utiliza el criterio de información de Akaike [@akaike1974],
+
+$$
+AIC
+=
+2p-2\widehat\ell,
+$$ {#eq-aic-tiempo}
+
+donde $p$ es el número de parámetros libres del modelo y $\widehat\ell$ es el valor máximo de la log-verosimilitud censurada.
+
+El AIC proporciona una medida relativa de ajuste penalizada por complejidad dentro del conjunto de modelos considerados. Su utilización no demuestra que alguno de los modelos sea el verdadero mecanismo generador de los tiempos entre detecciones; únicamente permite comparar las representaciones paramétricas consideradas bajo el mismo conjunto de observaciones y tratamiento de censura.
+
+::::
+
+#### Coeficiente de variación al cuadrado
+
+:::: {style="text-align:justify"}
+
+Una medida descriptiva adicional de la dispersión relativa de los tiempos entre detecciones es el coeficiente de variación al cuadrado,
+
+$$
+CV^2
+:=
+\frac{
+\operatorname{Var}(\Delta\tau)
+}{
+[\mathbb E(\Delta\tau)]^2
+}.
+$$ {#eq-cv2-tiempos}
+
+Para una distribución exponencial,
+
+$$
+CV^2=1.
+$$ {#eq-cv2-exponencial}
+
+Por consiguiente, el valor de $CV^2$ puede utilizarse como indicador descriptivo de la dispersión relativa. Sin embargo, una diferencia respecto de uno no constituye por sí misma una prueba formal de no-Poissonidad, debido a que la distribución de los tiempos entre eventos también puede estar afectada por heterogeneidad temporal de la intensidad, dependencia entre eventos, censura y el propio procedimiento de detección.
+
+::::
+
+#### Teorema de cambio de tiempo
+
+:::: {style="text-align:justify"}
+
+Sea $N(t)$ un proceso de conteo simple con intensidad condicional $\lambda(t\mid\mathcal F_{t^-})$ y compensador
+
+$$
+\Lambda(t)
+:=
+\int_0^t
+\lambda(s\mid\mathcal F_{s^-})
+\,\mathrm ds.
+$$ {#eq-intensidad-acumulada}
+
+Bajo las condiciones del teorema de cambio de tiempo para procesos puntuales, si $\tau_k$ y $\tau_{k-1}$ son tiempos de eventos consecutivos, los incrementos del tiempo transformado se definen mediante
+
+$$
+s_k
+:=
+\Lambda(\tau_k)
+$$ {#eq-tiempo-transformado}
+
+y
+
+$$
+\Delta s_k
+:=
+s_k-s_{k-1}
+=
+\Lambda(\tau_k)
+-
+\Lambda(\tau_{k-1}).
+$$ {#eq-tiempo-reescalado}
+
+::: {#thm-cambio-tiempo}
+**(cambio de tiempo).** Bajo las condiciones de regularidad del teorema de cambio de tiempo y utilizando el compensador verdadero del proceso puntual, los incrementos transformados (@eq-tiempo-reescalado) presentan distribución exponencial unitaria [@brown2002]. La formulación del cambio de tiempo para procesos puntuales también constituye la base de los procedimientos de análisis de residuos de procesos de eventos desarrollados en la literatura de procesos de conteo.
+
+$$
+\Delta s_k
+\sim
+\operatorname{Exp}(1).
+$$ {#eq-exp-uno}
+
+En consecuencia, mediante la transformación de la distribución exponencial a la uniforme,
+
+$$
+u_k
+=
+1-e^{-\Delta s_k},
+$$ {#eq-transformacion-uniforme}
+
+se obtiene
+
+$$
+u_k\sim\operatorname{Uniforme}(0,1).
+$$ {#eq-uniforme-rescaling}
+
+**Demostración.** El resultado se obtiene aplicando el teorema de cambio de tiempo al proceso puntual con intensidad condicional $\lambda(t\mid\mathcal F_{t^-})$ [@brown2002]. La transformación mediante el compensador verdadero convierte el proceso en una escala temporal en la cual los eventos presentan intensidad unitaria. Por tanto, los incrementos entre eventos consecutivos siguen una distribución exponencial de parámetro uno. Finalmente, si $E\sim\operatorname{Exp}(1)$, entonces $1-e^{-E}\sim\operatorname{Uniforme}(0,1)$. $\square$
+:::
+
+::::
+
+#### Diagnóstico de cambio de tiempo mediante la intensidad estimada
+
+:::: {style="text-align:justify"}
+
+En la aplicación computacional, la intensidad verdadera $\lambda(t)$ y su compensador $\Lambda(t)$ no se conocen. Por ello, el procedimiento sustituye el compensador verdadero por uno obtenido a partir de la intensidad estimada mediante @eq-intensidad-kernel-circular.
+
+Se define numéricamente
+
+$$
+\widehat\Lambda(t)
+:=
+\int_0^t
+\widehat\lambda_h(s)\,\mathrm ds,
+$$ {#eq-intensidad-acumulada-estimada}
+
+o, en la implementación sobre una malla temporal, mediante la correspondiente aproximación discreta de la integral.
+
+Los incrementos transformados estimados son entonces
+
+$$
+\widehat{\Delta s}_k
+=
+\widehat\Lambda(\tau_k)
+-
+\widehat\Lambda(\tau_{k-1}).
+$$ {#eq-tiempo-reescalado-estimado}
+
+A partir de ellos se construye
+
+$$
+\widehat u_k
+=
+1-e^{-\widehat{\Delta s}_k}.
+$$ {#eq-uniforme-rescaling-estimado}
+
+Si el modelo de intensidad utilizado para construir $\widehat\lambda_h$ describe adecuadamente la estructura temporal de las detecciones y la estimación del compensador es suficientemente precisa, los valores $\widehat u_k$ deberían presentar un comportamiento compatible con una distribución uniforme.
+
+Es fundamental distinguir este procedimiento del teorema anterior: la propiedad exacta $\Delta s_k\sim\operatorname{Exp}(1)$ corresponde al compensador verdadero $\Lambda$, mientras que $\widehat{\Delta s}_k$ constituye un diagnóstico basado en un compensador estimado. La interpretación como diagnóstico de especificación mediante tiempo reescalado sigue la literatura de análisis de procesos puntuales [@brown2002].
+
+Como medida descriptiva de discrepancia se registra el estadístico $D$ de Kolmogorov--Smirnov,
+
+$$
+D
+:=
+\sup_{0\leq u\leq1}
+\left|
+\widehat F_{\widehat u}(u)-u
+\right|,
+$$ {#eq-ks-rescaling}
+
+donde $\widehat F_{\widehat u}$ es la función de distribución empírica de los valores $\widehat u_k$.
+
+En la implementación considerada, este estadístico se utiliza como diagnóstico descriptivo. No se interpreta como un p-valor exacto de una prueba clásica de uniformidad, debido a que la intensidad utilizada para construir los residuos ha sido estimada a partir de los mismos datos.
+
+::::
+
+#### Incertidumbre mediante bootstrap por trayectoria
+
+:::: {style="text-align:justify"}
+
+La incertidumbre de las estadísticas descriptivas de los tiempos entre detecciones se cuantifica mediante bootstrap por trayectoria, siguiendo el principio general de remuestreo para inferencia estadística [@Efrontibshirani1993]. En cada réplica se seleccionan con reemplazo trayectorias completas y se reconstruye la colección correspondiente de tiempos entre detecciones y de observaciones censuradas.
+
+Para un estadístico $\theta$, como la media, mediana o $CV^2$, se obtiene
+
+$$
+\widehat\theta^{(1)},
+\ldots,
+\widehat\theta^{(B)}.
+$$ {#eq-bootstrap-tiempo-replicas}
+
+El intervalo percentil de nivel $1-\gamma$ se define por
+
+$$
+IC_{1-\gamma}
+=
+\left[
+\widehat\theta^{\,(\gamma/2)},
+\widehat\theta^{\,(1-\gamma/2)}
+\right].
+$$ {#eq-bootstrap-percentil-tiempo}
+
+El remuestreo de trayectorias completas preserva, en la medida permitida por el esquema bootstrap, la dependencia temporal existente entre las detecciones de una misma trayectoria y evita tratar cada gap como una observación independiente por construcción.
+
+::::
+
+#### Validación mediante información conocida en la simulación
+
+:::: {style="text-align:justify"}
+
+Al igual que en el análisis de severidades, la simulación permite conservar información sobre los tiempos de los eventos generados por el mecanismo conocido. Esta información puede utilizarse para evaluar la capacidad del detector para recuperar la estructura temporal subyacente.
+
+Esta comparación constituye una validación *oracle* y no participa en la estimación de $\widehat\lambda_h$, en la construcción de la distribución de $\Delta\tau$, en la estimación de los modelos paramétricos ni en el cálculo de los intervalos bootstrap.
+
+Por tanto, el procedimiento de inferencia permanece basado exclusivamente en las detecciones obtenidas a partir de las trayectorias simuladas, reproduciendo la situación de aplicación a datos reales en la cual únicamente se dispone de la trayectoria observada y no de la causa física ni del instante verdadero de cada salto no observado.
+
+::::
+
+::::
+
+
+
