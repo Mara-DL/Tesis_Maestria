@@ -597,8 +597,8 @@ Y_{n+1} = Y_n &amp;+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right
 <p><span id="eq-error_local_def"><span class="math display">\[
 R_n := X_{t_{n+1}}^{t_n, Y_n} - Y_{n+1},
 \tag{6.8}\]</span></span></p>
-<p>donde <span class="math inline">\(X_{t_{n+1}}^{t_n, Y_n}\)</span> denota la solución de la EDE <span class="quarto-unresolved-ref">?eq-7.2</span> evaluada en <span class="math inline">\(t_{n+1}\)</span>, con condición inicial <span class="math inline">\(X_{t_n} = Y_n\)</span>.</p>
-<p>El esquema <span class="quarto-unresolved-ref">?eq-7.3</span> se reescribe explícitamente como:</p>
+<p>donde <span class="math inline">\(X_{t_{n+1}}^{t_n, Y_n}\)</span> denota la solución de la EDE <a href="#eq-sdej" class="quarto-xref">Ecuación&nbsp;<span>6.2</span></a> evaluada en <span class="math inline">\(t_{n+1}\)</span>, con condición inicial <span class="math inline">\(X_{t_n} = Y_n\)</span>.</p>
+<p>El esquema <a href="#eq-milstein_ec" class="quarto-xref">Ecuación&nbsp;<span>6.4</span></a> se reescribe explícitamente como:</p>
 <p><span id="eq-milstein_esquema"><span class="math display">\[
 Y_{n+1} = Y_n + a(t_n, Y_n)\Delta t + b(t_n, Y_n)\Delta W_n + \frac{1}{2}b(t_n, Y_n)b'(t_n, Y_n)[(\Delta W_n)^2 - \Delta t] + \int_E R(t_n, Y_n, v)\tilde{p}_\phi(dv, \Delta t) + C_n \Delta t,
 \tag{6.9}\]</span></span></p>
@@ -653,7 +653,7 @@ I_3 := \int_{t_n}^{t_{n+1}} \int_E [\mathcal{L}^{-1} R] \tilde{p}_\phi(dv, ds).
 <p><span id="eq-cota_error_local"><span class="math display">\[
 \mathbb{E}[\|R_n\|^2 \mid \mathcal{F}_{t_n}] = \mathbb{E}[\|\rho_n\|^2 \mid \mathcal{F}_{t_n}] \leq K(1 + \|Y_n\|^2)(\Delta t)^2,
 \tag{6.18}\]</span></span></p>
-<p>donde <span class="math inline">\(K = 3(K_1 + K_2 + K_3)\)</span>. Lo cual verifica la condición de Cota del error local en <span class="math inline">\(L^2\)</span> del Teorema Fundamental con <span class="math inline">\(\gamma = 1/2\)</span>. <span class="math inline">\(\blacksquare\)</span></p>
+<p>donde <span class="math inline">\(K = 3(K_1 + K_2 + K_3)\)</span>. Lo cual verifica la condición de Cota del error local en <span class="math inline">\(L^2\)</span> del Teorema Fundamental con <span class="math inline">\(\gamma = 1/2\)</span>.</p>
 <p>Para propagar el error local al error global, necesitamos descomponer <span class="math inline">\(R_n\)</span> en una parte determinista (sesgo) y una parte martingala (ruido). Esta descomposición es fundamental porque la parte martingala tiene esperanza condicional cero y no contribuye al sesgo acumulado.</p>
 <p>Definimos la proyección condicional del error local:</p>
 <p><span id="eq-proyeccion_condicional"><span class="math display">\[
@@ -795,7 +795,7 @@ M_N \leq M_0 (1 + K_5 \Delta t)^N + K_6 \Delta t \sum_{k=0}^{N-1} (1 + K_5 \Delt
 <p><span id="eq-momentos_cota"><span class="math display">\[
 M_N \leq M_0 e^{K_5 T} + \frac{K_6}{K_5}(e^{K_5 T} - 1) &lt; \infty.
 \tag{6.36}\]</span></span></p>
-<p>Por tanto, el esquema tiene momentos finitos uniformes. <span class="math inline">\(\blacksquare\)</span></p>
+<p>Por tanto, el esquema tiene momentos finitos uniformes. <span class="math inline">\(\quad \blacksquare\)</span></p>
 </div>
 </section>
 <section id="esquema-semi-implícito-compensado" class="level2" data-number="6.4">
