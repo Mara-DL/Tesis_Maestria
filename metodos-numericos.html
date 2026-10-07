@@ -602,15 +602,22 @@ R_n := X_{t_{n+1}}^{t_n, Y_n} - Y_{n+1},
 <p><span id="eq-milstein_esquema"><span class="math display">\[
 Y_{n+1} = Y_n + a(t_n, Y_n)\Delta t + b(t_n, Y_n)\Delta W_n + \frac{1}{2}b(t_n, Y_n)b'(t_n, Y_n)[(\Delta W_n)^2 - \Delta t] + \int_E R(t_n, Y_n, v)\tilde{p}_\phi(dv, \Delta t) + C_n \Delta t,
 \tag{6.9}\]</span></span></p>
-<p>donde: - <span class="math inline">\(\Delta W_n = W_{t_{n+1}} - W_{t_n} \sim \mathcal{N}(0, \Delta t)\)</span> es el incremento del movimiento browniano, - <span class="math inline">\(\tilde{p}_\phi(dv, \Delta t) = p_\phi(dv, [t_n, t_{n+1}]) - \phi(dv)\Delta t\)</span> es la medida de Poisson compensada, - <span class="math inline">\(C_n = -\int_E R(t_n, Y_n, v)\phi(dv) = -\lambda \mathbb{E}[Y]\)</span> es el término de compensación que garantiza <span class="math inline">\(\mathbb{E}\left[\int_E R \tilde{p}_\phi\right] = 0\)</span>.</p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(\Delta W_n = W_{t_{n+1}} - W_{t_n} \sim \mathcal{N}(0, \Delta t)\)</span> es el incremento del movimiento browniano,</p></li>
+<li><p><span class="math inline">\(\tilde{p}_\phi(dv, \Delta t) = p_\phi(dv, [t_n, t_{n+1}]) - \phi(dv)\Delta t\)</span> es la medida de Poisson compensada,</p></li>
+<li><p><span class="math inline">\(C_n = -\int_E R(t_n, Y_n, v)\phi(dv) = -\lambda \mathbb{E}[Y]\)</span> es el término de compensación que garantiza <span class="math inline">\(\mathbb{E}\left[\int_E R \tilde{p}_\phi\right] = 0\)</span>.</p></li>
+</ul>
 <p>Por el teorema de expansión estocástica de Wagner-Platen <span class="citation" data-cites="platen2010">(<a href="references.html#ref-platen2010" role="doc-biblioref"><strong>platen2010?</strong></a>, Ecuación (4.4.7))</span>, la solución exacta <span class="math inline">\(X_{t_{n+1}}^{t_n, Y_n}\)</span> admite la expansión:</p>
 <p><span id="eq-ito_taylor"><span class="math display">\[
 X_{t_{n+1}}^{t_n, Y_n} = Y_n + a\Delta t + b\Delta W_n + \frac{1}{2}bb'[(\Delta W_n)^2 - \Delta t] + \int_E R\tilde{p}_\phi + \rho_n,
 \tag{6.10}\]</span></span></p>
 <p>donde todos los coeficientes <span class="math inline">\(a, b, b', R\)</span> se evalúan en <span class="math inline">\((t_n, Y_n)\)</span>, y <span class="math inline">\(\rho_n\)</span> es el residuo de orden superior que contiene todos los términos de la expansión de Itô-Taylor de orden <span class="math inline">\((\Delta t)^{3/2}\)</span> o superior. Explícitamente:</p>
-<p><span id="eq-residuo_rho"><span class="math display">\[
-\rho_n = \underbrace{\int_{t_n}^{t_{n+1}} \int_{t_n}^{s} \mathcal{L}^0 a \, du \, ds}_{\text{término de deriva de orden } (\Delta t)^2} + \underbrace{\int_{t_n}^{t_{n+1}} \int_{t_n}^{s} \mathcal{L}^1 b \, dW_u \, ds}_{\text{término cruzado difusión-deriva}} + \underbrace{\int_{t_n}^{t_{n+1}} \int_E [\mathcal{L}^{-1} R] \tilde{p}_\phi(dv, ds)}_{\text{término de salto de orden superior}} + \cdots
-\tag{6.11}\]</span></span></p>
+<p><span id="eq-residuo_rho"><span class="math display">\[\begin{aligned}
+\rho_n = \underbrace{\int_{t_n}^{t_{n+1}} \int_{t_n}^{s} \mathcal{L}^0 a \, du \, ds}_{\text{término de deriva de orden } (\Delta t)^2} &amp;+ \underbrace{\int_{t_n}^{t_{n+1}} \int_{t_n}^{s} \mathcal{L}^1 b \, dW_u \, ds}_{\text{término cruzado difusión-deriva}} \\
+&amp;+ \underbrace{\int_{t_n}^{t_{n+1}} \int_E [\mathcal{L}^{-1} R] \tilde{p}_\phi(dv, ds)}_{\text{término de salto de orden superior}} \\
+&amp;+ \cdots
+\end{aligned} \tag{6.11}\]</span></span></p>
 <p>Donde <span class="math inline">\(\mathcal{L}^0\)</span> y <span class="math inline">\(\mathcal{L}^1\)</span> son los operadores diferenciales de Itô definidos por:</p>
 <p><span id="eq-operador_L0"><span class="math display">\[
 \mathcal{L}^0 := \frac{\partial}{\partial t} + a(t,x)\frac{\partial}{\partial x} + \frac{1}{2}b(t,x)^2\frac{\partial^2}{\partial x^2},
@@ -628,9 +635,10 @@ R_n = X_{t_{n+1}}^{t_n, Y_n} - Y_{n+1} = \rho_n.
 <p>Analizando cada termino <a href="#eq-residuo_rho" class="quarto-xref">Ecuación&nbsp;<span>6.11</span></a> por separaddo y aplicando las desigualdades de isometría estocástica se tiene:</p>
 <p><span class="math display">\[
 I_1 := \int_{t_n}^{t_{n+1}} \int_{t_n}^{s} \mathcal{L}^0 a \, du \, ds.
-\]</span> Bajo las hipótesis de Lipschitz y crecimiento lineal, <span class="math inline">\(\mathcal{L}^0 a\)</span> está acotado por <span class="math inline">\(K(1 + \|Y_n\|)\)</span>. Aplicando la desigualdad de Cauchy-Schwarz para integrales deterministas: <span id="eq-cota_I1"><span class="math display">\[
-\mathbb{E}[|I_1|^2 \mid \mathcal{F}_{t_n}] \leq \left(\int_{t_n}^{t_{n+1}} \int_{t_n}^{s} K(1 + \|Y_n\|) \, du \, ds\right)^2 = K^2(1 + \|Y_n\|^2)\left(\frac{(\Delta t)^2}{2}\right)^2 = K_1(1 + \|Y_n\|^2)(\Delta t)^4.
-\tag{6.15}\]</span></span></p>
+\]</span> Bajo las hipótesis de Lipschitz y crecimiento lineal, <span class="math inline">\(\mathcal{L}^0 a\)</span> está acotado por <span class="math inline">\(K(1 + \|Y_n\|)\)</span>. Aplicando la desigualdad de Cauchy-Schwarz para integrales deterministas:</p>
+<p><span id="eq-cota_I1"><span class="math display">\[\begin{aligned}
+\mathbb{E}[|I_1|^2 \mid \mathcal{F}_{t_n}] \leq \left(\int_{t_n}^{t_{n+1}} \int_{t_n}^{s} K(1 + \|Y_n\|) \, du \, ds\right)^2 = K^2(1 + \|Y_n\|^2)\left(\frac{(\Delta t)^2}{2}\right)^2  &amp;= K_1(1 + \|Y_n\|^2)(\Delta t)^4.
+\end{aligned} \tag{6.15}\]</span></span></p>
 <p><span class="math display">\[
 I_2 := \int_{t_n}^{t_{n+1}} \int_{t_n}^{s} \mathcal{L}^1 b \, dW_u \, ds.
 \]</span> Aplicaando isometría de Itô <span class="citation" data-cites="protter2005">(<a href="references.html#ref-protter2005" role="doc-biblioref"><strong>protter2005?</strong></a>, Teorema IV.28)</span>: para una integral estocástica <span class="math inline">\(\int_0^t H_u \, dW_u\)</span> con <span class="math inline">\(H\)</span> adaptado y <span class="math inline">\(\mathbb{E}\int_0^t |H_u|^2 du &lt; \infty\)</span>, se tiene <span class="math inline">\(\mathbb{E}\left[\left|\int_0^t H_u dW_u\right|^2\right] = \mathbb{E}\int_0^t |H_u|^2 du\)</span>. Aplicando esto condicionalmente a <span class="math inline">\(\mathcal{F}_{t_n}\)</span>: <span class="math display">\[
@@ -676,7 +684,7 @@ M_n := R_n - \bar{R}_n = R_n - \mathbb{E}[R_n \mid \mathcal{F}_{t_n}].
 <p><span id="eq-error_global_def"><span class="math display">\[
 e_n := X_{t_n} - Y_n,
 \tag{6.23}\]</span></span></p>
-<p>donde <span class="math inline">\(X_{t_n}\)</span> es la solución exacta de la EDE <span class="quarto-unresolved-ref">?eq-7.2</span> con condición inicial <span class="math inline">\(X_0\)</span>, y <span class="math inline">\(Y_n\)</span> es la aproximación numérica dada por el esquema <a href="#eq-milstein_esquema" class="quarto-xref">Ecuación&nbsp;<span>6.9</span></a>.</p>
+<p>donde <span class="math inline">\(X_{t_n}\)</span> es la solución exacta de la EDE (<a href="#eq-sdej" class="quarto-xref">Ecuación&nbsp;<span>6.2</span></a>) con condición inicial <span class="math inline">\(X_0\)</span>, y <span class="math inline">\(Y_n\)</span> es la aproximación numérica dada por el esquema <a href="#eq-milstein_esquema" class="quarto-xref">Ecuación&nbsp;<span>6.9</span></a>.</p>
 <p>Restando <a href="#eq-milstein_esquema" class="quarto-xref">Ecuación&nbsp;<span>6.9</span></a> de la EDE integrada exactamente desde <span class="math inline">\(t_n\)</span> hasta <span class="math inline">\(t_{n+1}\)</span>:</p>
 <p><span class="math display">\[
 X_{t_{n+1}} = X_{t_n} + \int_{t_n}^{t_{n+1}} a(s, X_s) ds + \int_{t_n}^{t_{n+1}} b(s, X_s) dW_s + \int_{t_n}^{t_{n+1}} \int_E R(s, X_{s^-}, v) \tilde{p}_\phi(dv, ds),
@@ -700,7 +708,12 @@ e_{n+1} \approx e_n + [a(t_n, X_{t_n}) - a(t_n, Y_n)]\Delta t + [b(t_n, X_{t_n})
 \mathbb{E}[\|e_{n+1}\|^2 \mid \mathcal{F}_{t_n}] = \|e_n\|^2 + 2e_n \cdot \Delta a_n \Delta t + 2e_n \cdot \bar{R}_n + \|\Delta b_n\|^2 \Delta t + \mathbb{E}[\|R_n\|^2 \mid \mathcal{F}_{t_n}] + 2\mathbb{E}[\Delta b_n \Delta W_n \cdot M_n \mid \mathcal{F}_{t_n}].
 \tag{6.26}\]</span></span></p>
 <p>El último término se anula porque <span class="math inline">\(\Delta W_n\)</span> y <span class="math inline">\(M_n\)</span> son independientes condicionalmente a <span class="math inline">\(\mathcal{F}_{t_n}\)</span>.</p>
-<p>Usando las desigualdades de: 1. <strong>Desigualdad de Cauchy-Schwarz</strong>: <span class="math inline">\(2e_n \cdot \Delta a_n \Delta t \leq 2\|e_n\| \|\Delta a_n\| \Delta t\)</span>, 2. <strong>Desigualdad de Young</strong>: <span class="math inline">\(2ab \leq \epsilon a^2 + \frac{1}{\epsilon} b^2\)</span> para todo <span class="math inline">\(\epsilon &gt; 0\)</span>, 3. <strong>Condición de Lipschitz</strong> (Hipótesis 1): <span class="math inline">\(\|\Delta a_n\| \leq L_a \|e_n\|\)</span> y <span class="math inline">\(\|\Delta b_n\| \leq L_b \|e_n\|\)</span>.</p>
+<p>Usando las desigualdades de:</p>
+<ol type="1">
+<li><strong>Desigualdad de Cauchy-Schwarz</strong>: <span class="math inline">\(2e_n \cdot \Delta a_n \Delta t \leq 2\|e_n\| \|\Delta a_n\| \Delta t\)</span>,</li>
+<li><strong>Desigualdad de Young</strong>: <span class="math inline">\(2ab \leq \epsilon a^2 + \frac{1}{\epsilon} b^2\)</span> para todo <span class="math inline">\(\epsilon &gt; 0\)</span>,</li>
+<li><strong>Condición de Lipschitz</strong> (Hipótesis 1): <span class="math inline">\(\|\Delta a_n\| \leq L_a \|e_n\|\)</span> y <span class="math inline">\(\|\Delta b_n\| \leq L_b \|e_n\|\)</span>.</li>
+</ol>
 <p>Aplicando estas desigualdades con <span class="math inline">\(\epsilon = 1\)</span>:</p>
 <p><span class="math display">\[
 2e_n \cdot \Delta a_n \Delta t \leq \|e_n\|^2 \Delta t + L_a^2 \|e_n\|^2 \Delta t = (1 + L_a^2)\|e_n\|^2 \Delta t,
