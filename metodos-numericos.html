@@ -573,7 +573,7 @@ Y_{n+1} = Y_n &amp;+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right
 <li><span class="math inline">\(a(t, x) = c(t) + r(t)x\)</span> y <span class="math inline">\(b(t, x) = \sigma(t)x\)</span>.</li>
 </ul>
 </div>
-<div>
+<div style="text-align:justify">
 <p>(Convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span> ). Supongamos las siguientes hipótesis:</p>
 <ol type="1">
 <li><p><strong>Lipschitz global</strong>: Los coeficientes <span class="math inline">\(a(t,x)\)</span> y <span class="math inline">\(b(t,x)\)</span> son globalmente Lipschitz en <span class="math inline">\(x\)</span>, y <span class="math inline">\(c(t,x,v)\)</span> es globalmente Lipschitz en <span class="math inline">\(x\)</span> uniformemente en <span class="math inline">\(t\)</span> y <span class="math inline">\(v\)</span>: <span class="math display">\[|c(t, x_1, v) - c(t, x_2, v)| \leq L_c |x_1 - x_2|, \quad \forall t \in [0,T], \, x_1, x_2 \in \mathbb{R}, \, v \in E.\]</span></p></li>
@@ -593,97 +593,221 @@ Y_{n+1} = Y_n &amp;+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right
 <p>Además, el Teorema 1.9.3 garantiza que la solución tiene momentos finitos de segundo orden: <span id="eq-exact_moment"><span class="math display">\[\mathbb{E}\left[ \sup_{0 \leq t \leq T} |X_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|X_0|^2]) &lt; \infty. \tag{6.7}\]</span></span></p>
 <p>El esquema <a href="#eq-milstein_ec" class="quarto-xref">Ecuación&nbsp;<span>6.4</span></a> incluye la corrección de Milstein, que corresponde a truncar la expansión estocástica de Wagner-Platen (ver <span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, Ec. (4.4.7)) después de los términos de orden <span class="math inline">\(\mathcal{O}((dt)^{3/2})\)</span>.</p>
 <p>Para una SDE con saltos, la expansión completa incluye términos adicionales relacionados con la medida de Poisson. Como el modelo es aditivo en los saltos (aunque <span class="math inline">\(c(t,x,v)\)</span> depende de <span class="math inline">\(x\)</span>, no hay términos cruzados de orden superior), los operadores de salto y difusión conmutan trivialmente, lo que simplifica el análisis.</p>
-<p>Definimos el error local <span class="math inline">\(R_n\)</span> como la siguiente diferencia entre la solución exacta:</p>
+<p>Definimos el error local <span class="math inline">\(R_n\)</span> como la diferencia entre la solución exacta de la EDE avanzada un paso de tiempo <span class="math inline">\(\Delta t\)</span> y el valor producido por el esquema numérico, ambos partiendo del mismo punto inicial <span class="math inline">\(Y_n\)</span> en el tiempo <span class="math inline">\(t_n\)</span>:</p>
 <p><span id="eq-error_local_def"><span class="math display">\[
 R_n := X_{t_{n+1}}^{t_n, Y_n} - Y_{n+1},
 \tag{6.8}\]</span></span></p>
-<p>donde <span class="math inline">\(X_{t_{n+1}}^{t_n, Y_n}\)</span> es la solución de la EDE <span class="quarto-unresolved-ref">?eq-7.2</span> partiendo de <span class="math inline">\(X_{t_n} = Y_n\)</span>.</p>
-<p>El esquema de Milstein Compensado <span class="quarto-unresolved-ref">?eq-7.3</span> se reescribe como:</p>
+<p>donde <span class="math inline">\(X_{t_{n+1}}^{t_n, Y_n}\)</span> denota la solución de la EDE <span class="quarto-unresolved-ref">?eq-7.2</span> evaluada en <span class="math inline">\(t_{n+1}\)</span>, con condición inicial <span class="math inline">\(X_{t_n} = Y_n\)</span>.</p>
+<p>El esquema <span class="quarto-unresolved-ref">?eq-7.3</span> se reescribe explícitamente como:</p>
 <p><span id="eq-milstein_esquema"><span class="math display">\[
 Y_{n+1} = Y_n + a(t_n, Y_n)\Delta t + b(t_n, Y_n)\Delta W_n + \frac{1}{2}b(t_n, Y_n)b'(t_n, Y_n)[(\Delta W_n)^2 - \Delta t] + \int_E R(t_n, Y_n, v)\tilde{p}_\phi(dv, \Delta t) + C_n \Delta t,
 \tag{6.9}\]</span></span></p>
-<p>donde <span class="math inline">\(C_n = -\lambda \mathbb{E}[Y]\)</span> es el término de compensación.</p>
-<p>La solución exacta, por la fórmula de Itô-Taylor <span class="citation" data-cites="platen2010">(<a href="references.html#ref-platen2010" role="doc-biblioref"><strong>platen2010?</strong></a>, Ec. (4.4.7))</span>, se expande como:</p>
+<p>donde: - <span class="math inline">\(\Delta W_n = W_{t_{n+1}} - W_{t_n} \sim \mathcal{N}(0, \Delta t)\)</span> es el incremento del movimiento browniano, - <span class="math inline">\(\tilde{p}_\phi(dv, \Delta t) = p_\phi(dv, [t_n, t_{n+1}]) - \phi(dv)\Delta t\)</span> es la medida de Poisson compensada, - <span class="math inline">\(C_n = -\int_E R(t_n, Y_n, v)\phi(dv) = -\lambda \mathbb{E}[Y]\)</span> es el término de compensación que garantiza <span class="math inline">\(\mathbb{E}\left[\int_E R \tilde{p}_\phi\right] = 0\)</span>.</p>
+<p>Por el teorema de expansión estocástica de Wagner-Platen <span class="citation" data-cites="platen2010">(<a href="references.html#ref-platen2010" role="doc-biblioref"><strong>platen2010?</strong></a>, Ecuación (4.4.7))</span>, la solución exacta <span class="math inline">\(X_{t_{n+1}}^{t_n, Y_n}\)</span> admite la expansión:</p>
 <p><span id="eq-ito_taylor"><span class="math display">\[
 X_{t_{n+1}}^{t_n, Y_n} = Y_n + a\Delta t + b\Delta W_n + \frac{1}{2}bb'[(\Delta W_n)^2 - \Delta t] + \int_E R\tilde{p}_\phi + \rho_n,
 \tag{6.10}\]</span></span></p>
-<p>donde <span class="math inline">\(\rho_n\)</span> contiene los términos de orden superior:</p>
-<p><span class="math display">\[
-\rho_n = \int_{t_n}^{t_{n+1}} \int_{t_n}^{s} \mathcal{L}^0 a \, du \, ds + \int_{t_n}^{t_{n+1}} \int_{t_n}^{s} \mathcal{L}^1 b \, dW_u \, ds + \int_{t_n}^{t_{n+1}} \int_E [\mathcal{L}^{-1} R] \tilde{p}_\phi(dv, ds) + \dots
-\]</span></p>
-<p>Aquí <span class="math inline">\(\mathcal{L}^0 = \partial_t + a\partial_x + \frac{1}{2}b^2\partial_{xx}\)</span> y <span class="math inline">\(\mathcal{L}^1 = b\partial_x\)</span> son los operadores de Itô.</p>
-<p>Bajo las hipótesis de Lipschitz y crecimiento lineal, y usando la isometría de Itô para la integral estocástica y la propiedad de compensación de la medida de Poisson:</p>
-<p><span id="eq-cota_rho"><span class="math display">\[
-\mathbb{E}[\|\rho_n\|^2 \mid \mathcal{F}_{t_n}] \leq K_1(1 + \|Y_n\|^2)(\Delta t)^3 + K_2(1 + \|Y_n\|^2)(\Delta t)^2 + K_3(1 + \|Y_n\|^2)(\Delta t)^2.
+<p>donde todos los coeficientes <span class="math inline">\(a, b, b', R\)</span> se evalúan en <span class="math inline">\((t_n, Y_n)\)</span>, y <span class="math inline">\(\rho_n\)</span> es el residuo de orden superior que contiene todos los términos de la expansión de Itô-Taylor de orden <span class="math inline">\((\Delta t)^{3/2}\)</span> o superior. Explícitamente:</p>
+<p><span id="eq-residuo_rho"><span class="math display">\[
+\rho_n = \underbrace{\int_{t_n}^{t_{n+1}} \int_{t_n}^{s} \mathcal{L}^0 a \, du \, ds}_{\text{término de deriva de orden } (\Delta t)^2} + \underbrace{\int_{t_n}^{t_{n+1}} \int_{t_n}^{s} \mathcal{L}^1 b \, dW_u \, ds}_{\text{término cruzado difusión-deriva}} + \underbrace{\int_{t_n}^{t_{n+1}} \int_E [\mathcal{L}^{-1} R] \tilde{p}_\phi(dv, ds)}_{\text{término de salto de orden superior}} + \cdots
 \tag{6.11}\]</span></span></p>
-<p>El término dominante es <span class="math inline">\(O((\Delta t)^2)\)</span>, proveniente de la integral de Poisson compensada y del término de Milstein. Por tanto:</p>
-<p><span id="eq-cota_error_local"><span class="math display">\[
-\mathbb{E}[\|R_n\|^2 \mid \mathcal{F}_{t_n}] = \mathbb{E}[\|\rho_n\|^2 \mid \mathcal{F}_{t_n}] \leq K(1 + \|Y_n\|^2)(\Delta t)^2.
+<p>Donde <span class="math inline">\(\mathcal{L}^0\)</span> y <span class="math inline">\(\mathcal{L}^1\)</span> son los operadores diferenciales de Itô definidos por:</p>
+<p><span id="eq-operador_L0"><span class="math display">\[
+\mathcal{L}^0 := \frac{\partial}{\partial t} + a(t,x)\frac{\partial}{\partial x} + \frac{1}{2}b(t,x)^2\frac{\partial^2}{\partial x^2},
 \tag{6.12}\]</span></span></p>
-<p>El error local se descompone como:</p>
-<p><span id="eq-descomp_martingala"><span class="math display">\[
-R_n = \mathbb{E}[R_n \mid \mathcal{F}_{t_n}] + M_n,
+<p><span id="eq-operador_L1"><span class="math display">\[
+\mathcal{L}^1 := b(t,x)\frac{\partial}{\partial x}.
 \tag{6.13}\]</span></span></p>
-<p>donde <span class="math inline">\(M_n\)</span> es una martingala con <span class="math inline">\(\mathbb{E}[M_n \mid \mathcal{F}_{t_n}] = 0\)</span> y <span class="math inline">\(\mathbb{E}[\|M_n\|^2 \mid \mathcal{F}_{t_n}] \leq K(1 + \|Y_n\|^2)(\Delta t)^2\)</span>.</p>
-<p>La parte determinista <span class="math inline">\(\mathbb{E}[R_n \mid \mathcal{F}_{t_n}]\)</span> es de orden <span class="math inline">\(O((\Delta t)^{3/2})\)</span> en <span class="math inline">\(L^2\)</span>, proveniente del sesgo del esquema.</p>
-<p>Definimos el error global <span class="math inline">\(e_n = X_{t_n} - Y_n\)</span>. Usando la EDE <span class="quarto-unresolved-ref">?eq-7.2</span> y el esquema <a href="#eq-milstein_esquema" class="quarto-xref">Ecuación&nbsp;<span>6.9</span></a>:</p>
-<p><span id="eq-error_global"><span class="math display">\[
-e_{n+1} = e_n + [a(t_n, X_{t_n}) - a(t_n, Y_n)]\Delta t + [b(t_n, X_{t_n}) - b(t_n, Y_n)]\Delta W_n + R_n.
+<p>Estos operadores surgen de aplicar la fórmula de Itô iteradamente a los coeficientes de la EDE. El operador <span class="math inline">\(\mathcal{L}^0\)</span> actúa sobre las funciones deterministas y produce términos de orden <span class="math inline">\((\Delta t)^2\)</span>, mientras que <span class="math inline">\(\mathcal{L}^1\)</span> actúa sobre las funciones estocásticas y produce términos de orden <span class="math inline">\((\Delta t)^{3/2}\)</span> cuando se integra contra <span class="math inline">\(dW\)</span>.</p>
+<p>Al restar <a href="#eq-milstein_esquema" class="quarto-xref">Ecuación&nbsp;<span>6.9</span></a> de <a href="#eq-ito_taylor" class="quarto-xref">Ecuación&nbsp;<span>6.10</span></a>, todos los términos de orden <span class="math inline">\(\Delta t\)</span> y <span class="math inline">\((\Delta W_n)^2 - \Delta t\)</span> se cancelan exactamente, quedando:</p>
+<p><span id="eq-error_local_igual_rho"><span class="math display">\[
+R_n = X_{t_{n+1}}^{t_n, Y_n} - Y_{n+1} = \rho_n.
 \tag{6.14}\]</span></span></p>
-<p>Tomando cuadrados y esperanza condicional:</p>
-<p><span id="eq-error_cuadrado"><span class="math display">\[
-\mathbb{E}[\|e_{n+1}\|^2 \mid \mathcal{F}_{t_n}] = \|e_n\|^2 + 2e_n \cdot [a(t_n, X_{t_n}) - a(t_n, Y_n)]\Delta t + \|b(t_n, X_{t_n}) - b(t_n, Y_n)\|^2 \Delta t + 2e_n \cdot \mathbb{E}[R_n \mid \mathcal{F}_{t_n}] + \mathbb{E}[\|R_n\|^2 \mid \mathcal{F}_{t_n}].
+<p>Por tanto, el error local coincide exactamente con el residuo de la expansión de Itô-Taylor.</p>
+<p>Para demostrar que <span class="math inline">\(\mathbb{E}[\|R_n\|^2 \mid \mathcal{F}_{t_n}] \leq K(1 + \|Y_n\|^2)(\Delta t)^2\)</span>. Por <a href="#eq-error_local_igual_rho" class="quarto-xref">Ecuación&nbsp;<span>6.14</span></a>, basta acotar <span class="math inline">\(\mathbb{E}[\|\rho_n\|^2 \mid \mathcal{F}_{t_n}]\)</span>.</p>
+<p>Analizando cada termino <a href="#eq-residuo_rho" class="quarto-xref">Ecuación&nbsp;<span>6.11</span></a> por separaddo y aplicando las desigualdades de isometría estocástica se tiene:</p>
+<p><span class="math display">\[
+I_1 := \int_{t_n}^{t_{n+1}} \int_{t_n}^{s} \mathcal{L}^0 a \, du \, ds.
+\]</span> Bajo las hipótesis de Lipschitz y crecimiento lineal, <span class="math inline">\(\mathcal{L}^0 a\)</span> está acotado por <span class="math inline">\(K(1 + \|Y_n\|)\)</span>. Aplicando la desigualdad de Cauchy-Schwarz para integrales deterministas: <span id="eq-cota_I1"><span class="math display">\[
+\mathbb{E}[|I_1|^2 \mid \mathcal{F}_{t_n}] \leq \left(\int_{t_n}^{t_{n+1}} \int_{t_n}^{s} K(1 + \|Y_n\|) \, du \, ds\right)^2 = K^2(1 + \|Y_n\|^2)\left(\frac{(\Delta t)^2}{2}\right)^2 = K_1(1 + \|Y_n\|^2)(\Delta t)^4.
 \tag{6.15}\]</span></span></p>
-<p>Usando Lipschitz y la desigualdad <span class="math inline">\(2ab \leq a^2 + b^2\)</span>:</p>
-<p><span id="eq-recursion"><span class="math display">\[
-\mathbb{E}[\|e_{n+1}\|^2 \mid \mathcal{F}_{t_n}] \leq (1 + K_1 \Delta t)\|e_n\|^2 + K_2(1 + \|Y_n\|^2)(\Delta t)^2.
+<p><span class="math display">\[
+I_2 := \int_{t_n}^{t_{n+1}} \int_{t_n}^{s} \mathcal{L}^1 b \, dW_u \, ds.
+\]</span> Aplicaando isometría de Itô <span class="citation" data-cites="protter2005">(<a href="references.html#ref-protter2005" role="doc-biblioref"><strong>protter2005?</strong></a>, Teorema IV.28)</span>: para una integral estocástica <span class="math inline">\(\int_0^t H_u \, dW_u\)</span> con <span class="math inline">\(H\)</span> adaptado y <span class="math inline">\(\mathbb{E}\int_0^t |H_u|^2 du &lt; \infty\)</span>, se tiene <span class="math inline">\(\mathbb{E}\left[\left|\int_0^t H_u dW_u\right|^2\right] = \mathbb{E}\int_0^t |H_u|^2 du\)</span>. Aplicando esto condicionalmente a <span class="math inline">\(\mathcal{F}_{t_n}\)</span>: <span class="math display">\[
+\mathbb{E}[|I_2|^2 \mid \mathcal{F}_{t_n}] = \mathbb{E}\left[\int_{t_n}^{t_{n+1}} \left|\int_{t_n}^{s} \mathcal{L}^1 b \, dW_u\right|^2 ds \;\middle|\; \mathcal{F}_{t_n}\right].
+\]</span> Usando nuevamente la isometría de Itô en la integral interior: <span id="eq-cota_I2"><span class="math display">\[
+\mathbb{E}[|I_2|^2 \mid \mathcal{F}_{t_n}] = \int_{t_n}^{t_{n+1}} \int_{t_n}^{s} \mathbb{E}[|\mathcal{L}^1 b|^2 \mid \mathcal{F}_{t_n}] \, du \, ds \leq K^2(1 + \|Y_n\|^2) \int_{t_n}^{t_{n+1}} (s - t_n) \, ds = K_2(1 + \|Y_n\|^2)(\Delta t)^2.
 \tag{6.16}\]</span></span></p>
-<p>Tomando esperanza total y definiendo <span class="math inline">\(E_n = \mathbb{E}[\|e_n\|^2]\)</span>:</p>
-<p><span id="eq-gronwall_discreto"><span class="math display">\[
-E_{n+1} \leq (1 + K_1 \Delta t)E_n + K_2(1 + \mathbb{E}[\|Y_n\|^2])(\Delta t)^2.
-\tag{6.17}\]</span></span></p>
-<p>Por la cota de momentos finitos uniformes (Paso 6 abajo), <span class="math inline">\(\mathbb{E}[\|Y_n\|^2] \leq C\)</span>, luego:</p>
-<p><span id="eq-gronwall_simplificado"><span class="math display">\[
-E_{n+1} \leq (1 + K_1 \Delta t)E_n + K_3 (\Delta t)^2.
+<p><span class="math display">\[
+I_3 := \int_{t_n}^{t_{n+1}} \int_E [\mathcal{L}^{-1} R] \tilde{p}_\phi(dv, ds).
+\]</span> Luego aplicamos la isometría para medidas de Poisson compensadas <span class="citation" data-cites="platen2010">(<a href="references.html#ref-platen2010" role="doc-biblioref"><strong>platen2010?</strong></a>, Ecuación (4.2.1))</span>: para una integral <span class="math inline">\(\int_0^t \int_E H(v,s) \tilde{p}_\phi(dv, ds)\)</span> con <span class="math inline">\(H\)</span> predecible y <span class="math inline">\(\mathbb{E}\int_0^t \int_E |H|^2 \phi(dv) ds &lt; \infty\)</span>, se tiene: <span class="math display">\[
+\mathbb{E}\left[\left|\int_0^t \int_E H \tilde{p}_\phi\right|^2\right] = \mathbb{E}\int_0^t \int_E |H|^2 \phi(dv) ds.
+\]</span> Aplicando esto condicionalmente: <span id="eq-cota_I3"><span class="math display">\[
+\mathbb{E}[|I_3|^2 \mid \mathcal{F}_{t_n}] = \int_{t_n}^{t_{n+1}} \int_E \mathbb{E}[|\mathcal{L}^{-1} R|^2 \mid \mathcal{F}_{t_n}] \phi(dv) ds \leq K^2(1 + \|Y_n\|^2) \Delta t \int_E \phi(dv) = K_3(1 + \|Y_n\|^2)(\Delta t)^2,
+\tag{6.17}\]</span></span> donde usamos la hipótesis de momentos finitos de saltos (Hipótesis 3) para garantizar que <span class="math inline">\(\int_E \phi(dv) = \lambda &lt; \infty\)</span>.</p>
+<p>Usando la desigualdad <span class="math inline">\((a + b + c)^2 \leq 3(a^2 + b^2 + c^2)\)</span> y sumando <a href="#eq-cota_I1" class="quarto-xref">Ecuación&nbsp;<span>6.15</span></a>, <a href="#eq-cota_I2" class="quarto-xref">Ecuación&nbsp;<span>6.16</span></a>, <a href="#eq-cota_I3" class="quarto-xref">Ecuación&nbsp;<span>6.17</span></a>:</p>
+<p><span class="math display">\[
+\mathbb{E}[\|\rho_n\|^2 \mid \mathcal{F}_{t_n}] \leq 3\left[K_1(1 + \|Y_n\|^2)(\Delta t)^4 + K_2(1 + \|Y_n\|^2)(\Delta t)^2 + K_3(1 + \|Y_n\|^2)(\Delta t)^2\right].
+\]</span></p>
+<p>Para <span class="math inline">\(\Delta t \leq 1\)</span>, <span class="math inline">\((\Delta t)^4 \leq (\Delta t)^2\)</span>, luego:</p>
+<p><span id="eq-cota_error_local"><span class="math display">\[
+\mathbb{E}[\|R_n\|^2 \mid \mathcal{F}_{t_n}] = \mathbb{E}[\|\rho_n\|^2 \mid \mathcal{F}_{t_n}] \leq K(1 + \|Y_n\|^2)(\Delta t)^2,
 \tag{6.18}\]</span></span></p>
-<p>Iterando con <span class="math inline">\(E_0 = 0\)</span>:</p>
-<p><span id="eq-iteracion"><span class="math display">\[
-E_N \leq K_3 (\Delta t)^2 \sum_{k=0}^{N-1} (1 + K_1 \Delta t)^k = K_3 (\Delta t)^2 \frac{(1 + K_1 \Delta t)^N - 1}{K_1 \Delta t}.
+<p>donde <span class="math inline">\(K = 3(K_1 + K_2 + K_3)\)</span>. Lo cual verifica la condición de Cota del error local en <span class="math inline">\(L^2\)</span> del Teorema Fundamental con <span class="math inline">\(\gamma = 1/2\)</span>. <span class="math inline">\(\blacksquare\)</span></p>
+<p>Para propagar el error local al error global, necesitamos descomponer <span class="math inline">\(R_n\)</span> en una parte determinista (sesgo) y una parte martingala (ruido). Esta descomposición es fundamental porque la parte martingala tiene esperanza condicional cero y no contribuye al sesgo acumulado.</p>
+<p>Definimos la proyección condicional del error local:</p>
+<p><span id="eq-proyeccion_condicional"><span class="math display">\[
+\bar{R}_n := \mathbb{E}[R_n \mid \mathcal{F}_{t_n}],
 \tag{6.19}\]</span></span></p>
-<p>Usando <span class="math inline">\((1 + K_1 \Delta t)^N \leq e^{K_1 T}\)</span> y <span class="math inline">\(N \Delta t = T\)</span>:</p>
-<p><span id="eq-cota_final"><span class="math display">\[
-E_N \leq \frac{K_3}{K_1} (e^{K_1 T} - 1) \Delta t = C \Delta t.
+<p>y la parte martingala:</p>
+<p><span id="eq-parte_martingala"><span class="math display">\[
+M_n := R_n - \bar{R}_n = R_n - \mathbb{E}[R_n \mid \mathcal{F}_{t_n}].
 \tag{6.20}\]</span></span></p>
-<p>Por tanto, <span class="math inline">\(\left(\mathbb{E}[\|e_N\|^2]\right)^{1/2} \leq \sqrt{C} \sqrt{\Delta t}\)</span>, lo que demuestra convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span>. <span class="math inline">\(\blacksquare\)</span></p>
-<p>Definimos <span class="math inline">\(M_n = \mathbb{E}[\sup_{0 \leq k \leq n} \|Y_k\|^2]\)</span>. Tomando cuadrados en <span class="citation" data-cites="e">(<a href="references.html#ref-e" role="doc-biblioref"><strong>e?</strong></a>)</span>-:milstein_esquema y usando las desigualdades de Burkholder-Davis-Gundy <span class="citation" data-cites="protter2005">(<a href="references.html#ref-protter2005" role="doc-biblioref"><strong>protter2005?</strong></a>, Teorema IV.42)</span> para la integral estocástica y la integral de Poisson:</p>
-<p><span id="eq-momentos_finitos"><span class="math display">\[
-M_{n+1} \leq (1 + K_5 \Delta t)M_n + K_6 \Delta t.
+<p>Por construcción, <span class="math inline">\(M_n\)</span> satisface: 1. <span class="math inline">\(\mathbb{E}[M_n \mid \mathcal{F}_{t_n}] = 0\)</span>. 2. <span class="math inline">\(R_n = \bar{R}_n + M_n\)</span>.</p>
+<p>Usando la desigualdad de Jensen condicional <span class="math inline">\(\|\mathbb{E}[X \mid \mathcal{F}]\|^2 \leq \mathbb{E}[\|X\|^2 \mid \mathcal{F}]\)</span>:</p>
+<p><span id="eq-cota_martingala"><span class="math display">\[
+\mathbb{E}[\|M_n\|^2 \mid \mathcal{F}_{t_n}] = \mathbb{E}[\|R_n - \bar{R}_n\|^2 \mid \mathcal{F}_{t_n}] = \mathbb{E}[\|R_n\|^2 \mid \mathcal{F}_{t_n}] - \|\bar{R}_n\|^2 \leq \mathbb{E}[\|R_n\|^2 \mid \mathcal{F}_{t_n}] \leq K(1 + \|Y_n\|^2)(\Delta t)^2.
 \tag{6.21}\]</span></span></p>
-<p>Iterando y usando <span class="math inline">\(M_0 = \mathbb{E}[\|Y_0\|^2] &lt; \infty\)</span>:</p>
+<p>El sesgo <span class="math inline">\(\bar{R}_n\)</span> proviene principalmente del término <span class="math inline">\(I_1\)</span> en <a href="#eq-residuo_rho" class="quarto-xref">Ecuación&nbsp;<span>6.11</span></a>, que es de orden <span class="math inline">\((\Delta t)^2\)</span> en valor esperado. Los términos <span class="math inline">\(I_2\)</span> e <span class="math inline">\(I_3\)</span> tienen valor esperado condicional cero por ser integrales estocásticas contra <span class="math inline">\(dW\)</span> y <span class="math inline">\(\tilde{p}_\phi\)</span> respectivamente. Por tanto:</p>
+<p><span id="eq-cota_sesgo"><span class="math display">\[
+\|\bar{R}_n\| = \|\mathbb{E}[R_n \mid \mathcal{F}_{t_n}]\| \leq K(1 + \|Y_n\|)(\Delta t)^2.
+\tag{6.22}\]</span></span></p>
+<p>Definimos el error global en el paso <span class="math inline">\(n\)</span> como:</p>
+<p><span id="eq-error_global_def"><span class="math display">\[
+e_n := X_{t_n} - Y_n,
+\tag{6.23}\]</span></span></p>
+<p>donde <span class="math inline">\(X_{t_n}\)</span> es la solución exacta de la EDE <span class="quarto-unresolved-ref">?eq-7.2</span> con condición inicial <span class="math inline">\(X_0\)</span>, y <span class="math inline">\(Y_n\)</span> es la aproximación numérica dada por el esquema <a href="#eq-milstein_esquema" class="quarto-xref">Ecuación&nbsp;<span>6.9</span></a>.</p>
+<p>Restando <a href="#eq-milstein_esquema" class="quarto-xref">Ecuación&nbsp;<span>6.9</span></a> de la EDE integrada exactamente desde <span class="math inline">\(t_n\)</span> hasta <span class="math inline">\(t_{n+1}\)</span>:</p>
+<p><span class="math display">\[
+X_{t_{n+1}} = X_{t_n} + \int_{t_n}^{t_{n+1}} a(s, X_s) ds + \int_{t_n}^{t_{n+1}} b(s, X_s) dW_s + \int_{t_n}^{t_{n+1}} \int_E R(s, X_{s^-}, v) \tilde{p}_\phi(dv, ds),
+\]</span></p>
+<p>y usando la definición de error local <a href="#eq-error_local_def" class="quarto-xref">Ecuación&nbsp;<span>6.8</span></a> con <span class="math inline">\(Y_n\)</span> como punto inicial, obtenemos:</p>
+<p><span id="eq-recursion_error"><span class="math display">\[
+e_{n+1} = e_n + \int_{t_n}^{t_{n+1}} [a(s, X_s) - a(t_n, Y_n)] ds + \int_{t_n}^{t_{n+1}} [b(s, X_s) - b(t_n, Y_n)] dW_s + R_n.
+\tag{6.24}\]</span></span></p>
+<p>Para simplificar, aproximamos <span class="math inline">\(a(s, X_s) \approx a(t_n, X_{t_n})\)</span> y <span class="math inline">\(b(s, X_s) \approx b(t_n, X_{t_n})\)</span> para <span class="math inline">\(s \in [t_n, t_{n+1}]\)</span> y se tiene que</p>
+<p><span id="eq-error_global"><span class="math display">\[
+e_{n+1} \approx e_n + [a(t_n, X_{t_n}) - a(t_n, Y_n)]\Delta t + [b(t_n, X_{t_n}) - b(t_n, Y_n)]\Delta W_n + R_n.
+\tag{6.25}\]</span></span></p>
+<p>Tomamos la norma al cuadrado de <a href="#eq-error_global" class="quarto-xref">Ecuación&nbsp;<span>6.25</span></a> y aplicamos la esperanza condicional <span class="math inline">\(\mathbb{E}[\cdot \mid \mathcal{F}_{t_n}]\)</span>:</p>
+<p><span class="math display">\[
+\mathbb{E}[\|e_{n+1}\|^2 \mid \mathcal{F}_{t_n}] = \mathbb{E}\left[\|e_n + \Delta a_n \Delta t + \Delta b_n \Delta W_n + R_n\|^2 \;\middle|\; \mathcal{F}_{t_n}\right],
+\]</span></p>
+<p>donde <span class="math inline">\(\Delta a_n := a(t_n, X_{t_n}) - a(t_n, Y_n)\)</span> y <span class="math inline">\(\Delta b_n := b(t_n, X_{t_n}) - b(t_n, Y_n)\)</span>.</p>
+<p>Expandiendo el cuadrado y usando las propiedades de independencia condicional: - <span class="math inline">\(\mathbb{E}[\Delta W_n \mid \mathcal{F}_{t_n}] = 0\)</span> - <span class="math inline">\(\mathbb{E}[R_n \mid \mathcal{F}_{t_n}] = \bar{R}_n\)</span> - <span class="math inline">\(\mathbb{E}[\Delta W_n \cdot R_n \mid \mathcal{F}_{t_n}] = \mathbb{E}[\Delta W_n \cdot M_n \mid \mathcal{F}_{t_n}]\)</span>,</p>
+<p>obtenemos:</p>
+<p><span id="eq-error_cuadrado_expandido"><span class="math display">\[
+\mathbb{E}[\|e_{n+1}\|^2 \mid \mathcal{F}_{t_n}] = \|e_n\|^2 + 2e_n \cdot \Delta a_n \Delta t + 2e_n \cdot \bar{R}_n + \|\Delta b_n\|^2 \Delta t + \mathbb{E}[\|R_n\|^2 \mid \mathcal{F}_{t_n}] + 2\mathbb{E}[\Delta b_n \Delta W_n \cdot M_n \mid \mathcal{F}_{t_n}].
+\tag{6.26}\]</span></span></p>
+<p>El último término se anula porque <span class="math inline">\(\Delta W_n\)</span> y <span class="math inline">\(M_n\)</span> son independientes condicionalmente a <span class="math inline">\(\mathcal{F}_{t_n}\)</span>.</p>
+<p>Usando las desigualdades de: 1. <strong>Desigualdad de Cauchy-Schwarz</strong>: <span class="math inline">\(2e_n \cdot \Delta a_n \Delta t \leq 2\|e_n\| \|\Delta a_n\| \Delta t\)</span>, 2. <strong>Desigualdad de Young</strong>: <span class="math inline">\(2ab \leq \epsilon a^2 + \frac{1}{\epsilon} b^2\)</span> para todo <span class="math inline">\(\epsilon &gt; 0\)</span>, 3. <strong>Condición de Lipschitz</strong> (Hipótesis 1): <span class="math inline">\(\|\Delta a_n\| \leq L_a \|e_n\|\)</span> y <span class="math inline">\(\|\Delta b_n\| \leq L_b \|e_n\|\)</span>.</p>
+<p>Aplicando estas desigualdades con <span class="math inline">\(\epsilon = 1\)</span>:</p>
+<p><span class="math display">\[
+2e_n \cdot \Delta a_n \Delta t \leq \|e_n\|^2 \Delta t + L_a^2 \|e_n\|^2 \Delta t = (1 + L_a^2)\|e_n\|^2 \Delta t,
+\]</span></p>
+<p><span class="math display">\[
+\|\Delta b_n\|^2 \Delta t \leq L_b^2 \|e_n\|^2 \Delta t,
+\]</span></p>
+<p><span class="math display">\[
+2e_n \cdot \bar{R}_n \leq \|e_n\|^2 + \|\bar{R}_n\|^2 \leq \|e_n\|^2 + K^2(1 + \|Y_n\|^2)(\Delta t)^4.
+\]</span></p>
+<p>Sustituyendo en <a href="#eq-error_cuadrado_expandido" class="quarto-xref">Ecuación&nbsp;<span>6.26</span></a> y usando la cota <a href="#eq-cota_error_local" class="quarto-xref">Ecuación&nbsp;<span>6.18</span></a>:</p>
+<p><span class="math display">\[
+\mathbb{E}[\|e_{n+1}\|^2 \mid \mathcal{F}_{t_n}] \leq \|e_n\|^2 + (1 + L_a^2 + L_b^2)\|e_n\|^2 \Delta t + \|e_n\|^2 + K(1 + \|Y_n\|^2)(\Delta t)^2 + K^2(1 + \|Y_n\|^2)(\Delta t)^4.
+\]</span></p>
+<p>Para <span class="math inline">\(\Delta t \leq 1\)</span>, <span class="math inline">\((\Delta t)^4 \leq (\Delta t)^2\)</span>, luego agrupando términos:</p>
+<p><span id="eq-recursion"><span class="math display">\[
+\mathbb{E}[\|e_{n+1}\|^2 \mid \mathcal{F}_{t_n}] \leq (1 + K_1 \Delta t)\|e_n\|^2 + K_2(1 + \|Y_n\|^2)(\Delta t)^2,
+\tag{6.27}\]</span></span></p>
+<p>donde <span class="math inline">\(K_1 = 2 + L_a^2 + L_b^2\)</span> y <span class="math inline">\(K_2 = K + K^2\)</span>.</p>
+<p>Tomamos el valor esperado total en <a href="#eq-recursion" class="quarto-xref">Ecuación&nbsp;<span>6.27</span></a>, usando la propiedad de la torre <span class="math inline">\(\mathbb{E}[\mathbb{E}[X \mid \mathcal{F}]] = \mathbb{E}[X]\)</span>:</p>
+<p><span id="eq-gronwall_discreto"><span class="math display">\[
+\mathbb{E}[\|e_{n+1}\|^2] \leq (1 + K_1 \Delta t)\mathbb{E}[\|e_n\|^2] + K_2(1 + \mathbb{E}[\|Y_n\|^2])(\Delta t)^2.
+\tag{6.28}\]</span></span></p>
+<p>Definimos <span class="math inline">\(E_n := \mathbb{E}[\|e_n\|^2]\)</span> y usamos la cota de momentos finitos uniformes <span class="math inline">\(\mathbb{E}[\|Y_n\|^2] \leq C_Y\)</span> para todo <span class="math inline">\(n\)</span>. Entonces:</p>
+<p><span id="eq-gronwall_simplificado"><span class="math display">\[
+E_{n+1} \leq (1 + K_1 \Delta t)E_n + K_3 (\Delta t)^2,
+\tag{6.29}\]</span></span></p>
+<p>donde <span class="math inline">\(K_3 = K_2(1 + C_Y)\)</span>.</p>
+<p>Luego aplicando <a href="#eq-gronwall_simplificado" class="quarto-xref">Ecuación&nbsp;<span>6.29</span></a> recursivamente desde <span class="math inline">\(n = 0\)</span> hasta <span class="math inline">\(n = N-1\)</span>, usando la condición inicial <span class="math inline">\(E_0 = \mathbb{E}[\|e_0\|^2] = \mathbb{E}[\|X_0 - Y_0\|^2] = 0\)</span> tenemos:</p>
+<p><span class="math display">\[
+E_1 \leq (1 + K_1 \Delta t) \cdot 0 + K_3 (\Delta t)^2 = K_3 (\Delta t)^2,
+\]</span></p>
+<p><span class="math display">\[
+E_2 \leq (1 + K_1 \Delta t)K_3 (\Delta t)^2 + K_3 (\Delta t)^2 = K_3 (\Delta t)^2 [1 + (1 + K_1 \Delta t)],
+\]</span></p>
+<p><span class="math display">\[
+E_3 \leq (1 + K_1 \Delta t)K_3 (\Delta t)^2 [1 + (1 + K_1 \Delta t)] + K_3 (\Delta t)^2 = K_3 (\Delta t)^2 [1 + (1 + K_1 \Delta t) + (1 + K_1 \Delta t)^2].
+\]</span></p>
+<p>Por inducción, para todo <span class="math inline">\(n\)</span>:</p>
+<p><span id="eq-suma_geometrica"><span class="math display">\[
+E_n \leq K_3 (\Delta t)^2 \sum_{k=0}^{n-1} (1 + K_1 \Delta t)^k.
+\tag{6.30}\]</span></span></p>
+<p>y la suma geométrica se evalúa explícitamente:</p>
+<p><span class="math display">\[
+\sum_{k=0}^{n-1} (1 + K_1 \Delta t)^k = \frac{(1 + K_1 \Delta t)^n - 1}{(1 + K_1 \Delta t) - 1} = \frac{(1 + K_1 \Delta t)^n - 1}{K_1 \Delta t}.
+\]</span></p>
+<p>Sustituyendo en <a href="#eq-suma_geometrica" class="quarto-xref">Ecuación&nbsp;<span>6.30</span></a> con <span class="math inline">\(n = N\)</span> y <span class="math inline">\(N \Delta t = T\)</span>:</p>
+<p><span id="eq-iteracion"><span class="math display">\[
+E_N \leq K_3 (\Delta t)^2 \cdot \frac{(1 + K_1 \Delta t)^N - 1}{K_1 \Delta t} = \frac{K_3}{K_1} \Delta t \left[(1 + K_1 \Delta t)^N - 1\right].
+\tag{6.31}\]</span></span></p>
+<p>Usamos la desigualdad fundamental <span class="math inline">\((1 + x)^n \leq e^{nx}\)</span> para <span class="math inline">\(x \geq 0\)</span>:</p>
+<p><span class="math display">\[
+(1 + K_1 \Delta t)^N \leq e^{K_1 N \Delta t} = e^{K_1 T}.
+\]</span></p>
+<p>Por tanto:</p>
+<p><span id="eq-cota_final"><span class="math display">\[
+E_N \leq \frac{K_3}{K_1} (e^{K_1 T} - 1) \Delta t = C \Delta t,
+\tag{6.32}\]</span></span></p>
+<p>donde <span class="math inline">\(C = \frac{K_3}{K_1} (e^{K_1 T} - 1)\)</span> es una constante independiente de <span class="math inline">\(\Delta t\)</span>.</p>
+<p>Tomando la raíz cuadrada en ambos lados:</p>
+<p><span class="math display">\[
+\left(\mathbb{E}[\|e_N\|^2]\right)^{1/2} \leq \sqrt{C} \sqrt{\Delta t},
+\]</span></p>
+<p>lo que demuestra la convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span>.</p>
+<p>Ahora para verificar la condición de momentos finitos uniformes, definimos:</p>
+<p><span id="eq-def_momentos"><span class="math display">\[
+M_n := \mathbb{E}\left[\sup_{0 \leq k \leq n} \|Y_k\|^2\right].
+\tag{6.33}\]</span></span></p>
+<p>Tomando la norma al cuadrado en <a href="#eq-milstein_esquema" class="quarto-xref">Ecuación&nbsp;<span>6.9</span></a> y aplicando la desigualdad <span class="math inline">\((a + b + c + d + e + f)^2 \leq 6(a^2 + b^2 + c^2 + d^2 + e^2 + f^2)\)</span>:</p>
+<p><span id="eq-cota_esquema_cuadrado"><span class="math display">\[
+\|Y_{n+1}\|^2 \leq 6\|Y_n\|^2 + 6\|a(t_n, Y_n)\|^2 (\Delta t)^2 + 6\|b(t_n, Y_n)\|^2 \|\Delta W_n\|^2 + 6\left\|\frac{1}{2}bb'[(\Delta W_n)^2 - \Delta t]\right\|^2 + 6\left\|\int_E R\tilde{p}_\phi\right\|^2 + 6\|C_n\|^2 (\Delta t)^2.
+\tag{6.34}\]</span></span></p>
+<p>Ahota tomamos el supremo sobre <span class="math inline">\(k \in \{0, \dots, n+1\}\)</span> y luego la esperanza. Para los términos estocásticos, aplicamos las desigualdades de Burkholder-Davis-Gundy <span class="citation" data-cites="protter2005">(<a href="references.html#ref-protter2005" role="doc-biblioref"><strong>protter2005?</strong></a>, Teorema IV.42)</span>:</p>
+<ul>
+<li><p>Para la integral browniana: <span class="math inline">\(\mathbb{E}\left[\sup_{0 \leq k \leq n} \left\|\sum_{j=0}^{k} b_j \Delta W_j\right\|^2\right] \leq C_{BDG} \mathbb{E}\left[\sum_{j=0}^{n} \|b_j\|^2 \Delta t\right]\)</span>,</p></li>
+<li><p>Para la integral de Poisson compensada: <span class="math inline">\(\mathbb{E}\left[\sup_{0 \leq k \leq n} \left\|\sum_{j=0}^{k} \int_E R_j \tilde{p}_\phi\right\|^2\right] \leq C_{BDG} \mathbb{E}\left[\sum_{j=0}^{n} \int_E \|R_j\|^2 \phi(dv) \Delta t\right]\)</span>.</p></li>
+</ul>
+<p>Usando la condición de crecimiento lineal, <span class="math inline">\(\|a\|^2 + \|b\|^2 + \int_E \|R\|^2 \phi \leq K^2(1 + \|Y_n\|^2)\)</span>, se obtiene:</p>
+<p><span class="math display">\[
+M_{n+1} \leq 6M_n + 6K^2(1 + M_n)(\Delta t)^2 + 6C_{BDG} K^2(1 + M_n)\Delta t + 6K^2(1 + M_n)\Delta t.
+\]</span></p>
+<p>Agrupando términos y usando <span class="math inline">\(\Delta t \leq 1\)</span>:</p>
+<p><span id="eq-momentos_finitos"><span class="math display">\[
+M_{n+1} \leq (1 + K_5 \Delta t)M_n + K_6 \Delta t,
+\tag{6.35}\]</span></span></p>
+<p>donde <span class="math inline">\(K_5 = 6 + 6K^2 + 6C_{BDG}K^2 + 6K^2\)</span> y <span class="math inline">\(K_6 = 6K^2 + 6C_{BDG}K^2 + 6K^2\)</span>.</p>
+<p>Aplicando <a href="#eq-momentos_finitos" class="quarto-xref">Ecuación&nbsp;<span>6.35</span></a> recursivamente desde <span class="math inline">\(n = 0\)</span>:</p>
+<p><span class="math display">\[
+M_N \leq M_0 (1 + K_5 \Delta t)^N + K_6 \Delta t \sum_{k=0}^{N-1} (1 + K_5 \Delta t)^k.
+\]</span></p>
+<p>Finalmente usando <span class="math inline">\((1 + K_5 \Delta t)^N \leq e^{K_5 T}\)</span> y la fórmula de la suma geométrica:</p>
 <p><span id="eq-momentos_cota"><span class="math display">\[
 M_N \leq M_0 e^{K_5 T} + \frac{K_6}{K_5}(e^{K_5 T} - 1) &lt; \infty.
-\tag{6.22}\]</span></span></p>
-<p>Por tanto, el esquema tiene momentos finitos uniformes, completando la demostración.</p>
-<p>Iteramos la desigualdad <span class="quarto-unresolved-ref">?eq-recursive_error</span>: <span id="eq-iteration"><span class="math display">\[\begin{aligned}
-E_1 &amp;\leq (1 + K_9 \, dt) E_0 + K_{10} (\, dt)^2, \\
-E_2 &amp;\leq (1 + K_9 \, dt)^2 E_0 + K_{10} (\, dt)^2 \left[1 + (1 + K_9 \, dt)\right], \\
-&amp;\vdots \\
-E_N &amp;\leq (1 + K_9 \, dt)^N E_0 + K_{10} (\, dt)^2 \sum_{k=0}^{N-1} (1 + K_9 \, dt)^k.
-\end{aligned} \tag{6.23}\]</span></span></p>
-<p>Como <span class="math inline">\(E_0 = 0\)</span> (condiciones iniciales iguales), el primer término se anula. La suma geométrica se puede acotar: <span id="eq-geometric_sum"><span class="math display">\[\sum_{k=0}^{N-1} (1 + K_9 \, dt)^k = \frac{(1 + K_9 \, dt)^N - 1}{K_9 \, dt}. \tag{6.24}\]</span></span></p>
-<p>Usando la desigualdad <span class="math inline">\((1 + x)^N \leq e^{Nx}\)</span> para <span class="math inline">\(x \geq 0\)</span>, y notando que <span class="math inline">\(N\, dt = T\)</span>, obtenemos: <span id="eq-exponential_bound"><span class="math display">\[(1 + K_9 \, dt)^N \leq e^{K_9 T} \tag{6.25}\]</span></span> donde <span class="math inline">\(C = K_{10} (e^{K_9 T} - 1)/K_9\)</span> es una constante independiente de <span class="math inline">\(\,dt\)</span>. Tomando raíz cuadrada, obtenemos finalmente: <span id="eq-final_result"><span class="math display">\[\left( \mathbb{E}[|X_T - Y_N|^2] \right)^{1/2} \leq C \sqrt{\,dt}. \quad \square \tag{6.26}\]</span></span></p>
+\tag{6.36}\]</span></span></p>
+<p>Por tanto, el esquema tiene momentos finitos uniformes. <span class="math inline">\(\blacksquare\)</span></p>
 </div>
 </section>
 <section id="esquema-semi-implícito-compensado" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="esquema-semi-implícito-compensado"><span class="header-section-number">6.4</span> Esquema Semi-Implícito Compensado</h2>
 <div style="text-align:justify">
-<p>El método semi-implícito compensado se define aplicando una regla de Euler implícita en el drift y explícita en la difusión y el salto compensado <span id="eq-esquema_semiimplicito"><span class="math display">\[U_{n+1} = U_n + [c_{n+1} + r_{n+1}U_{n+1}]\Delta t + \sigma_n U_n \Delta W_n - \tilde{J}_n, \tag{6.27}\]</span></span></p>
+<p>El método semi-implícito compensado se define aplicando una regla de Euler implícita en el drift y explícita en la difusión y el salto compensado <span id="eq-esquema_semiimplicito"><span class="math display">\[U_{n+1} = U_n + [c_{n+1} + r_{n+1}U_{n+1}]\Delta t + \sigma_n U_n \Delta W_n - \tilde{J}_n, \tag{6.37}\]</span></span></p>
 <p>donde <span class="math inline">\(c_{n+1} = c(t_{n+1})\)</span>, <span class="math inline">\(r_{n+1} = r(t_{n+1})\)</span>, <span class="math inline">\(\sigma_n = \sigma(t_n)\)</span>, y <span class="math inline">\(\Delta W_n = W_{t_{n+1}} - W_{t_n}\)</span>.</p>
 <p>Reordenando algebraicamente para despejar <span class="math inline">\(U_{n+1}\)</span>:</p>
 <p><span class="math display">\[U_{n+1}(1 - r_{n+1}\Delta t) = U_n(1 + \sigma_n \Delta W_n) + c_{n+1}\Delta t + \mathbb{E}[\Delta J_n] - \Delta J_n,\]</span> lo que da lugar a la fórmula cerrada central:</p>
 <p><span id="eq-esquema_semiimplicito_despeje"><span class="math display">\[U_{n+1} =
 \frac{U_n (1 + \sigma(t_n) \Delta W_n ) + c(t_n)\Delta t + \int_E c(t_n, U_n, v) \phi(dv) \Delta t - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i)
-}{1 - r(t_{n+1}) \Delta t} \tag{6.28}\]</span></span> donde:</p>
+}{1 - r(t_{n+1}) \Delta t} \tag{6.38}\]</span></span> donde:</p>
 <ul>
 <li><span class="math inline">\(\Delta t = t_{n+1} - t_n\)</span>,</li>
 <li><span class="math inline">\(\Delta W_n \sim \mathcal{N}(0, \Delta t)\)</span>,</li>
@@ -704,20 +828,20 @@ E_N &amp;\leq (1 + K_9 \, dt)^N E_0 + K_{10} (\, dt)^2 \sum_{k=0}^{N-1} (1 + K_9
 <li><p><em>(H4)</em> <strong><em>Estabilidad numérica</em></strong>: Existe <span class="math inline">\(\Delta t_0 &gt; 0\)</span> y <span class="math inline">\(\delta &gt; 0\)</span> tales que <span class="math inline">\(1 - r(t_{n+1})\Delta t \geq \delta &gt; 0\)</span> para todo <span class="math inline">\(\Delta t \leq \Delta t_0\)</span> (<span class="citation" data-cites="higham2005">Higham y Kloeden (<a href="references.html#ref-higham2005" role="doc-biblioref">2005</a>)</span>, Lema 2.1).</p></li>
 <li><p><em>(H5)<strong>Condiciones iniciales</strong></em>: <span class="math inline">\(\mathbb{E}[|U_0|^2] &lt; \infty\)</span> y <span class="math inline">\(U_0 = _0\)</span>.</p></li>
 </ul>
-<p>Bajo las hipótesis (H1)–(H5), existe una constante <span class="math inline">\(C &gt; 0\)</span>, independiente de <span class="math inline">\(\Delta t\)</span>, tal que: <span id="eq-convergence_result_semiimplicit"><span class="math display">\[\max_{0 \leq n \leq N} \left( \mathbb{E}\left[ |U_{t_n} - U_n|^2 \right] \right)^{1/2} \leq C \sqrt{\Delta t}. \tag{6.29}\]</span></span></p>
+<p>Bajo las hipótesis (H1)–(H5), existe una constante <span class="math inline">\(C &gt; 0\)</span>, independiente de <span class="math inline">\(\Delta t\)</span>, tal que: <span id="eq-convergence_result_semiimplicit"><span class="math display">\[\max_{0 \leq n \leq N} \left( \mathbb{E}\left[ |U_{t_n} - U_n|^2 \right] \right)^{1/2} \leq C \sqrt{\Delta t}. \tag{6.39}\]</span></span></p>
 </div>
 <div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>Reescribimos la SDEJ(<a href="#eq-sdej" class="quarto-xref">Ecuación&nbsp;<span>6.2</span></a>) en forma estándar (<span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, Ec. (1.8.2)):</p>
-<p><span id="eq-sdej_standard_semiimplicit"><span class="math display">\[dU_t = a(t,U_t)\,dt  + b(t,U_t)\,dW_t + \int_E c(t,U_{t-},v)\,p_\phi(dv, dt), \tag{6.30}\]</span></span></p>
-<p>donde <span class="math inline">\(a(t,u) = c(t) + r(t)u\)</span> y <span class="math inline">\(b(t,u) = \sigma(t)u\)</span>. Las hipótesis (H1) y (H2) satisfacen las condiciones del de <span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, que garantiza la existencia y unicidad de una solución fuerte <span class="math inline">\(U_t\)</span>. Además asegura que la solución tiene momentos finitos de segundo orden: <span id="eq-exact_moment_semiimplicit"><span class="math display">\[\mathbb{E}\left[ \sup_{0 \leq t \leq T} |U_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|U_0|^2]) &lt; \infty. \tag{6.31}\]</span></span> Esta cota es esencial para controlar el crecimiento de la solución exacta durante la propagación del error.</p>
-<p>Definimos el error local <span class="math inline">\(R_n = U_{t_{n+1}} - U_{n+1}\)</span> y lo descomponemos como: <span id="eq-error_decomp_semiimplicit"><span class="math display">\[R_n = R_n^{\text{dif}} + R_n^{\text{jump}} + R_n^{\text{implicit}}, \tag{6.32}\]</span></span></p>
+<p><span id="eq-sdej_standard_semiimplicit"><span class="math display">\[dU_t = a(t,U_t)\,dt  + b(t,U_t)\,dW_t + \int_E c(t,U_{t-},v)\,p_\phi(dv, dt), \tag{6.40}\]</span></span></p>
+<p>donde <span class="math inline">\(a(t,u) = c(t) + r(t)u\)</span> y <span class="math inline">\(b(t,u) = \sigma(t)u\)</span>. Las hipótesis (H1) y (H2) satisfacen las condiciones del de <span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, que garantiza la existencia y unicidad de una solución fuerte <span class="math inline">\(U_t\)</span>. Además asegura que la solución tiene momentos finitos de segundo orden: <span id="eq-exact_moment_semiimplicit"><span class="math display">\[\mathbb{E}\left[ \sup_{0 \leq t \leq T} |U_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|U_0|^2]) &lt; \infty. \tag{6.41}\]</span></span> Esta cota es esencial para controlar el crecimiento de la solución exacta durante la propagación del error.</p>
+<p>Definimos el error local <span class="math inline">\(R_n = U_{t_{n+1}} - U_{n+1}\)</span> y lo descomponemos como: <span id="eq-error_decomp_semiimplicit"><span class="math display">\[R_n = R_n^{\text{dif}} + R_n^{\text{jump}} + R_n^{\text{implicit}}, \tag{6.42}\]</span></span></p>
 <p>donde <span class="math inline">\(R_n^{\text{dif}}\)</span> es el error de difusión, <span class="math inline">\(R_n^{\text{jump}}\)</span> el error de saltos y <span class="math inline">\(R_n^{\text{implicit}}\)</span> el error de implicitidad.</p>
-<p>Por la expansión de Euler-Maruyama para difusiones puras (<span class="citation" data-cites="higham2005">Higham y Kloeden (<a href="references.html#ref-higham2005" role="doc-biblioref">2005</a>)</span>, Ec. (2.3)), el error local de la parte difusiva satisface: <span id="eq-diff_error_bound_semiimplicit"><span class="math display">\[\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_1 (1 + |U_n|^2) (\Delta t)^2 \tag{6.33}\]</span></span></p>
+<p>Por la expansión de Euler-Maruyama para difusiones puras (<span class="citation" data-cites="higham2005">Higham y Kloeden (<a href="references.html#ref-higham2005" role="doc-biblioref">2005</a>)</span>, Ec. (2.3)), el error local de la parte difusiva satisface: <span id="eq-diff_error_bound_semiimplicit"><span class="math display">\[\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_1 (1 + |U_n|^2) (\Delta t)^2 \tag{6.43}\]</span></span></p>
 <p>Esta cota es de orden <span class="math inline">\((\Delta t)^3\)</span> en <span class="math inline">\(L^2\)</span> debido a que el esquema semi-implícito utiliza una aproximación de Euler para la parte difusiva, cuyo error local en <span class="math inline">\(L^2\)</span> es <span class="math inline">\(\mathcal{O}((\Delta t)^{3/2})\)</span>. El error local asociado a los saltos es: <span id="eq-jump_error_semiimplicit"><span class="math display">\[\begin{aligned}
 R_n^{\text{jump}} = {}&amp; \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{p}_\phi(dv, ds)  \\
 &amp; - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i)  \\
 &amp; + \int_E c(t_n, U_n, v) \phi(dv)\,\Delta t.
-\end{aligned} \tag{6.34}\]</span></span></p>
+\end{aligned} \tag{6.44}\]</span></span></p>
 <p>Aplicando la desigualdad de Cauchy-Schwarz, la condición de Lipschitz (H1) y las propiedades de la medida compensada (<span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, Ec. (4.2.1)), obtenemos:</p>
 <p><span id="eq-jump_error_bound_semiimplicit"><span class="math display">\[\begin{align}
 \mathbb{E}\left[ |R_n^{\text{jump}}|^2 \mid \mathcal{F_{t_n}} \right]
@@ -726,19 +850,19 @@ R_n^{\text{jump}} = {}&amp; \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{
 &amp;\quad \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ + \int_E c(t_n, U_n, v) \phi(dv)\Delta t \Biggl|^2 \mid \mathcal{F_{t_n}} \Biggr] \nonumber \\
 &amp;\leq 2L_c^2 \mathbb{E}\left[ \int_{t_n}^{t_{n+1}} |U_s - U_n|^2 ds \mid \mathcal{F_{t_n}} \right] \int_E \phi(dv) + 2 \int_E |c(t_n, U_n, v)|^2 \phi(dv) \Delta t \nonumber \\
 &amp;\leq K_2 \Delta t + K_3 |U_{t_n} - U_n|^2 \Delta t,
-\end{align} \tag{6.35}\]</span></span> donde en la última desigualdad usamos la cota de momentos de la solución exacta <a href="#eq-exact_moment_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.31</span></a> y la condición de crecimiento lineal (H2). El primer término proviene de la variación del estado durante el intervalo, y el segundo de la diferencia entre el estado exacto y el numérico. Expandiendo el denominador mediante serie de Taylor (<span class="citation" data-cites="wang2007">Wang et&nbsp;al. (<a href="references.html#ref-wang2007" role="doc-biblioref">2007</a>)</span>, Lema 3.1): <span id="eq-taylor_denom_semiimplicit"><span class="math display">\[\frac{1}{1 - r(t_{n+1})\Delta t} = 1 + r(t_{n+1})\Delta t + \mathcal{O}((\Delta t)^2), \tag{6.36}\]</span></span></p>
-<p>lo que implica que el error introducido por la implicitidad satisface: <span id="eq-implicit_error_bound_semiimplicit"><span class="math display">\[\mathbb{E}\left[|R_n^{\text{implicit}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_4 (1 + |U_n|^2) (\Delta t)^4. \tag{6.37}\]</span></span></p>
+\end{align} \tag{6.45}\]</span></span> donde en la última desigualdad usamos la cota de momentos de la solución exacta <a href="#eq-exact_moment_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.41</span></a> y la condición de crecimiento lineal (H2). El primer término proviene de la variación del estado durante el intervalo, y el segundo de la diferencia entre el estado exacto y el numérico. Expandiendo el denominador mediante serie de Taylor (<span class="citation" data-cites="wang2007">Wang et&nbsp;al. (<a href="references.html#ref-wang2007" role="doc-biblioref">2007</a>)</span>, Lema 3.1): <span id="eq-taylor_denom_semiimplicit"><span class="math display">\[\frac{1}{1 - r(t_{n+1})\Delta t} = 1 + r(t_{n+1})\Delta t + \mathcal{O}((\Delta t)^2), \tag{6.46}\]</span></span></p>
+<p>lo que implica que el error introducido por la implicitidad satisface: <span id="eq-implicit_error_bound_semiimplicit"><span class="math display">\[\mathbb{E}\left[|R_n^{\text{implicit}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_4 (1 + |U_n|^2) (\Delta t)^4. \tag{6.47}\]</span></span></p>
 <p>Este término es de orden superior y no afectará el orden global de convergencia.</p>
-<p>Combinando <a href="#eq-diff_error_bound_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.33</span></a>, <a href="#eq-jump_error_bound_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.35</span></a> y <a href="#eq-implicit_error_bound_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.37</span></a>, y usando <span class="math inline">\((a+b+c)^2 \leq 3a^2 + 3b^2 + 3c^2\)</span>: <span id="eq-total_error_bound_semiimplicit"><span class="math display">\[\mathbb{E}\left[ |R_n|^2 \mid \mathcal{F_{t_n}} \right] \leq K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t, \tag{6.38}\]</span></span> donde <span class="math inline">\(e_n = U_{t_n} - U_n\)</span> es el error global y usamos que <span class="math inline">\(\Delta t \leq 1\)</span> para absorber los términos de orden superior. Definiendo <span class="math inline">\(M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |U_k|^2 \right]\)</span>, y tomando cuadrados en <a href="#eq-esquema_semiimplicito_despeje" class="quarto-xref">Ecuación&nbsp;<span>6.28</span></a> seguido de esperanza, aplicamos las cotas de Lipschitz (H1), crecimiento lineal (H2) y la cota de estabilidad (H4). Siguiendo el argumento del Teorema 3.2 de <span class="citation" data-cites="higham2005">Higham y Kloeden (<a href="references.html#ref-higham2005" role="doc-biblioref">2005</a>)</span>, obtenemos: <span id="eq-moments_recursion_semiimplicit"><span class="math display">\[M_{n+1} \leq (1 + K_6 \Delta t) M_n + K_7 \Delta t. \tag{6.39}\]</span></span> Iterando esta desigualdad y usando <span class="math inline">\(M_0 = \mathbb{E}[|U_0|^2] &lt; \infty\)</span>: <span id="eq-moments_bound_semiimplicit"><span class="math display">\[M_N \leq M_0 e^{K_6 T} + \frac{K_7}{K_6} (e^{K_6 T} - 1) &lt; \infty. \tag{6.40}\]</span></span> Por lo tanto, el esquema numérico tiene momentos finitos uniformes, condición esencial para la convergencia fuerte. Para la descomposición del error global definimos <span class="math inline">\(e_n = U_{t_n} - U_n\)</span>. Usando la fórmula de Itô para la solución exacta y la definición del esquema <a href="#eq-esquema_semiimplicito_despeje" class="quarto-xref">Ecuación&nbsp;<span>6.28</span></a>, obtenemos: <span id="eq-global_error_decomp_semiimplicit"><span class="math display">\[e_{n+1} = e_n + \delta a_n \Delta t + \delta b_n \Delta W_n + \delta c_n + R_n, \tag{6.41}\]</span></span> donde: <span class="math display">\[\begin{aligned}
+<p>Combinando <a href="#eq-diff_error_bound_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.43</span></a>, <a href="#eq-jump_error_bound_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.45</span></a> y <a href="#eq-implicit_error_bound_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.47</span></a>, y usando <span class="math inline">\((a+b+c)^2 \leq 3a^2 + 3b^2 + 3c^2\)</span>: <span id="eq-total_error_bound_semiimplicit"><span class="math display">\[\mathbb{E}\left[ |R_n|^2 \mid \mathcal{F_{t_n}} \right] \leq K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t, \tag{6.48}\]</span></span> donde <span class="math inline">\(e_n = U_{t_n} - U_n\)</span> es el error global y usamos que <span class="math inline">\(\Delta t \leq 1\)</span> para absorber los términos de orden superior. Definiendo <span class="math inline">\(M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |U_k|^2 \right]\)</span>, y tomando cuadrados en <a href="#eq-esquema_semiimplicito_despeje" class="quarto-xref">Ecuación&nbsp;<span>6.38</span></a> seguido de esperanza, aplicamos las cotas de Lipschitz (H1), crecimiento lineal (H2) y la cota de estabilidad (H4). Siguiendo el argumento del Teorema 3.2 de <span class="citation" data-cites="higham2005">Higham y Kloeden (<a href="references.html#ref-higham2005" role="doc-biblioref">2005</a>)</span>, obtenemos: <span id="eq-moments_recursion_semiimplicit"><span class="math display">\[M_{n+1} \leq (1 + K_6 \Delta t) M_n + K_7 \Delta t. \tag{6.49}\]</span></span> Iterando esta desigualdad y usando <span class="math inline">\(M_0 = \mathbb{E}[|U_0|^2] &lt; \infty\)</span>: <span id="eq-moments_bound_semiimplicit"><span class="math display">\[M_N \leq M_0 e^{K_6 T} + \frac{K_7}{K_6} (e^{K_6 T} - 1) &lt; \infty. \tag{6.50}\]</span></span> Por lo tanto, el esquema numérico tiene momentos finitos uniformes, condición esencial para la convergencia fuerte. Para la descomposición del error global definimos <span class="math inline">\(e_n = U_{t_n} - U_n\)</span>. Usando la fórmula de Itô para la solución exacta y la definición del esquema <a href="#eq-esquema_semiimplicito_despeje" class="quarto-xref">Ecuación&nbsp;<span>6.38</span></a>, obtenemos: <span id="eq-global_error_decomp_semiimplicit"><span class="math display">\[e_{n+1} = e_n + \delta a_n \Delta t + \delta b_n \Delta W_n + \delta c_n + R_n, \tag{6.51}\]</span></span> donde: <span class="math display">\[\begin{aligned}
 \delta a_n &amp;= a(t_n, U_{t_n}) - a(t_n, U_n), \\
 \delta b_n &amp;= b(t_n, U_{t_n}) - b(t_n, U_n), \\
 \delta c_n &amp;= \int_E [c(t_n, U_{t_n}, v) - c(t_n, U_n, v)] \phi(dv) \Delta t.
-\end{aligned}\]</span> Por la condición de Lipschitz (H1): <span id="eq-lipschitz_bounds_semiimplicit"><span class="math display">\[|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \Delta t. \tag{6.42}\]</span></span> Tomamos cuadrados en <a href="#eq-global_error_decomp_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.41</span></a> y esperanza condicional <span class="math inline">\(\mathbb{E}[\cdot \mid \mathcal{F_{t_n}}].\)</span> Usando <span class="math inline">\(\mathbb{E}[\Delta W_n \mid \mathcal{F_{t_n}}] = 0\)</span>, <span class="math inline">\(\mathbb{E}[(\Delta W_n)^2 \mid \mathcal{F_{t_n}}] = \Delta t\)</span>, y que los términos con <span class="math inline">\(\Delta W_n\)</span> tienen esperanza cero: <span id="eq-conditional_error_semiimplicit"><span class="math display">\[\begin{aligned}
+\end{aligned}\]</span> Por la condición de Lipschitz (H1): <span id="eq-lipschitz_bounds_semiimplicit"><span class="math display">\[|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \Delta t. \tag{6.52}\]</span></span> Tomamos cuadrados en <a href="#eq-global_error_decomp_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.51</span></a> y esperanza condicional <span class="math inline">\(\mathbb{E}[\cdot \mid \mathcal{F_{t_n}}].\)</span> Usando <span class="math inline">\(\mathbb{E}[\Delta W_n \mid \mathcal{F_{t_n}}] = 0\)</span>, <span class="math inline">\(\mathbb{E}[(\Delta W_n)^2 \mid \mathcal{F_{t_n}}] = \Delta t\)</span>, y que los términos con <span class="math inline">\(\Delta W_n\)</span> tienen esperanza cero: <span id="eq-conditional_error_semiimplicit"><span class="math display">\[\begin{aligned}
 \mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}]
 &amp;\leq |e_n|^2 + 2e_n \cdot \delta a_n \Delta t + 2e_n \cdot \delta c_n + |\delta b_n|^2 \Delta t + \mathbb{E}[|R_n|^2 \mid \mathcal{F_{t_n}}] \nonumber \\
 &amp;\leq |e_n|^2 + 2L_a |e_n|^2 \Delta t + 2L_c |e_n|^2 \Delta t + L_b^2 |e_n|^2 \Delta t + K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t \nonumber \\
 &amp;\leq (1 + K_8 \Delta t) |e_n|^2 + K_9 (1 + |U_n|^2) \Delta t,
-\end{aligned} \tag{6.43}\]</span></span> donde <span class="math inline">\(K_8 = 2L_a + 2L_c + L_b^2 + K_5\)</span> y <span class="math inline">\(K_9 = K_5\)</span>. Usando la desigualdad <span class="math inline">\(|U_n|^2 \leq 2|U_{t_n}|^2 + 2|e_n|^2\)</span> y la cota de momentos de la solución exacta <a href="#eq-exact_moment_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.31</span></a>: <span class="math display">\[\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}] \leq (1 + K_{10} \Delta t) |e_n|^2 + K_{11} \Delta t,\]</span> donde <span class="math inline">\(K_{10} = K_8 + 2K_9\)</span> y <span class="math inline">\(K_{11} = 2K_9 C_1 (1 + \mathbb{E}[|U_0|^2]) + K_9\)</span>. Tomando esperanza total y definiendo <span class="math inline">\(E_n = \mathbb{E}[|e_n|^2]\)</span>: <span id="eq-recursive_error_semiimplicit"><span class="math display">\[E_{n+1} \leq (1 + K_{10} \Delta t) E_n + K_{11} \Delta t. \tag{6.44}\]</span></span> Iteramos la desigualdad <a href="#eq-recursive_error_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.44</span></a> con <span class="math inline">\(E_0 = 0\)</span>: <span id="eq-iteration_semiimplicit"><span class="math display">\[E_N \leq K_{11} \Delta t \sum_{k=0}^{N-1} (1 + K_{10} \Delta t)^k = K_{11} \Delta t \frac{(1 + K_{10} \Delta t)^N - 1}{K_{10} \Delta t}. \tag{6.45}\]</span></span> Usando la desigualdad <span class="math inline">\((1 + x)^N \leq e^{Nx}\)</span> para <span class="math inline">\(x \geq 0\)</span> y <span class="math inline">\(N\Delta t = T\)</span> <span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, (Lema 1.2.1): <span id="eq-exponential_bound_semiimplicit"><span class="math display">\[(1 + K_{10} \Delta t)^N \leq e^{K_{10} T}. \tag{6.46}\]</span></span> Sustituyendo en <a href="#eq-iteration_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.45</span></a>: <span id="eq-final_bound_semiimplicit"><span class="math display">\[E_N \leq K_{11} \frac{e^{K_{10} T} - 1}{K_{10}} \Delta t = C \Delta t, \tag{6.47}\]</span></span> donde <span class="math inline">\(C = K_{11} (e^{K_{10} T} - 1)/K_{10}\)</span> es independiente de <span class="math inline">\(\Delta t\)</span>. Tomando raíz cuadrada: <span class="math display">\[\left( \mathbb{E}[|U_T - U_N|^2] \right)^{1/2} \leq C \sqrt{\Delta t}. \quad \square\]</span></p>
+\end{aligned} \tag{6.53}\]</span></span> donde <span class="math inline">\(K_8 = 2L_a + 2L_c + L_b^2 + K_5\)</span> y <span class="math inline">\(K_9 = K_5\)</span>. Usando la desigualdad <span class="math inline">\(|U_n|^2 \leq 2|U_{t_n}|^2 + 2|e_n|^2\)</span> y la cota de momentos de la solución exacta <a href="#eq-exact_moment_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.41</span></a>: <span class="math display">\[\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}] \leq (1 + K_{10} \Delta t) |e_n|^2 + K_{11} \Delta t,\]</span> donde <span class="math inline">\(K_{10} = K_8 + 2K_9\)</span> y <span class="math inline">\(K_{11} = 2K_9 C_1 (1 + \mathbb{E}[|U_0|^2]) + K_9\)</span>. Tomando esperanza total y definiendo <span class="math inline">\(E_n = \mathbb{E}[|e_n|^2]\)</span>: <span id="eq-recursive_error_semiimplicit"><span class="math display">\[E_{n+1} \leq (1 + K_{10} \Delta t) E_n + K_{11} \Delta t. \tag{6.54}\]</span></span> Iteramos la desigualdad <a href="#eq-recursive_error_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.54</span></a> con <span class="math inline">\(E_0 = 0\)</span>: <span id="eq-iteration_semiimplicit"><span class="math display">\[E_N \leq K_{11} \Delta t \sum_{k=0}^{N-1} (1 + K_{10} \Delta t)^k = K_{11} \Delta t \frac{(1 + K_{10} \Delta t)^N - 1}{K_{10} \Delta t}. \tag{6.55}\]</span></span> Usando la desigualdad <span class="math inline">\((1 + x)^N \leq e^{Nx}\)</span> para <span class="math inline">\(x \geq 0\)</span> y <span class="math inline">\(N\Delta t = T\)</span> <span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, (Lema 1.2.1): <span id="eq-exponential_bound_semiimplicit"><span class="math display">\[(1 + K_{10} \Delta t)^N \leq e^{K_{10} T}. \tag{6.56}\]</span></span> Sustituyendo en <a href="#eq-iteration_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.55</span></a>: <span id="eq-final_bound_semiimplicit"><span class="math display">\[E_N \leq K_{11} \frac{e^{K_{10} T} - 1}{K_{10}} \Delta t = C \Delta t, \tag{6.57}\]</span></span> donde <span class="math inline">\(C = K_{11} (e^{K_{10} T} - 1)/K_{10}\)</span> es independiente de <span class="math inline">\(\Delta t\)</span>. Tomando raíz cuadrada: <span class="math display">\[\left( \mathbb{E}[|U_T - U_N|^2] \right)^{1/2} \leq C \sqrt{\Delta t}. \quad \square\]</span></p>
 </div>
 </section>
 <section id="método-monte-carlo" class="level2" data-number="6.5">
@@ -752,7 +876,7 @@ R_n^{\text{jump}} = {}&amp; \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{
 <p>La base teórica del método reside en la construcción de un estimador no sesgado basado en muestras independientes.</p>
 </div>
 <div id="def-Espacio_probabilidad_filtrado" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 6.1</strong></span> (Estimador de Monte Carlo).Sean <span class="math inline">\(X_1, X_2, \dots, X_N\)</span> variables aleatorias independientes e idénticamente distribuidas (i.i.d.) con la misma distribución que <span class="math inline">\(X\)</span>. Definimos el estimador de Monte Carlo <span class="math inline">\(\hat{I}_N\)</span> como la media muestral de las realizaciones de la función <span class="math inline">\(f\)</span>: <span id="eq-mc_estimator"><span class="math display">\[ \hat{I}_N = \frac{1}{N} \sum_{i=1}^{N} f(X_i). \tag{6.48}\]</span></span></p>
+<p><span class="theorem-title"><strong>Definición 6.1</strong></span> (Estimador de Monte Carlo).Sean <span class="math inline">\(X_1, X_2, \dots, X_N\)</span> variables aleatorias independientes e idénticamente distribuidas (i.i.d.) con la misma distribución que <span class="math inline">\(X\)</span>. Definimos el estimador de Monte Carlo <span class="math inline">\(\hat{I}_N\)</span> como la media muestral de las realizaciones de la función <span class="math inline">\(f\)</span>: <span id="eq-mc_estimator"><span class="math display">\[ \hat{I}_N = \frac{1}{N} \sum_{i=1}^{N} f(X_i). \tag{6.58}\]</span></span></p>
 </div>
 <div style="text-align:justify">
 <p>La validez de este estimador se sustenta en dos propiedades estadísticas fundamentales: su insesgamiento y su consistencia.</p>
@@ -787,7 +911,7 @@ R_n^{\text{jump}} = {}&amp; \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{
 <p><span class="theorem-title"><strong>Teorema 6.4</strong></span> (Teorema del Límite Central para MC) Bajo las condiciones de varianza finita, la distribución del error normalizado converge en distribución a una normal estándar: <span class="math display">\[    \sqrt{N} \frac{\hat{I}_N - I}{\sigma} \xrightarrow{d} \mathbb{N}(0, 1) \quad \text{cuando } N \to \infty.\]</span></p>
 </div>
 <div style="text-align:justify">
-<p>De este resultado se desprende una conclusión crítica para la simulación computacional: el error estándar del estimador decae proporcionalmente a <span class="math inline">\(N^{-1/2}\)</span>, independientemente de la dimensión del problema. <span id="eq-error_rate"><span class="math display">\[\text{Error}(\hat{I}_N) \approx \frac{\sigma}{\sqrt{N}}. \tag{6.49}\]</span></span></p>
+<p>De este resultado se desprende una conclusión crítica para la simulación computacional: el error estándar del estimador decae proporcionalmente a <span class="math inline">\(N^{-1/2}\)</span>, independientemente de la dimensión del problema. <span id="eq-error_rate"><span class="math display">\[\text{Error}(\hat{I}_N) \approx \frac{\sigma}{\sqrt{N}}. \tag{6.59}\]</span></span></p>
 <p>Esta propiedad es distintiva del método Monte Carlo. Mientras que los métodos deterministas sufren una degradación exponencial en su precisión a medida que aumenta la dimensionalidad del espacio de integración, la tasa de convergencia <span class="math inline">\(O(N^{-1/2})\)</span> de Monte Carlo permanece invariante ante la dimensionalidad, lo que lo hace superior para sistemas complejos de alta dimensión.</p>
 </div>
 </section>
@@ -795,7 +919,7 @@ R_n^{\text{jump}} = {}&amp; \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{
 <section id="generación-de-variables-aleatorias." class="level3" data-number="6.5.3">
 <h3 data-number="6.5.3" class="anchored" data-anchor-id="generación-de-variables-aleatorias."><span class="header-section-number">6.5.3</span> Generación de variables aleatorias.</h3>
 <div style="text-align:justify">
-<p>La implementación práctica de la ecuación <a href="#eq-mc_estimator" class="quarto-xref">Ecuación&nbsp;<span>6.48</span></a> requiere la capacidad de generar muestras <span class="math inline">\(X_i\)</span> de una distribución de probabilidad específica <span class="math inline">\(P\)</span>. Matemáticamente, esto se logra a menudo mediante el Método de la Transformada Inversa.</p>
+<p>La implementación práctica de la ecuación <a href="#eq-mc_estimator" class="quarto-xref">Ecuación&nbsp;<span>6.58</span></a> requiere la capacidad de generar muestras <span class="math inline">\(X_i\)</span> de una distribución de probabilidad específica <span class="math inline">\(P\)</span>. Matemáticamente, esto se logra a menudo mediante el Método de la Transformada Inversa.</p>
 <p>Sea <span class="math inline">\(U \sim \text{Uniforme}(0,1)\)</span> una variable aleatoria uniforme. Si <span class="math inline">\(F_X(x) = \mathbb{P}(X \leq x)\)</span> es la función de distribución acumulada (CDF) de <span class="math inline">\(X\)</span>, y <span class="math inline">\(F_X^{-1}\)</span> es su inversa generalizada definida como: <span class="math display">\[F_X^{-1}(u) = \inf \{ x \in \mathbb{R} : F_X(x) \geq u \},\]</span> entonces la variable aleatoria <span class="math inline">\(Y = F_X^{-1}(U)\)</span> tiene la misma distribución que <span class="math inline">\(X\)</span>.</p>
 <p>En sistemas complejos donde <span class="math inline">\(F_X^{-1}\)</span> no tiene forma cerrada, se emplean métodos de rechazo (Rejection Sampling) o cadenas de Markov (MCMC), los cuales garantizan que la distribución estacionaria de la cadena generada coincida con la distribución objetivo <span class="math inline">\(P\)</span>.</p>
 </div>
