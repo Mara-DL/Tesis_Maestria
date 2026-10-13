@@ -167,11 +167,9 @@ window.Quarto = {
 </script>
 
 <meta property="og:title" content="7&nbsp; Implementación Numérica. – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
-<meta property="og:description" content="">
 <meta property="og:image" content="modelo-actuarial_files/figure-html/fig-costo_siniestro-output-1.png">
 <meta property="og:site_name" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta name="twitter:title" content="7&nbsp; Implementación Numérica. – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
-<meta name="twitter:description" content="">
 <meta name="twitter:image" content="modelo-actuarial_files/figure-html/fig-costo_siniestro-output-1.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -489,9 +487,6 @@ window.Quarto = {
   <li><a href="#sec-volatilidad_inversiones" id="toc-sec-volatilidad_inversiones" class="nav-link" data-scroll-target="#sec-volatilidad_inversiones"><span class="header-section-number">7.1.3</span> Modelado de la volatilidad de Inversiones <span class="math inline">\(\sigma(t)\)</span>.</a></li>
   <li><a href="#sec-funcion_costos_met_sis" id="toc-sec-funcion_costos_met_sis" class="nav-link" data-scroll-target="#sec-funcion_costos_met_sis"><span class="header-section-number">7.1.4</span> Función de Costos de Saltos: Eventos Meteorológicos y Sísmicos.</a></li>
   <li><a href="#pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto." id="toc-pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto." class="nav-link" data-scroll-target="#pseudocódigo-esquema-de-milstein-compensado-para-ede-con-difusión-y-salto."><span class="header-section-number">7.4.1</span> Pseudocódigo: Esquema de Milstein Compensado para EDE con Difusión y Salto.</a></li>
-  </ul></li>
-  <li><a href="#pseudocódigo-esquema-semi-implícito-compensado" id="toc-pseudocódigo-esquema-semi-implícito-compensado" class="nav-link" data-scroll-target="#pseudocódigo-esquema-semi-implícito-compensado">8.4.2 Pseudocódigo: esquema semi-implícito compensado</a>
-  <ul class="collapse">
   <li><a href="#pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" id="toc-pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" class="nav-link" data-scroll-target="#pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto"><span class="header-section-number">7.4.2</span> Pseudocódigo: Esquema Semi-Implícito Compensado para EDE con Difusión y Salto</a></li>
   </ul></li>
   </ul>
@@ -1311,7 +1306,7 @@ dX_t=\Big[\underbrace{c(t)+r(t)X_{t^-}-\lambda_{\text{meteo}}(t) \ \mathbb E[Y_{
 <tr class="even">
 <td style="text-align: left;"></td>
 <td style="text-align: left;"><span class="math inline">\(\text{saltos}_{\text{hist}},\ \text{saltos}_{\text{fc}}\)</span></td>
-<td style="text-align: left;">Días marcados en la mediana (opcional)</td>
+<td style="text-align: left;">Días marcados en la mediana</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
@@ -1343,209 +1338,64 @@ dX_t=\Big[\underbrace{c(t)+r(t)X_{t^-}-\lambda_{\text{meteo}}(t) \ \mathbb E[Y_{
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        Y ← exp(mu_F <span class="op">+</span> sigma_F · Z)</span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        aceptar Y si Y <span class="op">&gt;</span> umbral_F            <span class="co"># rechazo (umbral_sismo = 0)</span></span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>función SumaSeveridades(F, n_ev[<span class="fl">1.</span>.M]):  <span class="co"># suma de n_ev[m] severidades por trayectoria</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    devolver (suma de MuestrearSeveridad(F, n_ev[m]) para cada m)</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Fase 1: simulación histórica (M_hist trayectorias en paralelo) ----</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>Inicializar X[M_hist][N_hist <span class="op">+</span> <span class="dv">1</span>] ← <span class="dv">0</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>X[m][<span class="dv">0</span>] ← U0_hist    para todo m</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>para i ← <span class="dv">0</span> hasta N_hist <span class="op">-</span> <span class="dv">1</span>:</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    n_m ← Poisson(lam_m[i] · Δt)             <span class="co"># vectores de tamaño M_hist</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    n_s ← Poisson(lambda_sismo · Δt)</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    Jm[·][i] ← SumaSeveridades(F_meteo, n_m)</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    Js[·][i] ← SumaSeveridades(F_sismo, n_s)</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    dJ_tilde ← Jm[·][i] <span class="op">+</span> Js[·][i] <span class="op">-</span> Lambda[i] · Δt      <span class="co"># incremento COMPENSADO (media cero)</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    ΔW ← √Δt · Normal(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    drift ← (c_hist[i] <span class="op">+</span> r_hist[i] · X[·][i] <span class="op">-</span> Lambda[i]) · Δt</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    diff  ← sigma_hist[i] · X[·][i] · ΔW</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    corr  ← (<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) · sigma_hist[i]² · X[·][i] · (ΔW² <span class="op">-</span> Δt)</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    X[·][i <span class="op">+</span> <span class="dv">1</span>] ← X[·][i] <span class="op">+</span> drift <span class="op">+</span> diff <span class="op">+</span> corr <span class="op">-</span> dJ_tilde</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Estadísticas históricas ----</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>para i ← <span class="dv">0</span> hasta N_hist:</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    median_hist[i] ← Mediana(X[·][i])</span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    IC_hist[i]     ← [Percentil_5(X[·][i]), Percentil_95(X[·][i])]</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>U0_fc ← Mediana(X[·][N_hist])</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>función SumaSeveridades(F, n_ev[<span class="fl">1.</span>.M]):</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co"># suma de n_ev[m] severidades por trayectoria</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    devolver (suma de MuestrearSeveridad(F, n_ev[m]) para cada m)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># -- Fase 1: simulación histórica (M_hist trayectorias en paralelo) --</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>Inicializar X[M_hist][N_hist <span class="op">+</span> <span class="dv">1</span>] ← <span class="dv">0</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>X[m][<span class="dv">0</span>] ← U0_hist    para todo m</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>para i ← <span class="dv">0</span> hasta N_hist <span class="op">-</span> <span class="dv">1</span>:</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    n_m ← Poisson(lam_m[i] · Δt)             <span class="co"># vectores de tamaño M_hist</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    n_s ← Poisson(lambda_sismo · Δt)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    Jm[·][i] ← SumaSeveridades(F_meteo, n_m)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    Js[·][i] ← SumaSeveridades(F_sismo, n_s)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    dJ_tilde ← Jm[·][i] <span class="op">+</span> Js[·][i] <span class="op">-</span> Lambda[i] · Δt      </span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># incremento COMPENSADO (media cero)</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    ΔW ← √Δt · Normal(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    drift ← (c_hist[i] <span class="op">+</span> r_hist[i] · X[·][i] <span class="op">-</span> Lambda[i]) · Δt</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    diff  ← sigma_hist[i] · X[·][i] · ΔW</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    corr  ← (<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) · sigma_hist[i]² · X[·][i] · (ΔW² <span class="op">-</span> Δt)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    X[·][i <span class="op">+</span> <span class="dv">1</span>] ← X[·][i] <span class="op">+</span> drift <span class="op">+</span> diff <span class="op">+</span> corr <span class="op">-</span> dJ_tilde</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Estadísticas históricas ----</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>para i ← <span class="dv">0</span> hasta N_hist:</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    median_hist[i] ← Mediana(X[·][i])</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    IC_hist[i]     ← [Percentil_5(X[·][i]), Percentil_95(X[·][i])]</span>
 <span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Fase 2: pronóstico (enero 2026, T_fc = 30 pasos) ----</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>c_ene     ← <span class="dv">12</span> · (c_mens[<span class="dv">0</span>] <span class="op">+</span> c_mens[<span class="dv">12</span>]) <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>r_ene     ← <span class="dv">12</span> · (r_mens[<span class="dv">0</span>] <span class="op">+</span> r_mens[<span class="dv">12</span>]) <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>sigma_ene ← √<span class="dv">12</span> · (sigma_mens[<span class="dv">0</span>] <span class="op">+</span> sigma_mens[<span class="dv">12</span>]) <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>lam_m_ene ← lambda_meteo · phi[enero]</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>Lambda_ene ← lam_m_ene · E_meteo <span class="op">+</span> lambda_sismo · E_sismo</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="co"># (estructura idéntica a la Fase 1 con parámetros constantes de enero y condición inicial U0_fc)</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>U[m][i <span class="op">+</span> <span class="dv">1</span>] ← U[m][i] <span class="op">+</span> (c_ene <span class="op">+</span> r_ene · U[m][i] <span class="op">-</span> Lambda_ene) · Δt</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>               <span class="op">+</span> sigma_ene · U[m][i] · ΔW <span class="op">+</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) · sigma_ene² · U[m][i] · (ΔW² <span class="op">-</span> Δt) <span class="op">-</span> dJ_tilde</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Diagnóstico de la compensación ----</span></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>dJt ← Jm <span class="op">+</span> Js <span class="op">-</span> Lambda · Δt</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>verificar <span class="op">|</span>media(dJt)<span class="op">|</span> <span class="op">&lt;</span> <span class="dv">3</span> · EE(dJt)          <span class="co"># E[ΔJ~] = 0 (histórico y pronóstico)</span></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Detección de saltos en la mediana (opcional) ----</span></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>log_ret_hist ← ln(median_hist[<span class="dv">1</span>:] <span class="op">/</span> median_hist[:<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>tau_hist ← <span class="dv">3</span> · DesvEst(log_ret_hist)</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>saltos_hist ← {(t_i, median_hist[i]) <span class="op">|</span> <span class="op">|</span>log_ret_hist[i<span class="op">-</span><span class="dv">1</span>]<span class="op">|</span> <span class="op">&gt;</span> tau_hist}</span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="co"># (mismo procedimiento para median_fc)</span></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>guardar X, U_forecast, c_hist, r_hist, sigma_hist, Jm, Js en archivo .npz</span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>retornar median_hist, IC_hist, median_fc, IC_fc, saltos_hist, saltos_fc</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>U0_fc ← Mediana(X[·][N_hist])</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Fase 2: pronóstico (enero 2026, T_fc = 30 pasos) ----</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>c_ene     ← <span class="dv">12</span> · (c_mens[<span class="dv">0</span>] <span class="op">+</span> c_mens[<span class="dv">12</span>]) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>r_ene     ← <span class="dv">12</span> · (r_mens[<span class="dv">0</span>] <span class="op">+</span> r_mens[<span class="dv">12</span>]) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>sigma_ene ← √<span class="dv">12</span> · (sigma_mens[<span class="dv">0</span>] <span class="op">+</span> sigma_mens[<span class="dv">12</span>]) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>lam_m_ene ← lambda_meteo · phi[enero]</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>Lambda_ene ← lam_m_ene · E_meteo <span class="op">+</span> lambda_sismo · E_sismo</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="co"># (estructura idéntica a la Fase 1 con parámetros constantes de enero </span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="co"># y condición inicial U0_fc)</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>U[m][i <span class="op">+</span> <span class="dv">1</span>] ← U[m][i] <span class="op">+</span> (c_ene <span class="op">+</span> r_ene · U[m][i] <span class="op">-</span> Lambda_ene) · Δt</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>               <span class="op">+</span> sigma_ene · U[m][i] · ΔW <span class="op">+</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) · sigma_ene² · U[m][i] · (ΔW² <span class="op">-</span> Δt) <span class="op">-</span> dJ_tilde</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Diagnóstico de la compensación ----</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>dJt ← Jm <span class="op">+</span> Js <span class="op">-</span> Lambda · Δt</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>verificar <span class="op">|</span>media(dJt)<span class="op">|</span> <span class="op">&lt;</span> <span class="dv">3</span> · EE(dJt)          </span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="co"># E[ΔJ~] = 0 (histórico y pronóstico)</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Detección de saltos en la mediana ----</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>log_ret_hist ← ln(median_hist[<span class="dv">1</span>:] <span class="op">/</span> median_hist[:<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>tau_hist ← <span class="dv">3</span> · DesvEst(log_ret_hist)</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>saltos_hist ← {(t_i, median_hist[i]) <span class="op">|</span> <span class="op">|</span>log_ret_hist[i<span class="op">-</span><span class="dv">1</span>]<span class="op">|</span> <span class="op">&gt;</span> tau_hist}</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="co"># (mismo procedimiento para median_fc)</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>guardar X, U_forecast, c_hist, r_hist, sigma_hist, Jm, Js en archivo .npz</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>retornar median_hist, IC_hist, median_fc, IC_fc, saltos_hist, saltos_fc</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-</section>
-<section id="pseudocódigo-esquema-semi-implícito-compensado" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="pseudocódigo-esquema-semi-implícito-compensado">8.4.2 Pseudocódigo: esquema semi-implícito compensado</h2>
-<p><strong>Algorithm 8.3. Algoritmo 3: Simulación de reservas Cramér–Lundberg con método semi-implícito compensado</strong></p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Tipo</th>
-<th style="text-align: left;">Parámetro</th>
-<th style="text-align: left;">Descripción</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Entrada</td>
-<td style="text-align: left;"><span class="math inline">\(U_0\)</span></td>
-<td style="text-align: left;">Capital inicial (USD)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;"><span class="math inline">\(T\)</span>, <span class="math inline">\(\Delta t\)</span></td>
-<td style="text-align: left;">Horizonte (años) y paso de tiempo (<span class="math inline">\(1/365\)</span> para diario)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;"><span class="math inline">\(M\)</span></td>
-<td style="text-align: left;">Número de trayectorias Monte Carlo</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;"><span class="math inline">\(c(t), r(t), \sigma(t)\)</span></td>
-<td style="text-align: left;">Funciones temporales: prima ajustada, tasa de inversión y volatilidad (mensuales, anualizadas e interpoladas)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;"><span class="math inline">\(\lambda_{\text{meteo}}(t)=\lambda_{\text{meteo}} \phi(t)\)</span></td>
-<td style="text-align: left;">Intensidad estacional meteorológica (<span class="math inline">\(\lambda_{\text{meteo}}=6.0\)</span> eventos/año)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;"><span class="math inline">\(\lambda_{\text{sismo}}\)</span></td>
-<td style="text-align: left;">Intensidad constante sísmica (<span class="math inline">\(0.15\)</span> eventos/año)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;"><span class="math inline">\(F_{\text{meteo}}, F_{\text{sismo}}\)</span></td>
-<td style="text-align: left;">Severidades lognormales (como en el Algoritmo 1)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Verificación</td>
-<td style="text-align: left;">(H3)</td>
-<td style="text-align: left;"><span class="math inline">\(\max_i r(t_i) \Delta t&lt;1/2\)</span> (el programa se detiene si no se cumple)</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Salida</td>
-<td style="text-align: left;"><span class="math inline">\(U[M][N+1]\)</span></td>
-<td style="text-align: left;">Trayectorias simuladas de reservas</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"></td>
-<td style="text-align: left;"><span class="math inline">\(\tilde U[N+1]\)</span></td>
-<td style="text-align: left;">Pronóstico robusto mediante la mediana</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"></td>
-<td style="text-align: left;"><span class="math inline">\(IC_{5,95}[N+1]\)</span></td>
-<td style="text-align: left;">Intervalo de confianza al 90 %</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Algorithm 8.4. Algoritmo 4: Fase 1, preprocesamiento de parámetros y simulación semi-implícita compensada</strong></p>
-<div id="alg-semi-fase1-code" class="cell theorem algorithm" data-execution_count="2">
-<p><span class="theorem-title"><strong>Algorithm 7.3</strong></span> &nbsp;</p>
-<details class="code-fold">
-<summary>Código</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Preprocesamiento (parámetros anualizados e interpolados) ----</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>N_hist ← ⌊T_hist <span class="op">/</span> Δt⌋                              <span class="co"># 730 pasos diarios</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>para i ← <span class="dv">0</span> hasta N_hist <span class="op">-</span> <span class="dv">1</span>:</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    t_mes[i]    ← i · <span class="dv">12</span> · Δt                       <span class="co"># mes continuo, 0..24</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    mes[i]      ← ⌊t_mes[i]⌋ mod <span class="dv">12</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    c_hist[i]   ← <span class="dv">12</span> · interp(t_mes[i]<span class="op">;</span> c_mens)      <span class="co"># USD/año</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    r_hist[i]   ← <span class="dv">12</span> · interp(t_mes[i]<span class="op">;</span> r_mens)      <span class="co"># 1/año</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    sigma_hist[i] ← √<span class="dv">12</span> · interp(t_mes[i]<span class="op">;</span> sigma_mens)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    lam_m[i]    ← lambda_meteo · phi[mes[i]]         <span class="co"># eventos/año</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    Lambda[i]   ← lam_m[i] · E_meteo <span class="op">+</span> lambda_sismo · E_sismo   <span class="co"># USD/año</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Severidades (independientes del estado) ----</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>función MuestrearSeveridad(F, k):        <span class="co"># k variables i.i.d. ~ F</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    mientras queden pendientes:</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        Z ← Normal(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        Y ← exp(mu_F <span class="op">+</span> sigma_F · Z)</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        aceptar Y si Y <span class="op">&gt;</span> umbral_F            <span class="co"># rechazo (umbral_sismo = 0)</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>función SumaSeveridades(F, n_ev[<span class="fl">1.</span>.M]):  <span class="co"># suma de n_ev[m] severidades por trayectoria</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    devolver (suma de MuestrearSeveridad(F, n_ev[m]) para cada m)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Fase 1: simulación histórica (M_hist trayectorias en paralelo) ----</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>Inicializar X[M_hist][N_hist <span class="op">+</span> <span class="dv">1</span>] ← <span class="dv">0</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>X[m][<span class="dv">0</span>] ← U0_hist    para todo m</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>para i ← <span class="dv">0</span> hasta N_hist <span class="op">-</span> <span class="dv">1</span>:</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    n_m ← Poisson(lam_m[i] · Δt)             <span class="co"># vectores de tamaño M_hist</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    n_s ← Poisson(lambda_sismo · Δt)</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    Jm[·][i] ← SumaSeveridades(F_meteo, n_m)</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    Js[·][i] ← SumaSeveridades(F_sismo, n_s)</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    dJ_tilde ← Jm[·][i] <span class="op">+</span> Js[·][i] <span class="op">-</span> Lambda[i] · Δt      <span class="co"># incremento COMPENSADO (media cero)</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    ΔW ← √Δt · Normal(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    drift ← (c_hist[i] <span class="op">+</span> r_hist[i] · X[·][i] <span class="op">-</span> Lambda[i]) · Δt</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    diff  ← sigma_hist[i] · X[·][i] · ΔW</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    corr  ← (<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) · sigma_hist[i]² · X[·][i] · (ΔW² <span class="op">-</span> Δt)</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    X[·][i <span class="op">+</span> <span class="dv">1</span>] ← X[·][i] <span class="op">+</span> drift <span class="op">+</span> diff <span class="op">+</span> corr <span class="op">-</span> dJ_tilde</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Estadísticas históricas ----</span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>para i ← <span class="dv">0</span> hasta N_hist:</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    median_hist[i] ← Mediana(X[·][i])</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    IC_hist[i]     ← [Percentil_5(X[·][i]), Percentil_95(X[·][i])]</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>U0_fc ← Mediana(X[·][N_hist])</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Fase 2: pronóstico (enero 2026, T_fc = 30 pasos) ----</span></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>c_ene     ← <span class="dv">12</span> · (c_mens[<span class="dv">0</span>] <span class="op">+</span> c_mens[<span class="dv">12</span>]) <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>r_ene     ← <span class="dv">12</span> · (r_mens[<span class="dv">0</span>] <span class="op">+</span> r_mens[<span class="dv">12</span>]) <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>sigma_ene ← √<span class="dv">12</span> · (sigma_mens[<span class="dv">0</span>] <span class="op">+</span> sigma_mens[<span class="dv">12</span>]) <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>lam_m_ene ← lambda_meteo · phi[enero]</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>Lambda_ene ← lam_m_ene · E_meteo <span class="op">+</span> lambda_sismo · E_sismo</span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="co"># (estructura idéntica a la Fase 1 con parámetros constantes de enero y condición inicial U0_fc)</span></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>U[m][i <span class="op">+</span> <span class="dv">1</span>] ← U[m][i] <span class="op">+</span> (c_ene <span class="op">+</span> r_ene · U[m][i] <span class="op">-</span> Lambda_ene) · Δt</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>               <span class="op">+</span> sigma_ene · U[m][i] · ΔW <span class="op">+</span> (<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>) · sigma_ene² · U[m][i] · (ΔW² <span class="op">-</span> Δt) <span class="op">-</span> dJ_tilde</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Diagnóstico de la compensación ----</span></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>dJt ← Jm <span class="op">+</span> Js <span class="op">-</span> Lambda · Δt</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>verificar <span class="op">|</span>media(dJt)<span class="op">|</span> <span class="op">&lt;</span> <span class="dv">3</span> · EE(dJt)          <span class="co"># E[ΔJ~] = 0 (histórico y pronóstico)</span></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Detección de saltos en la mediana (opcional) ----</span></span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>log_ret_hist ← ln(median_hist[<span class="dv">1</span>:] <span class="op">/</span> median_hist[:<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>tau_hist ← <span class="dv">3</span> · DesvEst(log_ret_hist)</span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>saltos_hist ← {(t_i, median_hist[i]) <span class="op">|</span> <span class="op">|</span>log_ret_hist[i<span class="op">-</span><span class="dv">1</span>]<span class="op">|</span> <span class="op">&gt;</span> tau_hist}</span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a><span class="co"># (mismo procedimiento para median_fc)</span></span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>guardar X, U_forecast, c_hist, r_hist, sigma_hist, Jm, Js en archivo .npz</span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>retornar median_hist, IC_hist, median_fc, IC_fc, saltos_hist, saltos_fc</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
 <section id="pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto" class="level3" data-number="7.4.2">
 <h3 data-number="7.4.2" class="anchored" data-anchor-id="pseudocódigo-esquema-semi-implícito-compensado-para-ede-con-difusión-y-salto"><span class="header-section-number">7.4.2</span> Pseudocódigo: Esquema Semi-Implícito Compensado para EDE con Difusión y Salto</h3>
 <div id="alg-semi-implícito" class="theorem algorithm">
-<p><span class="theorem-title"><strong>Algorithm 7.4</strong></span> <strong>Algoritmo 3:</strong> Simulación de Reservas Cramér-Lundberg con Método Semi-Implícito Compensado</p>
+<p><span class="theorem-title"><strong>Algorithm 7.3</strong></span> <strong>Algoritmo 3:</strong> Simulación de Reservas Cramér-Lundberg con Método Semi-Implícito Compensado</p>
 </div>
 <table class="caption-top table">
 <colgroup>
@@ -1619,51 +1469,52 @@ dX_t=\Big[\underbrace{c(t)+r(t)X_{t^-}-\lambda_{\text{meteo}}(t) \ \mathbb E[Y_{
 </tbody>
 </table>
 <div id="alg-semi-fase1" class="theorem algorithm">
-<p><span class="theorem-title"><strong>Algorithm 7.5</strong></span> <strong>Algoritmo 4:</strong> Fase 1 - preprocesamiento de parámetros y simulación semi-implícita compensada</p>
+<p><span class="theorem-title"><strong>Algorithm 7.4</strong></span> <strong>Algoritmo 4:</strong> Fase 1 - preprocesamiento de parámetros y simulación semi-implícita compensada</p>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Preprocesamiento de parámetros temporales ----</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>para i ← <span class="dv">0</span> hasta N <span class="op">-</span> <span class="dv">1</span>:</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    t_mes[i] ← i · <span class="dv">12</span> · Δt<span class="op">;</span>   mes[i] ← ⌊t_mes[i]⌋ mod <span class="dv">12</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    c_i[i]   ← <span class="dv">12</span> · interp(t_mes[i]<span class="op">;</span> c_mens)         <span class="co"># prima ajustada por inflación</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    r_i[i]   ← <span class="dv">12</span> · interp(t_mes[i]<span class="op">;</span> r_mens)         <span class="co"># rendimiento de inversión</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    sigma_i[i] ← √<span class="dv">12</span> · interp(t_mes[i]<span class="op">;</span> sigma_mens)  <span class="co"># volatilidad</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    lam_m[i] ← lambda_meteo · phi[mes[i]]            <span class="co"># eventos/año</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    Lambda[i] ← lam_m[i] · E_meteo <span class="op">+</span> lambda_sismo · E_sismo      <span class="co"># USD/año</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Verificación de la hipótesis (H3) ----</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>si máx(r_i) · Δt ≥ <span class="dv">1</span><span class="op">/</span><span class="dv">2</span> entonces: DETENER con error     <span class="co"># no se modifica el esquema en silencio</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>Inicializar U[M][N <span class="op">+</span> <span class="dv">1</span>] ← <span class="dv">0</span><span class="op">;</span>   U[·][<span class="dv">0</span>] ← U_0</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>para i ← <span class="dv">0</span> hasta N <span class="op">-</span> <span class="dv">1</span>:</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2.1 Generación exacta de saltos brutos (independientes del estado)</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    n_m ← Poisson(lam_m[i] · Δt)<span class="op">;</span>   n_s ← Poisson(lambda_sismo · Δt)</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    Jm ← SumaSeveridades(F_meteo, n_m)<span class="op">;</span>   Js ← SumaSeveridades(F_sismo, n_s)</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2.2 Incremento compensado (media cero)</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    dJ_tilde ← Jm <span class="op">+</span> Js <span class="op">-</span> Lambda[i] · Δt</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2.3 Actualización semi-implícita (r tratado implícitamente)</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    ΔW ← √Δt · Normal(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    numerador   ← U[·][i] · (<span class="dv">1</span> <span class="op">+</span> sigma_i[i] · ΔW) <span class="op">+</span> (c_i[i] <span class="op">-</span> Lambda[i]) · Δt <span class="op">-</span> dJ_tilde</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    denominador ← <span class="dv">1</span> <span class="op">-</span> r_i[i] · Δt                    <span class="co"># ≥ 1/2 por (H3)</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    U[·][i <span class="op">+</span> <span class="dv">1</span>] ← numerador <span class="op">/</span> denominador</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Estadísticas ----</span></span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>para i ← <span class="dv">0</span> hasta N:</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    U_med[i] ← Mediana(U[·][i])</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    IC[i]    ← [Percentil_5(U[·][i]), Percentil_95(U[·][i])]</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Diagnóstico de la compensación ----</span></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>verificar <span class="op">|</span>media(Jm <span class="op">+</span> Js <span class="op">-</span> Lambda · Δt)<span class="op">|</span> <span class="op">&lt;</span> <span class="dv">3</span> · EE         <span class="co"># E[ΔJ~] = 0</span></span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- FASE 4: detección de saltos en la trayectoria mediana (opcional) ----</span></span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>log_ret[i] ← ln(U_med[i] <span class="op">/</span> U_med[i <span class="op">-</span> <span class="dv">1</span>])    para i ← <span class="dv">1</span> hasta N</span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>tau ← <span class="dv">3</span> · DesvEst(log_ret)</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>saltos ← {(t_i, U_med[i]) <span class="op">|</span> <span class="op">|</span>log_ret[i]<span class="op">|</span> <span class="op">&gt;</span> tau}</span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>guardar U, U_forecast, c_i, r_i, sigma_i, Jm, Js en archivo .npz</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>retornar U_med, IC, saltos</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Preprocesamiento de parámetros temporales ----</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>para i ← <span class="dv">0</span> hasta N <span class="op">-</span> <span class="dv">1</span>:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    t_mes[i] ← i · <span class="dv">12</span> · Δt<span class="op">;</span>   mes[i] ← ⌊t_mes[i]⌋ mod <span class="dv">12</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    c_i[i]   ← <span class="dv">12</span> · interp(t_mes[i]<span class="op">;</span> c_mens)<span class="co"># prima ajustada por inflación</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    r_i[i]   ← <span class="dv">12</span> · interp(t_mes[i]<span class="op">;</span> r_mens) <span class="co"># rendimiento de inversión</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    sigma_i[i] ← √<span class="dv">12</span> · interp(t_mes[i]<span class="op">;</span> sigma_mens)  <span class="co"># volatilidad</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    lam_m[i] ← lambda_meteo · phi[mes[i]]            <span class="co"># eventos/año</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    Lambda[i] ← lam_m[i] · E_meteo <span class="op">+</span> lambda_sismo · E_sismo  <span class="co"># USD/año</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Verificación de la hipótesis (H3) ----</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>si máx(r_i) · Δt ≥ <span class="dv">1</span><span class="op">/</span><span class="dv">2</span> entonces: DETENER con error  </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>Inicializar U[M][N <span class="op">+</span> <span class="dv">1</span>] ← <span class="dv">0</span><span class="op">;</span>   U[·][<span class="dv">0</span>] ← U_0</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>para i ← <span class="dv">0</span> hasta N <span class="op">-</span> <span class="dv">1</span>:</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2.1 Generación exacta de saltos brutos (independientes del estado)</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    n_m ← Poisson(lam_m[i] · Δt)<span class="op">;</span>   n_s ← Poisson(lambda_sismo · Δt)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    Jm ← SumaSeveridades(F_meteo, n_m)<span class="op">;</span>   Js ← SumaSeveridades(F_sismo, n_s)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2.2 Incremento compensado (media cero)</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    dJ_tilde ← Jm <span class="op">+</span> Js <span class="op">-</span> Lambda[i] · Δt</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2.3 Actualización semi-implícita (r tratado implícitamente)</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    ΔW ← √Δt · Normal(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    numerador   ← U[·][i] · (<span class="dv">1</span> <span class="op">+</span> sigma_i[i] · ΔW) </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> (c_i[i] <span class="op">-</span> Lambda[i]) · Δt <span class="op">-</span> dJ_tilde</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    denominador ← <span class="dv">1</span> <span class="op">-</span> r_i[i] · Δt    <span class="co"># ≥ 1/2 por (H3)</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    U[·][i <span class="op">+</span> <span class="dv">1</span>] ← numerador <span class="op">/</span> denominador</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Estadísticas ----</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>para i ← <span class="dv">0</span> hasta N:</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    U_med[i] ← Mediana(U[·][i])</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    IC[i]    ← [Percentil_5(U[·][i]), Percentil_95(U[·][i])]</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Diagnóstico de la compensación ----</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>verificar <span class="op">|</span>media(Jm <span class="op">+</span> Js <span class="op">-</span> Lambda · Δt)<span class="op">|</span> <span class="op">&lt;</span> <span class="dv">3</span> · EE         <span class="co"># E[ΔJ~] = 0</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- FASE 4: detección de saltos en la trayectoria mediana ----</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>log_ret[i] ← ln(U_med[i] <span class="op">/</span> U_med[i <span class="op">-</span> <span class="dv">1</span>])    para i ← <span class="dv">1</span> hasta N</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>tau ← <span class="dv">3</span> · DesvEst(log_ret)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>saltos ← {(t_i, U_med[i]) <span class="op">|</span> <span class="op">|</span>log_ret[i]<span class="op">|</span> <span class="op">&gt;</span> tau}</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>guardar U, U_forecast, c_i, r_i, sigma_i, Jm, Js en archivo .npz</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>retornar U_med, IC, saltos</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
