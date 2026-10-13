@@ -447,7 +447,7 @@ window.Quarto = {
   <ul>
   <li><a href="#introducción-a-la-discretización-de-ede-con-difusion-y-salto." id="toc-introducción-a-la-discretización-de-ede-con-difusion-y-salto." class="nav-link active" data-scroll-target="#introducción-a-la-discretización-de-ede-con-difusion-y-salto."><span class="header-section-number">6.1</span> Introducción a la Discretización de EDE con difusion y salto.</a>
   <ul class="collapse">
-  <li><a href="#formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj." id="toc-formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj." class="nav-link" data-scroll-target="#formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj."><span class="header-section-number">6.1.1</span> Formulación general del modelo de Cramér–Lundberg con reinversión como EDESJ.</a></li>
+  <li><a href="#sec-For_gen_mod_CL" id="toc-sec-For_gen_mod_CL" class="nav-link" data-scroll-target="#sec-For_gen_mod_CL"><span class="header-section-number">6.1.1</span> Formulación general del modelo de Cramér–Lundberg con reinversión como EDESJ.</a></li>
   </ul></li>
   <li><a href="#sec-Milstein" id="toc-sec-Milstein" class="nav-link" data-scroll-target="#sec-Milstein"><span class="header-section-number">6.2</span> Esquema de Milstein</a></li>
   <li><a href="#sec-Milstein_compensado" id="toc-sec-Milstein_compensado" class="nav-link" data-scroll-target="#sec-Milstein_compensado"><span class="header-section-number">6.3</span> Esquema de Milstein Compensado</a></li>
@@ -506,8 +506,8 @@ X_t = {}&amp; X_0 + \int_0^t a(s,X_s)\,d s + \int_0^t b(s,X_s)\,d W_s
 </ul>
 <p>La SDE con saltos compensados es: <span class="math display">\[dX_t = \underbrace{a(t, X_t)\,dt}_{\text{drift original}} + \underbrace{b(t, X_t)\,dW_t}_{\text{difusión}} + \underbrace{\int_E R(t, X_{t-}, v)\,\tilde{p}_\phi(dv, dt)}_{\text{saltos compensados}}\]</span> donde la medida compensada es: <span class="math display">\[\tilde{p}_\phi(dv, dt) = p_\phi(dv, dt) - \phi(dv)\,dt\]</span> Al expandir la integral con la medida compensada, obtenemos: <span class="math display">\[\int_E R(t, X_{t-}, v)\,\tilde{p}_\phi(dv, dt) = \underbrace{\int_E R(t, X_{t-}, v)\,p_\phi(dv, dt)}_{\text{saltos brutos}} - \underbrace{\int_E R(t, X_{t-}, v)\,\phi(dv)\,dt}_{\text{compensación}}\]</span> Por lo tanto, la EDE completa se puede escribir como: <span class="math display">\[dX_t = a(t, X_t)\,dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\,p_\phi(dv, dt) - \int_E R(t, X_{t-}, v)\,\phi(dv)\,dt\]</span> Para discretizar esta ecuación, reorganizamos los términos de la siguiente manera: <span class="math display">\[dX_t = \underbrace{\left[a(t, X_t) - \int_E R(t, X_{t-}, v)\,\phi(dv)\right]}_{\text{drift compensado}} dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\,p_\phi(dv, dt)\]</span> El término de compensación cambia de signo al moverse al drift, porque: <span class="math display">\[a(t, X_t)\,dt - \int_E R(t, X_{t-}, v)\,\phi(dv)\,dt = \left[a(t, X_t) - \int_E c(t, X_{t-}, v)\,\phi(dv)\right] dt\]</span></p>
 </div>
-<section id="formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj." class="level3" data-number="6.1.1">
-<h3 data-number="6.1.1" class="anchored" data-anchor-id="formulación-general-del-modelo-de-cramérlundberg-con-reinversión-como-edesj."><span class="header-section-number">6.1.1</span> Formulación general del modelo de Cramér–Lundberg con reinversión como EDESJ.</h3>
+<section id="sec-For_gen_mod_CL" class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="sec-For_gen_mod_CL"><span class="header-section-number">6.1.1</span> Formulación general del modelo de Cramér–Lundberg con reinversión como EDESJ.</h3>
 <div style="text-align:justify">
 <p>El modelo de Cramér–Lundberg extendido con reinversión y parámetros temporales se escribe, en forma compensada, como la ecuación diferencial estocástica con saltos</p>
 <p><span id="eq-ede-sj"><span class="math display">\[
@@ -587,9 +587,7 @@ Y_{n+1}={}&amp;Y_n+\big[c_n+r_nY_n-\Lambda_n\big]\Delta t+\sigma_nY_n\,\Delta W_
 <p><span class="math inline">\([a-\int R\nu]\Delta t+\sum R(\xi_i)=[c_n+r_nY_n]\Delta t-\Delta J_n\)</span>. El término <span class="math inline">\(\tfrac12\sigma_n^2Y_n[(\Delta W_n)^2-\Delta t]\)</span> es la corrección de Milstein para la difusión multiplicativa (<span class="math inline">\(b\,b_x=\sigma^2x\)</span>; con ruido escalar no se requieren áreas de Lévy).</p>
 </div>
 <div id="thm-convergencia_fuerte_semi_impli" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 6.2</strong></span> &nbsp;</p>
-<div style="text-align:justify">
-<p>(convergencia fuerte, esquema de Milstein compensado). Sean <span class="math inline">\(a,b,R\)</span> los coeficientes de <span class="quarto-unresolved-ref">?eq-coeficientes</span> y supóngase:</p>
+<p><span class="theorem-title"><strong>Teorema 6.2</strong></span> (Convergencia fuerte, esquema de Milstein compensado). Sean <span class="math inline">\(a,b,R\)</span> los coeficientes de <span class="quarto-unresolved-ref">?eq-coeficientes</span> y supóngase:</p>
 <ul>
 <li><p>(H1) Lipschitz: <span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span> son globalmente Lipschitz en <span class="math inline">\(x\)</span>, y <span class="math inline">\(R(t,x,v)=-y\)</span> no depende de <span class="math inline">\(x\)</span> (<span class="math inline">\(L_R=0\)</span>).</p></li>
 <li><p>(H2) Crecimiento lineal: existe <span class="math inline">\(K&gt;0\)</span> con <span class="math inline">\(|a(t,x)|+|b(t,x)|+\big(\int_E|R|^2\nu\big)^{1/2}\le K(1+|x|)\)</span>.</p></li>
@@ -601,11 +599,10 @@ Y_{n+1}={}&amp;Y_n+\big[c_n+r_nY_n-\Lambda_n\big]\Delta t+\sigma_nY_n\,\Delta W_
 <p><span class="math display">\[
 \max_{0\le n\le N}\Big(\mathbb E\big[|X_{t_n}-Y_n|^2\big]\Big)^{1/2}\le C\sqrt{\Delta t}.
 \]</span></p>
-<p>Es decir, el esquema converge fuertemente con orden <span class="math inline">\(\gamma=1/2\)</span>.<span class="math inline">\(\quad \blacksquare\)</span></p>
-</div>
+<p>Es decir, el esquema converge fuertemente con orden <span class="math inline">\(\gamma=1/2\)</span>.</p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span></p>
+<p><span class="proof-title"><em>Demostración</em>. </span><span class="math inline">\(\quad \blacksquare\)</span></p>
 </div>
 </section>
 <section id="esquema-semi-implícito-compensado" class="level2" data-number="6.4">
@@ -684,7 +681,7 @@ R_n^{\text{jump}} = {}&amp; \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{
 <p>El estimador <span class="math inline">\(\hat{I}_N\)</span> es un estimador insesgado de <span class="math inline">\(I\)</span>. Es decir, <span class="math inline">\(\mathbb{E}[\hat{I}_N] = I\)</span>.</p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>Dado que la esperanza es un operador lineal y las variables <span class="math inline">\(X_i\)</span> son i.i.d.: <span class="math display">\[\begin{aligned}
+<p><span class="proof-title"><em>Demostración</em>. </span>Dado que el valor esperado es un operador lineal y las variables <span class="math inline">\(X_i\)</span> son i.i.d.: <span class="math display">\[\begin{aligned}
     \mathbb{E}[\hat{I}_N] &amp;= \mathbb{E}\left[ \frac{1}{N} \sum_{i=1}^{N} f(X_i) \right] \\
     &amp;= \frac{1}{N} \sum_{i=1}^{N} \mathbb{E}[f(X_i)] \\
     &amp;= \frac{1}{N} \sum_{i=1}^{N} I = \frac{1}{N} \cdot N \cdot I = I.
@@ -733,7 +730,7 @@ R_n^{\text{jump}} = {}&amp; \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{
 <section id="variables-de-control." class="level4" data-number="6.5.4.1">
 <h4 data-number="6.5.4.1" class="anchored" data-anchor-id="variables-de-control."><span class="header-section-number">6.5.4.1</span> Variables de control.</h4>
 <div style="text-align:justify">
-<p>Una de las técnicas más rigurosas es el uso de variables de control. Supongamos que existe una variable aleatoria <span class="math inline">\(Y\)</span> correlacionada con <span class="math inline">\(f(X)\)</span> cuya esperanza <span class="math inline">\(\mu_Y = \mathbb{E}[Y]\)</span> es conocida analíticamente. Definimos un nuevo estimador: <span class="math display">\[\hat{I}_{CV}(c) = \hat{I}_N - c(\hat{Y}_N - \mu_Y),\]</span> donde <span class="math inline">\(\hat{Y}_N = \frac{1}{N}\sum Y_i\)</span> y <span class="math inline">\(c\)</span> es una constante. Este estimador sigue siendo insesgado para cualquier <span class="math inline">\(c \in \mathbb{R}\)</span>. La varianza de este nuevo estimador es: <span class="math display">\[\mathbb{V}[\hat{I}_{CV}(c)] = \mathbb{V}[\hat{I}_N] + c^2 \mathbb{V}[\hat{Y}_N] - 2c \text{Cov}(\hat{I}_N, \hat{Y}_N).\]</span></p>
+<p>Una de las técnicas más rigurosas es el uso de variables de control. Supongamos que existe una variable aleatoria <span class="math inline">\(Y\)</span> correlacionada con <span class="math inline">\(f(X)\)</span> cuyo valor esperado <span class="math inline">\(\mu_Y = \mathbb{E}[Y]\)</span> es conocida analíticamente. Definimos un nuevo estimador: <span class="math display">\[\hat{I}_{CV}(c) = \hat{I}_N - c(\hat{Y}_N - \mu_Y),\]</span> donde <span class="math inline">\(\hat{Y}_N = \frac{1}{N}\sum Y_i\)</span> y <span class="math inline">\(c\)</span> es una constante. Este estimador sigue siendo insesgado para cualquier <span class="math inline">\(c \in \mathbb{R}\)</span>. La varianza de este nuevo estimador es: <span class="math display">\[\mathbb{V}[\hat{I}_{CV}(c)] = \mathbb{V}[\hat{I}_N] + c^2 \mathbb{V}[\hat{Y}_N] - 2c \text{Cov}(\hat{I}_N, \hat{Y}_N).\]</span></p>
 <p>Minimizando esta expresión respecto a <span class="math inline">\(c\)</span>, obtenemos el coeficiente óptimo: <span class="math display">\[c^* = \frac{\text{Cov}(f(X), Y)}{\mathbb{V}(Y)}.\]</span> Sustituyendo <span class="math inline">\(c^*\)</span>, se demuestra que la varianza se reduce en un factor de <span class="math inline">\((1 - \rho^2)\)</span>, donde <span class="math inline">\(\rho\)</span> es el coeficiente de correlación entre <span class="math inline">\(f(X)\)</span> e <span class="math inline">\(Y\)</span>. Si existe una alta correlación, la eficiencia del método mejora drásticamente.</p>
 </div>
 
