@@ -510,22 +510,16 @@ X_t = {}&amp; X_0 + \int_0^t a(s,X_s)\,d s + \int_0^t b(s,X_s)\,d W_s
 <h3 data-number="6.1.1" class="anchored" data-anchor-id="sec-For_gen_mod_CL"><span class="header-section-number">6.1.1</span> Formulación general del modelo de Cramér–Lundberg con reinversión como EDESJ.</h3>
 <div style="text-align:justify">
 <p>El modelo de Cramér–Lundberg extendido con reinversión y parámetros temporales se escribe, en forma compensada, como la ecuación diferencial estocástica con saltos</p>
-<p><span id="eq-ede-sj"><span class="math display">\[
-dX_t=\underbrace{\big[c(t)+r(t)X_{t^-}-\Lambda(t)\big]}_{\text{deriva neta de siniestros esperados}}dt
+<p><span id="eq-ede-sj"><span class="math display">\[dX_t=\underbrace{\big[c(t)+r(t)X_{t^-}-\Lambda(t)\big]}_{\text{deriva neta de siniestros esperados}}dt
 +\underbrace{\sigma(t)X_{t^-}}_{\text{volatilidad}}dW_t
--\underbrace{\int_E y\;\tilde p(dv,dt)}_{d\tilde J_t\ \text{(saltos compensados)}},
-\tag{6.2}\]</span></span></p>
+-\underbrace{\int_E y\;\tilde p(dv,dt)}_{d\tilde J_t\ \text{(saltos compensados)}}, \tag{6.2}\]</span></span></p>
 <p>donde:</p>
 <ul>
 <li><span class="math inline">\(c(t)\)</span> es el flujo de primas; <span class="math inline">\(r(t)\)</span> y <span class="math inline">\(\sigma(t)\)</span> son funciones acotadas y Lipschitz en <span class="math inline">\(t\)</span> (se obtienen por interpolación lineal de los valores mensuales).</li>
 <li><span class="math inline">\(E=(0,\infty)\times\{\text{meteo},\text{sismo}\}\)</span> es el espacio de marcas; una marca <span class="math inline">\(v=(y,k)\)</span> representa un siniestro de monto <span class="math inline">\(y&gt;0\)</span> de tipo <span class="math inline">\(k\)</span>.</li>
-<li><span class="math inline">\(p(dv,dt)\)</span> es una medida aleatoria de Poisson con intensidad <span class="math inline">\(\nu(t,dv)\,dt\)</span>, donde <span class="math display">\[
-\nu(t,dv)=\lambda_{\text{meteo}}(t)\,F_{\text{meteo}}(dy)\,\delta_{\text{meteo}}(dk)+\lambda_{\text{sismo}}\,F_{\text{sismo}}(dy)\,\delta_{\text{sismo}}(dk),
-\]</span> con <span class="math inline">\(\sup_t\nu(t,E)&lt;\infty\)</span> (actividad finita), y <span class="math inline">\(\tilde p(dv,dt)=p(dv,dt)-\nu(t,dv)\,dt\)</span> es la medida compensada.</li>
+<li><span class="math inline">\(p(dv,dt)\)</span> es una medida aleatoria de Poisson con intensidad <span class="math inline">\(\nu(t,dv)\,dt\)</span>, donde <span class="math display">\[\nu(t,dv)=\lambda_{\text{meteo}}(t)\,F_{\text{meteo}}(dy)\,\delta_{\text{meteo}}(dk)+\lambda_{\text{sismo}}\,F_{\text{sismo}}(dy)\,\delta_{\text{sismo}}(dk),\]</span> con <span class="math inline">\(\sup_t\nu(t,E)&lt;\infty\)</span> (actividad finita), y <span class="math inline">\(\tilde p(dv,dt)=p(dv,dt)-\nu(t,dv)\,dt\)</span> es la medida compensada.</li>
 <li>Las severidades <span class="math inline">\(Y\)</span> son i.i.d., independientes de los procesos de conteo, del movimiento browniano y <strong>del estado</strong> <span class="math inline">\(X\)</span> (<a href="modelo-actuarial.html#sec-severidad" class="quarto-xref"><span>Sección 7.2</span></a>).</li>
-<li>El costo esperado de siniestros por unidad de tiempo es <span class="math display">\[
-\Lambda(t)=\int_E y\,\nu(t,dv)=\lambda_{\text{meteo}}(t)\,\mathbb E[Y_{\text{meteo}}]+\lambda_{\text{sismo}}\,\mathbb E[Y_{\text{sismo}}],
-\]</span> y la varianza instantánea del salto es <span class="math inline">\(\Gamma(t)=\int_E y^2\,\nu(t,dv)=\lambda_{\text{meteo}}(t)\mathbb E[Y_{\text{meteo}}^2]+\lambda_{\text{sismo}}\mathbb E[Y_{\text{sismo}}^2]\)</span>.</li>
+<li>El costo esperado de siniestros por unidad de tiempo es <span class="math display">\[\Lambda(t)=\int_E y\,\nu(t,dv)=\lambda_{\text{meteo}}(t)\,\mathbb E[Y_{\text{meteo}}]+\lambda_{\text{sismo}}\,\mathbb E[Y_{\text{sismo}}],\]</span> y la varianza instantánea del salto es <span class="math inline">\(\Gamma(t)=\int_E y^2\,\nu(t,dv)=\lambda_{\text{meteo}}(t)\mathbb E[Y_{\text{meteo}}^2]+\lambda_{\text{sismo}}\mathbb E[Y_{\text{sismo}}^2]\)</span>.</li>
 <li><span class="math inline">\(J_t=\sum_{i\le N_{\text{meteo}}(t)}Y^{\text{meteo}}_i+\sum_{j\le N_{\text{sismo}}(t)}Y^{\text{sismo}}_j\)</span> es el proceso de siniestros agregados y <span class="math inline">\(\tilde J_t=J_t-\int_0^t\Lambda(s)\,ds\)</span> su versión compensada: una martingala de cuadrado integrable con <span class="math inline">\(\mathbb E[\tilde J_t^{\,2}]=\int_0^t\Gamma(s)\,ds\)</span>.</li>
 </ul>
 </div>
@@ -561,9 +555,7 @@ Y_{n+1} = Y_n &amp;+ a(t_n, Y_n),\Delta t \\
 <li><strong>Condiciones iniciales</strong>: <span class="math inline">\(\mathbb{E}[\|X_0\|^2] &lt; \infty\)</span> y <span class="math inline">\(Y_0 = X_0\)</span>.</li>
 </ol>
 <p>Entonces, existe una constante <span class="math inline">\(C &gt; 0\)</span>, independiente de <span class="math inline">\(\Delta t\)</span>, tal que:</p>
-<p><span id="eq-convergencia_milstein"><span class="math display">\[
-\max_{0 \leq n \leq N} \left(\mathbb{E}[\|X_{t_n} - Y_n\|^2]\right)^{1/2} \leq C \sqrt{\Delta t}.
-\tag{6.3}\]</span></span></p>
+<p><span id="eq-convergencia_milstein"><span class="math display">\[\max_{0 \leq n \leq N} \left(\mathbb{E}[\|X_{t_n} - Y_n\|^2]\right)^{1/2} \leq C \sqrt{\Delta t}. \tag{6.3}\]</span></span></p>
 <p>Es decir, el esquema converge fuertemente con orden <span class="math inline">\(\gamma = 1/2\)</span>.</p>
 </div>
 </div>
@@ -572,17 +564,13 @@ Y_{n+1} = Y_n &amp;+ a(t_n, Y_n),\Delta t \\
 <h2 data-number="6.3" class="anchored" data-anchor-id="sec-Milstein_compensado"><span class="header-section-number">6.3</span> Esquema de Milstein Compensado</h2>
 <div style="text-align:justify">
 <p>Para el modelo <a href="#eq-ede-sj" class="quarto-xref">Ecuación&nbsp;<span>6.2</span></a>, el esquema de Milstein compensado con paso <span class="math inline">\(\Delta t=t_{n+1}-t_n\)</span> es</p>
-<p><span id="eq-milstein-modelo"><span class="math display">\[
-\begin{aligned}
+<p><span id="eq-milstein-modelo"><span class="math display">\[\begin{aligned}
 Y_{n+1}={}&amp;Y_n+\big[c_n+r_nY_n-\Lambda_n\big]\Delta t+\sigma_nY_n\,\Delta W_n\\
 &amp;+\tfrac12\,\sigma_n^2\,Y_n\big[(\Delta W_n)^2-\Delta t\big]-\Delta\tilde J_n,
-\end{aligned}
-\tag{6.4}\]</span></span></p>
+\end{aligned} \tag{6.4}\]</span></span></p>
 <p>donde <span class="math inline">\(c_n=c(t_n)\)</span>, <span class="math inline">\(r_n=r(t_n)\)</span>, <span class="math inline">\(\sigma_n=\sigma(t_n)\)</span>, <span class="math inline">\(\Lambda_n=\Lambda(t_n)\)</span>, <span class="math inline">\(\Delta W_n\sim\mathcal N(0,\Delta t)\)</span> y</p>
-<p><span class="math display">\[
-\Delta\tilde J_n=\Delta J_n-\Lambda_n\Delta t,\qquad
-\Delta J_n=\sum_{i=1}^{\Delta N^{\text{meteo}}_n}Y^{\text{meteo}}_i+\sum_{j=1}^{\Delta N^{\text{sismo}}_n}Y^{\text{sismo}}_j,
-\]</span></p>
+<p><span class="math display">\[\Delta\tilde J_n=\Delta J_n-\Lambda_n\Delta t,\qquad
+\Delta J_n=\sum_{i=1}^{\Delta N^{\text{meteo}}_n}Y^{\text{meteo}}_i+\sum_{j=1}^{\Delta N^{\text{sismo}}_n}Y^{\text{sismo}}_j,\]</span></p>
 <p>con <span class="math inline">\(\Delta N^{\text{meteo}}_n\sim\text{Poisson}(\lambda_{\text{meteo}}(t_n)\Delta t)\)</span> y <span class="math inline">\(\Delta N^{\text{sismo}}_n\sim\text{Poisson}(\lambda_{\text{sismo}}\Delta t)\)</span> independientes. Los incrementos <span class="math inline">\(\Delta J_n\)</span> se generan de forma exacta (número de siniestros y severidades).</p>
 <p><span class="math inline">\([a-\int R\nu]\Delta t+\sum R(\xi_i)=[c_n+r_nY_n]\Delta t-\Delta J_n\)</span>. El término <span class="math inline">\(\tfrac12\sigma_n^2Y_n[(\Delta W_n)^2-\Delta t]\)</span> es la corrección de Milstein para la difusión multiplicativa (<span class="math inline">\(b\,b_x=\sigma^2x\)</span>; con ruido escalar no se requieren áreas de Lévy).</p>
 </div>
@@ -596,9 +584,7 @@ Y_{n+1}={}&amp;Y_n+\big[c_n+r_nY_n-\Lambda_n\big]\Delta t+\sigma_nY_n\,\Delta W_
 <li><p>(H5) Condición inicial: <span class="math inline">\(X_0\)</span> determinista (o con <span class="math inline">\(\mathbb E[X_0^2]&lt;\infty\)</span>) y <span class="math inline">\(Y_0=X_0\)</span>.</p></li>
 </ul>
 <p>Entonces existe <span class="math inline">\(C&gt;0\)</span>, independiente de <span class="math inline">\(\Delta t\)</span>, tal que</p>
-<p><span class="math display">\[
-\max_{0\le n\le N}\Big(\mathbb E\big[|X_{t_n}-Y_n|^2\big]\Big)^{1/2}\le C\sqrt{\Delta t}.
-\]</span></p>
+<p><span class="math display">\[\max_{0\le n\le N}\Big(\mathbb E\big[|X_{t_n}-Y_n|^2\big]\Big)^{1/2}\le C\sqrt{\Delta t}.\]</span></p>
 <p>Es decir, el esquema converge fuertemente con orden <span class="math inline">\(\gamma=1/2\)</span>.</p>
 </div>
 <div class="proof" style="text-align:justify">
@@ -609,17 +595,13 @@ Y_{n+1}={}&amp;Y_n+\big[c_n+r_nY_n-\Lambda_n\big]\Delta t+\sigma_nY_n\,\Delta W_
 <h2 data-number="6.4" class="anchored" data-anchor-id="esquema-semi-implícito-compensado"><span class="header-section-number">6.4</span> Esquema Semi-Implícito Compensado</h2>
 <div style="text-align:justify">
 <p>El método semi-implícito compensado aplica una regla de Euler implícita al término de inversión <span class="math inline">\(r(t)X\)</span> y explícita a la difusión y al salto compensado:</p>
-<p><span class="math display">\[
-\hat U_{n+1}=\hat U_n+\big[c_n-\Lambda_n+r_n\hat U_{n+1}\big]\Delta t+\sigma_n\hat U_n\,\Delta W_n-\Delta\tilde J_n ,
-\]</span></p>
+<p><span class="math display">\[\hat U_{n+1}=\hat U_n+\big[c_n-\Lambda_n+r_n\hat U_{n+1}\big]\Delta t+\sigma_n\hat U_n\,\Delta W_n-\Delta\tilde J_n ,\]</span></p>
 <p>con <span class="math inline">\(c_n,r_n,\sigma_n,\Lambda_n\)</span> evaluados en <span class="math inline">\(t_n\)</span>. Reordenando algebraicamente y despejando <span class="math inline">\(\hat U_{n+1}\)</span> se tiene:</p>
-<p><span class="math display">\[
-\hat U_{n+1}=\frac{\hat U_n\big[1+\sigma_n\Delta W_n\big]+\big(c_n-\Lambda_n\big)\Delta t-\Delta\tilde J_n}{1-r_n\Delta t}
-=\frac{\hat U_n\big[1+\sigma_n\Delta W_n\big]+c_n\Delta t-\Delta J_n}{1-r_n\Delta t},
-\]</span></p>
+<p><span class="math display">\[\hat U_{n+1}=\frac{\hat U_n\big[1+\sigma_n\Delta W_n\big]+\big(c_n-\Lambda_n\big)\Delta t-\Delta\tilde J_n}{1-r_n\Delta t}
+=\frac{\hat U_n\big[1+\sigma_n\Delta W_n\big]+c_n\Delta t-\Delta J_n}{1-r_n\Delta t},\]</span></p>
 </div>
-<div id="thm-convergencia_fuerte_semi_impli" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 6.3</strong></span> (Convergencia fuerte, esquema semi-implícito compensado). Con los coeficientes de <span class="quarto-unresolved-ref">?eq-coeficientes</span>, supóngase:</p>
+<div>
+<p>(Convergencia fuerte, esquema semi-implícito compensado). Con los coeficientes de <span class="quarto-unresolved-ref">?eq-coeficientes</span>, supóngase:</p>
 <p>(H1) Lipschitz global: <span class="math inline">\(a(t,u)=c(t)+r(t)u-\Lambda(t)\)</span> y <span class="math inline">\(b(t,u)=\sigma(t)u\)</span> son globalmente Lipschitz en <span class="math inline">\(u\)</span>, y <span class="math inline">\(R(t,u,v)=-y\)</span> no depende de <span class="math inline">\(u\)</span> (<span class="math inline">\(L_R=0\)</span>).</p>
 <p>(H2) Crecimiento lineal: igual que (H2) del Teorema 7.1 (Platen y Bruti-Liberati [28], Ec. (1.9.3)).</p>
 <p>(H3) Momentos finitos de saltos: <span class="math inline">\(\int_E|R|^4\nu(t,dv)&lt;\infty\)</span> (Wang, Mei y Xue [35], Hipótesis 3.1).</p>
@@ -699,14 +681,14 @@ R_n^{\text{jump}} = {}&amp; \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{
 <p>La convergencia casi segura del estimador está garantizada por la Ley Fuerte de los Grandes Números.</p>
 </div>
 <div id="thm-ley_fuerte_grandes_numeros" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 6.4</strong></span> (Ley Fuerte de los Grandes Números). Sea <span class="math inline">\(\{X_i\}_{i \geq 1}\)</span> una sucesión de variables aleatorias i.i.d. con <span class="math inline">\(\mathbb{E}[|f(X_1)|] &lt; \infty\)</span>. Entonces, el estimador de Monte Carlo converge casi seguramente (c.s.) al valor verdadero <span class="math inline">\(I\)</span>: <span class="math display">\[\mathbb{P}\left( \lim_{N \to \infty} \hat{I}_N = I \right) = 1.\]</span></p>
+<p><span class="theorem-title"><strong>Teorema 6.3</strong></span> (Ley Fuerte de los Grandes Números). Sea <span class="math inline">\(\{X_i\}_{i \geq 1}\)</span> una sucesión de variables aleatorias i.i.d. con <span class="math inline">\(\mathbb{E}[|f(X_1)|] &lt; \infty\)</span>. Entonces, el estimador de Monte Carlo converge casi seguramente (c.s.) al valor verdadero <span class="math inline">\(I\)</span>: <span class="math display">\[\mathbb{P}\left( \lim_{N \to \infty} \hat{I}_N = I \right) = 1.\]</span></p>
 </div>
 <div style="text-align:justify">
 <p>Este teorema proporciona la garantía teórica de que, al aumentar el número de simulaciones, el error de aproximación tiende a cero con probabilidad unitaria. Sin embargo, la SLLN no cuantifica la tasa de convergencia ni la distribución del error para un <span class="math inline">\(N\)</span> finito.</p>
 <p>Para evaluar la precisión del método y construir intervalos de confianza, utilizamos el Teorema del Límite Central. Asumamos que la varianza de la función es finita, es decir, <span class="math inline">\(\sigma^2 = \mathbb{V}[f(X)] &lt; \infty\)</span>.</p>
 </div>
 <div id="thm-limite_central" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 6.5</strong></span> (Teorema del Límite Central para MC) Bajo las condiciones de varianza finita, la distribución del error normalizado converge en distribución a una normal estándar: <span class="math display">\[    \sqrt{N} \frac{\hat{I}_N - I}{\sigma} \xrightarrow{d} \mathbb{N}(0, 1) \quad \text{cuando } N \to \infty.\]</span></p>
+<p><span class="theorem-title"><strong>Teorema 6.4</strong></span> (Teorema del Límite Central para MC) Bajo las condiciones de varianza finita, la distribución del error normalizado converge en distribución a una normal estándar: <span class="math display">\[    \sqrt{N} \frac{\hat{I}_N - I}{\sigma} \xrightarrow{d} \mathbb{N}(0, 1) \quad \text{cuando } N \to \infty.\]</span></p>
 </div>
 <div style="text-align:justify">
 <p>De este resultado se desprende una conclusión crítica para la simulación computacional: el error estándar del estimador decae proporcionalmente a <span class="math inline">\(N^{-1/2}\)</span>, independientemente de la dimensión del problema. <span id="eq-error_rate"><span class="math display">\[\text{Error}(\hat{I}_N) \approx \frac{\sigma}{\sqrt{N}}. \tag{6.24}\]</span></span></p>
