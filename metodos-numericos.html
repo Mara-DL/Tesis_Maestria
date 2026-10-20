@@ -23,26 +23,7 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -451,13 +432,12 @@ window.Quarto = {
   </ul></li>
   <li><a href="#sec-Milstein" id="toc-sec-Milstein" class="nav-link" data-scroll-target="#sec-Milstein"><span class="header-section-number">6.2</span> Esquema de Milstein</a></li>
   <li><a href="#sec-Milstein_compensado" id="toc-sec-Milstein_compensado" class="nav-link" data-scroll-target="#sec-Milstein_compensado"><span class="header-section-number">6.3</span> Esquema de Milstein Compensado</a></li>
-  <li><a href="#esquema-semi-implícito-compensado" id="toc-esquema-semi-implícito-compensado" class="nav-link" data-scroll-target="#esquema-semi-implícito-compensado"><span class="header-section-number">6.4</span> Esquema Semi-Implícito Compensado</a></li>
-  <li><a href="#método-monte-carlo" id="toc-método-monte-carlo" class="nav-link" data-scroll-target="#método-monte-carlo"><span class="header-section-number">6.5</span> Método Monte Carlo</a>
+  <li><a href="#método-monte-carlo" id="toc-método-monte-carlo" class="nav-link" data-scroll-target="#método-monte-carlo"><span class="header-section-number">6.4</span> Método Monte Carlo</a>
   <ul class="collapse">
-  <li><a href="#estimador-de-monte-carlo" id="toc-estimador-de-monte-carlo" class="nav-link" data-scroll-target="#estimador-de-monte-carlo"><span class="header-section-number">6.5.1</span> Estimador de Monte Carlo</a></li>
-  <li><a href="#convergencia-y-rigor-asintótico." id="toc-convergencia-y-rigor-asintótico." class="nav-link" data-scroll-target="#convergencia-y-rigor-asintótico."><span class="header-section-number">6.5.2</span> Convergencia y rigor asintótico.</a></li>
-  <li><a href="#generación-de-variables-aleatorias." id="toc-generación-de-variables-aleatorias." class="nav-link" data-scroll-target="#generación-de-variables-aleatorias."><span class="header-section-number">6.5.3</span> Generación de variables aleatorias.</a></li>
-  <li><a href="#técnicas-de-reducción-de-varianza." id="toc-técnicas-de-reducción-de-varianza." class="nav-link" data-scroll-target="#técnicas-de-reducción-de-varianza."><span class="header-section-number">6.5.4</span> Técnicas de Reducción de Varianza.</a></li>
+  <li><a href="#estimador-de-monte-carlo" id="toc-estimador-de-monte-carlo" class="nav-link" data-scroll-target="#estimador-de-monte-carlo"><span class="header-section-number">6.4.1</span> Estimador de Monte Carlo</a></li>
+  <li><a href="#convergencia-y-rigor-asintótico." id="toc-convergencia-y-rigor-asintótico." class="nav-link" data-scroll-target="#convergencia-y-rigor-asintótico."><span class="header-section-number">6.4.2</span> Convergencia y rigor asintótico.</a></li>
+  <li><a href="#generación-de-variables-aleatorias." id="toc-generación-de-variables-aleatorias." class="nav-link" data-scroll-target="#generación-de-variables-aleatorias."><span class="header-section-number">6.4.3</span> Generación de variables aleatorias.</a></li>
+  <li><a href="#técnicas-de-reducción-de-varianza." id="toc-técnicas-de-reducción-de-varianza." class="nav-link" data-scroll-target="#técnicas-de-reducción-de-varianza."><span class="header-section-number">6.4.4</span> Técnicas de Reducción de Varianza.</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/metodos-numericos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/metodos-numericos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
@@ -528,7 +508,7 @@ X_t = {}&amp; X_0 + \int_0^t a(s,X_s)\,d s + \int_0^t b(s,X_s)\,d W_s
 <section id="sec-Milstein" class="level2" data-number="6.2">
 <h2 data-number="6.2" class="anchored" data-anchor-id="sec-Milstein"><span class="header-section-number">6.2</span> Esquema de Milstein</h2>
 <div style="text-align:justify">
-<p>Sea la ecuación diferencial estocástica con saltos: <span class="math display">\[dX_t = a(t, X_t)\,dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\, p_\phi(dv, dt), \tag{1}\]</span> donde <span class="math inline">\(p_\phi\)</span> es la medida aleatoria de Poisson con intensidad <span class="math inline">\(\phi(dv)dt\)</span>.</p>
+<p>Sea la ecuación diferencial estocástica con saltos: <span id="eq-ede-sj_mil"><span class="math display">\[dX_t = a(t, X_t)\,dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\, p_\phi(dv, dt), \tag{6.3}\]</span></span> donde <span class="math inline">\(p_\phi\)</span> es la medida aleatoria de Poisson con intensidad <span class="math inline">\(\phi(dv)dt\)</span>.</p>
 <p>La discretización de Milstein <strong>sin compensación</strong> se define como: <span class="math display">\[\begin{aligned}
 Y_{n+1} = Y_n &amp;+ a(t_n, Y_n),\Delta t \\
 &amp;+ b(t_n, Y_n)\,\Delta W_n \\
@@ -555,7 +535,7 @@ Y_{n+1} = Y_n &amp;+ a(t_n, Y_n),\Delta t \\
 <li><strong>Condiciones iniciales</strong>: <span class="math inline">\(\mathbb{E}[\|X_0\|^2] &lt; \infty\)</span> y <span class="math inline">\(Y_0 = X_0\)</span>.</li>
 </ol>
 <p>Entonces, existe una constante <span class="math inline">\(C &gt; 0\)</span>, independiente de <span class="math inline">\(\Delta t\)</span>, tal que:</p>
-<p><span id="eq-convergencia_milstein"><span class="math display">\[\max_{0 \leq n \leq N} \left(\mathbb{E}[\|X_{t_n} - Y_n\|^2]\right)^{1/2} \leq C \sqrt{\Delta t}. \tag{6.3}\]</span></span></p>
+<p><span id="eq-convergencia_milstein"><span class="math display">\[\max_{0 \leq n \leq N} \left(\mathbb{E}[\|X_{t_n} - Y_n\|^2]\right)^{1/2} \leq C \sqrt{\Delta t}. \tag{6.4}\]</span></span></p>
 <p>Es decir, el esquema converge fuertemente con orden <span class="math inline">\(\gamma = 1/2\)</span>.</p>
 </div>
 </div>
@@ -567,96 +547,63 @@ Y_{n+1} = Y_n &amp;+ a(t_n, Y_n),\Delta t \\
 <p><span id="eq-milstein-modelo"><span class="math display">\[\begin{aligned}
 Y_{n+1}={}&amp;Y_n+\big[c_n+r_nY_n-\Lambda_n\big]\Delta t+\sigma_nY_n\,\Delta W_n\\
 &amp;+\tfrac12\,\sigma_n^2\,Y_n\big[(\Delta W_n)^2-\Delta t\big]-\Delta\tilde J_n,
-\end{aligned} \tag{6.4}\]</span></span></p>
+\end{aligned} \tag{6.5}\]</span></span></p>
 <p>donde <span class="math inline">\(c_n=c(t_n)\)</span>, <span class="math inline">\(r_n=r(t_n)\)</span>, <span class="math inline">\(\sigma_n=\sigma(t_n)\)</span>, <span class="math inline">\(\Lambda_n=\Lambda(t_n)\)</span>, <span class="math inline">\(\Delta W_n\sim\mathcal N(0,\Delta t)\)</span> y</p>
 <p><span class="math display">\[\Delta\tilde J_n=\Delta J_n-\Lambda_n\Delta t,\qquad
 \Delta J_n=\sum_{i=1}^{\Delta N^{\text{meteo}}_n}Y^{\text{meteo}}_i+\sum_{j=1}^{\Delta N^{\text{sismo}}_n}Y^{\text{sismo}}_j,\]</span></p>
 <p>con <span class="math inline">\(\Delta N^{\text{meteo}}_n\sim\text{Poisson}(\lambda_{\text{meteo}}(t_n)\Delta t)\)</span> y <span class="math inline">\(\Delta N^{\text{sismo}}_n\sim\text{Poisson}(\lambda_{\text{sismo}}\Delta t)\)</span> independientes. Los incrementos <span class="math inline">\(\Delta J_n\)</span> se generan de forma exacta (número de siniestros y severidades).</p>
 <p><span class="math inline">\([a-\int R\nu]\Delta t+\sum R(\xi_i)=[c_n+r_nY_n]\Delta t-\Delta J_n\)</span>. El término <span class="math inline">\(\tfrac12\sigma_n^2Y_n[(\Delta W_n)^2-\Delta t]\)</span> es la corrección de Milstein para la difusión multiplicativa (<span class="math inline">\(b\,b_x=\sigma^2x\)</span>; con ruido escalar no se requieren áreas de Lévy).</p>
 </div>
-<div id="thm-convergencia_fuerte_semi_impli" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 6.2</strong></span> (Convergencia fuerte, esquema de Milstein compensado). Sean <span class="math inline">\(a,b,R\)</span> los coeficientes de <span class="quarto-unresolved-ref">?eq-coeficientes</span> y supóngase:</p>
+<div id="thm-convergencia_fuerte_milste_comp" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 6.2</strong></span> (Convergencia fuerte, esquema de Milstein compensado). Considérese la <a href="#eq-ede-sj_mil" class="quarto-xref">Ecuación&nbsp;<span>6.3</span></a> en el intervalo finito <span class="math inline">\([0,T]\)</span>, con <span class="math inline">\((X_0\in L^2(\Omega))\)</span>. Supóngase que:</p>
 <ul>
-<li><p>(H1) Lipschitz: <span class="math inline">\(a\)</span> y <span class="math inline">\(b\)</span> son globalmente Lipschitz en <span class="math inline">\(x\)</span>, y <span class="math inline">\(R(t,x,v)=-y\)</span> no depende de <span class="math inline">\(x\)</span> (<span class="math inline">\(L_R=0\)</span>).</p></li>
-<li><p>(H2) Crecimiento lineal: existe <span class="math inline">\(K&gt;0\)</span> con <span class="math inline">\(|a(t,x)|+|b(t,x)|+\big(\int_E|R|^2\nu\big)^{1/2}\le K(1+|x|)\)</span>.</p></li>
-<li><p>(H3) Momentos de los saltos: <span class="math inline">\(\int_E|R(t,x,v)|^4\nu(t,dv)&lt;\infty\)</span> para todo <span class="math inline">\(t\in[0,T]\)</span>.</p></li>
-<li><p>(H4) Regularidad temporal: <span class="math inline">\(c,r,\sigma\)</span> son Lipschitz en <span class="math inline">\(t\)</span> y <span class="math inline">\(\Lambda\)</span> es constante por tramos con <span class="math inline">\(N_d&lt;\infty\)</span> discontinuidades.</p></li>
-<li><p>(H5) Condición inicial: <span class="math inline">\(X_0\)</span> determinista (o con <span class="math inline">\(\mathbb E[X_0^2]&lt;\infty\)</span>) y <span class="math inline">\(Y_0=X_0\)</span>.</p></li>
+<li>(H1) Regularidad de los coeficientes: <span class="math inline">\(c,r,\sigma:[0,T]\to\mathbb R\)</span> son acotadas y Lipschitz; existen <span class="math inline">\(K,L&gt;0\)</span> tales que</li>
 </ul>
-<p>Entonces existe <span class="math inline">\(C&gt;0\)</span>, independiente de <span class="math inline">\(\Delta t\)</span>, tal que</p>
-<p><span class="math display">\[\max_{0\le n\le N}\Big(\mathbb E\big[|X_{t_n}-Y_n|^2\big]\Big)^{1/2}\le C\sqrt{\Delta t}.\]</span></p>
-<p>Es decir, el esquema converge fuertemente con orden <span class="math inline">\(\gamma=1/2\)</span>.</p>
+<p><span class="math display">\[|c(t)|+|r(t)|+|\sigma(t)|\leq K,
+\qquad t\in[0,T],
+\]</span> y <span class="math display">\[
+|f(t)-f(s)|\leq L|t-s|,
+\qquad f\in{c,r,\sigma},\quad s,t\in[0,T].
+\]</span></p>
+<ul>
+<li><p>(H2) Saltos de actividad finita: <span class="math inline">\(J\)</span> es un proceso de Poisson compuesto con intensidad <span class="math inline">\(\lambda(t)\)</span> uniformemente acotada y marcas <span class="math inline">\((Z_i){i\geq 1}\)</span> independientes entre sí, del movimiento browniano y del estado del proceso, que satisfacen <span class="math display">\[
+\sup{t\in[0,T]}\lambda(t)&lt;\infty,
+\qquad \mathbb E|Z_1|^4&lt;\infty.
+\]</span></p></li>
+<li><p>(H3) Regularidad de la intensidad compensada: <span class="math inline">\(\Lambda:[0,T]\to\mathbb R\)</span> es acotada y constante por tramos, con un número finito de discontinuidades.</p></li>
+<li><p>(H4) <span class="math inline">\(Y_0=X_0\)</span>, y <span class="math inline">\(X_0\)</span> tiene segundo momento finito.</p></li>
+</ul>
+<p>Sea <span class="math inline">\(h=T/N\)</span>, <span class="math inline">\(t_n=nh\)</span>, y considérese el esquema <span id="eq-4"><span class="math display">\[
+\begin{aligned}
+Y_{n+1}={}&amp;Y_n+(c_n+r_nY_n)h+\sigma_nY_n\Delta W_n\
+&amp;+\frac12\sigma_n^2Y_n\big((\Delta W_n)^2-h\big)-\Delta J_n,
+\end{aligned}
+\tag{6.6}\]</span></span> donde <span class="math inline">\(\Delta W_n=W_{t_{n+1}}-W_{t_n}\sim N(0,h)\)</span>, y <span class="math inline">\(\Delta J_n=J_{t_{n+1}}-J_{t_n}\)</span> se simula con el número de saltos y sus marcas.</p>
+<p>Entonces existe una constante <span class="math inline">\(C\)</span>, independiente de <span class="math inline">\(h\)</span>, tal que <span id="eq-5"><span class="math display">\[
+\boxed{;
+\max_{0\le n\le N}
+\left(\mathbb E|X_{t_n}-Y_n|^2\right)^{1/2}
+\le C h^{1/2}.
+;}
+\tag{6.7}\]</span></span></p>
+<p>Por tanto, el esquema de <a href="#eq-4" class="quarto-xref">Ecuación&nbsp;<span>6.6</span></a> converge fuertemente con orden al menos <span class="math inline">\(1/2\)</span> en los tiempos de la malla.</p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span><span class="math inline">\(\quad \blacksquare\)</span></p>
+<p><span class="proof-title"><em>Demostración</em>. </span></p>
 </div>
 </section>
-<section id="esquema-semi-implícito-compensado" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="esquema-semi-implícito-compensado"><span class="header-section-number">6.4</span> Esquema Semi-Implícito Compensado</h2>
-<div style="text-align:justify">
-<p>El método semi-implícito compensado aplica una regla de Euler implícita al término de inversión <span class="math inline">\(r(t)X\)</span> y explícita a la difusión y al salto compensado:</p>
-<p><span class="math display">\[\hat U_{n+1}=\hat U_n+\big[c_n-\Lambda_n+r_n\hat U_{n+1}\big]\Delta t+\sigma_n\hat U_n\,\Delta W_n-\Delta\tilde J_n ,\]</span></p>
-<p>con <span class="math inline">\(c_n,r_n,\sigma_n,\Lambda_n\)</span> evaluados en <span class="math inline">\(t_n\)</span>. Reordenando algebraicamente y despejando <span class="math inline">\(\hat U_{n+1}\)</span> se tiene:</p>
-<p><span class="math display">\[\hat U_{n+1}=\frac{\hat U_n\big[1+\sigma_n\Delta W_n\big]+\big(c_n-\Lambda_n\big)\Delta t-\Delta\tilde J_n}{1-r_n\Delta t}
-=\frac{\hat U_n\big[1+\sigma_n\Delta W_n\big]+c_n\Delta t-\Delta J_n}{1-r_n\Delta t},\]</span></p>
-</div>
-<div>
-<p>(Convergencia fuerte, esquema semi-implícito compensado). Con los coeficientes de <span class="quarto-unresolved-ref">?eq-coeficientes</span>, supóngase:</p>
-<p>(H1) Lipschitz global: <span class="math inline">\(a(t,u)=c(t)+r(t)u-\Lambda(t)\)</span> y <span class="math inline">\(b(t,u)=\sigma(t)u\)</span> son globalmente Lipschitz en <span class="math inline">\(u\)</span>, y <span class="math inline">\(R(t,u,v)=-y\)</span> no depende de <span class="math inline">\(u\)</span> (<span class="math inline">\(L_R=0\)</span>).</p>
-<p>(H2) Crecimiento lineal: igual que (H2) del Teorema 7.1 (Platen y Bruti-Liberati [28], Ec. (1.9.3)).</p>
-<p>(H3) Momentos finitos de saltos: <span class="math inline">\(\int_E|R|^4\nu(t,dv)&lt;\infty\)</span> (Wang, Mei y Xue [35], Hipótesis 3.1).</p>
-<p>(H4) Condición numérica: <span class="math inline">\(\bar r\,\Delta t\le\tfrac12\)</span>, con <span class="math inline">\(\bar r=\sup_t r(t)\)</span>, de modo que <span class="math inline">\(1-r_n\Delta t\ge\tfrac12\)</span> (Higham y Kloeden [16], Lema 2.1). En la implementación esta condición se verifica antes de simular y el programa se detiene si no se cumple (con los datos del estudio, <span class="math inline">\(\bar r\Delta t\approx2\times10^{-4}\)</span>).</p>
-<p>(H5) Regularidad temporal: como (H4) del Teorema 7.1.</p>
-<p>(H6) Condición inicial: <span class="math inline">\(\hat U_0=X_0\)</span> con <span class="math inline">\(\mathbb E[X_0^2]&lt;\infty\)</span>.</p>
-<p>Entonces existe <span class="math inline">\(C&gt;0\)</span>, independiente de <span class="math inline">\(\Delta t\)</span>, tal que <span class="math inline">\(\max_{n}\big(\mathbb E|U_{t_n}-\hat U_n|^2\big)^{1/2}\le C\sqrt{\Delta t}\)</span>.</p>
-</div>
-<div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>Reescribimos la SDEJ(<span class="quarto-unresolved-ref">?eq-sdej</span>) en forma estándar (<span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, Ec. (1.8.2)):</p>
-<p><span id="eq-sdej_standard_semiimplicit"><span class="math display">\[dU_t = a(t,U_t)\,dt  + b(t,U_t)\,dW_t + \int_E c(t,U_{t-},v)\,p_\phi(dv, dt), \tag{6.5}\]</span></span></p>
-<p>donde <span class="math inline">\(a(t,u) = c(t) + r(t)u\)</span> y <span class="math inline">\(b(t,u) = \sigma(t)u\)</span>. Las hipótesis (H1) y (H2) satisfacen las condiciones del de <span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, que garantiza la existencia y unicidad de una solución fuerte <span class="math inline">\(U_t\)</span>. Además asegura que la solución tiene momentos finitos de segundo orden: <span id="eq-exact_moment_semiimplicit"><span class="math display">\[\mathbb{E}\left[ \sup_{0 \leq t \leq T} |U_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|U_0|^2]) &lt; \infty. \tag{6.6}\]</span></span> Esta cota es esencial para controlar el crecimiento de la solución exacta durante la propagación del error.</p>
-<p>Definimos el error local <span class="math inline">\(R_n = U_{t_{n+1}} - U_{n+1}\)</span> y lo descomponemos como: <span id="eq-error_decomp_semiimplicit"><span class="math display">\[R_n = R_n^{\text{dif}} + R_n^{\text{jump}} + R_n^{\text{implicit}}, \tag{6.7}\]</span></span></p>
-<p>donde <span class="math inline">\(R_n^{\text{dif}}\)</span> es el error de difusión, <span class="math inline">\(R_n^{\text{jump}}\)</span> el error de saltos y <span class="math inline">\(R_n^{\text{implicit}}\)</span> el error de implicitidad.</p>
-<p>Por la expansión de Euler-Maruyama para difusiones puras (<span class="citation" data-cites="higham2005">Higham y Kloeden (<a href="references.html#ref-higham2005" role="doc-biblioref">2005</a>)</span>, Ec. (2.3)), el error local de la parte difusiva satisface: <span id="eq-diff_error_bound_semiimplicit"><span class="math display">\[\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_1 (1 + |U_n|^2) (\Delta t)^2 \tag{6.8}\]</span></span></p>
-<p>Esta cota es de orden <span class="math inline">\((\Delta t)^3\)</span> en <span class="math inline">\(L^2\)</span> debido a que el esquema semi-implícito utiliza una aproximación de Euler para la parte difusiva, cuyo error local en <span class="math inline">\(L^2\)</span> es <span class="math inline">\(\mathcal{O}((\Delta t)^{3/2})\)</span>. El error local asociado a los saltos es: <span id="eq-jump_error_semiimplicit"><span class="math display">\[\begin{aligned}
-R_n^{\text{jump}} = {}&amp; \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{p}_\phi(dv, ds)  \\
-&amp; - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i)  \\
-&amp; + \int_E c(t_n, U_n, v) \phi(dv)\,\Delta t.
-\end{aligned} \tag{6.9}\]</span></span></p>
-<p>Aplicando la desigualdad de Cauchy-Schwarz, la condición de Lipschitz (H1) y las propiedades de la medida compensada (<span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, Ec. (4.2.1)), obtenemos:</p>
-<p><span id="eq-jump_error_bound_semiimplicit"><span class="math display">\[\begin{align}
-\mathbb{E}\left[ |R_n^{\text{jump}}|^2 \mid \mathcal{F_{t_n}} \right]
-&amp;\leq 2\mathbb{E}\left[ \left| \int_{t_n}^{t_{n+1}} \int_E [c(s, U_{s-}, v) - c(t_n, U_n, v)] \tilde{p}_\phi(dv, ds) \right|^2 \mid \mathcal{F_{t_n}} \right] \nonumber \\
-&amp;\quad \ \ \ \ \ \ \ \ \ \ \ + 2\mathbb{E}\Biggl[ \Biggl| \int_{t_n}^{t_{n+1}} \int_E c(t_n, U_n, v) \tilde{p}_\phi(dv, ds) - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i) \\
-&amp;\quad \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ + \int_E c(t_n, U_n, v) \phi(dv)\Delta t \Biggl|^2 \mid \mathcal{F_{t_n}} \Biggr] \nonumber \\
-&amp;\leq 2L_c^2 \mathbb{E}\left[ \int_{t_n}^{t_{n+1}} |U_s - U_n|^2 ds \mid \mathcal{F_{t_n}} \right] \int_E \phi(dv) + 2 \int_E |c(t_n, U_n, v)|^2 \phi(dv) \Delta t \nonumber \\
-&amp;\leq K_2 \Delta t + K_3 |U_{t_n} - U_n|^2 \Delta t,
-\end{align} \tag{6.10}\]</span></span> donde en la última desigualdad usamos la cota de momentos de la solución exacta <a href="#eq-exact_moment_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.6</span></a> y la condición de crecimiento lineal (H2). El primer término proviene de la variación del estado durante el intervalo, y el segundo de la diferencia entre el estado exacto y el numérico. Expandiendo el denominador mediante serie de Taylor (<span class="citation" data-cites="wang2007">Wang et&nbsp;al. (<a href="references.html#ref-wang2007" role="doc-biblioref">2007</a>)</span>, Lema 3.1): <span id="eq-taylor_denom_semiimplicit"><span class="math display">\[\frac{1}{1 - r(t_{n+1})\Delta t} = 1 + r(t_{n+1})\Delta t + \mathcal{O}((\Delta t)^2), \tag{6.11}\]</span></span></p>
-<p>lo que implica que el error introducido por la implicitidad satisface: <span id="eq-implicit_error_bound_semiimplicit"><span class="math display">\[\mathbb{E}\left[|R_n^{\text{implicit}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_4 (1 + |U_n|^2) (\Delta t)^4. \tag{6.12}\]</span></span></p>
-<p>Este término es de orden superior y no afectará el orden global de convergencia.</p>
-<p>Combinando <a href="#eq-diff_error_bound_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.8</span></a>, <a href="#eq-jump_error_bound_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.10</span></a> y <a href="#eq-implicit_error_bound_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.12</span></a>, y usando <span class="math inline">\((a+b+c)^2 \leq 3a^2 + 3b^2 + 3c^2\)</span>: <span id="eq-total_error_bound_semiimplicit"><span class="math display">\[\mathbb{E}\left[ |R_n|^2 \mid \mathcal{F_{t_n}} \right] \leq K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t, \tag{6.13}\]</span></span> donde <span class="math inline">\(e_n = U_{t_n} - U_n\)</span> es el error global y usamos que <span class="math inline">\(\Delta t \leq 1\)</span> para absorber los términos de orden superior. Definiendo <span class="math inline">\(M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |U_k|^2 \right]\)</span>, y tomando cuadrados en <span class="quarto-unresolved-ref">?eq-esquema_semiimplicito_despeje</span> seguido de esperanza, aplicamos las cotas de Lipschitz (H1), crecimiento lineal (H2) y la cota de estabilidad (H4). Siguiendo el argumento del Teorema 3.2 de <span class="citation" data-cites="higham2005">Higham y Kloeden (<a href="references.html#ref-higham2005" role="doc-biblioref">2005</a>)</span>, obtenemos: <span id="eq-moments_recursion_semiimplicit"><span class="math display">\[M_{n+1} \leq (1 + K_6 \Delta t) M_n + K_7 \Delta t. \tag{6.14}\]</span></span> Iterando esta desigualdad y usando <span class="math inline">\(M_0 = \mathbb{E}[|U_0|^2] &lt; \infty\)</span>: <span id="eq-moments_bound_semiimplicit"><span class="math display">\[M_N \leq M_0 e^{K_6 T} + \frac{K_7}{K_6} (e^{K_6 T} - 1) &lt; \infty. \tag{6.15}\]</span></span> Por lo tanto, el esquema numérico tiene momentos finitos uniformes, condición esencial para la convergencia fuerte. Para la descomposición del error global definimos <span class="math inline">\(e_n = U_{t_n} - U_n\)</span>. Usando la fórmula de Itô para la solución exacta y la definición del esquema <span class="quarto-unresolved-ref">?eq-esquema_semiimplicito_despeje</span>, obtenemos: <span id="eq-global_error_decomp_semiimplicit"><span class="math display">\[e_{n+1} = e_n + \delta a_n \Delta t + \delta b_n \Delta W_n + \delta c_n + R_n, \tag{6.16}\]</span></span> donde: <span class="math display">\[\begin{aligned}
-\delta a_n &amp;= a(t_n, U_{t_n}) - a(t_n, U_n), \\
-\delta b_n &amp;= b(t_n, U_{t_n}) - b(t_n, U_n), \\
-\delta c_n &amp;= \int_E [c(t_n, U_{t_n}, v) - c(t_n, U_n, v)] \phi(dv) \Delta t.
-\end{aligned}\]</span> Por la condición de Lipschitz (H1): <span id="eq-lipschitz_bounds_semiimplicit"><span class="math display">\[|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \Delta t. \tag{6.17}\]</span></span> Tomamos cuadrados en <a href="#eq-global_error_decomp_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.16</span></a> y esperanza condicional <span class="math inline">\(\mathbb{E}[\cdot \mid \mathcal{F_{t_n}}].\)</span> Usando <span class="math inline">\(\mathbb{E}[\Delta W_n \mid \mathcal{F_{t_n}}] = 0\)</span>, <span class="math inline">\(\mathbb{E}[(\Delta W_n)^2 \mid \mathcal{F_{t_n}}] = \Delta t\)</span>, y que los términos con <span class="math inline">\(\Delta W_n\)</span> tienen esperanza cero: <span id="eq-conditional_error_semiimplicit"><span class="math display">\[\begin{aligned}
-\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}]
-&amp;\leq |e_n|^2 + 2e_n \cdot \delta a_n \Delta t + 2e_n \cdot \delta c_n + |\delta b_n|^2 \Delta t + \mathbb{E}[|R_n|^2 \mid \mathcal{F_{t_n}}] \nonumber \\
-&amp;\leq |e_n|^2 + 2L_a |e_n|^2 \Delta t + 2L_c |e_n|^2 \Delta t + L_b^2 |e_n|^2 \Delta t + K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t \nonumber \\
-&amp;\leq (1 + K_8 \Delta t) |e_n|^2 + K_9 (1 + |U_n|^2) \Delta t,
-\end{aligned} \tag{6.18}\]</span></span> donde <span class="math inline">\(K_8 = 2L_a + 2L_c + L_b^2 + K_5\)</span> y <span class="math inline">\(K_9 = K_5\)</span>. Usando la desigualdad <span class="math inline">\(|U_n|^2 \leq 2|U_{t_n}|^2 + 2|e_n|^2\)</span> y la cota de momentos de la solución exacta <a href="#eq-exact_moment_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.6</span></a>: <span class="math display">\[\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}] \leq (1 + K_{10} \Delta t) |e_n|^2 + K_{11} \Delta t,\]</span> donde <span class="math inline">\(K_{10} = K_8 + 2K_9\)</span> y <span class="math inline">\(K_{11} = 2K_9 C_1 (1 + \mathbb{E}[|U_0|^2]) + K_9\)</span>. Tomando esperanza total y definiendo <span class="math inline">\(E_n = \mathbb{E}[|e_n|^2]\)</span>: <span id="eq-recursive_error_semiimplicit"><span class="math display">\[E_{n+1} \leq (1 + K_{10} \Delta t) E_n + K_{11} \Delta t. \tag{6.19}\]</span></span> Iteramos la desigualdad <a href="#eq-recursive_error_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.19</span></a> con <span class="math inline">\(E_0 = 0\)</span>: <span id="eq-iteration_semiimplicit"><span class="math display">\[E_N \leq K_{11} \Delta t \sum_{k=0}^{N-1} (1 + K_{10} \Delta t)^k = K_{11} \Delta t \frac{(1 + K_{10} \Delta t)^N - 1}{K_{10} \Delta t}. \tag{6.20}\]</span></span> Usando la desigualdad <span class="math inline">\((1 + x)^N \leq e^{Nx}\)</span> para <span class="math inline">\(x \geq 0\)</span> y <span class="math inline">\(N\Delta t = T\)</span> <span class="citation" data-cites="platen2010numerical">Platen y Bruti-Liberati (<a href="references.html#ref-platen2010numerical" role="doc-biblioref">2010</a>)</span>, (Lema 1.2.1): <span id="eq-exponential_bound_semiimplicit"><span class="math display">\[(1 + K_{10} \Delta t)^N \leq e^{K_{10} T}. \tag{6.21}\]</span></span> Sustituyendo en <a href="#eq-iteration_semiimplicit" class="quarto-xref">Ecuación&nbsp;<span>6.20</span></a>: <span id="eq-final_bound_semiimplicit"><span class="math display">\[E_N \leq K_{11} \frac{e^{K_{10} T} - 1}{K_{10}} \Delta t = C \Delta t, \tag{6.22}\]</span></span> donde <span class="math inline">\(C = K_{11} (e^{K_{10} T} - 1)/K_{10}\)</span> es independiente de <span class="math inline">\(\Delta t\)</span>. Tomando raíz cuadrada: <span class="math display">\[\left( \mathbb{E}[|U_T - U_N|^2] \right)^{1/2} \leq C \sqrt{\Delta t}. \quad \square\]</span></p>
-</div>
-</section>
-<section id="método-monte-carlo" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="método-monte-carlo"><span class="header-section-number">6.5</span> Método Monte Carlo</h2>
+<section id="método-monte-carlo" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="método-monte-carlo"><span class="header-section-number">6.4</span> Método Monte Carlo</h2>
 <div style="text-align:justify">
 <p>El método Monte Carlo (MC) constituye una clase de algoritmos computacionales que se basan en el muestreo aleatorio repetido para obtener resultados numéricos. En el contexto de esta tesis, el objetivo fundamental es aproximar cantidades de interés deterministas, tales como integrales multidimensionales o valores esperados de sistemas estocásticos complejos, mediante la simulación de un sistema un gran número de veces bajo condiciones aleatorias.</p>
 </div>
-<section id="estimador-de-monte-carlo" class="level3" data-number="6.5.1">
-<h3 data-number="6.5.1" class="anchored" data-anchor-id="estimador-de-monte-carlo"><span class="header-section-number">6.5.1</span> Estimador de Monte Carlo</h3>
+<section id="estimador-de-monte-carlo" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="estimador-de-monte-carlo"><span class="header-section-number">6.4.1</span> Estimador de Monte Carlo</h3>
 <div style="text-align:justify">
 <p>La base teórica del método reside en la construcción de un estimador no sesgado basado en muestras independientes.</p>
 </div>
 <div id="def-Espacio_probabilidad_filtrado" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 6.1</strong></span> (Estimador de Monte Carlo).Sean <span class="math inline">\(X_1, X_2, \dots, X_N\)</span> variables aleatorias independientes e idénticamente distribuidas (i.i.d.) con la misma distribución que <span class="math inline">\(X\)</span>. Definimos el estimador de Monte Carlo <span class="math inline">\(\hat{I}_N\)</span> como la media muestral de las realizaciones de la función <span class="math inline">\(f\)</span>: <span id="eq-mc_estimator"><span class="math display">\[ \hat{I}_N = \frac{1}{N} \sum_{i=1}^{N} f(X_i). \tag{6.23}\]</span></span></p>
+<p><span class="theorem-title"><strong>Definición 6.1</strong></span> (Estimador de Monte Carlo).Sean <span class="math inline">\(X_1, X_2, \dots, X_N\)</span> variables aleatorias independientes e idénticamente distribuidas (i.i.d.) con la misma distribución que <span class="math inline">\(X\)</span>. Definimos el estimador de Monte Carlo <span class="math inline">\(\hat{I}_N\)</span> como la media muestral de las realizaciones de la función <span class="math inline">\(f\)</span>: <span id="eq-mc_estimator"><span class="math display">\[ \hat{I}_N = \frac{1}{N} \sum_{i=1}^{N} f(X_i). \tag{6.8}\]</span></span></p>
 </div>
 <div style="text-align:justify">
 <p>La validez de este estimador se sustenta en dos propiedades estadísticas fundamentales: su insesgamiento y su consistencia.</p>
@@ -670,13 +617,13 @@ R_n^{\text{jump}} = {}&amp; \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{
 \end{aligned} \]</span> lo que prueba el resultado. <span class="math inline">\(\quad \square\)</span></p>
 </div>
 </section>
-<section id="convergencia-y-rigor-asintótico." class="level3" data-number="6.5.2">
-<h3 data-number="6.5.2" class="anchored" data-anchor-id="convergencia-y-rigor-asintótico."><span class="header-section-number">6.5.2</span> Convergencia y rigor asintótico.</h3>
+<section id="convergencia-y-rigor-asintótico." class="level3" data-number="6.4.2">
+<h3 data-number="6.4.2" class="anchored" data-anchor-id="convergencia-y-rigor-asintótico."><span class="header-section-number">6.4.2</span> Convergencia y rigor asintótico.</h3>
 <div style="text-align:justify">
 <p>Para justificar teóricamente por qué simular el sistema “miles o millones de veces” (es decir, hacer tender <span class="math inline">\(N \to \infty\)</span>) nos permite aproximar el valor real del sistema, debemos recurrir a los teoremas límite de la teoría de la probabilidad.</p>
 </div>
-<section id="ley-fuerte-de-los-grandes-números." class="level4" data-number="6.5.2.1">
-<h4 data-number="6.5.2.1" class="anchored" data-anchor-id="ley-fuerte-de-los-grandes-números."><span class="header-section-number">6.5.2.1</span> Ley Fuerte de los Grandes Números.</h4>
+<section id="ley-fuerte-de-los-grandes-números." class="level4" data-number="6.4.2.1">
+<h4 data-number="6.4.2.1" class="anchored" data-anchor-id="ley-fuerte-de-los-grandes-números."><span class="header-section-number">6.4.2.1</span> Ley Fuerte de los Grandes Números.</h4>
 <div style="text-align:justify">
 <p>La convergencia casi segura del estimador está garantizada por la Ley Fuerte de los Grandes Números.</p>
 </div>
@@ -691,43 +638,32 @@ R_n^{\text{jump}} = {}&amp; \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{
 <p><span class="theorem-title"><strong>Teorema 6.4</strong></span> (Teorema del Límite Central para MC) Bajo las condiciones de varianza finita, la distribución del error normalizado converge en distribución a una normal estándar: <span class="math display">\[    \sqrt{N} \frac{\hat{I}_N - I}{\sigma} \xrightarrow{d} \mathbb{N}(0, 1) \quad \text{cuando } N \to \infty.\]</span></p>
 </div>
 <div style="text-align:justify">
-<p>De este resultado se desprende una conclusión crítica para la simulación computacional: el error estándar del estimador decae proporcionalmente a <span class="math inline">\(N^{-1/2}\)</span>, independientemente de la dimensión del problema. <span id="eq-error_rate"><span class="math display">\[\text{Error}(\hat{I}_N) \approx \frac{\sigma}{\sqrt{N}}. \tag{6.24}\]</span></span></p>
+<p>De este resultado se desprende una conclusión crítica para la simulación computacional: el error estándar del estimador decae proporcionalmente a <span class="math inline">\(N^{-1/2}\)</span>, independientemente de la dimensión del problema. <span id="eq-error_rate"><span class="math display">\[\text{Error}(\hat{I}_N) \approx \frac{\sigma}{\sqrt{N}}. \tag{6.9}\]</span></span></p>
 <p>Esta propiedad es distintiva del método Monte Carlo. Mientras que los métodos deterministas sufren una degradación exponencial en su precisión a medida que aumenta la dimensionalidad del espacio de integración, la tasa de convergencia <span class="math inline">\(O(N^{-1/2})\)</span> de Monte Carlo permanece invariante ante la dimensionalidad, lo que lo hace superior para sistemas complejos de alta dimensión.</p>
 </div>
 </section>
 </section>
-<section id="generación-de-variables-aleatorias." class="level3" data-number="6.5.3">
-<h3 data-number="6.5.3" class="anchored" data-anchor-id="generación-de-variables-aleatorias."><span class="header-section-number">6.5.3</span> Generación de variables aleatorias.</h3>
+<section id="generación-de-variables-aleatorias." class="level3" data-number="6.4.3">
+<h3 data-number="6.4.3" class="anchored" data-anchor-id="generación-de-variables-aleatorias."><span class="header-section-number">6.4.3</span> Generación de variables aleatorias.</h3>
 <div style="text-align:justify">
-<p>La implementación práctica de la ecuación <a href="#eq-mc_estimator" class="quarto-xref">Ecuación&nbsp;<span>6.23</span></a> requiere la capacidad de generar muestras <span class="math inline">\(X_i\)</span> de una distribución de probabilidad específica <span class="math inline">\(P\)</span>. Matemáticamente, esto se logra a menudo mediante el Método de la Transformada Inversa.</p>
+<p>La implementación práctica de la ecuación <a href="#eq-mc_estimator" class="quarto-xref">Ecuación&nbsp;<span>6.8</span></a> requiere la capacidad de generar muestras <span class="math inline">\(X_i\)</span> de una distribución de probabilidad específica <span class="math inline">\(P\)</span>. Matemáticamente, esto se logra a menudo mediante el Método de la Transformada Inversa.</p>
 <p>Sea <span class="math inline">\(U \sim \text{Uniforme}(0,1)\)</span> una variable aleatoria uniforme. Si <span class="math inline">\(F_X(x) = \mathbb{P}(X \leq x)\)</span> es la función de distribución acumulada (CDF) de <span class="math inline">\(X\)</span>, y <span class="math inline">\(F_X^{-1}\)</span> es su inversa generalizada definida como: <span class="math display">\[F_X^{-1}(u) = \inf \{ x \in \mathbb{R} : F_X(x) \geq u \},\]</span> entonces la variable aleatoria <span class="math inline">\(Y = F_X^{-1}(U)\)</span> tiene la misma distribución que <span class="math inline">\(X\)</span>.</p>
 <p>En sistemas complejos donde <span class="math inline">\(F_X^{-1}\)</span> no tiene forma cerrada, se emplean métodos de rechazo (Rejection Sampling) o cadenas de Markov (MCMC), los cuales garantizan que la distribución estacionaria de la cadena generada coincida con la distribución objetivo <span class="math inline">\(P\)</span>.</p>
 </div>
 </section>
-<section id="técnicas-de-reducción-de-varianza." class="level3" data-number="6.5.4">
-<h3 data-number="6.5.4" class="anchored" data-anchor-id="técnicas-de-reducción-de-varianza."><span class="header-section-number">6.5.4</span> Técnicas de Reducción de Varianza.</h3>
+<section id="técnicas-de-reducción-de-varianza." class="level3" data-number="6.4.4">
+<h3 data-number="6.4.4" class="anchored" data-anchor-id="técnicas-de-reducción-de-varianza."><span class="header-section-number">6.4.4</span> Técnicas de Reducción de Varianza.</h3>
 <div style="text-align:justify">
 <p>Dado que la convergencia es lenta (<span class="math inline">\(1/\sqrt{N}\)</span>), reducir la varianza <span class="math inline">\(\sigma^2\)</span> es tan importante como aumentar <span class="math inline">\(N\)</span>. Una varianza menor implica que se requieren menos simulaciones para alcanzar un nivel de precisión deseado.</p>
 </div>
-<section id="variables-de-control." class="level4" data-number="6.5.4.1">
-<h4 data-number="6.5.4.1" class="anchored" data-anchor-id="variables-de-control."><span class="header-section-number">6.5.4.1</span> Variables de control.</h4>
+<section id="variables-de-control." class="level4" data-number="6.4.4.1">
+<h4 data-number="6.4.4.1" class="anchored" data-anchor-id="variables-de-control."><span class="header-section-number">6.4.4.1</span> Variables de control.</h4>
 <div style="text-align:justify">
 <p>Una de las técnicas más rigurosas es el uso de variables de control. Supongamos que existe una variable aleatoria <span class="math inline">\(Y\)</span> correlacionada con <span class="math inline">\(f(X)\)</span> cuyo valor esperado <span class="math inline">\(\mu_Y = \mathbb{E}[Y]\)</span> es conocida analíticamente. Definimos un nuevo estimador: <span class="math display">\[\hat{I}_{CV}(c) = \hat{I}_N - c(\hat{Y}_N - \mu_Y),\]</span> donde <span class="math inline">\(\hat{Y}_N = \frac{1}{N}\sum Y_i\)</span> y <span class="math inline">\(c\)</span> es una constante. Este estimador sigue siendo insesgado para cualquier <span class="math inline">\(c \in \mathbb{R}\)</span>. La varianza de este nuevo estimador es: <span class="math display">\[\mathbb{V}[\hat{I}_{CV}(c)] = \mathbb{V}[\hat{I}_N] + c^2 \mathbb{V}[\hat{Y}_N] - 2c \text{Cov}(\hat{I}_N, \hat{Y}_N).\]</span></p>
 <p>Minimizando esta expresión respecto a <span class="math inline">\(c\)</span>, obtenemos el coeficiente óptimo: <span class="math display">\[c^* = \frac{\text{Cov}(f(X), Y)}{\mathbb{V}(Y)}.\]</span> Sustituyendo <span class="math inline">\(c^*\)</span>, se demuestra que la varianza se reduce en un factor de <span class="math inline">\((1 - \rho^2)\)</span>, donde <span class="math inline">\(\rho\)</span> es el coeficiente de correlación entre <span class="math inline">\(f(X)\)</span> e <span class="math inline">\(Y\)</span>. Si existe una alta correlación, la eficiencia del método mejora drásticamente.</p>
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
-<div id="ref-higham2005" class="csl-entry" role="listitem">
-Higham, Desmond J., y Peter E. Kloeden. 2005. <span>«Numerical methods for nonlinear stochastic differential equations with jumps»</span>. <em>Numerische Mathematik</em> 101 (1): 101-19. <a href="https://doi.org/10.1007/s00211-005-0611-8">https://doi.org/10.1007/s00211-005-0611-8</a>.
-</div>
-<div id="ref-platen2010numerical" class="csl-entry" role="listitem">
-Platen, Eckhard, y Nicola Bruti-Liberati. 2010. <em>Numerical Solution of Stochastic Differential Equations with Jumps in Finance</em>. Vol. 64. Stochastic Modelling y Applied Probability. Springer-Verlag. <a href="https://doi.org/10.1007/978-3-642-13694-8">https://doi.org/10.1007/978-3-642-13694-8</a>.
-</div>
-<div id="ref-wang2007" class="csl-entry" role="listitem">
-Wang, Lishan, Chun Mei, y Huakun Xue. 2007. <span>«The semi-implicit Euler method for stochastic differential delay equations with jumps»</span>. <em>Applied Mathematics and Computation</em> 192 (2): 567-78. <a href="https://doi.org/10.1016/j.amc.2007.03.038">https://doi.org/10.1016/j.amc.2007.03.038</a>.
-</div>
-</div>
 </section>
 </section>
 </section>
