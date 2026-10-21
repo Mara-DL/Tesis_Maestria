@@ -112,10 +112,10 @@ window.Quarto = {
 };
 </script>
 
-<meta property="og:title" content="6&nbsp; Métodos Numéricos para EDE – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta property="og:title" content="[6]{.chapter-number}&nbsp; [Métodos Numéricos para EDE]{.chapter-title} – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta property="og:image" content="assets/UNACH.png">
 <meta property="og:site_name" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
-<meta name="twitter:title" content="6&nbsp; Métodos Numéricos para EDE – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
+<meta name="twitter:title" content="[6]{.chapter-number}&nbsp; [Métodos Numéricos para EDE]{.chapter-title} – Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta name="twitter:image" content="assets/UNACH.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -308,7 +308,9 @@ window.Quarto = {
       <img src="./assets/UNACH.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos</a> 
+      <a href="./">
+      Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos
+      </a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/Mara-DL/Tesis_Maestria" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
@@ -432,13 +434,6 @@ window.Quarto = {
   </ul></li>
   <li><a href="#sec-Milstein" id="toc-sec-Milstein" class="nav-link" data-scroll-target="#sec-Milstein"><span class="header-section-number">6.2</span> Esquema de Milstein</a></li>
   <li><a href="#sec-Milstein_compensado" id="toc-sec-Milstein_compensado" class="nav-link" data-scroll-target="#sec-Milstein_compensado"><span class="header-section-number">6.3</span> Esquema de Milstein Compensado</a></li>
-  <li><a href="#método-monte-carlo" id="toc-método-monte-carlo" class="nav-link" data-scroll-target="#método-monte-carlo"><span class="header-section-number">6.4</span> Método Monte Carlo</a>
-  <ul class="collapse">
-  <li><a href="#estimador-de-monte-carlo" id="toc-estimador-de-monte-carlo" class="nav-link" data-scroll-target="#estimador-de-monte-carlo"><span class="header-section-number">6.4.1</span> Estimador de Monte Carlo</a></li>
-  <li><a href="#convergencia-y-rigor-asintótico." id="toc-convergencia-y-rigor-asintótico." class="nav-link" data-scroll-target="#convergencia-y-rigor-asintótico."><span class="header-section-number">6.4.2</span> Convergencia y rigor asintótico.</a></li>
-  <li><a href="#generación-de-variables-aleatorias." id="toc-generación-de-variables-aleatorias." class="nav-link" data-scroll-target="#generación-de-variables-aleatorias."><span class="header-section-number">6.4.3</span> Generación de variables aleatorias.</a></li>
-  <li><a href="#técnicas-de-reducción-de-varianza." id="toc-técnicas-de-reducción-de-varianza." class="nav-link" data-scroll-target="#técnicas-de-reducción-de-varianza."><span class="header-section-number">6.4.4</span> Técnicas de Reducción de Varianza.</a></li>
-  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/Mara-DL/Tesis_Maestria/edit/main/metodos-numericos.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li><li><a href="https://github.com/Mara-DL/Tesis_Maestria/blob/main/metodos-numericos.qmd" class="toc-action"><i class="bi empty"></i>Ver el código</a></li></ul></div></nav>
     </div>
@@ -588,84 +583,6 @@ Y_{n+1}={}&amp;Y_n+(c_n+r_nY_n)h+\sigma_nY_n\Delta W_n\
 \tag{6.7}\]</span></span></p>
 <p>Por tanto, el esquema de <a href="#eq-4" class="quarto-xref">Ecuación&nbsp;<span>6.6</span></a> converge fuertemente con orden al menos <span class="math inline">\(1/2\)</span> en los tiempos de la malla.</p>
 </div>
-<div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span></p>
-</div>
-</section>
-<section id="método-monte-carlo" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="método-monte-carlo"><span class="header-section-number">6.4</span> Método Monte Carlo</h2>
-<div style="text-align:justify">
-<p>El método Monte Carlo (MC) constituye una clase de algoritmos computacionales que se basan en el muestreo aleatorio repetido para obtener resultados numéricos. En el contexto de esta tesis, el objetivo fundamental es aproximar cantidades de interés deterministas, tales como integrales multidimensionales o valores esperados de sistemas estocásticos complejos, mediante la simulación de un sistema un gran número de veces bajo condiciones aleatorias.</p>
-</div>
-<section id="estimador-de-monte-carlo" class="level3" data-number="6.4.1">
-<h3 data-number="6.4.1" class="anchored" data-anchor-id="estimador-de-monte-carlo"><span class="header-section-number">6.4.1</span> Estimador de Monte Carlo</h3>
-<div style="text-align:justify">
-<p>La base teórica del método reside en la construcción de un estimador no sesgado basado en muestras independientes.</p>
-</div>
-<div id="def-Espacio_probabilidad_filtrado" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 6.1</strong></span> (Estimador de Monte Carlo).Sean <span class="math inline">\(X_1, X_2, \dots, X_N\)</span> variables aleatorias independientes e idénticamente distribuidas (i.i.d.) con la misma distribución que <span class="math inline">\(X\)</span>. Definimos el estimador de Monte Carlo <span class="math inline">\(\hat{I}_N\)</span> como la media muestral de las realizaciones de la función <span class="math inline">\(f\)</span>: <span id="eq-mc_estimator"><span class="math display">\[ \hat{I}_N = \frac{1}{N} \sum_{i=1}^{N} f(X_i). \tag{6.8}\]</span></span></p>
-</div>
-<div style="text-align:justify">
-<p>La validez de este estimador se sustenta en dos propiedades estadísticas fundamentales: su insesgamiento y su consistencia.</p>
-<p>El estimador <span class="math inline">\(\hat{I}_N\)</span> es un estimador insesgado de <span class="math inline">\(I\)</span>. Es decir, <span class="math inline">\(\mathbb{E}[\hat{I}_N] = I\)</span>.</p>
-</div>
-<div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>Dado que el valor esperado es un operador lineal y las variables <span class="math inline">\(X_i\)</span> son i.i.d.: <span class="math display">\[\begin{aligned}
-    \mathbb{E}[\hat{I}_N] &amp;= \mathbb{E}\left[ \frac{1}{N} \sum_{i=1}^{N} f(X_i) \right] \\
-    &amp;= \frac{1}{N} \sum_{i=1}^{N} \mathbb{E}[f(X_i)] \\
-    &amp;= \frac{1}{N} \sum_{i=1}^{N} I = \frac{1}{N} \cdot N \cdot I = I.
-\end{aligned} \]</span> lo que prueba el resultado. <span class="math inline">\(\quad \square\)</span></p>
-</div>
-</section>
-<section id="convergencia-y-rigor-asintótico." class="level3" data-number="6.4.2">
-<h3 data-number="6.4.2" class="anchored" data-anchor-id="convergencia-y-rigor-asintótico."><span class="header-section-number">6.4.2</span> Convergencia y rigor asintótico.</h3>
-<div style="text-align:justify">
-<p>Para justificar teóricamente por qué simular el sistema “miles o millones de veces” (es decir, hacer tender <span class="math inline">\(N \to \infty\)</span>) nos permite aproximar el valor real del sistema, debemos recurrir a los teoremas límite de la teoría de la probabilidad.</p>
-</div>
-<section id="ley-fuerte-de-los-grandes-números." class="level4" data-number="6.4.2.1">
-<h4 data-number="6.4.2.1" class="anchored" data-anchor-id="ley-fuerte-de-los-grandes-números."><span class="header-section-number">6.4.2.1</span> Ley Fuerte de los Grandes Números.</h4>
-<div style="text-align:justify">
-<p>La convergencia casi segura del estimador está garantizada por la Ley Fuerte de los Grandes Números.</p>
-</div>
-<div id="thm-ley_fuerte_grandes_numeros" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 6.3</strong></span> (Ley Fuerte de los Grandes Números). Sea <span class="math inline">\(\{X_i\}_{i \geq 1}\)</span> una sucesión de variables aleatorias i.i.d. con <span class="math inline">\(\mathbb{E}[|f(X_1)|] &lt; \infty\)</span>. Entonces, el estimador de Monte Carlo converge casi seguramente (c.s.) al valor verdadero <span class="math inline">\(I\)</span>: <span class="math display">\[\mathbb{P}\left( \lim_{N \to \infty} \hat{I}_N = I \right) = 1.\]</span></p>
-</div>
-<div style="text-align:justify">
-<p>Este teorema proporciona la garantía teórica de que, al aumentar el número de simulaciones, el error de aproximación tiende a cero con probabilidad unitaria. Sin embargo, la SLLN no cuantifica la tasa de convergencia ni la distribución del error para un <span class="math inline">\(N\)</span> finito.</p>
-<p>Para evaluar la precisión del método y construir intervalos de confianza, utilizamos el Teorema del Límite Central. Asumamos que la varianza de la función es finita, es decir, <span class="math inline">\(\sigma^2 = \mathbb{V}[f(X)] &lt; \infty\)</span>.</p>
-</div>
-<div id="thm-limite_central" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 6.4</strong></span> (Teorema del Límite Central para MC) Bajo las condiciones de varianza finita, la distribución del error normalizado converge en distribución a una normal estándar: <span class="math display">\[    \sqrt{N} \frac{\hat{I}_N - I}{\sigma} \xrightarrow{d} \mathbb{N}(0, 1) \quad \text{cuando } N \to \infty.\]</span></p>
-</div>
-<div style="text-align:justify">
-<p>De este resultado se desprende una conclusión crítica para la simulación computacional: el error estándar del estimador decae proporcionalmente a <span class="math inline">\(N^{-1/2}\)</span>, independientemente de la dimensión del problema. <span id="eq-error_rate"><span class="math display">\[\text{Error}(\hat{I}_N) \approx \frac{\sigma}{\sqrt{N}}. \tag{6.9}\]</span></span></p>
-<p>Esta propiedad es distintiva del método Monte Carlo. Mientras que los métodos deterministas sufren una degradación exponencial en su precisión a medida que aumenta la dimensionalidad del espacio de integración, la tasa de convergencia <span class="math inline">\(O(N^{-1/2})\)</span> de Monte Carlo permanece invariante ante la dimensionalidad, lo que lo hace superior para sistemas complejos de alta dimensión.</p>
-</div>
-</section>
-</section>
-<section id="generación-de-variables-aleatorias." class="level3" data-number="6.4.3">
-<h3 data-number="6.4.3" class="anchored" data-anchor-id="generación-de-variables-aleatorias."><span class="header-section-number">6.4.3</span> Generación de variables aleatorias.</h3>
-<div style="text-align:justify">
-<p>La implementación práctica de la ecuación <a href="#eq-mc_estimator" class="quarto-xref">Ecuación&nbsp;<span>6.8</span></a> requiere la capacidad de generar muestras <span class="math inline">\(X_i\)</span> de una distribución de probabilidad específica <span class="math inline">\(P\)</span>. Matemáticamente, esto se logra a menudo mediante el Método de la Transformada Inversa.</p>
-<p>Sea <span class="math inline">\(U \sim \text{Uniforme}(0,1)\)</span> una variable aleatoria uniforme. Si <span class="math inline">\(F_X(x) = \mathbb{P}(X \leq x)\)</span> es la función de distribución acumulada (CDF) de <span class="math inline">\(X\)</span>, y <span class="math inline">\(F_X^{-1}\)</span> es su inversa generalizada definida como: <span class="math display">\[F_X^{-1}(u) = \inf \{ x \in \mathbb{R} : F_X(x) \geq u \},\]</span> entonces la variable aleatoria <span class="math inline">\(Y = F_X^{-1}(U)\)</span> tiene la misma distribución que <span class="math inline">\(X\)</span>.</p>
-<p>En sistemas complejos donde <span class="math inline">\(F_X^{-1}\)</span> no tiene forma cerrada, se emplean métodos de rechazo (Rejection Sampling) o cadenas de Markov (MCMC), los cuales garantizan que la distribución estacionaria de la cadena generada coincida con la distribución objetivo <span class="math inline">\(P\)</span>.</p>
-</div>
-</section>
-<section id="técnicas-de-reducción-de-varianza." class="level3" data-number="6.4.4">
-<h3 data-number="6.4.4" class="anchored" data-anchor-id="técnicas-de-reducción-de-varianza."><span class="header-section-number">6.4.4</span> Técnicas de Reducción de Varianza.</h3>
-<div style="text-align:justify">
-<p>Dado que la convergencia es lenta (<span class="math inline">\(1/\sqrt{N}\)</span>), reducir la varianza <span class="math inline">\(\sigma^2\)</span> es tan importante como aumentar <span class="math inline">\(N\)</span>. Una varianza menor implica que se requieren menos simulaciones para alcanzar un nivel de precisión deseado.</p>
-</div>
-<section id="variables-de-control." class="level4" data-number="6.4.4.1">
-<h4 data-number="6.4.4.1" class="anchored" data-anchor-id="variables-de-control."><span class="header-section-number">6.4.4.1</span> Variables de control.</h4>
-<div style="text-align:justify">
-<p>Una de las técnicas más rigurosas es el uso de variables de control. Supongamos que existe una variable aleatoria <span class="math inline">\(Y\)</span> correlacionada con <span class="math inline">\(f(X)\)</span> cuyo valor esperado <span class="math inline">\(\mu_Y = \mathbb{E}[Y]\)</span> es conocida analíticamente. Definimos un nuevo estimador: <span class="math display">\[\hat{I}_{CV}(c) = \hat{I}_N - c(\hat{Y}_N - \mu_Y),\]</span> donde <span class="math inline">\(\hat{Y}_N = \frac{1}{N}\sum Y_i\)</span> y <span class="math inline">\(c\)</span> es una constante. Este estimador sigue siendo insesgado para cualquier <span class="math inline">\(c \in \mathbb{R}\)</span>. La varianza de este nuevo estimador es: <span class="math display">\[\mathbb{V}[\hat{I}_{CV}(c)] = \mathbb{V}[\hat{I}_N] + c^2 \mathbb{V}[\hat{Y}_N] - 2c \text{Cov}(\hat{I}_N, \hat{Y}_N).\]</span></p>
-<p>Minimizando esta expresión respecto a <span class="math inline">\(c\)</span>, obtenemos el coeficiente óptimo: <span class="math display">\[c^* = \frac{\text{Cov}(f(X), Y)}{\mathbb{V}(Y)}.\]</span> Sustituyendo <span class="math inline">\(c^*\)</span>, se demuestra que la varianza se reduce en un factor de <span class="math inline">\((1 - \rho^2)\)</span>, donde <span class="math inline">\(\rho\)</span> es el coeficiente de correlación entre <span class="math inline">\(f(X)\)</span> e <span class="math inline">\(Y\)</span>. Si existe una alta correlación, la eficiencia del método mejora drásticamente.</p>
-</div>
-
-
-</section>
-</section>
 </section>
 
 </main> <!-- /main -->
