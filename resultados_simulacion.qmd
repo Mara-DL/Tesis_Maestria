@@ -351,36 +351,64 @@ En el cual se ejecutaron $N_{\text{sim}} = 1000$ trayectorias Monte Carlo para e
 
 ### Simulando periodo histórico (Ene 2024 - Dic 2025) con Milstein vs Semi-Implícito y Compensación.
 
-::: {.content-visible when-format="html"}
-
-
-
+:::::::::::::::::::::: {.content-visible when-format="html"}
 ```{python}
 #| label: fig-milstein
-#| fig-cap: Trayectorias implementadas por el método Milstein, medianas e intervalos de confianza $90\%$ (5\%-95\%) para ambos esquemas. Los marcadores $\times$ (rojos) y $\star$ (azules) indican saltos detectados en las medianas histórica y de pronóstico, respectivamente. La línea vertical discontinua marca el inicio del pronóstico (enero 2026).
-#| fig-width: 10      # Ancho en pulgadas (para PDF)
-#| fig-height: 7      # Alto en pulgadas (para PDF)
-#| dpi: 300           # Resolución para PDF
+#| fig-cap: Trayectorias implementadas por el método Milstein, medianas e intervalos de confianza $90\%$ $(5\%-95\%)$ para ambos esquemas. Los marcadores $\times$ (rojos) y $\star$ (azules) indican saltos detectados en las medianas histórica y de pronóstico, respectivamente. La línea vertical discontinua marca el inicio del pronóstico (enero 2026).
 #| output: true
 #| warning: false
+
+# =============================================================================
+# MODELO DE CRAMÉR-LUNDBERG EXTENDIDO (FORMA COMPENSADA) - ESQUEMA MILSTEIN
+# Aseguradora de vivienda CDMX | EDE con difusión y saltos
+#
+#   dX_t = [ c(t) + r(t) X_t - lambda_m(t) E[Y_m] - lambda_s E[Y_s] ] dt
+#          + sigma(t) X_t dW_t  -  dJ~_t
+#
+#   J~_t = J_t - int_0^t [ lambda_m(s) E[Y_m] + lambda_s E[Y_s] ] ds
+#   (J_t = suma de siniestros meteorologicos + sismicos, Poisson compuesto;
+#    J~_t es martingala: el termino de saltos tiene esperanza cero)
+#
+import math
 import numpy as np
-import plotly.graph_objects as go
+
+try:
+    import plotly.graph_objects as go
+    HAY_PLOTLY = True
+except ImportError:
+    HAY_PLOTLY = False
+    print("plotly no esta instalado: se omiten las graficas.")
+
 # -----------------------------
-# PARTE 0: CONFIGURACIÓN INICIAL
+# CONFIGURACIÓN INICIAL
 # -----------------------------
-np.random.seed(2026)
+SEED_HIST = 2026
+SEED_FC = 2027
 tipo_cambio = 18.5
-dt = 1 / 365  # Paso diario
+dt = 1 / 365                      # paso diario (en AÑOS)
+N_SIM_HIST = 1000
+N_SIM_FC = 1000
+ESQUEMA = "Milstein"
+
+PARAMS_MENSUALES_A_ANUALES = True  # c, r, sigma vienen por mes y dt esta en años
+FORECAST_DESDE = "mediana"         # "mediana" (como la tesis) o "trayectorias"
+                                   # ("trayectorias" conserva la dispersion historica)
+
+# FASE 4 (opcional): deteccion de saltos en la trayectoria mediana
+DETECTAR_SALTOS_MEDIANA = True
+K_SIGMA_MEDIANA = 3.0              # umbral = K * desv. est. de los log-rendimientos
+
+# Guardado de las 1000 trayectorias para el script de estimacion
+GUARDAR_NPZ = True
+ARCHIVO_NPZ = "trayectorias_milstein_compensado.npz"
 
 # -----------------------------
-# PARTE 1: CALIBRACIÓN DE PARÁMETROS
+# CALIBRACIÓN DE PARÁMETROS 
 # -----------------------------
-
 N_polizas = 6800
 prima_base_por_poliza = 850.00
 delta = 0.0015
 X0_hist = 500e6  # Capital inicial histórico
-U0_forecast = 520e6  # Capital inicial para pronóstico (ejemplo)
 
 # Inflación y primas
 inflacion_mensual = np.array([
@@ -395,18 +423,14 @@ primas_totales_mxn = primas_por_poliza_mxn * N_polizas
 c_t_mensual_usd = primas_totales_mxn / tipo_cambio
 c_t_mensual_usd = np.round(c_t_mensual_usd, 2)
 
-# --- Intensidades calibradas ---
-lambda_meteo_annual = 6.0
-lambda_sismo = 0.15 #0.08
+# --- Intensidades (se conservan los valores de tus scripts) ---
+# OJO: la tesis (sec. 8.1.4) reporta lambda_meteo = 8.0 y lambda_sismo = 0.08.
+lambda_meteo_annual = 6.0   # eventos/año
+lambda_sismo = 0.15         # eventos/año  (0.08 en la tesis)
 seasonal_raw = [0.3, 0.3, 0.4, 0.6, 1.0, 1.8, 2.2, 2.5, 2.8, 2.3, 1.2, 0.5]
-seasonal_norm = np.array(seasonal_raw) / np.mean(seasonal_raw)
+seasonal_norm = np.array(seasonal_raw) / np.mean(seasonal_raw)  # media 1 -> lambda anual = 6
 
-# --- Parámetros de severidad (ahora dependientes del estado) ---
-ceiling_per_policy = 5000.0
-COEF_VARIACION_METEO = 0.1
-COEF_VARIACION_SISMO = 0.2
-
-# --- Rendimiento y volatilidad ---
+# --- Rendimiento y volatilidad (por MES) ---
 r_t_mensual = np.array([
     0.606, 0.602, 0.600, 0.597, 0.593, 0.589,
     0.586, 0.582, 0.578, 0.574, 0.570, 0.566,
@@ -421,183 +445,177 @@ sigma_t_mensual = np.array([
     0.89, 0.82, 0.95, 0.86, 0.74, 0.68
 ]) / 100.0
 
-# -----------------------------
-# PARTE 2: FUNCIÓN AUXILIAR PARA LA COMPENSACIÓN
-# -----------------------------
+ESC_C = 12.0 if PARAMS_MENSUALES_A_ANUALES else 1.0
+ESC_R = 12.0 if PARAMS_MENSUALES_A_ANUALES else 1.0
+ESC_S = math.sqrt(12.0) if PARAMS_MENSUALES_A_ANUALES else 1.0
 
-def expected_loss_per_event(deviation, pct_low, pct_high, n_pols):
+# -----------------------------
+# FUNCIÓN DE SEVERIDAD (independiente del estado)
+# -----------------------------
+# Meteo: parametros de la tesis (mu=12.5, sigma=1.0) en ESCALA LOGARITMICA
+#        (exp(12.5) ~ 268,000 USD de mediana), condicionada a Y > 100,000 USD,
+#        el mismo umbral con el que se calibra lambda_meteo.
+# Sismo: media 1.75M USD y CV = 0.50 (valores finales de la tesis), pero con
+#        familia lognormal (la tesis ajusta en escala log y la lognormal es la
+#        que gana por AIC en la Tabla 9.4).
+UMBRAL_METEO = 100_000.0
+MEDIA_SISMO = 1_750_000.0
+CV_SISMO = 0.50
+_sig_s = math.sqrt(math.log(1.0 + CV_SISMO ** 2))
+_mu_s = math.log(MEDIA_SISMO) - 0.5 * _sig_s ** 2
+
+SEVERIDAD = {
+    "meteo": dict(familia="lognormal", mu=12.5, sigma=1.0, umbral=UMBRAL_METEO),
+    "sismo": dict(familia="lognormal", mu=_mu_s, sigma=_sig_s, umbral=0.0),
+    # Alternativa (normal truncada en [0, inf), escala LINEAL, como en la tesis):
+    # "sismo": dict(familia="normal_truncada", mu=1_696_000.0, sigma=875_000.0, umbral=0.0),
+    #   (con mu=1.742M la media truncada es ~1.79M, no 1.75M; mu~1.696M da 1.75M)
+}
+
+
+def _Phi(x):
+    return 0.5 * (1.0 + math.erf(x / math.sqrt(2.0)))
+
+
+def _phi(x):
+    return math.exp(-0.5 * x * x) / math.sqrt(2.0 * math.pi)
+
+
+def media_severidad(par):
+    """E[Y] exacta (formula cerrada) de la severidad truncada por la izquierda."""
+    mu, s, u = par["mu"], par["sigma"], par["umbral"]
+    if par["familia"] == "lognormal":
+        base = math.exp(mu + 0.5 * s * s)
+        if u <= 0:
+            return base
+        a = (math.log(u) - mu) / s
+        return base * (1.0 - _Phi(a - s)) / (1.0 - _Phi(a))
+    if par["familia"] == "normal_truncada":
+        a = (u - mu) / s
+        return mu + s * _phi(a) / (1.0 - _Phi(a))
+    raise ValueError("familia no soportada")
+
+
+def muestrear_severidad(rng, par, size):
+    """Y_1..Y_size i.i.d. ~ F (muestreo por rechazo para la truncacion)."""
+    out = np.empty(size)
+    pend = np.arange(size)
+    while pend.size:
+        z = rng.standard_normal(pend.size)
+        if par["familia"] == "lognormal":
+            y = np.exp(par["mu"] + par["sigma"] * z)
+        else:
+            y = par["mu"] + par["sigma"] * z
+        ok = y > par["umbral"]
+        out[pend[ok]] = y[ok]
+        pend = pend[~ok]
+    return out
+
+
+def suma_severidades(rng, n_ev, par):
+    """Suma de n_ev[j] severidades i.i.d. para cada trayectoria j."""
+    k = int(n_ev.sum())
+    if k == 0:
+        return np.zeros(n_ev.size)
+    draws = muestrear_severidad(rng, par, k)
+    owners = np.repeat(np.arange(n_ev.size), n_ev)
+    return np.bincount(owners, weights=draws, minlength=n_ev.size)
+
+
+E_METEO = media_severidad(SEVERIDAD["meteo"])
+E_SISMO = media_severidad(SEVERIDAD["sismo"])
+
+# Verificación Monte Carlo de las medias analíticas (rng aparte: no altera la simulación)
+_rc = np.random.default_rng(12345)
+for _k, _E in (("meteo", E_METEO), ("sismo", E_SISMO)):
+    _mc = muestrear_severidad(_rc, SEVERIDAD[_k], 2_000_000).mean()
+    assert abs(_mc / _E - 1) < 0.01, f"E[Y_{_k}] analitica {_E:,.0f} vs MC {_mc:,.0f}"
+print(f"E[Y_meteo] = {E_METEO:,.0f} USD | E[Y_sismo] = {E_SISMO:,.0f} USD (verificadas por MC)")
+
+# -----------------------------
+# ESQUEMA NUMÉRICO (forma compensada)
+# -----------------------------
+# comp_rate = lambda_m(t) E[Y_m] + lambda_s E[Y_s]   (USD/año)
+# dJ~ = dJ - comp_rate*dt  (incremento compensado, media cero)
+def paso_reserva(x, c, r, sigma, dW, comp_rate, dJ_tilde):
+    """Milstein compensado:
+    X+ = X + [c + r X - comp_rate] dt + sigma X dW + 0.5 sigma^2 X (dW^2 - dt) - dJ~
     """
-    Calcula la pérdida esperada por un evento dado el estado actual.
+    drift = (c + r * x - comp_rate) * dt
+    diffusion = sigma * x * dW
+    milstein_corr = 0.5 * sigma ** 2 * x * (dW ** 2 - dt)
+    return x + drift + diffusion + milstein_corr - dJ_tilde
+
+
+def simular(x0, c, r, sigma, lam_m, lam_s, n_sim, rng):
     """
-    E_pct = (pct_low + pct_high) / 2
-    n_aff_mean = n_pols * E_pct #Valor esperado de la distribución uniforme para el número de afectados
-    # mu_per_policy = deviation  <-- This line is now redundant as deviation is used directly
-    return n_aff_mean * deviation
+    c, r, sigma, lam_m: arreglos (n_pasos,) con tasas ANUALES en cada paso.
+    lam_s: escalar (eventos/año).
+    Devuelve X (n_sim, n_pasos+1), Jm, Js (saltos verdaderos crudos por paso)
+    y comp (n_pasos,) = lambda*E[Y] por paso (para chequear la martingala).
+    """
+    n = len(c)
+    X = np.zeros((n_sim, n + 1))
+    X[:, 0] = x0
+    Jm = np.zeros((n_sim, n))
+    Js = np.zeros((n_sim, n))
+    comp = lam_m * E_METEO + lam_s * E_SISMO
+    sq = math.sqrt(dt)
+    for i in range(n):
+        n_m = rng.poisson(lam_m[i] * dt, size=n_sim)
+        n_s = rng.poisson(lam_s * dt, size=n_sim)
+        Jm[:, i] = suma_severidades(rng, n_m, SEVERIDAD["meteo"])
+        Js[:, i] = suma_severidades(rng, n_s, SEVERIDAD["sismo"])
+        dJ_tilde = Jm[:, i] + Js[:, i] - comp[i] * dt          # salto COMPENSADO
+        dW = sq * rng.standard_normal(n_sim)
+        X[:, i + 1] = paso_reserva(X[:, i], c[i], r[i], sigma[i], dW, comp[i], dJ_tilde)
+    return X, Jm, Js, comp
+
 
 # -----------------------------
-# PARTE 3: SIMULACIÓN HISTÓRICA (Ene 2024 - Dic 2025) CON COMPENSACIÓN
+# SIMULACIÓN HISTÓRICA (Ene 2024 - Dic 2025)
 # -----------------------------
-
 T_hist = 2.0
 N_hist = int(T_hist / dt)
-N_sim_hist = 1000
-
-dias_hist = np.linspace(0, T_hist, N_hist + 1)
+t_meses_hist = np.arange(N_hist) * 12.0 * dt          # mes continuo 0..24 (años*12)
 meses_enteros = np.arange(24)
+mes_hist = t_meses_hist.astype(int) % 12              # mes calendario 0..11
 
-r_hist = np.interp(dias_hist[:-1], meses_enteros, r_t_mensual)
-sigma_hist = np.interp(dias_hist[:-1], meses_enteros, sigma_t_mensual)
-c_hist = np.interp(dias_hist[:-1], meses_enteros, c_t_mensual_usd)
+c_hist = ESC_C * np.interp(t_meses_hist, meses_enteros, c_t_mensual_usd)
+r_hist = ESC_R * np.interp(t_meses_hist, meses_enteros, r_t_mensual)
+sigma_hist = ESC_S * np.interp(t_meses_hist, meses_enteros, sigma_t_mensual)
+lam_m_hist = lambda_meteo_annual * seasonal_norm[mes_hist]
 
-X_hist = np.zeros((N_sim_hist, N_hist + 1))
-X_hist[:, 0] = X0_hist
-
-print("Simulando periodo histórico (Ene 2024 - Dic 2025) con Milstein y compensación...")
-
-for sim in range(N_sim_hist):
-    for i in range(N_hist):
-        t_dia = dias_hist[i]
-        mes_actual = int(t_dia) % 12
-
-        lam_meteo_dia = (lambda_meteo_annual / 365) * seasonal_norm[mes_actual]
-        lam_sismo_dia = lambda_sismo / 365
-
-        n_meteo = np.random.poisson(lam_meteo_dia)
-        n_sismo = np.random.poisson(lam_sismo_dia)
-
-        x_current = X_hist[sim, i]
-        deviation = (abs(x_current - X0_hist))/N_polizas
-        if deviation > ceiling_per_policy:
-            deviation = ceiling_per_policy
-
-        total_jump = 0.0
-        compensacion = 0.0
-
-        # --- Eventos Meteorológicos ---
-        if n_meteo > 0:
-            pct_affected = np.random.uniform(0.005, 0.02)
-            n_affected = max(1, int(N_polizas * pct_affected))
-            mu_per_policy = deviation
-            sigma_per_policy = COEF_VARIACION_METEO * mu_per_policy
-            losses = np.random.normal(mu_per_policy, sigma_per_policy, size=n_affected)
-            losses = np.clip(losses, 0.0, None)
-            total_jump += np.sum(losses)
-
-        # Compensación meteorológica
-        E_loss_meteo = expected_loss_per_event(
-            deviation, 0.005, 0.02, N_polizas
-        )
-        compensacion += (-1)*lam_meteo_dia * E_loss_meteo
-
-        # --- Eventos Sísmicos ---
-        if n_sismo > 0:
-            pct_affected = np.random.uniform(0.01, 0.10)
-            n_affected = max(1, int(N_polizas * pct_affected))
-            mu_per_policy = deviation
-            sigma_per_policy = COEF_VARIACION_SISMO * mu_per_policy
-            losses = np.random.normal(mu_per_policy, sigma_per_policy, size=n_affected)
-            losses = np.clip(losses, 0.0, None)
-            total_jump += np.sum(losses)
-
-        # Compensación sísmica
-        E_loss_sismo = expected_loss_per_event(
-            deviation, 0.01, 0.10, N_polizas
-        )
-        compensacion += (-1)*lam_sismo_dia * E_loss_sismo
-
-        # --- Actualización con Milstein + Compensación ---
-        dW = np.sqrt(dt) * np.random.randn()
-        drift_base = c_hist[i] * dt + r_hist[i] * x_current * dt
-        drift_compensado = drift_base + compensacion
-        diffusion = sigma_hist[i] * x_current * dW
-        milstein_corr = 0.5 * (sigma_hist[i]**2) * x_current * (dW**2 - dt)
-        X_hist[sim, i+1] = x_current + drift_compensado + diffusion + milstein_corr - total_jump
+print(f"Simulando periodo historico (Ene 2024 - Dic 2025) con {ESQUEMA} compensado...")
+rng_h = np.random.default_rng(SEED_HIST)
+X_hist, Jm_h, Js_h, comp_h = simular(X0_hist, c_hist, r_hist, sigma_hist,
+                                     lam_m_hist, lambda_sismo, N_SIM_HIST, rng_h)
 
 U0_forecast = np.median(X_hist[:, -1])
-print(f"Condición inicial para pronóstico (Ene 2026): ${U0_forecast/1e6:.2f}M")
-# -----------------------------
-# PARTE 4: SIMULACIÓN DEL PRONÓSTICO (Ene 2026) CON COMPENSACIÓN
-# -----------------------------
+print(f"Condicion inicial para pronostico (Ene 2026): ${U0_forecast/1e6:.2f}M")
 
+# -----------------------------
+#  PRONÓSTICO (Ene 2026)
+# -----------------------------
 forecast_days = 30
-mes_pronostico = 0
+c_ene = ESC_C * (c_t_mensual_usd[0] + c_t_mensual_usd[12]) / 2
+r_ene = ESC_R * (r_t_mensual[0] + r_t_mensual[12]) / 2
+sigma_ene = ESC_S * (sigma_t_mensual[0] + sigma_t_mensual[12]) / 2
 
-# Promedios para enero (mes 0 y mes 12)
-c_ene_avg = (c_t_mensual_usd[0] + c_t_mensual_usd[12]) / 2
-r_ene_avg = (r_t_mensual[0] + r_t_mensual[12]) / 2
-sigma_ene_avg = (sigma_t_mensual[0] + sigma_t_mensual[12]) / 2
-sf_ene_avg = seasonal_norm[0]  # Enero es el mes 0
+c_fc = np.full(forecast_days, c_ene)
+r_fc = np.full(forecast_days, r_ene)
+sigma_fc = np.full(forecast_days, sigma_ene)
+lam_m_fc = np.full(forecast_days, lambda_meteo_annual * seasonal_norm[0])
 
-c_daily_fc = np.full(forecast_days, c_ene_avg / 30.0)
-r_daily_fc = np.full(forecast_days, r_ene_avg)
-sigma_daily_fc = np.full(forecast_days, sigma_ene_avg)
-lambda_meteo_dia_fc = (lambda_meteo_annual / 365) * sf_ene_avg
-lambda_sismo_dia_fc = lambda_sismo / 365
-
-np.random.seed(2027)
-N_sim_fc = 1000
-U_forecast = np.zeros((N_sim_fc, forecast_days + 1))
-U_forecast[:, 0] = U0_forecast
-
-print("Simulando pronóstico para Enero 2026 con Milstein y compensación...")
-
-for sim in range(N_sim_fc):
-    for i in range(forecast_days):
-        u_current = U_forecast[sim, i]
-        deviation = (abs(u_current - U0_forecast))/N_polizas
-        if deviation > ceiling_per_policy:
-            deviation = ceiling_per_policy
-        total_jump = 0.0
-        compensacion = 0.0
-
-        # --- Simular eventos ---
-        n_meteo = np.random.poisson(lambda_meteo_dia_fc)
-        n_sismo = np.random.poisson(lambda_sismo_dia_fc)
-
-        # --- Eventos Meteorológicos ---
-        if n_meteo > 0:
-            pct_affected = np.random.uniform(0.005, 0.02)
-            n_affected = max(1, int(N_polizas * pct_affected))
-            mu_per_policy = deviation
-            sigma_per_policy = COEF_VARIACION_METEO * mu_per_policy
-            losses = np.random.normal(mu_per_policy, sigma_per_policy, size=n_affected)
-            losses = np.clip(losses, 0.0, None)
-            total_jump += np.sum(losses)
-
-        # Compensación meteorológica
-        E_loss_meteo = expected_loss_per_event(
-            deviation, 0.005, 0.02, N_polizas
-        )
-        compensacion += (-1)*lambda_meteo_dia_fc * E_loss_meteo
-
-        # --- Eventos Sísmicos ---
-        if n_sismo > 0:
-            pct_affected = np.random.uniform(0.01, 0.10)
-            n_affected = max(1, int(N_polizas * pct_affected))
-            mu_per_policy = deviation
-            sigma_per_policy = COEF_VARIACION_SISMO * mu_per_policy
-            losses = np.random.normal(mu_per_policy, sigma_per_policy, size=n_affected)
-            losses = np.clip(losses, 0.0, None)
-            total_jump += np.sum(losses)
-
-        # Compensación sísmica
-        E_loss_sismo = expected_loss_per_event(
-            deviation, 0.01, 0.10, N_polizas
-        )
-        compensacion +=(-1)* lambda_sismo_dia_fc * E_loss_sismo
-
-        # --- Actualización con Milstein + Compensación ---
-        dW = np.sqrt(dt) * np.random.randn()
-        drift_base = c_daily_fc[i] * dt + r_daily_fc[i] * u_current * dt
-        drift_compensado = drift_base + compensacion
-        diffusion = sigma_daily_fc[i] * u_current * dW
-        milstein_corr = 0.5 * (sigma_daily_fc[i]**2) * u_current * (dW**2 - dt)
-        U_forecast[sim, i+1] = u_current + drift_compensado + diffusion + milstein_corr - total_jump
+x0_fc = U0_forecast if FORECAST_DESDE == "mediana" else X_hist[:N_SIM_FC, -1]
+print(f"Simulando pronostico para Enero 2026 con {ESQUEMA} compensado...")
+rng_f = np.random.default_rng(SEED_FC)
+U_forecast, Jm_f, Js_f, comp_f = simular(x0_fc, c_fc, r_fc, sigma_fc,
+                                         lam_m_fc, lambda_sismo, N_SIM_FC, rng_f)
 
 # -----------------------------
-# PARTE 5: CÁLCULO DE ESTADÍSTICAS
+# ESTADÍSTICAS
 # -----------------------------
-
 median_hist = np.median(X_hist, axis=0) / 1e6
 p05_hist = np.percentile(X_hist, 5, axis=0) / 1e6
 p95_hist = np.percentile(X_hist, 95, axis=0) / 1e6
@@ -607,188 +625,189 @@ p05_fc = np.percentile(U_forecast, 5, axis=0) / 1e6
 p95_fc = np.percentile(U_forecast, 95, axis=0) / 1e6
 
 # -----------------------------
-# PARTE 6: DETECCIÓN DE SALTOS EN LA MEDIANA
+# DIAGNÓSTICO DE LA COMPENSACIÓN (martingala)
 # -----------------------------
+def chequeo_martingala(Jm, Js, comp, etiqueta):
+    dJt = Jm + Js - comp[None, :] * dt
+    media = dJt.mean()
+    ee = dJt.std() / math.sqrt(dJt.size)
+    print(f"[{etiqueta}] E[dJ~] = {media:,.0f} USD/paso (EE = {ee:,.0f}) -> "
+          f"{'OK (|z| < 3)' if abs(media) < 3 * ee else 'REVISAR'} | "
+          f"siniestros esperados {comp.mean():,.0f} USD/año vs simulados "
+          f"{(Jm + Js).sum(axis=1).mean() / (Jm.shape[1] * dt):,.0f} USD/año")
 
-def detect_jumps(median_series):
-    """Detecta saltos en una serie temporal usando umbral de 3 desviaciones estándar."""
+print("\n--- Chequeo de la compensación ---")
+chequeo_martingala(Jm_h, Js_h, comp_h, "historico")
+chequeo_martingala(Jm_f, Js_f, comp_f, "pronostico")
+
+# -----------------------------
+# DETECCIÓN DE SALTOS EN LA TRAYECTORIA MEDIANA
+# -----------------------------
+def detect_jumps(median_series, k=K_SIGMA_MEDIANA):
+    """Detecta saltos en la serie mediana usando umbral de k desviaciones estandar."""
     median_usd = median_series * 1e6
     log_returns = np.log(median_usd[1:] / median_usd[:-1])
-    threshold = 3 * np.std(log_returns)
+    threshold = k * np.std(log_returns)
     jump_flags = np.abs(log_returns) > threshold
     jump_indices = np.where(jump_flags)[0] + 1
     jump_times = np.arange(len(median_series))[jump_indices]
     jump_values = median_series[jump_indices]
     return jump_times, jump_values
 
-# Detectar saltos
+
 time_historical = np.arange(N_hist + 1)
-jump_times_hist, jump_values_hist = detect_jumps(median_hist)
-
 time_forecast = np.arange(N_hist, N_hist + forecast_days + 1)
-jump_times_fc, jump_values_fc = detect_jumps(median_fc)
+jump_times_hist = jump_values_hist = jump_times_fc = jump_values_fc = np.array([])
+
+if DETECTAR_SALTOS_MEDIANA:
+    jump_times_hist, jump_values_hist = detect_jumps(median_hist)
+    jump_times_fc, jump_values_fc = detect_jumps(median_fc)
+    print("\n--- FASE 4: saltos detectados en la trayectoria mediana ---")
+    print(f"Historico: {len(jump_times_hist)} saltos (dias: {jump_times_hist.tolist()[:20]})")
+    print(f"Pronostico: {len(jump_times_fc)} saltos (dias del pronostico: {jump_times_fc.tolist()})")
 
 # -----------------------------
-# PARTE 7: GRÁFICA INTERACTIVA CON PLOTLY
+# GRÁFICA INTERACTIVA CON PLOTLY
 # -----------------------------
+if HAY_PLOTLY:
+    fig = go.Figure()
 
-fig = go.Figure()
-
-# Área de incertidumbre histórico
-fig.add_trace(go.Scatter(
-    x=np.concatenate([time_historical, time_historical[::-1]]),
-    y=np.concatenate([p95_hist, p05_hist[::-1]]),
-    fill='toself',
-    fillcolor='rgba(144, 238, 144, 0.3)',
-    line=dict(color='rgba(144, 238, 144, 0)'),
-    hoverinfo="skip",
-    showlegend=True,
-    name='Histórico (5%-95%)'
-))
-
-# Mediana histórica
-fig.add_trace(go.Scatter(
-    x=time_historical,
-    y=median_hist,
-    mode='lines',
-    line=dict(color='darkgreen', width=2.5),
-    name='Mediana (Histórico)'
-))
-
-# Saltos en la mediana histórica
-if len(jump_times_hist) > 0:
+    # Área de incertidumbre histórico
     fig.add_trace(go.Scatter(
-        x=jump_times_hist,
-        y=jump_values_hist,
-        mode='markers',
-        marker=dict(color='red', size=8, symbol='x'),
-        name='Saltos (Histórico)'
-    ))
+        x=np.concatenate([time_historical, time_historical[::-1]]),
+        y=np.concatenate([p95_hist, p05_hist[::-1]]),
+        fill='toself', fillcolor='rgba(144, 238, 144, 0.3)',
+        line=dict(color='rgba(144, 238, 144, 0)'), hoverinfo="skip",
+        showlegend=True, name='Histórico (5%-95%)'))
 
-# Área de incertidumbre del pronóstico
-fig.add_trace(go.Scatter(
-    x=np.concatenate([time_forecast, time_forecast[::-1]]),
-    y=np.concatenate([p95_fc, p05_fc[::-1]]),
-    fill='toself',
-    fillcolor='rgba(205, 92, 92, 0.25)',
-    line=dict(color='rgba(205, 92, 92, 0)'),
-    hoverinfo="skip",
-    showlegend=True,
-    name='Pronóstico (5%-95%)'
-))
-
-# Mediana del pronóstico
-fig.add_trace(go.Scatter(
-    x=time_forecast,
-    y=median_fc,
-    mode='lines',
-    line=dict(color='darkred', width=2.5),
-    name='Mediana (Pronóstico)'
-))
-
-# Saltos en la mediana del pronóstico
-if len(jump_times_fc) > 0:
+    # Mediana histórica
     fig.add_trace(go.Scatter(
-        x=jump_times_fc + N_hist,
-        y=jump_values_fc,
-        mode='markers',
-        marker=dict(color='blue', size=10, symbol='star'),
-        name='Saltos (Pronóstico)'
-    ))
+        x=time_historical, y=median_hist, mode='lines',
+        line=dict(color='darkgreen', width=2.5), name='Mediana (Histórico)'))
 
-# Línea divisoria
-fig.add_vline(x=N_hist, line_dash="dash", line_color="black", annotation_text="Inicio del Pronóstico")
+    # Saltos en la mediana histórica
+    if len(jump_times_hist) > 0:
+        fig.add_trace(go.Scatter(
+            x=jump_times_hist, y=jump_values_hist, mode='markers',
+            marker=dict(color='red', size=6, symbol='x'), name='Saltos (Histórico)'))
 
-# Configuración final
-months_full = [f"{y}-{m:02d}" for y in [2024, 2025] for m in range(1, 13)]
-month_labels = months_full[::2]
-month_ticks = np.arange(0, 720, 60)
-all_ticks = np.concatenate([month_ticks, [N_hist + 30]])
-all_labels = month_labels + ["2026-01"]
+    # Área de incertidumbre del pronóstico
+    fig.add_trace(go.Scatter(
+        x=np.concatenate([time_forecast, time_forecast[::-1]]),
+        y=np.concatenate([p95_fc, p05_fc[::-1]]),
+        fill='toself', fillcolor='rgba(205, 92, 92, 0.25)',
+        line=dict(color='rgba(205, 92, 92, 0)'), hoverinfo="skip",
+        showlegend=True, name='Pronóstico (5%-95%)'))
 
-# Configuración final optimizada
-# Configuración final optimizada
-fig.update_layout(
-    title=dict(
-        text='<b>Reservas de la Aseguradora: Histórico (2024–2025) + Pronóstico Ene 2026</b>',
-        subtitle=dict(  # ✅ CORRECCIÓN: subtitle debe ser un diccionario
-            text='<i>Modelo Cramér-Lundberg extedido con Milstein, Siniestros Realistas y Detección de Saltos (México)</i>'
-        ),
-        x=0.5,
-        xanchor='center',
-        y=0.95,
-        pad=dict(t=10, b=10)
-    ),
-    xaxis_title="<b>Tiempo</b>",
-    yaxis_title="<b>Reservas (Millones USD)</b>",
-    xaxis=dict(
-        tickmode='array', 
-        tickvals=all_ticks, 
-        ticktext=all_labels, 
-        tickangle=45,
-        showgrid=True,
-        gridcolor='lightgray'
-    ),
-    yaxis=dict(
-        showgrid=True,
-        gridcolor='lightgray',
-        zeroline=True,
-        zerolinecolor='black'
-    ),
-    legend=dict(
-        orientation="h", 
-        yanchor="bottom", 
-        y=1.12, 
-        xanchor="right", 
-        x=0.99,
-        font=dict(size=9),
-        bgcolor='rgba(255,255,255,0.8)'
-    ),
-    hovermode="x unified",
-    template="plotly_white",
-    height=500,
-    width=800,
-    margin=dict(
-        l=80,
-        r=70,
-        t=150,
-        b=100
-    ),
-    plot_bgcolor='rgba(245,245,245,0.5)'
-)
-fig.show()
+    # Mediana del pronóstico
+    fig.add_trace(go.Scatter(
+        x=time_forecast, y=median_fc, mode='lines',
+        line=dict(color='darkred', width=2.5), name='Mediana (Pronóstico)'))
+
+    # Saltos en la mediana del pronóstico
+    if len(jump_times_fc) > 0:
+        fig.add_trace(go.Scatter(
+            x=jump_times_fc + N_hist, y=jump_values_fc, mode='markers',
+            marker=dict(color='blue', size=5, symbol='star'), name='Saltos (Pronóstico)'))
+
+    # Línea divisoria
+    fig.add_vline(x=N_hist, line_dash="dash", line_color="black",
+                  annotation_text="Inicio del Pronóstico")
+
+    months_full = [f"{y}-{m:02d}" for y in [2024, 2025] for m in range(1, 13)]
+    month_labels = months_full[::2]
+    month_ticks = np.arange(0, 720, 60)
+    all_ticks = np.concatenate([month_ticks, [N_hist + 30]])
+    all_labels = month_labels + ["2026-01"]
+
+    fig.update_layout(
+        title=dict(
+            text='<b>Reservas de la Aseguradora: Histórico (2024–2025) + Pronóstico Ene 2026</b>',
+            subtitle=dict(text=f'<i>Cramér-Lundberg extendido (forma compensada) con {ESQUEMA} y detección de saltos en la mediana</i>'),
+            x=0.5, xanchor='center', y=0.95, pad=dict(t=10, b=10)),
+        xaxis_title="<b>Tiempo</b>", yaxis_title="<b>Reservas (Millones USD)</b>",
+        xaxis=dict(tickmode='array', tickvals=all_ticks, ticktext=all_labels,
+                   tickangle=45, showgrid=True, gridcolor='lightgray'),
+        yaxis=dict(showgrid=True, gridcolor='lightgray', zeroline=True, zerolinecolor='black'),
+        legend=dict(orientation="h", yanchor="bottom", y=1.12, xanchor="right", x=0.99,
+                    font=dict(size=9), bgcolor='rgba(255,255,255,0.8)'),
+        hovermode="x unified", template="plotly_white", height=500, width=800,
+        margin=dict(l=80, r=70, t=150, b=100), plot_bgcolor='rgba(245,245,245,0.5)')
+    fig.show()
 
 # -----------------------------
-# PARTE 8: RESUMEN DEL PRONÓSTICO
+#  GUARDADO DE LAS TRAYECTORIAS
 # -----------------------------
-
-print(f"\nPronóstico para Enero 2026:")
+print(f"\nPronóstico para Enero 2026 ({ESQUEMA} compensado):")
 print(f"- Reserva inicial: ${U0_forecast/1e6:.2f}M")
 print(f"- Mediana final:  ${median_fc[-1]:.2f}M")
 print(f"- IC (5%-95%):    [${p05_fc[-1]:.2f}M, ${p95_fc[-1]:.2f}M]")
+
+if GUARDAR_NPZ:
+    # Se guardan las trayectorias y las tasas anuales usadas (para el residuo del detector).
+    # Jm_hist / Js_hist (saltos verdaderos) solo se usan en el script de estimacion
+    # para una validacion OPCIONAL al final; la inferencia no los utiliza.
+    np.savez_compressed(
+        ARCHIVO_NPZ,
+        X_hist=X_hist, U_forecast=U_forecast,
+        c_hist=c_hist, r_hist=r_hist, sigma_hist=sigma_hist,
+        c_fc=c_fc, r_fc=r_fc, sigma_fc=sigma_fc,
+        Jm_hist=Jm_h, Js_hist=Js_h,
+        dt=dt, esquema=ESQUEMA, seed=SEED_HIST,
+        E_meteo=E_METEO, E_sismo=E_SISMO,
+        lambda_meteo_annual=lambda_meteo_annual, lambda_sismo=lambda_sismo)
+    print(f"\nTrayectorias guardadas en: {ARCHIVO_NPZ}  ({X_hist.shape[0]} trayectorias x {X_hist.shape[1]} puntos)")
+
 ```
-
-
 
 ```{python}
 #| label: fig-semi_implicito
 #| fig-cap: Trayectorias implementadas por el método Semi-Ímplicito, medianas e intervalos de confianza $90\%$ (5\%-95\%) para ambos esquemas. Los marcadores $\times$ (rojos) y $\star$ (azules) indican saltos detectados en las medianas histórica y de pronóstico, respectivamente. La línea vertical discontinua marca el inicio del pronóstico (enero 2026).
 #| output: true
 #| warning: false
+# =============================================================================
+# MODELO DE CRAMÉR-LUNDBERG EXTENDIDO (FORMA COMPENSADA) - ESQUEMA SEMI-IMPLÍCITO
+# Aseguradora de vivienda CDMX | EDE con difusión y saltos
+#
+#   dX_t = [ c(t) + r(t) X_t - lambda_m(t) E[Y_m] - lambda_s E[Y_s] ] dt
+#          + sigma(t) X_t dW_t  -  dJ~_t
+#   J~_t = J_t - int_0^t [ lambda_m(s) E[Y_m] + lambda_s E[Y_s] ] ds
+# =============================================================================
+import math
 import numpy as np
-import plotly.graph_objects as go
+
+try:
+    import plotly.graph_objects as go
+    HAY_PLOTLY = True
+except ImportError:
+    HAY_PLOTLY = False
+    print("plotly no esta instalado: se omiten las graficas.")
 
 # -----------------------------
-# PARTE 0: CONFIGURACIÓN INICIAL
+# CONFIGURACIÓN INICIAL
 # -----------------------------
-np.random.seed(2026)
+SEED_HIST = 2026
+SEED_FC = 2027
 tipo_cambio = 18.5
-dt = 1 / 365  # Paso diario
+dt = 1 / 365                      # paso diario (en AÑOS)
+N_SIM_HIST = 1000
+N_SIM_FC = 1000
+ESQUEMA = "Semi-Implicito"
+
+PARAMS_MENSUALES_A_ANUALES = True  # c, r, sigma vienen por mes y dt esta en años
+FORECAST_DESDE = "mediana"         # "mediana" (como la tesis) o "trayectorias"
+
+# deteccion de saltos en la trayectoria mediana
+DETECTAR_SALTOS_MEDIANA = True
+K_SIGMA_MEDIANA = 3.0              # umbral = K * desv. est. de los log-rendimientos
+
+# Guardado de las 1000 trayectorias para el script de estimacion
+GUARDAR_NPZ = True
+ARCHIVO_NPZ = "trayectorias_semiimplicito_compensado.npz"
 
 # -----------------------------
-# PARTE 1: CALIBRACIÓN DE PARÁMETROS
+# CALIBRACIÓN DE PARÁMETROS
 # -----------------------------
-
 N_polizas = 6800
 prima_base_por_poliza = 850.00
 delta = 0.0015
@@ -807,18 +826,13 @@ primas_totales_mxn = primas_por_poliza_mxn * N_polizas
 c_t_mensual_usd = primas_totales_mxn / tipo_cambio
 c_t_mensual_usd = np.round(c_t_mensual_usd, 2)
 
-# --- Intensidades calibradas ---
-lambda_meteo_annual = 6.0
-lambda_sismo = 0.15  # Ajustado según archivo
+# --- Intensidades ---
+lambda_meteo_annual = 6.0   # eventos/año
+lambda_sismo = 0.15         # eventos/año  (0.08 en la tesis)
 seasonal_raw = [0.3, 0.3, 0.4, 0.6, 1.0, 1.8, 2.2, 2.5, 2.8, 2.3, 1.2, 0.5]
-seasonal_norm = np.array(seasonal_raw) / np.mean(seasonal_raw)
+seasonal_norm = np.array(seasonal_raw) / np.mean(seasonal_raw)  # media 1 -> lambda anual = 6
 
-# --- Parámetros de severidad ---
-ceiling_per_policy = 5000.0  # Tope máximo por póliza
-COEF_VARIACION_METEO = 0.1
-COEF_VARIACION_SISMO = 0.2
-
-# --- Rendimiento y volatilidad ---
+# --- Rendimiento y volatilidad (por MES) ---
 r_t_mensual = np.array([
     0.606, 0.602, 0.600, 0.597, 0.593, 0.589,
     0.586, 0.582, 0.578, 0.574, 0.570, 0.566,
@@ -833,197 +847,181 @@ sigma_t_mensual = np.array([
     0.89, 0.82, 0.95, 0.86, 0.74, 0.68
 ]) / 100.0
 
-# -----------------------------
-# PARTE 2: FUNCIÓN AUXILIAR PARA LA COMPENSACIÓN
-# -----------------------------
+ESC_C = 12.0 if PARAMS_MENSUALES_A_ANUALES else 1.0
+ESC_R = 12.0 if PARAMS_MENSUALES_A_ANUALES else 1.0
+ESC_S = math.sqrt(12.0) if PARAMS_MENSUALES_A_ANUALES else 1.0
 
-def expected_loss_per_event(deviation_per_policy, pct_low, pct_high, n_pols):
+# -----------------------------
+# FUNCIÓN DE SEVERIDAD (independiente del estado)
+# -----------------------------
+UMBRAL_METEO = 100_000.0
+MEDIA_SISMO = 1_750_000.0
+CV_SISMO = 0.50
+_sig_s = math.sqrt(math.log(1.0 + CV_SISMO ** 2))
+_mu_s = math.log(MEDIA_SISMO) - 0.5 * _sig_s ** 2
+
+SEVERIDAD = {
+    "meteo": dict(familia="lognormal", mu=12.5, sigma=1.0, umbral=UMBRAL_METEO),
+    "sismo": dict(familia="lognormal", mu=_mu_s, sigma=_sig_s, umbral=0.0),
+}
+
+
+def _Phi(x):
+    return 0.5 * (1.0 + math.erf(x / math.sqrt(2.0)))
+
+
+def _phi(x):
+    return math.exp(-0.5 * x * x) / math.sqrt(2.0 * math.pi)
+
+
+def media_severidad(par):
+    """E[Y] exacta (formula cerrada) de la severidad truncada por la izquierda."""
+    mu, s, u = par["mu"], par["sigma"], par["umbral"]
+    if par["familia"] == "lognormal":
+        base = math.exp(mu + 0.5 * s * s)
+        if u <= 0:
+            return base
+        a = (math.log(u) - mu) / s
+        return base * (1.0 - _Phi(a - s)) / (1.0 - _Phi(a))
+    if par["familia"] == "normal_truncada":
+        a = (u - mu) / s
+        return mu + s * _phi(a) / (1.0 - _Phi(a))
+    raise ValueError("familia no soportada")
+
+
+def muestrear_severidad(rng, par, size):
+    """Y_1..Y_size i.i.d. ~ F (muestreo por rechazo para la truncacion)."""
+    out = np.empty(size)
+    pend = np.arange(size)
+    while pend.size:
+        z = rng.standard_normal(pend.size)
+        if par["familia"] == "lognormal":
+            y = np.exp(par["mu"] + par["sigma"] * z)
+        else:
+            y = par["mu"] + par["sigma"] * z
+        ok = y > par["umbral"]
+        out[pend[ok]] = y[ok]
+        pend = pend[~ok]
+    return out
+
+
+def suma_severidades(rng, n_ev, par):
+    """Suma de n_ev[j] severidades i.i.d. para cada trayectoria j."""
+    k = int(n_ev.sum())
+    if k == 0:
+        return np.zeros(n_ev.size)
+    draws = muestrear_severidad(rng, par, k)
+    owners = np.repeat(np.arange(n_ev.size), n_ev)
+    return np.bincount(owners, weights=draws, minlength=n_ev.size)
+
+
+E_METEO = media_severidad(SEVERIDAD["meteo"])
+E_SISMO = media_severidad(SEVERIDAD["sismo"])
+
+# Verificación Monte Carlo de las medias analíticas (rng aparte: no altera la simulación)
+_rc = np.random.default_rng(12345)
+for _k, _E in (("meteo", E_METEO), ("sismo", E_SISMO)):
+    _mc = muestrear_severidad(_rc, SEVERIDAD[_k], 2_000_000).mean()
+    assert abs(_mc / _E - 1) < 0.01, f"E[Y_{_k}] analitica {_E:,.0f} vs MC {_mc:,.0f}"
+print(f"E[Y_meteo] = {E_METEO:,.0f} USD | E[Y_sismo] = {E_SISMO:,.0f} USD (verificadas por MC)")
+
+# -----------------------------
+# ESQUEMA NUMÉRICO (forma compensada)
+# -----------------------------
+# comp_rate = lambda_m(t) E[Y_m] + lambda_s E[Y_s]   (USD/año)
+# dJ~ = dJ - comp_rate*dt  (incremento compensado, media cero)
+def verificar_H3(r, etiqueta):
+    """(H3): r*dt < 1/2. Se verifica antes de simular; no se modifica el esquema."""
+    rdt_max = float(np.max(r) * dt)
+    assert rdt_max < 0.5, (f"[{etiqueta}] violada (H3): max(r)*dt = {rdt_max:.3g} >= 1/2; "
+                           "el esquema semi-implicito no esta bien condicionado")
+    print(f"[{etiqueta}] (H3) OK: max(r)*dt = {rdt_max:.3e} < 1/2 "
+          f"(denominador minimo = {1.0 - rdt_max:.6f})")
+
+
+def paso_reserva(x, c, r, sigma, dW, comp_rate, dJ_tilde):
+    """Semi-implicito compensado (r tratado implicitamente):
+    X+ (1 - r dt) = X (1 + sigma dW) + (c - comp_rate) dt - dJ~
+    Requiere r*dt < 1/2 (se verifica con verificar_H3 antes de simular).
     """
-    Calcula la pérdida esperada total por evento.
-    deviation_per_policy ya es la pérdida media por póliza.
+    numerador = x * (1.0 + sigma * dW) + (c - comp_rate) * dt - dJ_tilde
+    denominador = 1.0 - r * dt
+    return numerador / denominador
+
+
+def simular(x0, c, r, sigma, lam_m, lam_s, n_sim, rng):
     """
-    E_pct = (pct_low + pct_high) / 2
-    n_aff_mean = n_pols * E_pct
-    return n_aff_mean * deviation_per_policy
+    c, r, sigma, lam_m: arreglos (n_pasos,) con tasas ANUALES en cada paso.
+    lam_s: escalar (eventos/año).
+    Devuelve X (n_sim, n_pasos+1), Jm, Js (saltos verdaderos crudos por paso)
+    y comp (n_pasos,) = lambda*E[Y] por paso (para chequear la martingala).
+    """
+    n = len(c)
+    X = np.zeros((n_sim, n + 1))
+    X[:, 0] = x0
+    Jm = np.zeros((n_sim, n))
+    Js = np.zeros((n_sim, n))
+    comp = lam_m * E_METEO + lam_s * E_SISMO
+    sq = math.sqrt(dt)
+    for i in range(n):
+        n_m = rng.poisson(lam_m[i] * dt, size=n_sim)
+        n_s = rng.poisson(lam_s * dt, size=n_sim)
+        Jm[:, i] = suma_severidades(rng, n_m, SEVERIDAD["meteo"])
+        Js[:, i] = suma_severidades(rng, n_s, SEVERIDAD["sismo"])
+        dJ_tilde = Jm[:, i] + Js[:, i] - comp[i] * dt          # salto COMPENSADO
+        dW = sq * rng.standard_normal(n_sim)
+        X[:, i + 1] = paso_reserva(X[:, i], c[i], r[i], sigma[i], dW, comp[i], dJ_tilde)
+    return X, Jm, Js, comp
+
 
 # -----------------------------
-# PARTE 3: SIMULACIÓN HISTÓRICA CON SEMI-IMPLÍCITO + COMPENSACIÓN
+# SIMULACIÓN HISTÓRICA (Ene 2024 - Dic 2025)
 # -----------------------------
-
 T_hist = 2.0
 N_hist = int(T_hist / dt)
-N_sim_hist = 1000
-
-dias_hist = np.linspace(0, T_hist, N_hist + 1)
+t_meses_hist = np.arange(N_hist) * 12.0 * dt          # mes continuo 0..24 (años*12)
 meses_enteros = np.arange(24)
+mes_hist = t_meses_hist.astype(int) % 12              # mes calendario 0..11
 
-r_hist = np.interp(dias_hist[:-1], meses_enteros, r_t_mensual)
-sigma_hist = np.interp(dias_hist[:-1], meses_enteros, sigma_t_mensual)
-c_hist = np.interp(dias_hist[:-1], meses_enteros, c_t_mensual_usd)
+c_hist = ESC_C * np.interp(t_meses_hist, meses_enteros, c_t_mensual_usd)
+r_hist = ESC_R * np.interp(t_meses_hist, meses_enteros, r_t_mensual)
+sigma_hist = ESC_S * np.interp(t_meses_hist, meses_enteros, sigma_t_mensual)
+lam_m_hist = lambda_meteo_annual * seasonal_norm[mes_hist]
 
-X_hist = np.zeros((N_sim_hist, N_hist + 1))
-X_hist[:, 0] = X0_hist
+verificar_H3(r_hist, "historico")
 
-print("Simulando periodo histórico (Ene 2024 - Dic 2025) con Semi-Implicito y compensación...")
-
-for sim in range(N_sim_hist):
-    for i in range(N_hist):
-        t_dia = dias_hist[i]
-        mes_actual = int(t_dia) % 12
-
-        lam_meteo_dia = (lambda_meteo_annual / 365) * seasonal_norm[mes_actual]
-        lam_sismo_dia = lambda_sismo / 365
-
-        n_meteo = np.random.poisson(lam_meteo_dia)
-        n_sismo = np.random.poisson(lam_sismo_dia)
-
-        x_current = X_hist[sim, i]
-        deviation_per_policy = abs(x_current - X0_hist) / N_polizas
-        if deviation_per_policy > ceiling_per_policy:
-            deviation_per_policy = ceiling_per_policy
-
-        total_jump_bruto = 0.0
-        compensacion = 0.0
-
-        # --- Eventos Meteorológicos ---
-        if n_meteo > 0:
-            pct_affected = np.random.uniform(0.005, 0.02)
-            n_affected = max(1, int(N_polizas * pct_affected))
-            mu_per_policy = deviation_per_policy
-            sigma_per_policy = COEF_VARIACION_METEO * mu_per_policy
-            losses = np.random.normal(mu_per_policy, sigma_per_policy, size=n_affected)
-            losses = np.clip(losses, 0.0, None)
-            total_jump_bruto += np.sum(losses)
-
-        # Compensación meteorológica
-        E_loss_meteo = expected_loss_per_event(
-            deviation_per_policy, 0.005, 0.02, N_polizas
-        )
-        compensacion += (-1) * lam_meteo_dia * E_loss_meteo
-
-        # --- Eventos Sísmicos ---
-        if n_sismo > 0:
-            pct_affected = np.random.uniform(0.01, 0.10)
-            n_affected = max(1, int(N_polizas * pct_affected))
-            mu_per_policy = deviation_per_policy
-            sigma_per_policy = COEF_VARIACION_SISMO * mu_per_policy
-            losses = np.random.normal(mu_per_policy, sigma_per_policy, size=n_affected)
-            losses = np.clip(losses, 0.0, None)
-            total_jump_bruto += np.sum(losses)
-
-        # Compensación sísmica
-        E_loss_sismo = expected_loss_per_event(
-            deviation_per_policy, 0.01, 0.10, N_polizas
-        )
-        compensacion += (-1) * lam_sismo_dia * E_loss_sismo
-
-        # --- Actualización SEMI-IMPLÍCITA con COMPENSACIÓN ---
-        dW = np.sqrt(dt) * np.random.randn()
-
-        numerator = (
-            x_current * (1 + sigma_hist[i] * dW)
-            + c_hist[i] * dt
-            + compensacion
-            - total_jump_bruto
-        )
-
-        denominator = 1.0 - r_hist[i] * dt
-        if denominator <= 0:
-            denominator = 1e-12
-
-        X_hist[sim, i+1] = numerator / denominator
+print(f"Simulando periodo historico (Ene 2024 - Dic 2025) con {ESQUEMA} compensado...")
+rng_h = np.random.default_rng(SEED_HIST)
+X_hist, Jm_h, Js_h, comp_h = simular(X0_hist, c_hist, r_hist, sigma_hist,
+                                     lam_m_hist, lambda_sismo, N_SIM_HIST, rng_h)
 
 U0_forecast = np.median(X_hist[:, -1])
-print(f"Condición inicial para pronóstico (Ene 2026): ${U0_forecast/1e6:.2f}M")
+print(f"Condicion inicial para pronostico (Ene 2026): ${U0_forecast/1e6:.2f}M")
 
 # -----------------------------
-# PARTE 4: SIMULACIÓN DEL PRONÓSTICO (Ene 2026) CON SEMI-IMPLÍCITO + COMPENSACIÓN
+# PRONÓSTICO (Ene 2026)
 # -----------------------------
-
 forecast_days = 30
-mes_pronostico = 0
+c_ene = ESC_C * (c_t_mensual_usd[0] + c_t_mensual_usd[12]) / 2
+r_ene = ESC_R * (r_t_mensual[0] + r_t_mensual[12]) / 2
+sigma_ene = ESC_S * (sigma_t_mensual[0] + sigma_t_mensual[12]) / 2
 
-c_ene_avg = (c_t_mensual_usd[0] + c_t_mensual_usd[12]) / 2
-r_ene_avg = (r_t_mensual[0] + r_t_mensual[12]) / 2
-sigma_ene_avg = (sigma_t_mensual[0] + sigma_t_mensual[12]) / 2
-sf_ene_avg = seasonal_norm[0]
+c_fc = np.full(forecast_days, c_ene)
+r_fc = np.full(forecast_days, r_ene)
+sigma_fc = np.full(forecast_days, sigma_ene)
+lam_m_fc = np.full(forecast_days, lambda_meteo_annual * seasonal_norm[0])
 
-c_daily_fc = np.full(forecast_days, c_ene_avg / 30.0)
-r_daily_fc = np.full(forecast_days, r_ene_avg)
-sigma_daily_fc = np.full(forecast_days, sigma_ene_avg)
-lambda_meteo_dia_fc = (lambda_meteo_annual / 365) * sf_ene_avg
-lambda_sismo_dia_fc = lambda_sismo / 365
+verificar_H3(r_fc, "pronostico")
 
-np.random.seed(2027)
-N_sim_fc = 1000
-U_forecast = np.zeros((N_sim_fc, forecast_days + 1))
-U_forecast[:, 0] = U0_forecast
-
-print("Simulando pronóstico para Enero 2026 con Semi-Implicito y compensación...")
-
-for sim in range(N_sim_fc):
-    for i in range(forecast_days):
-        u_current = U_forecast[sim, i]
-        deviation_per_policy = abs(u_current - U0_forecast) / N_polizas
-        if deviation_per_policy > ceiling_per_policy:
-            deviation_per_policy = ceiling_per_policy
-
-        total_jump_bruto = 0.0
-        compensacion = 0.0
-
-        n_meteo = np.random.poisson(lambda_meteo_dia_fc)
-        n_sismo = np.random.poisson(lambda_sismo_dia_fc)
-
-        # --- Eventos Meteorológicos ---
-        if n_meteo > 0:
-            pct_affected = np.random.uniform(0.005, 0.02)
-            n_affected = max(1, int(N_polizas * pct_affected))
-            mu_per_policy = deviation_per_policy
-            sigma_per_policy = COEF_VARIACION_METEO * mu_per_policy
-            losses = np.random.normal(mu_per_policy, sigma_per_policy, size=n_affected)
-            losses = np.clip(losses, 0.0, None)
-            total_jump_bruto += np.sum(losses)
-
-        E_loss_meteo = expected_loss_per_event(
-            deviation_per_policy, 0.005, 0.02, N_polizas
-        )
-        compensacion += (-1) * lambda_meteo_dia_fc * E_loss_meteo
-
-        # --- Eventos Sísmicos ---
-        if n_sismo > 0:
-            pct_affected = np.random.uniform(0.01, 0.10)
-            n_affected = max(1, int(N_polizas * pct_affected))
-            mu_per_policy = deviation_per_policy
-            sigma_per_policy = COEF_VARIACION_SISMO * mu_per_policy
-            losses = np.random.normal(mu_per_policy, sigma_per_policy, size=n_affected)
-            losses = np.clip(losses, 0.0, None)
-            total_jump_bruto += np.sum(losses)
-
-        E_loss_sismo = expected_loss_per_event(
-            deviation_per_policy, 0.01, 0.10, N_polizas
-        )
-        compensacion += (-1) * lambda_sismo_dia_fc * E_loss_sismo
-
-        # --- Actualización SEMI-IMPLÍCITA con COMPENSACIÓN ---
-        dW = np.sqrt(dt) * np.random.randn()
-
-        numerator = (
-            u_current * (1 + sigma_daily_fc[i] * dW)
-            + c_daily_fc[i] * dt
-            + compensacion
-            - total_jump_bruto
-        )
-
-        denominator = 1.0 - r_daily_fc[i] * dt
-        if denominator <= 0:
-            denominator = 1e-12
-
-        U_forecast[sim, i+1] = numerator / denominator
+x0_fc = U0_forecast if FORECAST_DESDE == "mediana" else X_hist[:N_SIM_FC, -1]
+print(f"Simulando pronostico para Enero 2026 con {ESQUEMA} compensado...")
+rng_f = np.random.default_rng(SEED_FC)
+U_forecast, Jm_f, Js_f, comp_f = simular(x0_fc, c_fc, r_fc, sigma_fc,
+                                         lam_m_fc, lambda_sismo, N_SIM_FC, rng_f)
 
 # -----------------------------
-# PARTE 5: ESTADÍSTICAS Y DETECCIÓN DE SALTOS
+# ESTADÍSTICAS
 # -----------------------------
-
 median_hist = np.median(X_hist, axis=0) / 1e6
 p05_hist = np.percentile(X_hist, 5, axis=0) / 1e6
 p95_hist = np.percentile(X_hist, 95, axis=0) / 1e6
@@ -1032,172 +1030,153 @@ median_fc = np.median(U_forecast, axis=0) / 1e6
 p05_fc = np.percentile(U_forecast, 5, axis=0) / 1e6
 p95_fc = np.percentile(U_forecast, 95, axis=0) / 1e6
 
-def detect_jumps(median_series):
+# -----------------------------
+# DIAGNÓSTICO DE LA COMPENSACIÓN (martingala)
+# -----------------------------
+def chequeo_martingala(Jm, Js, comp, etiqueta):
+    dJt = Jm + Js - comp[None, :] * dt
+    media = dJt.mean()
+    ee = dJt.std() / math.sqrt(dJt.size)
+    print(f"[{etiqueta}] E[dJ~] = {media:,.0f} USD/paso (EE = {ee:,.0f}) -> "
+          f"{'OK (|z| < 3)' if abs(media) < 3 * ee else 'REVISAR'} | "
+          f"siniestros esperados {comp.mean():,.0f} USD/año vs simulados "
+          f"{(Jm + Js).sum(axis=1).mean() / (Jm.shape[1] * dt):,.0f} USD/año")
+
+
+print("\n--- Chequeo de la compensación ---")
+chequeo_martingala(Jm_h, Js_h, comp_h, "historico")
+chequeo_martingala(Jm_f, Js_f, comp_f, "pronostico")
+
+# -----------------------------
+# DETECCIÓN DE SALTOS EN LA TRAYECTORIA MEDIANA 
+# -----------------------------
+def detect_jumps(median_series, k=K_SIGMA_MEDIANA):
+    """Detecta saltos en la serie mediana usando umbral de k desviaciones estandar."""
     median_usd = median_series * 1e6
     log_returns = np.log(median_usd[1:] / median_usd[:-1])
-    threshold = 3 * np.std(log_returns)
+    threshold = k * np.std(log_returns)
     jump_flags = np.abs(log_returns) > threshold
     jump_indices = np.where(jump_flags)[0] + 1
     jump_times = np.arange(len(median_series))[jump_indices]
     jump_values = median_series[jump_indices]
     return jump_times, jump_values
 
+
 time_historical = np.arange(N_hist + 1)
-jump_times_hist, jump_values_hist = detect_jumps(median_hist)
-
 time_forecast = np.arange(N_hist, N_hist + forecast_days + 1)
-jump_times_fc, jump_values_fc = detect_jumps(median_fc)
+jump_times_hist = jump_values_hist = jump_times_fc = jump_values_fc = np.array([])
+
+if DETECTAR_SALTOS_MEDIANA:
+    jump_times_hist, jump_values_hist = detect_jumps(median_hist)
+    jump_times_fc, jump_values_fc = detect_jumps(median_fc)
+    print("\n--- Saltos detectados en la trayectoria mediana ---")
+    print(f"Historico: {len(jump_times_hist)} saltos (dias: {jump_times_hist.tolist()[:20]})")
+    print(f"Pronostico: {len(jump_times_fc)} saltos (dias del pronostico: {jump_times_fc.tolist()})")
 
 # -----------------------------
-# PARTE 6: GRÁFICA INTERACTIVA CON PLOTLY
+# GRÁFICA INTERACTIVA CON PLOTLY
 # -----------------------------
+if HAY_PLOTLY:
+    fig = go.Figure()
 
-fig = go.Figure()
-
-# Área de incertidumbre histórico
-fig.add_trace(go.Scatter(
-    x=np.concatenate([time_historical, time_historical[::-1]]),
-    y=np.concatenate([p95_hist, p05_hist[::-1]]),
-    fill='toself',
-    fillcolor='rgba(144, 238, 144, 0.3)',
-    line=dict(color='rgba(144, 238, 144, 0)'),
-    hoverinfo="skip",
-    showlegend=True,
-    name='Histórico (5%-95%)'
-))
-
-# Mediana histórica
-fig.add_trace(go.Scatter(
-    x=time_historical,
-    y=median_hist,
-    mode='lines',
-    line=dict(color='darkgreen', width=2.5),
-    name='Mediana (Histórico)'
-))
-
-# Saltos en la mediana histórica
-if len(jump_times_hist) > 0:
+    # Área de incertidumbre histórico
     fig.add_trace(go.Scatter(
-        x=jump_times_hist,
-        y=jump_values_hist,
-        mode='markers',
-        marker=dict(color='red', size=8, symbol='x'),
-        name='Saltos (Histórico)'
-    ))
+        x=np.concatenate([time_historical, time_historical[::-1]]),
+        y=np.concatenate([p95_hist, p05_hist[::-1]]),
+        fill='toself', fillcolor='rgba(144, 238, 144, 0.3)',
+        line=dict(color='rgba(144, 238, 144, 0)'), hoverinfo="skip",
+        showlegend=True, name='Histórico (5%-95%)'))
 
-# Área de incertidumbre del pronóstico
-fig.add_trace(go.Scatter(
-    x=np.concatenate([time_forecast, time_forecast[::-1]]),
-    y=np.concatenate([p95_fc, p05_fc[::-1]]),
-    fill='toself',
-    fillcolor='rgba(205, 92, 92, 0.25)',
-    line=dict(color='rgba(205, 92, 92, 0)'),
-    hoverinfo="skip",
-    showlegend=True,
-    name='Pronóstico (5%-95%)'
-))
-
-# Mediana del pronóstico
-fig.add_trace(go.Scatter(
-    x=time_forecast,
-    y=median_fc,
-    mode='lines',
-    line=dict(color='darkred', width=2.5),
-    name='Mediana (Pronóstico)'
-))
-
-# Saltos en la mediana del pronóstico (¡CORREGIDO!)
-if len(jump_times_fc) > 0:
+    # Mediana histórica
     fig.add_trace(go.Scatter(
-        x=jump_times_fc + N_hist,  # ←←← CORRECCIÓN CLAVE
-        y=jump_values_fc,
-        mode='markers',
-        marker=dict(color='blue', size=10, symbol='star'),
-        name='Saltos (Pronóstico)'
-    ))
+        x=time_historical, y=median_hist, mode='lines',
+        line=dict(color='darkgreen', width=2.5), name='Mediana (Histórico)'))
 
-# Línea divisoria
-fig.add_vline(x=N_hist, line_dash="dash", line_color="black", annotation_text="Inicio del Pronóstico")
+    # Saltos en la mediana histórica
+    if len(jump_times_hist) > 0:
+        fig.add_trace(go.Scatter(
+            x=jump_times_hist, y=jump_values_hist, mode='markers',
+            marker=dict(color='red', size=8, symbol='x'), name='Saltos (Histórico)'))
 
-# Configuración final
-months_full = [f"{y}-{m:02d}" for y in [2024, 2025] for m in range(1, 13)]
-month_labels = months_full[::2]
-month_ticks = np.arange(0, 720, 60)
-all_ticks = np.concatenate([month_ticks, [N_hist + 30]])
-all_labels = month_labels + ["2026-01"]
+    # Área de incertidumbre del pronóstico
+    fig.add_trace(go.Scatter(
+        x=np.concatenate([time_forecast, time_forecast[::-1]]),
+        y=np.concatenate([p95_fc, p05_fc[::-1]]),
+        fill='toself', fillcolor='rgba(205, 92, 92, 0.25)',
+        line=dict(color='rgba(205, 92, 92, 0)'), hoverinfo="skip",
+        showlegend=True, name='Pronóstico (5%-95%)'))
 
-# Configuración final optimizada
-fig.update_layout(
-    title=dict(
-        text='<b>Reservas de la Aseguradora: Histórico (2024–2025) + Pronóstico Ene 2026</b>',
-        subtitle=dict(  # ✅ CORRECCIÓN: subtitle debe ser un diccionario
-            text='<i>Modelo Cramér-Lundberg extendido con Semi-Implícito, Siniestros Realistas y Detección de Saltos (México)</i>'
-        ),
-        x=0.5,
-        xanchor='center',
-        y=0.95,
-        pad=dict(t=10, b=10)
-    ),
-    xaxis_title="<b>Tiempo</b>",
-    yaxis_title="<b>Reservas (Millones USD)</b>",
-    xaxis=dict(
-        tickmode='array', 
-        tickvals=all_ticks, 
-        ticktext=all_labels, 
-        tickangle=45,
-        showgrid=True,
-        gridcolor='lightgray'
-    ),
-    yaxis=dict(
-        showgrid=True,
-        gridcolor='lightgray',
-        zeroline=True,
-        zerolinecolor='black'
-    ),
-    legend=dict(
-        orientation="h", 
-        yanchor="bottom", 
-        y=1.12, 
-        xanchor="right", 
-        x=0.99,
-        font=dict(size=9),
-        bgcolor='rgba(255,255,255,0.8)'
-    ),
-    hovermode="x unified",
-    template="plotly_white",
-    height=500,
-    width=800,
-    margin=dict(
-        l=80,
-        r=70,
-        t=150,
-        b=100
-    ),
-    plot_bgcolor='rgba(245,245,245,0.5)'
-)
-fig.show()
+    # Mediana del pronóstico
+    fig.add_trace(go.Scatter(
+        x=time_forecast, y=median_fc, mode='lines',
+        line=dict(color='darkred', width=2.5), name='Mediana (Pronóstico)'))
+
+    # Saltos en la mediana del pronóstico
+    if len(jump_times_fc) > 0:
+        fig.add_trace(go.Scatter(
+            x=jump_times_fc + N_hist, y=jump_values_fc, mode='markers',
+            marker=dict(color='blue', size=10, symbol='star'), name='Saltos (Pronóstico)'))
+
+    # Línea divisoria
+    fig.add_vline(x=N_hist, line_dash="dash", line_color="black",
+                  annotation_text="Inicio del Pronóstico")
+
+    months_full = [f"{y}-{m:02d}" for y in [2024, 2025] for m in range(1, 13)]
+    month_labels = months_full[::2]
+    month_ticks = np.arange(0, 720, 60)
+    all_ticks = np.concatenate([month_ticks, [N_hist + 30]])
+    all_labels = month_labels + ["2026-01"]
+
+    fig.update_layout(
+        title=dict(
+            text='<b>Reservas de la Aseguradora: Histórico (2024–2025) + Pronóstico Ene 2026</b>',
+            subtitle=dict(text=f'<i>Cramér-Lundberg extendido (forma compensada) con {ESQUEMA} y detección de saltos en la mediana</i>'),
+            x=0.5, xanchor='center', y=0.95, pad=dict(t=10, b=10)),
+        xaxis_title="<b>Tiempo</b>", yaxis_title="<b>Reservas (Millones USD)</b>",
+        xaxis=dict(tickmode='array', tickvals=all_ticks, ticktext=all_labels,
+                   tickangle=45, showgrid=True, gridcolor='lightgray'),
+        yaxis=dict(showgrid=True, gridcolor='lightgray', zeroline=True, zerolinecolor='black'),
+        legend=dict(orientation="h", yanchor="bottom", y=1.12, xanchor="right", x=0.99,
+                    font=dict(size=9), bgcolor='rgba(255,255,255,0.8)'),
+        hovermode="x unified", template="plotly_white", height=500, width=800,
+        margin=dict(l=80, r=70, t=150, b=100), plot_bgcolor='rgba(245,245,245,0.5)')
+    fig.show()
 
 # -----------------------------
-# PARTE 7: RESUMEN DEL PRONÓSTICO
+# GUARDADO DE LAS TRAYECTORIAS
 # -----------------------------
-
-print(f"\nPronóstico para Enero 2026:")
+print(f"\nPronóstico para Enero 2026 ({ESQUEMA} compensado):")
 print(f"- Reserva inicial: ${U0_forecast/1e6:.2f}M")
 print(f"- Mediana final:  ${median_fc[-1]:.2f}M")
 print(f"- IC (5%-95%):    [${p05_fc[-1]:.2f}M, ${p95_fc[-1]:.2f}M]")
+
+if GUARDAR_NPZ:                                            # [RESTAURADO]
+    # Se guardan las trayectorias y las tasas anuales usadas (para el residuo del detector).
+    # Jm_hist / Js_hist (saltos verdaderos) solo se usan en el script de estimacion
+    # para una validacion OPCIONAL al final; la inferencia no los utiliza.
+    np.savez_compressed(
+        ARCHIVO_NPZ,
+        X_hist=X_hist, U_forecast=U_forecast,
+        c_hist=c_hist, r_hist=r_hist, sigma_hist=sigma_hist,
+        c_fc=c_fc, r_fc=r_fc, sigma_fc=sigma_fc,
+        Jm_hist=Jm_h, Js_hist=Js_h,
+        dt=dt, esquema=ESQUEMA, seed=SEED_HIST,
+        E_meteo=E_METEO, E_sismo=E_SISMO,
+        lambda_meteo_annual=lambda_meteo_annual, lambda_sismo=lambda_sismo)
+    print(f"\nTrayectorias guardadas en: {ARCHIVO_NPZ}  ({X_hist.shape[0]} trayectorias x {X_hist.shape[1]} puntos)")
+
 ```
 
-
-:::: {style="text-align:justify"}
+::: {style="text-align:justify"}
 ## Análisis de la Trayectoria Mediana y Estructura de Saltos {#sec-an_tra_med_sal}
 
-La @fig-milstein y la @fig-semi_implicito_pdf presenta las trayectorias medianas e intervalos de confianza. Se observan tres hallazgos críticos:
+La @fig-milstein y la @fig-semi_implicito presenta las trayectorias medianas e intervalos de confianza. Se observan tres hallazgos críticos:
 
 a)  **Sesgo sistemático en la tendencia**: El esquema semi-implícito genera reservas medianas consistentemente superiores ($+2.30\%$ al final del periodo). Esto se explica matemáticamente por la desigualdad: $$\frac{1}{1 - r\Delta t} > 1 + r\Delta t + \mathcal{O}((r\Delta t)^2), \quad \forall r\Delta t \in (0,1),$$ {#eq-sesgo_implicito}
 
 que amplifica el efecto de capitalización del término $r(t)U(t)$. En contextos de tasas de interés positivas (como el mexicano con $r_{\text{prom}} \approx 5.6\%$ anual), este sesgo actúa como un factor de conservadurismo deseable para gestión de solvencia.
 
-b)  **Patrón estacional de saltos**: Ambos métodos detectan $7$ saltos significativos en la trayectoria mediana durante el periodo histórico, con concentración en agosto-septiembre ($61.1\%$ de los saltos), coincidiendo con la temporada de huracanes (@fig-milstein, @fig-semi_implicito_pdf marcadores rojos/azules). La coincidencia espacio-temporal de los saltos ($94.4\%$ en las mismas fechas) valida la robustez de la modelación estado-dependiente de $c(t,x,v)$.
+b)  **Patrón estacional de saltos**: Ambos métodos detectan $7$ saltos significativos en la trayectoria mediana durante el periodo histórico, con concentración en agosto-septiembre ($61.1\%$ de los saltos), coincidiendo con la temporada de huracanes (@fig-milstein, @fig-semi_implicito marcadores rojos/azules). La coincidencia espacio-temporal de los saltos ($94.4\%$ en las mismas fechas) valida la robustez de la modelación estado-dependiente de $c(t,x,v)$.
 
 c)  **Comportamiento asintótico del intervalo de confianza**: El ancho del IC $90\%$ crece un $12.54\%$ más rápido en el esquema Semi-implícito. Esto refleja una mayor dispersión en las trayectorias extremas, atribuible a la no linealidad introducida por el denominador $1 - r(t_n)\Delta t$ en la @eq-semiimplicito_formal, que amplifica las realizaciones con $\Delta W_n > 0$.
 
@@ -1211,42 +1190,36 @@ La elección de la mediana como estadístico de pronóstico es rigurosamente jus
 
 ## Distribución de severidad de los saltos detectados y distribución de los tiempos entre detecciones
 
-La presente sección constituye la continuación del análisis de la trayectoria mediana y de la formulación metodológica establecida en la @sec-Es_N_Pa_D_S_S_html  y @sec-Dis_tiem_entre_saltos. Mientras que en la @sec-an_tra_med_sal se estudia la trayectoria agregada mediante estadísticos del ensamble, en esta sección se utiliza la información completa de las $N_{\mathrm{sim}}=1000$ trayectorias simuladas mediante los esquemas de **Milstein compensado** y **Semi-Implícito compensado**.
+La presente sección constituye la continuación del análisis de la trayectoria mediana y de la formulación metodológica establecida en la @sec-Es_N_Pa_D_S_S_html y @sec-Dis_tiem_entre_saltos. Mientras que en la @sec-an_tra_med_sal se estudia la trayectoria agregada mediante estadísticos del ensamble, en esta sección se utiliza la información completa de las $N_{\mathrm{sim}}=1000$ trayectorias simuladas mediante los esquemas de **Milstein compensado** y **Semi-Implícito compensado**.
 
 Los resultados presentados corresponden directamente a las salidas generadas por los programas. Ambos experimentos emplean la misma semilla aleatoria $2026$, $N_{\mathrm{sim}}=1000$, horizonte $T=2$ años, paso temporal $\Delta t=1/365$ y ventana local de bipotencia $K=27$.
-::::
+:::
 
 ### Configuración común y calibración del detector
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 La detección de saltos se realiza sobre las trayectorias completas de cada esquema. Para cada observación se utiliza el umbral
 
-$$
-\tau_n(t_{i-1})
+$$\tau_n(t_{i-1})
 =
 \alpha\widehat{\sigma}(t_{i-1})
-\Delta_n^{\varpi},
-$$ {#eq-9-6-umbral}
+\Delta_n^{\varpi},$$ {#eq-9-6-umbral}
 
 donde $\widehat{\sigma}$ es la estimación local de escala obtenida mediante la construcción de variación bipotencia agregada y $(\alpha,\varpi)$ determina el nivel de sensibilidad del detector. La formulación está relacionada con los procedimientos de detección no paramétrica mediante umbral desarrollados para procesos con difusión estocástica y saltos [@mancini2009], mientras que la utilización de estadísticos normalizados para detectar saltos constituye un antecedente relacionado en [@lee2008,].
 
 El cual genera una tabla de sensibilidad para
 
-$$
-\alpha\in\{2.00,2.25,\ldots,5.00\},
+$$\alpha\in\{2.00,2.25,\ldots,5.00\},
 \qquad
-\varpi\in\{0.40,0.45,0.49\}.
-$$ {#eq-9-6-grid-umbral}
+\varpi\in\{0.40,0.45,0.49\}.$$ {#eq-9-6-grid-umbral}
 
 El par $(\alpha,\varpi)=(3.5,0.45)$ se fija como configuración de referencia para el resto del análisis. Por tanto, $(3.5,0.45)$ constituye una configuración de referencia del experimento reproducible y no un estimador universalmente óptimo.
 
-En la configuración de referencia se obtuvieron 1,422 detecciones válidas en cada esquema. 
-
-::::
+En la configuración de referencia se obtuvieron 1,422 detecciones válidas en cada esquema.
+:::
 
 | Parámetro | Milstein compensado | Semi-Implícito compensado |
-|---|---:|---:|
+|----|---:|---:|
 | Semilla | 2026 | 2026 |
 | $N_{\mathrm{sim}}$ | 1000 | 1000 |
 | $T$ (años) | 2 | 2 |
@@ -1259,1097 +1232,234 @@ En la configuración de referencia se obtuvieron 1,422 detecciones válidas en c
 | Detecciones por trayectoria | 1.422 | 1.422 |
 | Detecciones descartadas por signo/no finitas | 1 | 1 |
 
-: Configuración común y resultados del detector en la configuración de referencia. {#tbl-9-6-configuracion}
-
+: Configuración común y resultados del detector en la configuración de referencia.
 
 ### Distribución agregada de las severidades detectadas
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 Para cada esquema $q\in\{\mathrm{Mil},\mathrm{SI}\}$ se construye una única muestra agregada de severidades positivas detectadas,
 
-$$
-\mathcal{Y}_q
+$$\mathcal{Y}_q
 =
 \left\{
 \widehat{Y}_{i}^{(q,j)}
 :
 i\in D^{(q,j)},
 \ \widehat{Y}_{i}^{(q,j)}>0
-\right\}.
-$$ {#eq-9-6-muestra-severidad}
+\right\}.$$ {#eq-9-6-muestra-severidad}
 
 Esta muestra contiene las detecciones provenientes de las 1000 trayectorias. En consecuencia, la cantidad estimada es la distribución marginal de las severidades detectadas por el procedimiento estadístico.
-::::
+:::
 
 | Estadístico | Milstein compensado | Semi-Implícito compensado |
-|---|---:|---:|
+|--------------------|-------------------------:|-------------------------:|
 | Número de severidades detectadas | 1,422 | 1,422 |
 | Media (USD) | 1,792,982.74 | 1,793,024.23 |
 | Mediana (USD) | 1,513,050.23 | 1,513,140.12 |
-| IC 95 % de la media | [1,733,759.19; 1,854,807.13] | [1,733,800.71; 1,854,849.50] |
-| IC 95 % de la mediana | [1,466,575.04; 1,566,256.61] | [1,466,569.85; 1,566,329.17] |
+| IC 95 % de la media | \[1,733,759.19; 1,854,807.13\] | \[1,733,800.71; 1,854,849.50\] |
+| IC 95 % de la mediana | \[1,466,575.04; 1,566,256.61\] | \[1,466,569.85; 1,566,329.17\] |
 
-: Estadísticos de la distribución agregada de severidades y sus intervalos bootstrap. {#tbl-9-6-severidad-resumen}
+: Estadísticos de la distribución agregada de severidades y sus intervalos bootstrap.
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 La diferencia entre las medias de severidad es
 
-$$
-\Delta\overline{Y}
+$$\Delta\overline{Y}
 =
 \overline{Y}_{\mathrm{SI}}
 -
 \overline{Y}_{\mathrm{Mil}}
 =
-41.489063 \text{USD},
-$$ {#eq-9-6-diferencia-media}
+41.489063 \text{USD},$$ {#eq-9-6-diferencia-media}
 
 equivalente aproximadamente a $0.00231 \%$ de la media de Milstein. Para las medianas,
 
-$$
-\Delta\operatorname{Med}(Y)
+$$\Delta\operatorname{Med}(Y)
 =
 \operatorname{Med}(Y_{\mathrm{SI}})
 -
 \operatorname{Med}(Y_{\mathrm{Mil}})
 =
-89.884675 \text{USD},
-$$ {#eq-9-6-diferencia-mediana}
+89.884675 \text{USD},$$ {#eq-9-6-diferencia-mediana}
 
 equivalente aproximadamente a $0.00594 \%$. Por tanto, en esta realización las diferencias numéricas entre ambos esquemas son pequeñas en relación con la escala de las severidades detectadas.
-::::
+:::
 
 ### Estimación no paramétrica mediante ECDF
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 La estimación no paramétrica de la función de distribución se obtiene mediante la función de distribución empírica,
 
-
-
-$$
-\widehat{F}_{Y,q}(y)
+$$\widehat{F}_{Y,q}(y)
 =
 \frac{1}{n_Y}
 \sum_{\ell=1}^{n_Y}
-\mathbf{1}_{\{Y_\ell\leq y\}}.
-$$ {#eq-9-6-ecdf-severidad}
+\mathbf{1}_{\{Y_\ell\leq y\}}.$$ {#eq-9-6-ecdf-severidad}
 
 La ECDF no requiere seleccionar una familia paramétrica para describir la severidad y constituye, por tanto, la representación principal de la distribución acumulada estimada. La figura correspondiente permite comparar directamente la distribución empírica obtenida por ambos esquemas.
-
-::::
+:::
 
 ```{python}
 #| echo: true
-# -*- coding: utf-8 -*-
-import os
+
 import json
+import math
 import warnings
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 from scipy import stats
 from scipy.optimize import minimize
-from scipy.stats import truncnorm, gaussian_kde
+from scipy.stats import gaussian_kde
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 warnings.filterwarnings("ignore")
 
 # =============================================================================
-# CONFIGURACIÓN REPRODUCIBLE
+# CONFIGURACIÓN
 # =============================================================================
-SEED = 2026
-rng = np.random.default_rng(SEED)
-
-N_SIM = 1000
-T_HIST = 2.0                    # años
-DT = 1.0 / 365.0               # paso diario expresado en años
-N_HIST = int(round(T_HIST / DT))
-DIAS_POR_ANIO = 365
-TIPO_CAMBIO = 18.5
-
-B_BOOT = 1000                   # bootstrap por trayectoria
-ALPHA_VALUES = np.arange(2.0, 5.01, 0.25)
-VARPI_VALUES = [0.40, 0.45, 0.49]
-ALPHA_REFERENCIA = 3.5
-VARPI_REFERENCIA = 0.45
-MIN_DETECCIONES = 30
-
-OUTPUT_DIR = Path.cwd() / "salidas_milstein_agregado"
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
-# =============================================================================
-# 1. CALIBRACIÓN DEL MODELO GENERADOR
-# =============================================================================
-N_POLIZAS = 6800
-PRIMA_BASE_POR_POLIZA = 850.00
-DELTA = 0.0015
-X0_HIST = 500e6
-
-inflacion_mensual = np.array([
-    0.52, 0.38, 0.38, 0.41, 0.45, 0.49, 0.55, 0.61,
-    0.58, 0.47, 0.42, 0.39, 0.35, 0.50, 0.37, 0.40,
-    0.44, 0.48, 0.53, 0.59, 0.56, 0.46, 0.41, 0.38
-]) / 100.0
-
-g = inflacion_mensual + DELTA
-primas_por_poliza_mxn = PRIMA_BASE_POR_POLIZA * np.exp(np.cumsum(g))
-c_t_mensual_usd = np.round(primas_por_poliza_mxn * N_POLIZAS / TIPO_CAMBIO, 2)
-
-# Dos mecanismos generadores del MODELO; no son clases inferidas.
-lambda_1_annual = 6.0
-lambda_2_annual = 0.15
-seasonal_raw = np.array([0.3, 0.3, 0.4, 0.6, 1.0, 1.8, 2.2, 2.5, 2.8, 2.3, 1.2, 0.5])
-seasonal_norm = seasonal_raw / seasonal_raw.mean()
-
-# Marcas generadoras del modelo. Sus etiquetas no pasan al bloque inferencial.
-mu_1, sigma_1 = 12.5, 1.0
-mu_2, sigma_2 = 1_742_000.0, 875_000.0
-a_trunc_2 = (0.0 - mu_2) / sigma_2
-
-EY_1 = np.exp(mu_1 + 0.5 * sigma_1**2)
-EY_2 = truncnorm.mean(a_trunc_2, np.inf, loc=mu_2, scale=sigma_2)
-
-r_t_mensual = np.array([
-    0.606, 0.602, 0.600, 0.597, 0.593, 0.589,
-    0.586, 0.582, 0.578, 0.574, 0.570, 0.566,
-    0.562, 0.559, 0.555, 0.551, 0.547, 0.543,
-    0.539, 0.535, 0.532, 0.528, 0.524, 0.520
-]) / 100.0
-
-sigma_t_mensual = np.array([
-    0.44, 0.47, 0.50, 0.53, 0.59, 0.74,
-    0.89, 1.34, 1.19, 0.98, 0.74, 0.68,
-    0.65, 0.60, 0.58, 0.60, 0.65, 0.74,
-    0.89, 0.82, 0.95, 0.86, 0.74, 0.68
-]) / 100.0
-
-t_years = np.arange(N_HIST + 1) * DT
-t_months = t_years[:-1] * 12.0
-months = np.arange(24)
-
-r_hist = np.interp(t_months, months, r_t_mensual)
-sigma_hist = np.interp(t_months, months, sigma_t_mensual)
-c_hist = np.interp(t_months, months, c_t_mensual_usd)
-
-# =============================================================================
-# 2. SIMULACIÓN MONTE CARLO: 1000 TRAYECTORIAS
-# =============================================================================
-def simular_trayectorias():
-    """
-    Genera X_hist. No devuelve un registro de tipos de evento.
-    Una vez generada la matriz, la inferencia usa únicamente X_hist.
-    """
-    X = np.zeros((N_SIM, N_HIST + 1), dtype=float)
-    X[:, 0] = X0_HIST
-
-    for sim in range(N_SIM):
-        for i in range(N_HIST):
-            mes = int(t_months[i]) % 12
-
-            lam1_step = (lambda_1_annual / DIAS_POR_ANIO) * seasonal_norm[mes]
-            lam2_step = lambda_2_annual / DIAS_POR_ANIO
-
-            n1 = rng.poisson(lam1_step)
-            n2 = rng.poisson(lam2_step)
-
-            total_jump = 0.0
-            if n1 > 0:
-                total_jump += np.exp(rng.normal(mu_1, sigma_1, size=n1)).sum()
-            if n2 > 0:
-                total_jump += truncnorm.rvs(
-                    a_trunc_2, np.inf, loc=mu_2, scale=sigma_2,
-                    size=n2, random_state=rng
-                ).sum()
-
-            # Compensación del salto por paso de un día.
-            compensacion_step = -(lam1_step * EY_1 + lam2_step * EY_2)
-
-            x = X[sim, i]
-            dW = np.sqrt(DT) * rng.normal()
-
-            drift = c_hist[i] * DT + r_hist[i] * x * DT
-            diffusion = sigma_hist[i] * x * dW
-            milstein_corr = 0.5 * sigma_hist[i]**2 * x * (dW**2 - DT)
-
-            X[sim, i + 1] = (
-                x + drift + compensacion_step + diffusion
-                + milstein_corr - total_jump
-            )
-
-    return X
-
-
-#print("=" * 84)
-#print("SIMULACIÓN: Milstein Compensado")
-#print("=" * 84)
-X_hist = simular_trayectorias()
-#print(f"Trayectorias simuladas: {X_hist.shape[0]}")
-#print(f"Pasos por trayectoria: {X_hist.shape[1]-1}")
-#print(f"Semilla: {SEED}")
-
-# Desde aquí NO se usa ninguna etiqueta causal.
-# La única entrada estadística es X_hist.
-
-# =============================================================================
-# 3. ESTIMACIÓN LOCAL DE VOLATILIDAD: BIPOWER VARIATION
-# =============================================================================
-def calcular_bipower_variation(trayectorias, K_window, dt):
-    M, N = trayectorias.shape
-
-    prev = trayectorias[:, :-1]
-    nxt = trayectorias[:, 1:]
-    if np.any(prev == 0):
-        raise ValueError("Se encontraron niveles U(t_{i-1})=0; no puede formarse el incremento relativo.")
-
-    r_tilde = np.zeros((M, N))
-    r_tilde[:, 1:] = (nxt - prev) / prev
-
-    abs_r = np.abs(r_tilde)
-    P = abs_r[:, :-1] * abs_r[:, 1:]
-    cumP = np.hstack([np.zeros((M, 1)), np.cumsum(P, axis=1)])
-
-    sigma_sq = np.zeros(N)
-    for n in range(K_window, N):
-        ventana = cumP[:, n] - cumP[:, n - K_window]
-        sigma_sq[n] = (np.pi / 2.0) * ventana.sum() / (K_window * M * dt)
-
-    sigma_sq[:K_window] = sigma_sq[K_window]
-    sigma_sq = np.maximum(sigma_sq, 1e-18)
-    return np.sqrt(sigma_sq), r_tilde
-
-
-K_window = int(np.sqrt(N_HIST))
-sigma_hat, r_tilde = calcular_bipower_variation(X_hist, K_window, DT)
-
-# =============================================================================
-# 4. DETECCIÓN POR UMBRAL Y EXTRACCIÓN DE SEVERIDADES
-# =============================================================================
-def construir_umbral(sigma_local, dt, alpha, varpi):
-    return alpha * sigma_local * (dt ** varpi)
-
-
-def detectar_saltos_umbral(trayectorias, r_tilde, sigma_local, dt,
-                            alpha, varpi, c_serie, r_serie):
-    M, N = trayectorias.shape
-    tau = construir_umbral(sigma_local, dt, alpha, varpi)
-
-    U_prev = trayectorias[:, :-1]
-    drift_rel = c_serie[np.newaxis, :N-1] / U_prev + r_serie[np.newaxis, :N-1]
-
-    e_tilde = np.zeros((M, N))
-    e_tilde[:, 1:] = r_tilde[:, 1:] - drift_rel * dt
-
-    D = np.zeros((M, N), dtype=bool)
-    D[:, 1:] = np.abs(e_tilde[:, 1:]) > tau[np.newaxis, 1:]
-    return D, e_tilde, tau
-
-
-def extraer_severidades(trayectorias, e_tilde, D):
-    idx_traj, idx_t = np.where(D)
-    if len(idx_t) == 0:
-        return np.array([]), np.empty((0, 2), dtype=int), 0
-
-    U_prev = trayectorias[idx_traj, idx_t - 1]
-    Y_hat = -e_tilde[idx_traj, idx_t] * U_prev
-
-    # En el modelo los siniestros disminuyen la reserva: Y_hat debe ser > 0.
-    valid = np.isfinite(Y_hat) & (Y_hat > 0)
-    descartadas_signo = int((~valid).sum())
-
-    indices = np.column_stack([idx_traj[valid], idx_t[valid]])
-    return Y_hat[valid], indices, descartadas_signo
-
-
-# =============================================================================
-# 5. CALIBRACIÓN DEL DETECTOR SIN INFORMACIÓN 
-# =============================================================================
-def tabla_calibracion(trayectorias, r_tilde, sigma_local):
-    rows = []
-
-    for varpi in VARPI_VALUES:
-        for alpha in ALPHA_VALUES:
-            D, e, tau = detectar_saltos_umbral(
-                trayectorias, r_tilde, sigma_local, DT,
-                float(alpha), float(varpi), c_hist, r_hist
-            )
-            sev, idx, fp_sign = extraer_severidades(trayectorias, e, D)
-            counts = np.bincount(idx[:, 0], minlength=N_SIM) if len(idx) else np.zeros(N_SIM, dtype=int)
-
-            z = tau[1:] / (sigma_local[1:] * np.sqrt(DT))
-            fp_gauss = float(np.mean(2.0 * stats.norm.sf(z)))
-
-            rows.append({
-                "alpha": float(alpha),
-                "varpi": float(varpi),
-                "n_detecciones_validas": int(len(sev)),
-                "detecciones_por_trayectoria": float(len(sev) / N_SIM),
-                "trayectorias_con_deteccion": int(np.sum(counts > 0)),
-                "mediana_severidad": float(np.median(sev)) if len(sev) else np.nan,
-                "media_severidad": float(np.mean(sev)) if len(sev) else np.nan,
-                "q90_severidad": float(np.quantile(sev, 0.90)) if len(sev) else np.nan,
-                "descartadas_por_signo": int(fp_sign),
-                "prob_fp_gauss_aprox_por_incremento": fp_gauss
-            })
-
-    return pd.DataFrame(rows)
-
-
-def agregar_diagnosticos_estabilidad(tabla):
-    
-    partes = []
-    for varpi, sub in tabla.groupby("varpi"):
-        sub = sub.sort_values("alpha").copy()
-        sub["cambio_rel_N_siguiente"] = (
-            sub["n_detecciones_validas"].shift(-1) - sub["n_detecciones_validas"]
-        ).abs() / sub["n_detecciones_validas"].clip(lower=1)
-
-        sub["cambio_rel_mediana_siguiente"] = (
-            sub["mediana_severidad"].shift(-1) - sub["mediana_severidad"]
-        ).abs() / sub["mediana_severidad"].abs().clip(lower=1.0)
-
-        partes.append(sub)
-    return pd.concat(partes, ignore_index=True)
-
-
-calib = tabla_calibracion(X_hist, r_tilde, sigma_hat)
-calib = agregar_diagnosticos_estabilidad(calib)
-calib.to_csv(OUTPUT_DIR / "01_calibracion_umbral.csv", index=False)
-
-alpha_opt, varpi_opt = ALPHA_REFERENCIA, VARPI_REFERENCIA
-
-#print("\nCALIBRACIÓN DEL UMBRAL ")
-#print("Se generó la tabla completa de sensibilidad (alpha, varpi).")
-#print("No se fuerza un 'óptimo' sin información externa u objetivo de pérdida.")
-#print(f"Valor de referencia para continuar: alpha={alpha_opt:.2f}, varpi={varpi_opt:.2f}")
-#print("La elección final debe justificarse con estabilidad y sensibilidad.")
-
-D_opt, e_opt, tau_opt = detectar_saltos_umbral(
-    X_hist, r_tilde, sigma_hat, DT,
-    alpha_opt, varpi_opt, c_hist, r_hist
-)
-severidades, indices, descartadas_signo = extraer_severidades(X_hist, e_opt, D_opt)
-
-if len(severidades) < MIN_DETECCIONES:
-    raise RuntimeError("Muy pocas detecciones válidas para estimar una distribución.")
-
-#print(f"Detecciones válidas: {len(severidades)}")
-#print(f"Descartadas por signo/no finitas: {descartadas_signo}")
-
-# =============================================================================
-# 6. DISTRIBUCIÓN AGREGADA DE SEVERIDADES DETECTADAS
-# =============================================================================
-def ecdf(x):
-    xx = np.sort(np.asarray(x))
-    ff = np.arange(1, len(xx)+1) / len(xx)
-    return xx, ff
-
-
-def kde_log_severidad(y):
-    """
-    KDE sobre Z=log(Y). La densidad en la escala original se obtiene por:
-       f_Y(y) = f_Z(log y) / y.
-    """
-    y = np.asarray(y)
-    y = y[np.isfinite(y) & (y > 0)]
-    z = np.log(y)
-    kde = gaussian_kde(z, bw_method="scott")
-
-    qlo, qhi = np.quantile(y, [0.001, 0.999])
-    grid_y = np.geomspace(max(qlo, np.min(y)), max(qhi, qlo * 1.001), 500)
-    dens_y = kde(np.log(grid_y)) / grid_y
-    return grid_y, dens_y, kde
-
-
-def ajustar_familias_severidad_agregada(y):
-    """
-    Ajustes PARAMÉTRICOS AGREGADOS opcionales.
-    Ninguna familia representa un tipo de siniestro.
-    """
-    y = np.asarray(y)
-    y = y[(y > 0) & np.isfinite(y)]
-    fits = []
-
-    # Lognormal
-    sh, loc, sc = stats.lognorm.fit(y, floc=0)
-    ll = stats.lognorm.logpdf(y, sh, loc=0, scale=sc).sum()
-    fits.append(("Lognormal", 2, ll, {"sigma_log": sh, "mu_log": np.log(sc)}))
-
-    # Gamma
-    a, loc, sc = stats.gamma.fit(y, floc=0)
-    ll = stats.gamma.logpdf(y, a, loc=0, scale=sc).sum()
-    fits.append(("Gamma", 2, ll, {"shape": a, "scale": sc}))
-
-    # Weibull
-    c, loc, sc = stats.weibull_min.fit(y, floc=0)
-    ll = stats.weibull_min.logpdf(y, c, loc=0, scale=sc).sum()
-    fits.append(("Weibull", 2, ll, {"shape": c, "scale": sc}))
-
-    out = []
-    for name, k, ll, pars in fits:
-        out.append({
-            "familia": name,
-            "logLik": float(ll),
-            "AIC": float(2*k - 2*ll),
-            "parametros": json.dumps({k: float(v) for k, v in pars.items()})
-        })
-    return pd.DataFrame(out).sort_values("AIC")
-
-
-sev_x, sev_F = ecdf(severidades)
-grid_y, dens_y, kde_y = kde_log_severidad(severidades)
-
-pd.DataFrame({"severidad_usd": severidades}).to_csv(
-    OUTPUT_DIR / "02_severidades_detectadas_agregadas.csv", index=False
-)
-pd.DataFrame({"y": sev_x, "F_empirica": sev_F}).to_csv(
-    OUTPUT_DIR / "03_ecdf_severidad.csv", index=False
-)
-pd.DataFrame({"y": grid_y, "densidad_kde": dens_y}).to_csv(
-    OUTPUT_DIR / "04_kde_severidad.csv", index=False
-)
-
-fits_sev = ajustar_familias_severidad_agregada(severidades)
-fits_sev.to_csv(OUTPUT_DIR / "05_familias_severidad_agregada.csv", index=False)
-
-# =============================================================================
-# 7. BOOTSTRAP POR TRAYECTORIA PARA SEVERIDAD
-#    Condicional al detector calibrado.
-# =============================================================================
-sev_por_tray = [severidades[indices[:, 0] == j] for j in range(N_SIM)]
-
-def bootstrap_severidad_por_trayectoria(B=B_BOOT):
-    boot = []
-    for b in range(B):
-        sampled = rng.integers(0, N_SIM, size=N_SIM)
-        partes = [sev_por_tray[j] for j in sampled if len(sev_por_tray[j]) > 0]
-        if not partes:
-            continue
-        s = np.concatenate(partes)
-        boot.append([
-            len(s),
-            np.mean(s),
-            np.median(s),
-            np.quantile(s, 0.25),
-            np.quantile(s, 0.75),
-            np.quantile(s, 0.90),
-            np.quantile(s, 0.95)
-        ])
-    return np.asarray(boot)
-
-
-boot_sev = bootstrap_severidad_por_trayectoria()
-cols_boot = ["n", "media", "mediana", "q25", "q75", "q90", "q95"]
-pd.DataFrame(boot_sev, columns=cols_boot).to_csv(
-    OUTPUT_DIR / "06_bootstrap_severidad.csv", index=False
-)
-
-def ic_percentil(v):
-    return np.quantile(v, [0.025, 0.975])
-
-resumen_sev = {
-    "n_detectadas": int(len(severidades)),
-    "media": float(np.mean(severidades)),
-    "mediana": float(np.median(severidades)),
-    "q25": float(np.quantile(severidades, .25)),
-    "q75": float(np.quantile(severidades, .75)),
-    "q90": float(np.quantile(severidades, .90)),
-    "q95": float(np.quantile(severidades, .95)),
-    "IC95_media": ic_percentil(boot_sev[:, 1]).tolist(),
-    "IC95_mediana": ic_percentil(boot_sev[:, 2]).tolist()
+ESQUEMAS = {
+    "Milstein": ("Milstein compensado", "trayectorias_milstein_compensado.npz"),
+    "SI": ("Semi-Implícito compensado", "trayectorias_semiimplicito_compensado.npz"),
 }
+SEED = 2026
+B_BOOT = 1000
+ALPHA_REF, VARPI_REF = 3.0, 0.45
+K_BIPOWER = None
+BANDWIDTHS = [30, 60, 91, 182]
+BW_REF = 30
+BW_KDE = "scott"
+MIN_COMPLETOS_AJUSTE = 10
+MIN_SEVERIDADES_AJUSTE = 10
+DIAS_ANIO = 365
+
+CARPETA_NPZ = Path.cwd()
+CARPETA_OUT = CARPETA_NPZ / "salidas_estimacion"
+CARPETA_OUT.mkdir(parents=True, exist_ok=True)
 
 # =============================================================================
-# 8. TIEMPOS DE DETECCIÓN POR TRAYECTORIA
+# FUNCIONES DE CARGA Y PROCESAMIENTO
 # =============================================================================
-tiempos_por_tray = []
-for j in range(N_SIM):
-    idx_j = indices[indices[:, 0] == j, 1]
-    # índice de malla -> días desde el inicio
-    t_j = np.sort(idx_j.astype(float))
-    tiempos_por_tray.append(t_j)
-
-gaps_completos = []
-gaps_por_tray = []
-censurados = []
-cens_por_tray = []
-
-for j, tt in enumerate(tiempos_por_tray):
-    g = np.diff(tt) if len(tt) >= 2 else np.array([], dtype=float)
-    g = g[g > 0]
-    gaps_por_tray.append(g)
-    gaps_completos.extend(g.tolist())
-
-    # Censura terminal: válida para la espera iniciada en la última detección.
-    if len(tt) >= 1:
-        c = N_HIST - tt[-1]
-        if c >= 0:
-            censurados.append(float(c))
-            cens_por_tray.append(np.array([float(c)]))
-        else:
-            cens_por_tray.append(np.array([], dtype=float))
-    else:
-        # No se crea una falsa espera "entre saltos" para trayectorias sin detecciones.
-        cens_por_tray.append(np.array([], dtype=float))
-
-gaps_completos = np.asarray(gaps_completos, dtype=float)
-censurados = np.asarray(censurados, dtype=float)
-
-pd.DataFrame({"gap_dias": gaps_completos}).to_csv(
-    OUTPUT_DIR / "07_gaps_completos.csv", index=False
-)
-pd.DataFrame({"censura_terminal_dias": censurados}).to_csv(
-    OUTPUT_DIR / "08_censuras_terminales.csv", index=False
-)
-
-# =============================================================================
-# 9. KAPLAN-MEIER DESCRIPTIVO PARA LA DISTRIBUCIÓN MARGINAL DE GAPS
-# =============================================================================
-def kaplan_meier(completos, cens):
-    """
-    Estimador KM aplicado a la colección marginal de gaps.
-    Los gaps múltiples de una trayectoria pueden ser dependientes; por ello se usa
-    como estimador descriptivo y la incertidumbre se obtiene por bootstrap de trayectoria.
-    """
-    t = np.concatenate([np.asarray(completos), np.asarray(cens)])
-    event = np.concatenate([
-        np.ones(len(completos), dtype=int),
-        np.zeros(len(cens), dtype=int)
-    ])
-    order = np.argsort(t)
-    t, event = t[order], event[order]
-
-    unique_times = np.unique(t)
-    S = 1.0
-    rows = [(0.0, 1.0, len(t), 0, 0)]
-
-    for u in unique_times:
-        at_risk = int(np.sum(t >= u))
-        d = int(np.sum((t == u) & (event == 1)))
-        c = int(np.sum((t == u) & (event == 0)))
-        if at_risk > 0 and d > 0:
-            S *= (1.0 - d / at_risk)
-        rows.append((float(u), float(S), at_risk, d, c))
-
-    return pd.DataFrame(rows, columns=["tiempo_dias", "S_KM", "en_riesgo", "eventos", "censuras"])
-
-
-km = kaplan_meier(gaps_completos, censurados)
-km.to_csv(OUTPUT_DIR / "09_kaplan_meier_gaps.csv", index=False)
-
-# =============================================================================
-# 10. AJUSTES PARAMÉTRICOS AGREGADOS CON CENSURA
-#     Exponencial / Weibull / Gamma. NO hay mezcla por tipo de evento.
-# =============================================================================
-def nll_exp(theta, comp, cens):
-    log_rate = theta[0]
-    rate = np.exp(log_rate)
-    ll = len(comp) * np.log(rate) - rate * np.sum(comp) - rate * np.sum(cens)
-    return -ll
-
-
-def nll_weibull(theta, comp, cens):
-    log_k, log_s = theta
-    k, s = np.exp(log_k), np.exp(log_s)
-    ll = np.sum(stats.weibull_min.logpdf(comp, k, loc=0, scale=s))
-    ll += np.sum(stats.weibull_min.logsf(cens, k, loc=0, scale=s))
-    return -ll
-
-
-def nll_gamma(theta, comp, cens):
-    log_k, log_s = theta
-    k, s = np.exp(log_k), np.exp(log_s)
-    ll = np.sum(stats.gamma.logpdf(comp, k, loc=0, scale=s))
-    ll += np.sum(stats.gamma.logsf(cens, k, loc=0, scale=s))
-    return -ll
-
-
-def ajustar_tiempos_censurados(comp, cens):
-    if len(comp) < 10:
-        return pd.DataFrame(), {}
-
-    media = max(np.mean(comp), 1.0)
-
-    r1 = minimize(nll_exp, [np.log(1.0/media)], args=(comp, cens), method="Nelder-Mead")
-    rate = float(np.exp(r1.x[0]))
-    ll1 = float(-r1.fun)
-
-    r2 = minimize(nll_weibull, [0.0, np.log(media)], args=(comp, cens), method="Nelder-Mead")
-    k_w, s_w = map(float, np.exp(r2.x))
-    ll2 = float(-r2.fun)
-
-    r3 = minimize(nll_gamma, [0.0, np.log(media)], args=(comp, cens), method="Nelder-Mead")
-    k_g, s_g = map(float, np.exp(r3.x))
-    ll3 = float(-r3.fun)
-
-    rows = [
-        {"familia": "Exponencial", "k_param": 1, "logLik": ll1,
-         "AIC": 2 - 2*ll1, "parametros": json.dumps({"rate": rate})},
-        {"familia": "Weibull", "k_param": 2, "logLik": ll2,
-         "AIC": 4 - 2*ll2, "parametros": json.dumps({"shape": k_w, "scale": s_w})},
-        {"familia": "Gamma", "k_param": 2, "logLik": ll3,
-         "AIC": 4 - 2*ll3, "parametros": json.dumps({"shape": k_g, "scale": s_g})},
-    ]
-
-    pars = {
-        "Exponencial": {"rate": rate},
-        "Weibull": {"shape": k_w, "scale": s_w},
-        "Gamma": {"shape": k_g, "scale": s_g}
-    }
-    return pd.DataFrame(rows).sort_values("AIC"), pars
-
-
-fits_t, pars_t = ajustar_tiempos_censurados(gaps_completos, censurados)
-fits_t.to_csv(OUTPUT_DIR / "10_familias_tiempos_censurados.csv", index=False)
-
-# =============================================================================
-# 11. BOOTSTRAP POR TRAYECTORIA PARA GAPS
-# =============================================================================
-def bootstrap_gaps_por_trayectoria(B=B_BOOT):
-    out = []
-    for b in range(B):
-        sampled = rng.integers(0, N_SIM, size=N_SIM)
-        gs = [gaps_por_tray[j] for j in sampled if len(gaps_por_tray[j]) > 0]
-        cs = [cens_por_tray[j] for j in sampled if len(cens_por_tray[j]) > 0]
-
-        g = np.concatenate(gs) if gs else np.array([])
-        c = np.concatenate(cs) if cs else np.array([])
-        if len(g) < 10:
-            continue
-
-        cv2 = np.var(g, ddof=1) / np.mean(g)**2 if len(g) > 1 else np.nan
-        out.append([
-            len(g), len(c), np.mean(g), np.median(g), cv2
-        ])
-    return np.asarray(out)
-
-
-boot_gaps = bootstrap_gaps_por_trayectoria()
-pd.DataFrame(
-    boot_gaps,
-    columns=["n_completos", "n_censurados", "media_gap", "mediana_gap", "CV2"]
-).to_csv(OUTPUT_DIR / "11_bootstrap_gaps.csv", index=False)
-
-# =============================================================================
-# 12. INTENSIDAD DE DETECCIONES: KERNEL CIRCULAR ANUAL
-# =============================================================================
-def kernel_intensidad_circular(doy_datos, grid_doy, bandwidth, M_norm, period=365):
-    """
-    Intensidad de detecciones por trayectoria y por día.
-    Núcleo gaussiano circular, incluyendo 1/b.
-    """
-    doy_datos = np.asarray(doy_datos, dtype=float)
-    out = np.zeros_like(grid_doy, dtype=float)
-    if len(doy_datos) == 0:
-        return out
-
-    for k, x in enumerate(grid_doy):
-        d = np.abs(doy_datos - x)
-        dc = np.minimum(d, period - d)
-        out[k] = np.sum(stats.norm.pdf(dc / bandwidth)) / (M_norm * bandwidth)
+def cargar(ruta):
+    d = np.load(ruta, allow_pickle=True)
+    out = {k: d[k] for k in d.files}
+    out["dt"] = float(out["dt"])
+    out["X"] = out["X_hist"]
+    out["n_sim"], out["n_puntos"] = out["X"].shape
+    out["n_pasos"] = out["n_puntos"] - 1
     return out
 
+def bipotencia(X, K, dt):
+    M, N = X.shape
+    prev, nxt = X[:, :-1], X[:, 1:]
+    r_t = np.zeros((M, N))
+    r_t[:, 1:] = (nxt - prev) / prev
+    a = np.abs(r_t)
+    P = a[:, :-1] * a[:, 1:]
+    cum = np.hstack([np.zeros((M, 1)), np.cumsum(P, axis=1)])
+    s2 = np.zeros(N)
+    for n in range(K, N):
+        s2[n] = (np.pi / 2.0) * (cum[:, n] - cum[:, n - K]).sum() / (K * M * dt)
+    s2[:K] = s2[K]
+    return np.sqrt(np.maximum(s2, 1e-18)), r_t
 
-all_detect_days = indices[:, 1].astype(float)
-doy = np.mod(all_detect_days, DIAS_POR_ANIO)
-grid_doy = np.arange(DIAS_POR_ANIO, dtype=float)
+def detectar(X, r_t, sigma_hat, dt, alpha, varpi, c, r):
+    M, N = X.shape
+    tau = alpha * sigma_hat * dt ** varpi
+    deriva_rel = c[None, :] / X[:, :-1] + r[None, :]
+    e = np.zeros((M, N))
+    e[:, 1:] = r_t[:, 1:] - deriva_rel * dt
+    D = np.zeros((M, N), dtype=bool)
+    D[:, 1:] = np.abs(e[:, 1:]) > tau[None, 1:]
+    return D, e, tau
 
-bandwidths = [30, 60, 91, 182]
-intensidades = {}
-for bw in bandwidths:
-    intensidades[bw] = kernel_intensidad_circular(doy, grid_doy, bw, N_SIM)
+def extraer_severidades(X, e, D):
+    j, i = np.where(D)
+    if len(i) == 0:
+        return np.array([]), np.empty((0, 2), dtype=int), 0
+    Y = -e[j, i] * X[j, i - 1]
+    ok = np.isfinite(Y) & (Y > 0)
+    return Y[ok], np.column_stack([j[ok], i[ok]]), int((~ok).sum())
 
-bandwidth_ref = 30
-lambda_hat = intensidades[bandwidth_ref]
+def ecdf(y):
+    x = np.sort(np.asarray(y))
+    return x, np.arange(1, len(x) + 1) / len(x)
 
-df_int = pd.DataFrame({"dia_del_anio": grid_doy})
-for bw in bandwidths:
-    df_int[f"lambda_hat_bw_{bw}"] = intensidades[bw]
-df_int.to_csv(OUTPUT_DIR / "12_intensidad_detectada_kernel.csv", index=False)
+def kde_log(y, metodo=BW_KDE):
+    z = np.log(y)
+    kde = gaussian_kde(z, bw_method=metodo)
+    qlo, qhi = np.quantile(y, [0.001, 0.999])
+    malla = np.geomspace(max(qlo, y.min()), max(qhi, qlo * 1.001), 500)
+    return malla, kde(np.log(malla)) / malla, float(np.sqrt(kde.covariance[0, 0]))
 
 # =============================================================================
-# 13. DIAGNÓSTICO DE CAMBIO DE TIEMPO
+# CARGAR DATOS DE AMBOS ESQUEMAS
 # =============================================================================
-def intensidad_periodica_a_timeline(lambda_doy, total_days):
-    idx = np.arange(total_days + 1) % len(lambda_doy)
-    return lambda_doy[idx]
+print("Cargando trayectorias...")
+datos_milstein = cargar(CARPETA_NPZ / ESQUEMAS["Milstein"][1])
+datos_si = cargar(CARPETA_NPZ / ESQUEMAS["SI"][1])
 
-
-lambda_timeline = intensidad_periodica_a_timeline(lambda_hat, N_HIST)
-Lambda_timeline = np.zeros_like(lambda_timeline, dtype=float)
-Lambda_timeline[1:] = np.cumsum(lambda_timeline[:-1])  # integral discreta en días
-
-rescaled = []
-for tt in tiempos_por_tray:
-    if len(tt) >= 2:
-        s = Lambda_timeline[tt.astype(int)]
-        ds = np.diff(s)
-        rescaled.extend(ds[ds > 0].tolist())
-
-rescaled = np.asarray(rescaled)
-if len(rescaled):
-    u_rescaled = 1.0 - np.exp(-rescaled)
-    D_rescaling = float(stats.kstest(u_rescaled, "uniform").statistic)
-else:
-    u_rescaled = np.array([])
-    D_rescaling = np.nan
-
-pd.DataFrame({"u_rescaled": u_rescaled}).to_csv(
-    OUTPUT_DIR / "13_residuos_time_rescaling.csv", index=False
+# Procesar Milstein
+K = K_BIPOWER or int(np.sqrt(datos_milstein["n_pasos"]))
+sigma_hat_mil, r_t_mil = bipotencia(datos_milstein["X"], K, datos_milstein["dt"])
+D_mil, e_mil, tau_mil = detectar(
+    datos_milstein["X"], r_t_mil, sigma_hat_mil, datos_milstein["dt"],
+    ALPHA_REF, VARPI_REF, datos_milstein["c_hist"], datos_milstein["r_hist"]
 )
+Y_mil, idx_mil, desc_mil = extraer_severidades(datos_milstein["X"], e_mil, D_mil)
 
-# =============================================================================
-# 14. FIGURAS
-# =============================================================================
-# 14.1 Severidad: histograma + KDE agregada
-fig, ax = plt.subplots(figsize=(9, 5.5))
-ax.hist(severidades, bins=45, density=True, alpha=0.55, label="Severidades detectadas")
-ax.plot(grid_y, dens_y, linewidth=2.0, label="KDE agregada")
-ax.set_xlabel("Severidad detectada (USD)")
-ax.set_ylabel("Densidad")
-ax.set_title("Milstein Compensado: distribución agregada de severidades detectadas")
-ax.legend()
-fig.tight_layout()
-fig.savefig(OUTPUT_DIR / "14_severidad_kde.png", dpi=180)
-plt.close(fig)
-
-# 14.2 ECDF
-fig, ax = plt.subplots(figsize=(9, 5.5))
-ax.step(sev_x, sev_F, where="post")
-ax.set_xlabel("Severidad detectada (USD)")
-ax.set_ylabel("F empírica")
-ax.set_title("Milstein Compensado: función de distribución empírica de severidades")
-fig.tight_layout()
-fig.savefig(OUTPUT_DIR / "15_severidad_ecdf.png", dpi=180)
-plt.close(fig)
-
-# 14.3 Gaps completos: descriptivo
-fig, ax = plt.subplots(figsize=(9, 5.5))
-ax.hist(gaps_completos, bins=40, density=True, alpha=0.60)
-ax.set_xlabel("Días entre detecciones consecutivas")
-ax.set_ylabel("Densidad")
-ax.set_title("Milstein Compensado: gaps completos (descriptivo)")
-fig.tight_layout()
-fig.savefig(OUTPUT_DIR / "16_gaps_histograma.png", dpi=180)
-plt.close(fig)
-
-# 14.4 Kaplan-Meier + supervivencias ajustadas
-fig, ax = plt.subplots(figsize=(9, 5.5))
-ax.step(km["tiempo_dias"], km["S_KM"], where="post", linewidth=2, label="Kaplan-Meier")
-
-if pars_t:
-    xmax = max(
-        np.max(gaps_completos) if len(gaps_completos) else 1,
-        np.max(censurados) if len(censurados) else 1
-    )
-    xx = np.linspace(0, xmax, 500)
-    p = pars_t["Exponencial"]
-    ax.plot(xx, np.exp(-p["rate"] * xx), label="Exponencial (censurada)")
-
-    p = pars_t["Weibull"]
-    ax.plot(xx, stats.weibull_min.sf(xx, p["shape"], scale=p["scale"]),
-            label="Weibull (censurada)")
-
-    p = pars_t["Gamma"]
-    ax.plot(xx, stats.gamma.sf(xx, p["shape"], scale=p["scale"]),
-            label="Gamma (censurada)")
-
-ax.set_xlabel("Tiempo entre detecciones (días)")
-ax.set_ylabel("Supervivencia")
-ax.set_ylim(0, 1.02)
-ax.set_title("Milstein Compensado: supervivencia de los tiempos entre detecciones")
-ax.legend()
-fig.tight_layout()
-fig.savefig(OUTPUT_DIR / "17_gaps_supervivencia.png", dpi=180)
-plt.close(fig)
-
-# 14.5 Intensidad detectada
-fig, ax = plt.subplots(figsize=(9, 5.5))
-for bw in bandwidths:
-    ax.plot(grid_doy, intensidades[bw], label=f"b={bw} días")
-ax.set_xlabel("Día del año")
-ax.set_ylabel("Intensidad estimada de detecciones por trayectoria y día")
-ax.set_title("Milstein Compensado: sensibilidad del suavizado de intensidad")
-ax.legend()
-fig.tight_layout()
-fig.savefig(OUTPUT_DIR / "18_intensidad_kernel.png", dpi=180)
-plt.close(fig)
-
-cv2 = (
-    float(np.var(gaps_completos, ddof=1) / np.mean(gaps_completos)**2)
-    if len(gaps_completos) > 1 else np.nan
+# Procesar Semi-Implícito
+K_si = K_BIPOWER or int(np.sqrt(datos_si["n_pasos"]))
+sigma_hat_si, r_t_si = bipotencia(datos_si["X"], K_si, datos_si["dt"])
+D_si, e_si, tau_si = detectar(
+    datos_si["X"], r_t_si, sigma_hat_si, datos_si["dt"],
+    ALPHA_REF, VARPI_REF, datos_si["c_hist"], datos_si["r_hist"]
 )
+Y_si, idx_si, desc_si = extraer_severidades(datos_si["X"], e_si, D_si)
 
-resumen = {
-    "metodo": "Milstein Compensado",
-    "seed": SEED,
-    "N_sim": N_SIM,
-    "T_years": T_HIST,
-    "dt_years": DT,
-    "K_bipower": K_window,
-    "alpha": alpha_opt,
-    "varpi": varpi_opt,
-    "n_detecciones_validas": int(len(severidades)),
-    "severidad_media": resumen_sev["media"],
-    "severidad_mediana": resumen_sev["mediana"],
-    "IC95_media": resumen_sev["IC95_media"],
-    "IC95_mediana": resumen_sev["IC95_mediana"],
-    "n_gaps_completos": int(len(gaps_completos)),
-    "n_censuras_terminales": int(len(censurados)),
-    "media_gap_dias": float(np.mean(gaps_completos)) if len(gaps_completos) else None,
-    "mediana_gap_dias": float(np.median(gaps_completos)) if len(gaps_completos) else None,
-    "CV2_gap_descriptivo": cv2,
-    "familia_severidad_AIC_min": (
-        str(fits_sev.iloc[0]["familia"]) if len(fits_sev) else None
-    ),
-    "familia_tiempo_AIC_min": (
-        str(fits_t.iloc[0]["familia"]) if len(fits_t) else None
-    ),
-    "D_time_rescaling_diagnostico": D_rescaling
-
-}
-
-with open(OUTPUT_DIR / "19_resumen.json", "w", encoding="utf-8") as f:
-    json.dump(resumen, f, indent=2, ensure_ascii=False)
-
-#print("\n" + "=" * 84)
-#print("RESUMEN FINAL")
-#print("=" * 84)
-#for k, v in resumen.items():
-#    print(f"{k}: {v}")
-
-#print(f"\nResultados guardados en: {OUTPUT_DIR.resolve()}")
-
+print(f"Milstein: {len(Y_mil)} detecciones válidas")
+print(f"Semi-Implícito: {len(Y_si)} detecciones válidas")
 ```
 
-```{python}
-"""Simulación y estimación corregida: semi-implícito compensado, M=1000.
-Incluye severidad detectada, bootstrap por trayectoria B=1000, censura,
-intensidad kernel circular y diagnóstico time-rescaling con bootstrap.
-"""
-import os, json
-import numpy as np, pandas as pd
-from scipy import stats
-from scipy.stats import truncnorm
-from scipy.optimize import minimize
-from scipy.special import gammaln
-from sklearn.mixture import GaussianMixture
-
-SEED=2026; np.random.seed(SEED)
-OUT='/mnt/data/salidas_saltos_final_1000'; os.makedirs(OUT,exist_ok=True)
-M=1000; dt=1/365; T=2.; N=int(T/dt)
-N_polizas=6800; prima=850.; tc=18.5; X0=500e6; delta=0.0015
-infl=np.array([.52,.38,.38,.41,.45,.49,.55,.61,.58,.47,.42,.39,.35,.50,.37,.40,.44,.48,.53,.59,.56,.46,.41,.38])/100
-# Calibración de la versión corregida del código cargado
-lambda_m=6.; lambda_s=.15
-season=np.array([.3,.3,.4,.6,1.,1.8,2.2,2.5,2.8,2.3,1.2,.5]); season/=season.mean()
-mu_m,sig_m=12.5,1.; mu_s,sig_s=1_742_000.,875_000.
-a=(0-mu_s)/sig_s
-EY_m=np.exp(mu_m+.5*sig_m**2); EY_s=truncnorm.mean(a,np.inf,loc=mu_s,scale=sig_s)
-r_month=np.array([.606,.602,.600,.597,.593,.589,.586,.582,.578,.574,.570,.566,.562,.559,.555,.551,.547,.543,.539,.535,.532,.528,.524,.520])/100
-sig_month=np.array([.44,.47,.50,.53,.59,.74,.89,1.34,1.19,.98,.74,.68,.65,.60,.58,.60,.65,.74,.89,.82,.95,.86,.74,.68])/100
-g=infl+delta; cum=np.cumsum(g); c_month=np.round(prima*np.exp(cum)*N_polizas/tc,2)
-months=np.arange(24); tm=np.arange(N)*dt*12
-r=np.interp(tm,months,r_month); sig=np.interp(tm,months,sig_month); c=np.interp(tm,months,c_month)
-assert np.min(1-r*dt)>0
-
-# Simulación semi-implícita compensada
-U=np.zeros((M,N+1)); U[:,0]=X0; oracle=[]
-for m in range(M):
-  for n in range(N):
-    month=int(tm[n])%12
-    lm_day=lambda_m/365*season[month]; ls_day=lambda_s/365
-    nm=np.random.poisson(lm_day); ns=np.random.poisson(ls_day); J=0.
-    if nm:
-      ym=np.exp(np.random.normal(mu_m,sig_m,nm)); J+=ym.sum()
-      oracle.extend((m,n+1,'meteo',float(y)) for y in ym)
-    if ns:
-      ys=truncnorm.rvs(a,np.inf,loc=mu_s,scale=sig_s,size=ns); J+=ys.sum()
-      oracle.extend((m,n+1,'sismo',float(y)) for y in ys)
-    comp=lm_day*EY_m+ls_day*EY_s
-    dW=np.sqrt(dt)*np.random.randn()
-    U[m,n+1]=(U[m,n]*(1+sig[n]*dW)+c[n]*dt+comp*dt-J)/(1-r[n]*dt)
-
-# Bipower variation agrupada
-ret=(U[:,1:]-U[:,:-1])/U[:,:-1]
-K=int(np.sqrt(N)); ar=np.abs(ret); P=ar[:,:-1]*ar[:,1:]; cs=np.cumsum(P,axis=1); cs=np.hstack([np.zeros((M,1)),cs])
-sq=np.zeros(N)
-for n in range(K,N): sq[n]=(np.pi/2)*(cs[:,n]-cs[:,n-K]).sum()/(K*M*dt)
-sq[:K]=sq[K]; sigma_hat=np.sqrt(np.maximum(sq,1e-18))
-# 3) Residuo corregido y umbral
-alpha,varpi=3.5,.45
-e=ret-(c[None,:]/U[:,:-1]+r[None,:])*dt
-tau=alpha*sigma_hat*dt**varpi; D=np.abs(e)>tau; Y=-e*U[:,:-1]; valid=D&(Y>0)&np.isfinite(Y)
-rows=[]
-for m in range(M):
-  for n in np.flatnonzero(valid[m]): rows.append((m,n+1,(n+1)*dt*365,Y[m,n],np.log(Y[m,n])))
-df=pd.DataFrame(rows,columns=['sim','step','day','Y','logY']); odf=pd.DataFrame(oracle,columns=['sim','step','type','Y'])
-
-# Mezcla en escala log, BIC k=2 vs k=3
-x=df.logY.to_numpy(); fits={}
-for k in (2,3): fits[k]=GaussianMixture(n_components=k,n_init=25,random_state=SEED+k).fit(x[:,None])
-bic=pd.DataFrame([(k,fits[k].bic(x[:,None])) for k in fits],columns=['k','BIC']); kstar=int(bic.loc[bic.BIC.idxmin(),'k']); gm=fits[kstar]; order=np.argsort(gm.means_.ravel()); weights=gm.weights_[order]; means=gm.means_.ravel()[order]; sds=np.sqrt(gm.covariances_.reshape(-1))[order]
-# Bootstrap B=1000 de los parámetros de mezcla, remuestreando trayectorias completas.
-# Se conserva k=k* seleccionado por BIC y se ordenan componentes por mu_log.
-B=1000
-log_by=[df.loc[df.sim==i,'logY'].to_numpy() for i in range(M)]
-boot_mix=[]
-for b in range(B):
- ids=np.random.randint(0,M,M); z=[log_by[i] for i in ids if log_by[i].size]
- if not z: continue
- zb=np.concatenate(z)[:,None]
- if len(zb)<15: continue
- gb=GaussianMixture(n_components=kstar,n_init=1,max_iter=200,random_state=SEED+b).fit(zb)
- oo=np.argsort(gb.means_.ravel())
- boot_mix.append(np.r_[gb.weights_[oo],gb.means_.ravel()[oo],np.sqrt(gb.covariances_.reshape(-1))[oo]])
-boot_mix=np.asarray(boot_mix)
-
-# Bootstrap B=1000 por trayectoria, estadísticos de severidad
-by=[df.loc[df.sim==i,'Y'].to_numpy() for i in range(M)]; boot_mean=np.empty(B); boot_med=np.empty(B); boot_n=np.empty(B)
-for b in range(B):
- ids=np.random.randint(0,M,M); z=[by[i] for i in ids if by[i].size]; z=np.concatenate(z) if z else np.array([]); boot_mean[b]=z.mean() if z.size else np.nan; boot_med[b]=np.median(z) if z.size else np.nan; boot_n[b]=z.size
-ci=lambda z:np.nanpercentile(z,[2.5,97.5])
-
-bytime=[]; gaps=[]; cens=[]
-for m in range(M):
- tt=(np.flatnonzero(valid[m])+1)*365*dt; bytime.append(tt)
- if len(tt)>1:gaps.extend(np.diff(tt))
- if len(tt):cens.append(730-tt[-1])
-gaps=np.asarray(gaps); cens=np.asarray(cens); mean_gap=gaps.mean(); med_gap=np.median(gaps); cv2=gaps.var(ddof=1)/mean_gap**2
-# Weibull/Gamma/Exponencial censurados; hiperexponencial censurada
-def nllw(z):
- k,l=np.exp(z); return -((np.log(k)-k*np.log(l)+(k-1)*np.log(gaps)-(gaps/l)**k).sum()-(cens/l)**k).sum()*0
-# corregir expresión anterior explícitamente
-def nll_weib(z):
- k,l=np.exp(z); ll=((np.log(k)-k*np.log(l)+(k-1)*np.log(gaps)-(gaps/l)**k).sum())-((cens/l)**k).sum(); return -ll
-def nll_gamma(z):
- a,s=np.exp(z); ll=((a-1)*np.log(gaps)-gaps/s-gammaln(a)-a*np.log(s)).sum()+stats.gamma.logsf(cens,a=a,scale=s).sum(); return -ll
-rate=len(gaps)/(gaps.sum()+cens.sum()); rw=minimize(nll_weib,np.log([1.1,200]),method='L-BFGS-B'); kw,lw=np.exp(rw.x); rg=minimize(nll_gamma,np.log([2,100]),method='L-BFGS-B'); ag,sg=np.exp(rg.x)
-def nll_h(z):
- w=1/(1+np.exp(-z[0])); l1,l2=np.exp(z[1:]); f=w*l1*np.exp(-l1*gaps)+(1-w)*l2*np.exp(-l2*gaps); S=w*np.exp(-l1*cens)+(1-w)*np.exp(-l2*cens); return -(np.log(f).sum()+np.log(S).sum())
-best=None
-for _ in range(25):
- rr=minimize(nll_h,[np.random.randn(),np.random.uniform(-5,-2),np.random.uniform(-5,-2)],method='L-BFGS-B')
- if rr.success and (best is None or rr.fun<best.fun):best=rr
-wh=1/(1+np.exp(-best.x[0])); l1,l2=np.exp(best.x[1:]);
-# scipy gammaln via scipy.special if needed
-from scipy.special import gammaln
-# recompute gamma safely
-def nll_gamma2(z):
- a,s=np.exp(z); ll=((a-1)*np.log(gaps)-gaps/s-gammaln(a)-a*np.log(s)).sum()+stats.gamma.logsf(cens,a=a,scale=s).sum(); return -ll
-rg=minimize(nll_gamma2,np.log([2,100]),method='L-BFGS-B'); ag,sg=np.exp(rg.x); llE=len(gaps)*np.log(rate)-rate*(gaps.sum()+cens.sum()); llW=-rw.fun; llG=-rg.fun; llH=-best.fun
-aic=pd.DataFrame([('Exponencial',2-2*llE),('Weibull',4-2*llW),('Gamma',4-2*llG),('Hiperexponencial',6-2*llH)],columns=['Modelo','AIC']).sort_values('AIC')
-
-# Intensidad acumulada agrupada y kernel circular; MSE 
-Dgrid=np.arange(731.); Lam=np.zeros(731)
-for tt in bytime: Lam+=np.searchsorted(tt,Dgrid,'right')
-Lam/=M
-grid=np.arange(365.); events=np.concatenate([np.mod(tt,365) for tt in bytime if len(tt)])
-def kernel(grid,events,h):
- d=np.abs(grid[:,None]-events[None,:]); d=np.minimum(d,365-d); return np.exp(-.5*(d/h)**2).sum(1)/(np.sqrt(2*np.pi)*h*M)
-# intensidad verdadera diaria: lambda_annual/365 * phi(month)+lambda_s/365
-true_daily=np.array([lambda_m/365*season[int((d/30.4368))%12]+lambda_s/365 for d in grid])
-win=[]
-for h in [30,60,91,182]:
- lh=kernel(grid,events,h); win.append((h,np.mean((lh-true_daily)**2)))
-win=pd.DataFrame(win,columns=['Ventana_dias','MSE']).sort_values('MSE'); hstar=int(win.iloc[0,0]); lamhat=kernel(grid,events,hstar)
-
-# Time-rescaling
-rgaps=[]
-for tt in bytime:
- if len(tt)>1:rgaps.extend(np.diff(np.interp(tt,Dgrid,Lam)))
-rgaps=np.asarray(rgaps); u=1-np.exp(-rgaps); us=np.sort(u); ec=(np.arange(1,len(us)+1)-.5)/len(us); Dobs=np.max(np.abs(us-ec)) if len(us) else np.nan
-Db=np.empty(B)
-for b in range(B):
- vals=[]
- for m in np.random.randint(0,M,M):
-  tt=bytime[m]
-  if len(tt)>1: vals.extend((1-np.exp(-np.diff(np.interp(tt,Dgrid,Lam)))).tolist())
- q=np.sort(vals); ecq=(np.arange(1,len(q)+1)-.5)/len(q); Db[b]=np.max(np.abs(q-ecq))
-pboot=np.mean(Db>=Dobs)
-
-
-mix_boot_ci=np.nanpercentile(boot_mix,[2.5,97.5],axis=0)
-mix_boot_est=np.nanmedian(boot_mix,axis=0)
-summary={'M':M,'dt':dt,'T_years':T,'seed':SEED,'K_bipower':K,'alpha':alpha,'varpi':varpi,'EY_meteo':EY_m,'EY_sismo':EY_s,'oracle_events':len(odf),'detected_valid':len(df),'detection_rate':len(df)/len(odf),'mean_detected':df.Y.mean(),'median_detected':df.Y.median(),'mean_CI95':ci(boot_mean).tolist(),'median_CI95':ci(boot_med).tolist(),'n_complete_gaps':len(gaps),'n_censored':len(cens),'mean_gap_days':mean_gap,'median_gap_days':med_gap,'CV2':cv2,'rescaling_D':Dobs,'rescaling_bootstrap_p':pboot,'selected_bandwidth':hstar}
-json.dump(summary,open(OUT+'/summary.json','w'),indent=2)
-bic.to_csv(OUT+'/BIC_mezcla.csv',index=False); aic.to_csv(OUT+'/AIC_tiempos_censurados.csv',index=False); win.to_csv(OUT+'/MSE_ventanas.csv',index=False)
-pd.DataFrame({'componente':np.arange(1,kstar+1),'peso':weights,'mu_log':means,'sigma_log':sds,'media_lineal_USD':np.exp(means+.5*sds**2)}).to_csv(OUT+'/mezcla_severidad.csv',index=False)
-ci_mix_rows=[]
-
-for j in range(kstar):
- ci_mix_rows.append({'componente':j+1,'peso_est':weights[j],'peso_IC95_inf':mix_boot_ci[0,j],'peso_IC95_sup':mix_boot_ci[1,j],'mu_log_est':means[j],'mu_log_IC95_inf':mix_boot_ci[0,kstar+j],'mu_log_IC95_sup':mix_boot_ci[1,kstar+j],'sigma_log_est':sds[j],'sigma_log_IC95_inf':mix_boot_ci[0,2*kstar+j],'sigma_log_IC95_sup':mix_boot_ci[1,2*kstar+j]})
-pd.DataFrame(ci_mix_rows).to_csv(OUT+'/mezcla_bootstrap_IC95.csv',index=False)
-pd.DataFrame([summary]).to_csv(OUT+'/resumen_principal.csv',index=False)
-np.savez_compressed(OUT+'/resultados.npz',U=U,sigma_hat=sigma_hat,e_tilde=e,tau=tau,valid=valid,Y_hat=Y,Lambda_hat=Lam,gaps=gaps,censored=cens,u_rescaled=u,D_boot=Db,lambda_true_daily=true_daily,lambda_hat_daily=lamhat)
-
-import matplotlib.pyplot as plt
-
-plt.figure(figsize=(8,5)); plt.hist(x,bins=50,density=True,alpha=.6); xx=np.linspace(x.min(),x.max(),500); plt.plot(xx,sum(w*stats.norm.pdf(xx,m,s) for w,m,s in zip(weights,means,sds)),lw=2); plt.xlabel(r'$\log(\widehat Y)$');plt.ylabel('Densidad');plt.title('Severidades detectadas y mezcla ajustada');plt.tight_layout();plt.savefig(OUT+'/01_severidad_mezcla.png',dpi=200);plt.close()
-
-plt.figure(figsize=(8,5));plt.hist(gaps,bins=50,density=True,alpha=.6,label='Gaps completos');xg=np.linspace(.1,np.quantile(gaps,.995),500);plt.plot(xg,rate*np.exp(-rate*xg),label='Exponencial');plt.plot(xg,stats.weibull_min.pdf(xg,kw,scale=lw),label='Weibull');plt.plot(xg,stats.gamma.pdf(xg,a=ag,scale=sg),label='Gamma');plt.plot(xg,wh*l1*np.exp(-l1*xg)+(1-wh)*l2*np.exp(-l2*xg),label='Hiperexponencial');plt.legend();plt.xlabel(r'$\Delta\tau$ (días)');plt.ylabel('Densidad');plt.title('Tiempos entre saltos detectados');plt.tight_layout();plt.savefig(OUT+'/02_tiempos.png',dpi=200);plt.close()
-
-plt.figure(figsize=(9,5));plt.plot(grid,true_daily*365,label='Intensidad generadora');plt.plot(grid,lamhat*365,label=f'Kernel circular h={hstar} días');plt.xlabel('Día del año');plt.ylabel('Eventos/año');plt.title('Intensidad estacional detectada vs. generadora');plt.legend();plt.tight_layout();plt.savefig(OUT+'/03_intensidad.png',dpi=200);plt.close()
-
-plt.figure(figsize=(6,6));plt.plot(ec,us,'.',ms=2);plt.plot([0,1],[0,1],lw=2);plt.xlabel('Uniforme teórica');plt.ylabel('Reescalado');plt.title('P-P del time-rescaling (diagnóstico)');plt.tight_layout();plt.savefig(OUT+'/04_time_rescaling.png',dpi=200);plt.close()
-
-#print(json.dumps(summary,indent=2,ensure_ascii=False)); 
-#print('\nMEZCLA\n',pd.read_csv(OUT+'/mezcla_severidad.csv').to_string(index=False)); #print('\nBIC\n',bic.to_string(index=False)); 
-# print('\nAIC\n',aic.to_string(index=False)); 
-# print('\nMSE\n',win.to_string(index=False))
-
-```
 ```{python}
 #| label: fig-14-2-ecdf-severidad-milstein
 #| fig-cap: "Función de distribución empírica de las severidades detectadas mediante el método de Milstein Compensado."
 #| echo: true
 #| output: true
+# =============================================================================
+# ECDF MILSTEIN COMPENSADO
+# =============================================================================
+# ( "ECDF Milstein Compensado.")
 
-import plotly.graph_objects as go
+x_mil, F_mil = ecdf(Y_mil)
 
-fig = go.Figure()
+fig_ecdf_mil = go.Figure()
+fig_ecdf_mil.add_trace(go.Scatter(
+    x=x_mil, 
+    y=F_mil, 
+    mode='lines', 
+    line=dict(shape='hv', color='blue', width=2),
+    name='ECDF'
+))
 
-fig.add_trace(
-    go.Scatter(
-        x=sev_x,
-        y=sev_F,
-        mode="lines",
-        line=dict(
-            width=2.5,
-            shape="hv"
-        ),
-        name="ECDF",
-        hovertemplate=(
-            "Severidad: %{x:,.2f} USD<br>"
-            "F empírica: %{y:.4f}"
-            "<extra></extra>"
-        )
-    )
-)
-
-fig.update_layout(
+fig_ecdf_mil.update_layout(
     title="Milstein Compensado: función de distribución empírica de severidades",
     xaxis_title="Severidad detectada (USD)",
     yaxis_title="F empírica",
-    yaxis=dict(
-        range=[0, 1.02]
-    ),
     template="plotly_white",
-    hovermode="x",
-    width=800,
     height=500,
+    width=800,
     margin=dict(
         l=80,
         r=70,
         t=150,
         b=100 
         )
+    
 )
 
-fig.show()
+fig_ecdf_mil.show()
 ```
 
 ```{python}
@@ -2361,153 +1471,29 @@ fig.show()
 #| fig-height: 5.5
 #| fig-cap: "Función de distribución empírica de las severidades detectadas mediante el esquema Semi-Implícito Compensado."
 
-import plotly.graph_objects as go
+# =============================================================================
+#  ECDF SEMI-IMPLÍCITO COMPENSADO
+# =============================================================================
+# ("ECDF Semi-Implícito Compensado.")
 
-fig = go.Figure()
+x_si, F_si = ecdf(Y_si)
 
-fig.add_trace(
-    go.Scatter(
-        x=sev_x,
-        y=sev_F,
-        mode="lines",
-        line=dict(
-            width=2.5,
-            shape="hv"
-        ),
-        name="F empírica",
-        hovertemplate=(
-            "Severidad: %{x:,.2f} USD<br>"
-            "F empírica: %{y:.4f}"
-            "<extra></extra>"
-        )
-    )
-)
+fig_ecdf_si = go.Figure()
+fig_ecdf_si.add_trace(go.Scatter(
+    x=x_si, 
+    y=F_si, 
+    mode='lines', 
+    line=dict(shape='hv', color='blue', width=2),
+    name='ECDF'
+))
 
-fig.update_layout(
-    title=dict(
-        text=(
-            "Semi-Implícito Compensado: "
-            "función de distribución empírica de severidades"
-        ),
-        x=0.5,
-        xanchor="center"
-    ),
-
-    xaxis=dict(
-        title="Severidad detectada (USD)",
-        tickformat="~s",
-        showgrid=True
-    ),
-
-    yaxis=dict(
-        title="F empírica",
-        range=[0, 1.02],
-        showgrid=True
-    ),
-
-    template="plotly_white",
-
-    width=900,
-    height=550,
-
-    hovermode="x unified",
-
-    margin=dict(
-        l=90,
-        r=70,
-        t=130,
-        b=100
-    )
-)
-
-fig.show()
-```
-
-### Estimación de densidad mediante KDE
-
-:::: {style="text-align:justify"}
-
-Para representar suavemente la densidad de severidad, el programa transforma la variable mediante
-
-$$
-Z=\log(Y),
-$$ {#eq-9-6-log-severidad}
-
-y estima la densidad de $Z$ mediante un estimador de núcleo. La transformación inversa requiere incorporar el jacobiano correspondiente,
-
-$$
-\widehat{f}_{Y,q}(y)
-=
-\frac{1}{y}
-\widehat{f}_{Z,q}(\log y),
-\qquad y>0.
-$$ {#eq-9-6-kde-severidad}
-
-La utilización de métodos de núcleo para estimación no paramétrica de densidades se encuentra establecida en [@silverman1986]. 
-
-A partir del conjunto agregado de severidades de los saltos detectados en las $(1000)$ trayectorias simuladas mediante cada uno de los esquemas numéricos, se obtuvo una estimación no paramétrica de la densidad de severidad mediante el método de estimación por núcleos (Kernel Density Estimation, KDE). La estimación se construyó directamente a partir de las observaciones detectadas, sin imponer una familia paramétrica para la distribución subyacente. En las figuras correspondientes, el histograma representa la distribución empírica de las severidades en términos de densidad, mientras que la curva suavizada corresponde a $\widehat f_Y(y)$. La forma obtenida permite identificar las regiones de mayor concentración de severidades y observar el comportamiento de la cola derecha de la muestra
-
-::::
-```{python}
-#| label: fig-milstein-severidad-kde
-#| echo: true
-#| output: true
-#| warning: false
-#| fig-width: 9
-#| fig-height: 5.5
-#| fig-cap: "Estimación no paramétrica de la densidad de las severidades de los saltos detectados en las trayectorias generadas mediante el esquema Milstein Compensado."
-
-import plotly.graph_objects as go
-
-fig = go.Figure()
-
-# Histograma de severidades detectadas
-fig.add_trace(
-    go.Histogram(
-        x=severidades,
-        histnorm="probability density",
-        nbinsx=45,
-        opacity=0.55,
-        name="Severidades detectadas",
-        hovertemplate=(
-            "Intervalo: %{x}<br>"
-            "Densidad: %{y:.3e}"
-            "<extra></extra>"
-        )
-    )
-)
-
-# KDE agregada
-fig.add_trace(
-    go.Scatter(
-        x=grid_y,
-        y=dens_y,
-        mode="lines",
-        line=dict(width=2.5),
-        name="KDE agregada",
-        hovertemplate=(
-            "Severidad: %{x:,.2f} USD<br>"
-            "Densidad KDE: %{y:.3e}"
-            "<extra></extra>"
-        )
-    )
-)
-
-fig.update_layout(
-    title="Milstein Compensado: distribución agregada de severidades detectadas",
+fig_ecdf_si.update_layout(
+    title="Semi-Implícito Compensado: función de distribución empírica de severidades",
     xaxis_title="Severidad detectada (USD)",
-    yaxis_title="Densidad",
+    yaxis_title="F empírica",
     template="plotly_white",
-    hovermode="x unified",
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="right",
-        x=1
-    ),
-    width=800,
     height=500,
+    width=800,
     margin=dict(
         l=80,
         r=70,
@@ -2516,97 +1502,221 @@ fig.update_layout(
         )
 )
 
-fig.show()
+fig_ecdf_si.show()
+
+# Guardar datos si es necesario
+pd.DataFrame({"severidad_usd": x_mil, "F_empirica": F_mil}).to_csv(
+    CARPETA_OUT / "ecdf_milstein.csv", index=False
+)
+pd.DataFrame({"severidad_usd": x_si, "F_empirica": F_si}).to_csv(
+    CARPETA_OUT / "ecdf_semiimplicito.csv", index=False
+)
+
+print("✓ ECDF generadas y guardadas")
 ```
+
+### Estimación de densidad mediante KDE
+
+::: {style="text-align:justify"}
+Para representar suavemente la densidad de severidad, el programa transforma la variable mediante
+
+$$Z=\log(Y),$$ {#eq-9-6-log-severidad}
+
+y estima la densidad de $Z$ mediante un estimador de núcleo. La transformación inversa requiere incorporar el jacobiano correspondiente,
+
+$$\widehat{f}_{Y,q}(y)
+=
+\frac{1}{y}
+\widehat{f}_{Z,q}(\log y),
+\qquad y>0.$$ {#eq-9-6-kde-severidad}
+
+La utilización de métodos de núcleo para estimación no paramétrica de densidades se encuentra establecida en [@silverman1986].
+
+A partir del conjunto agregado de severidades de los saltos detectados en las $(1000)$ trayectorias simuladas mediante cada uno de los esquemas numéricos, se obtuvo una estimación no paramétrica de la densidad de severidad mediante el método de estimación por núcleos (Kernel Density Estimation, KDE). La estimación se construyó directamente a partir de las observaciones detectadas, sin imponer una familia paramétrica para la distribución subyacente. En las figuras correspondientes, el histograma representa la distribución empírica de las severidades en términos de densidad, mientras que la curva suavizada corresponde a $\widehat f_Y(y)$. La forma obtenida permite identificar las regiones de mayor concentración de severidades y observar el comportamiento de la cola derecha de la muestra
+:::
+
+```{python}
+#| label: fig-milstein-severidad-kde
+#| echo: true
+#| output: true
+#| warning: false
+#| fig-width: 9
+#| fig-height: 5.5
+#| fig-cap: "Estimación no paramétrica de la densidad de las severidades de los saltos detectados en las trayectorias generadas mediante el esquema Milstein Compensado."
+# =============================================================================
+# KDE MILSTEIN COMPENSADO
+# =============================================================================
+gy_mil, dens_mil, h_mil = kde_log(Y_mil)
+
+fig_kde_mil = go.Figure()
+
+# Histograma
+fig_kde_mil.add_trace(go.Histogram(
+    x=Y_mil, 
+    nbinsx=min(40, max(8, len(Y_mil) // 3)),
+    histnorm='probability density', 
+    opacity=0.55, 
+    name="Severidades detectadas",
+    marker_color='lightblue'
+))
+
+# Curva KDE
+fig_kde_mil.add_trace(go.Scatter(
+    x=gy_mil, 
+    y=dens_mil, 
+    mode='lines', 
+    line=dict(color='red', width=2),
+    name=f"KDE sobre log(Y) (h = {h_mil:.3f})"
+))
+
+fig_kde_mil.update_layout(
+    title="Milstein Compensado: distribución agregada de severidades detectadas",
+    xaxis_title="Severidad detectada (USD)",
+    yaxis_title="Densidad",
+    template="plotly_white",
+    height=500,
+    width=800,
+    showlegend=True,
+    margin=dict(
+        l=80,
+        r=70,
+        t=150,
+        b=100 
+        )
+)
+
+fig_kde_mil.show()
+
+```
+
+```{python}
+#| label: fig-Semi-Implícito-severidad-kde
+#| echo: true
+#| output: true
+#| warning: false
+#| fig-width: 9
+#| fig-height: 5.5
+#| fig-cap: "Estimación no paramétrica de la densidad de las severidades de los saltos detectados en las trayectorias generadas mediante el esquema Semi-Implícito Compensado."
+# =============================================================================
+# KDE SEMI-IMPLÍCITO COMPENSADO
+# =============================================================================
+
+gy_si, dens_si, h_si = kde_log(Y_si)
+
+fig_kde_si = go.Figure()
+
+# Histograma
+fig_kde_si.add_trace(go.Histogram(
+    x=Y_si, 
+    nbinsx=min(40, max(8, len(Y_si) // 3)),
+    histnorm='probability density', 
+    opacity=0.55, 
+    name="Severidades detectadas",
+    marker_color='lightblue'
+))
+
+# Curva KDE
+fig_kde_si.add_trace(go.Scatter(
+    x=gy_si, 
+    y=dens_si, 
+    mode='lines', 
+    line=dict(color='red', width=2),
+    name=f"KDE sobre log(Y) (h = {h_si:.3f})"
+))
+
+fig_kde_si.update_layout(
+    title="Semi-Implícito Compensado: distribución agregada de severidades detectadas",
+    xaxis_title="Severidad detectada (USD)",
+    yaxis_title="Densidad",
+    template="plotly_white",
+    height=500,
+    width=800,
+    showlegend=True,
+    margin=dict(
+        l=80,
+        r=70,
+        t=150,
+        b=100 
+        )
+)
+
+fig_kde_si.show()
+
+```
+
 
 ![Estimación no paramétrica de la densidad de las severidades de los saltos detectados en las trayectorias generadas mediante el esquema Semi-Implícito Compensado.](14_severidad_kde_semi_implicito.png){#fig-9-6-si-kde fig-pos="H" fig-align="center" width="600" height="400"}
 
 ### Ajustes paramétricos auxiliares
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 Como complemento descriptivo de la estimación no paramétrica se ajustaron las familias Lognormal, Gamma y Weibull. Estos modelos no sustituyen la ECDF ni la KDE; se emplean para disponer de representaciones paramétricas comparables mediante máxima verosimilitud y el criterio de información de Akaike,
 
-$$
-AIC=2k-2\widehat{\ell},
-$$ {#eq-9-6-aic-severidad}
+$$AIC=2k-2\widehat{\ell},$$ {#eq-9-6-aic-severidad}
 
 donde $k$ es el número de parámetros estimados y $\widehat{\ell}$ es la log-verosimilitud maximizada. El AIC se utiliza únicamente para comparar las tres familias implementadas en el programa [@akaike1974].
-
-::::
+:::
 
 | Familia | Milstein: logLik | Milstein: AIC | Parámetros |
-|---|---:|---:|---|
+|------------------|------------------:|------------------:|------------------|
 | Lognormal | -21,197.836650 | 42,399.673300 | $\mu_{\log}=14.276370$, $\sigma_{\log}=0.454640$ |
 | Gamma | -21,350.264824 | 42,704.529647 | shape $=4.223838$, scale $=424,491.405$ |
 | Weibull | -21,572.054840 | 43,148.109681 | shape $=1.664944$, scale $=2,020,400.435$ |
 
-: Ajustes paramétricos auxiliares de severidad: Milstein compensado. {#tbl-9-6-aic-sev-mil}
+: Ajustes paramétricos auxiliares de severidad: Milstein compensado.
 
 | Familia | Semi-Implícito: logLik | Semi-Implícito: AIC | Parámetros |
-|---|---:|---:|---|
+|------------------|------------------:|------------------:|------------------|
 | Lognormal | -21,197.860641 | 42,399.721281 | $\mu_{\log}=14.276395$, $\sigma_{\log}=0.454636$ |
 | Gamma | -21,350.286911 | 42,704.573822 | shape $=4.223916$, scale $=424,493.379$ |
 | Weibull | -21,572.080175 | 43,148.160350 | shape $=1.664955$, scale $=2,020,447.324$ |
 
-: Ajustes paramétricos auxiliares de severidad: Semi-Implícito compensado. {#tbl-9-6-aic-sev-si}
+: Ajustes paramétricos auxiliares de severidad: Semi-Implícito compensado.
 
-:::: {style="text-align:justify"}
-
-En ambos esquemas la familia Lognormal presenta el menor AIC dentro del conjunto de tres familias consideradas. La diferencia de AIC respecto de Gamma es aproximadamente $304.86$, mientras que respecto de Weibull es aproximadamente $748.44$. 
-
-::::
+::: {style="text-align:justify"}
+En ambos esquemas la familia Lognormal presenta el menor AIC dentro del conjunto de tres familias consideradas. La diferencia de AIC respecto de Gamma es aproximadamente $304.86$, mientras que respecto de Weibull es aproximadamente $748.44$.
+:::
 
 ### Distribución de los tiempos entre detecciones
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 Los tiempos entre detecciones se calculan exclusivamente dentro de cada trayectoria. Si
 
-$$
-\tau_1^{(j)}<\tau_2^{(j)}<\cdots<\tau_{K_j}^{(j)}
-$$ {#eq-9-6-tiempos-deteccion}
+$$\tau_1^{(j)}<\tau_2^{(j)}<\cdots<\tau_{K_j}^{(j)}$$ {#eq-9-6-tiempos-deteccion}
 
 son los tiempos detectados en la trayectoria $j$, los gaps completos se definen mediante
 
-$$
-\Delta\tau_k^{(j)}
+$$\Delta\tau_k^{(j)}
 =
 \tau_k^{(j)}
 -
 \tau_{k-1}^{(j)},
 \qquad
-k=2,\ldots,K_j.
-$$ {#eq-9-6-gap}
+k=2,\ldots,K_j.$$ {#eq-9-6-gap}
 
 En la realización estudiada se obtuvieron 673 gaps completos y 749 observaciones censuradas al final del horizonte de observación.
+:::
 
-::::
+| Estadístico         | Milstein compensado | Semi-Implícito compensado |
+|---------------------|--------------------:|--------------------------:|
+| *Gaps* completos    |                 673 |                       673 |
+| Censuras terminales |                 749 |                       749 |
+| Media (días)        |            196.5973 |                  196.5973 |
+| Mediana (días)      |                 147 |                       147 |
+| $CV^2$              |            0.677208 |                  0.677208 |
 
-| Estadístico | Milstein compensado | Semi-Implícito compensado |
-|---|---:|---:|
-| *Gaps* completos | 673 | 673 |
-| Censuras terminales | 749 | 749 |
-| Media (días) | 196.5973 | 196.5973 |
-| Mediana (días) | 147 | 147 |
-| $CV^2$ | 0.677208 | 0.677208 |
+: Estadísticos descriptivos de los tiempos entre detecciones.
 
-: Estadísticos descriptivos de los tiempos entre detecciones. {#tbl-9-6-gaps}
-
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 El coeficiente de variación cuadrático se calcula mediante
 
-$$
-CV^2
+$$CV^2
 =
 \frac{\operatorname{Var}(\Delta\tau)}
-{\left[\mathbb{E}(\Delta\tau)\right]^2}.
-$$ {#eq-9-6-cv2}
+{\left[\mathbb{E}(\Delta\tau)\right]^2}.$$ {#eq-9-6-cv2}
 
 El valor $CV^2=0.677208$ es inferior a uno. Esta observación es puramente descriptiva: no constituye por sí misma una prueba de un proceso de Poisson ni permite ignorar la censura o la posible dependencia entre detecciones.
-
-::::
+:::
 
 ```{python}
 #| label: fig-14-3-gaps-histograma-milstein
@@ -2614,143 +1724,117 @@ El valor $CV^2=0.677208$ es inferior a uno. Esta observación es puramente descr
 #| echo: true
 #| output: true
 
-import plotly.graph_objects as go
+def construir_gaps(indices, M, T_dias):
+    tiempos = [np.sort(indices[indices[:, 0] == j, 1].astype(float)) for j in range(M)]
+    gaps = []
+    for tt in tiempos:
+        g = np.diff(tt) if len(tt) >= 2 else np.array([])
+        gaps.extend(g[g > 0].tolist())
+    return np.array(gaps) if gaps else np.array([])
 
-fig = go.Figure()
+# Construir gaps para ambos esquemas
+T_dias_mil = datos_milstein["n_pasos"]
+T_dias_si = datos_si["n_pasos"]
 
-fig.add_trace(
-    go.Histogram(
-        x=gaps_completos,
-        histnorm="probability density",
-        nbinsx=40,
-        opacity=0.60,
-        name="Gaps completos",
-        hovertemplate=(
-            "Tiempo entre detecciones: %{x:.2f} días<br>"
-            "Densidad: %{y:.5f}"
-            "<extra></extra>"
-        )
-    )
-)
+gaps_mil = construir_gaps(idx_mil, datos_milstein["n_sim"], T_dias_mil)
+gaps_si = construir_gaps(idx_si, datos_si["n_pasos"], T_dias_si)
 
-fig.update_layout(
-    title="Milstein Compensado: gaps completos (descriptivo)",
+print(f"Milstein: {len(gaps_mil)} gaps completos")
+print(f"Semi-Implícito: {len(gaps_si)} gaps completos")
+
+# =============================================================================
+# HISTOGRAMA GAPS MILSTEIN
+# =============================================================================
+fig_gap_mil = go.Figure()
+fig_gap_mil.add_trace(go.Histogram(
+    x=gaps_mil, 
+    nbinsx=min(40, max(7, len(gaps_mil) // 1)),
+    histnorm='probability density', 
+    opacity=0.60, 
+    name="Gaps completos",
+    marker_color='orange'
+))
+
+fig_gap_mil.update_layout(
+    title="Milstein Compensado: gaps completos (n = {})".format(len(gaps_mil)),
     xaxis_title="Días entre detecciones consecutivas",
     yaxis_title="Densidad",
     template="plotly_white",
-    hovermode="x",
-    width=700,
-    height=400
+    height=500,
+    width=800,
+    margin=dict(
+        l=80,
+        r=70,
+        t=150,
+        b=100 
+        )
 )
 
-fig.show()
+fig_gap_mil.show()
+
+
 ```
 
+
 ```{python}
-#| label: fig-semi-gaps-histograma
+#| label: fig-14-3-gaps-histograma-Semi-Implícito
+#| fig-cap: "Distribución descriptiva de los tiempos completos entre detecciones consecutivas para el método de Semi-Implícito Compensado."
 #| echo: true
 #| output: true
-#| warning: false
-#| fig-width: 9
-#| fig-height: 5.5
-#| fig-cap: "Distribución descriptiva de los tiempos completos entre detecciones consecutivas para el esquema Semi-Implícito Compensado."
+# =============================================================================
+# HISTOGRAMA GAPS SEMI-IMPLÍCITO
+# =============================================================================
 
-import plotly.graph_objects as go
 
-fig = go.Figure()
+fig_gap_si = go.Figure()
+fig_gap_si.add_trace(go.Histogram(
+    x=gaps_si, 
+    nbinsx=min(40, max(7, len(gaps_si) // 1)),
+    histnorm='probability density', 
+    opacity=0.60, 
+    name="Gaps completos",
+    marker_color='orange'
+))
 
-fig.add_trace(
-    go.Histogram(
-        x=gaps_completos,
-        histnorm="probability density",
-        nbinsx=40,
-        opacity=0.65,
-        name="Gaps completos",
-        hovertemplate=(
-            "Tiempo entre detecciones: %{x:.1f} días<br>"
-            "Densidad: %{y:.5f}"
-            "<extra>Gaps completos</extra>"
-        )
-    )
-)
-
-fig.update_layout(
-    title=dict(
-        text=(
-            "Semi-Implícito Compensado: "
-            "gaps completos entre detecciones"
-        ),
-        x=0.5,
-        xanchor="center"
-    ),
-
-    xaxis=dict(
-        title="Días entre detecciones consecutivas",
-        showgrid=True,
-        zeroline=False
-    ),
-
-    yaxis=dict(
-        title="Densidad",
-        showgrid=True,
-        zeroline=False
-    ),
-
+fig_gap_si.update_layout(
+    title="Semi-Implícito Compensado: gaps completos (n = {})".format(len(gaps_si)),
+    xaxis_title="Días entre detecciones consecutivas",
+    yaxis_title="Densidad",
     template="plotly_white",
-
-    width=900,
-    height=550,
-
-    hovermode="x",
-
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="right",
-        x=1
-    ),
-
+    height=500,
+    width=800,
     margin=dict(
-        l=90,
+        l=80,
         r=70,
-        t=130,
-        b=100
-    ),
-
-    bargap=0.03
+        t=150,
+        b=100 
+        )
 )
 
-fig.show()
+fig_gap_si.show()
 ```
 
 #### Censura administrativa y verosimilitud
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 Si una trayectoria presenta una última detección en $\tau_{K_j}^{(j)}$ y no se observa una detección posterior antes de $T$, el tiempo hasta el siguiente evento es desconocido. La información disponible es que dicho tiempo excede la duración restante
 
-$$
-C^{(j)}
+$$C^{(j)}
 =
-T-\tau_{K_j}^{(j)}.
-$$ {#eq-9-6-censura}
+T-\tau_{K_j}^{(j)}.$$ {#eq-9-6-censura}
 
 La verosimilitud paramétrica utiliza la contribución de densidad para los intervalos completos y la función de supervivencia para las observaciones censuradas,
 
-$$
-\ell_q(\theta)
+$$\ell_q(\theta)
 =
 \sum_{\mathrm{completos}}
 \log f(\Delta\tau;\theta)
 +
 \sum_{\mathrm{censurados}}
-\log S(C;\theta).
-$$ {#eq-9-6-loglik-censurada}
+\log S(C;\theta).$$ {#eq-9-6-loglik-censurada}
 
 Este tratamiento corresponde a la formulación estándar de inferencia con censura por la derecha en procesos de conteo y análisis de supervivencia [@aalen1978; @abgk1993; @kaplanmeier1958].
-
-::::
+:::
 
 ```{python}
 #| label: fig-milstein-gaps-supervivencia
@@ -2760,127 +1844,81 @@ Este tratamiento corresponde a la formulación estándar de inferencia con censu
 #| fig-width: 9
 #| fig-height: 5.5
 #| fig-cap: "Función de supervivencia Kaplan--Meier y ajustes paramétricos auxiliares para los tiempos entre detecciones mediante Milstein Compensado."
-import numpy as np
-import plotly.graph_objects as go
-from scipy import stats
 
-fig = go.Figure()
+def kaplan_meier(comp, cens):
+    t = np.concatenate([comp, cens])
+    ev = np.concatenate([np.ones(len(comp), int), np.zeros(len(cens), int)])
+    S, filas = 1.0, [(0.0, 1.0, len(t), 0, 0)]
+    for u in np.unique(t):
+        riesgo = int((t >= u).sum())
+        d = int(((t == u) & (ev == 1)).sum())
+        c = int(((t == u) & (ev == 0)).sum())
+        if riesgo > 0 and d > 0:
+            S *= 1.0 - d / riesgo
+        filas.append((float(u), float(S), riesgo, d, c))
+    return pd.DataFrame(filas, columns=["tiempo_dias", "S_KM", "en_riesgo", "eventos", "censuras"])
 
-# ---------------------------------------------------------
+def construir_gaps_censura(indices, M, T_dias):
+    tiempos = [np.sort(indices[indices[:, 0] == j, 1].astype(float)) for j in range(M)]
+    gaps_j, cens_j = [], []
+    for tt in tiempos:
+        g = np.diff(tt) if len(tt) >= 2 else np.array([])
+        gaps_j.append(g[g > 0])
+        cens_j.append(np.array([T_dias - tt[-1]]) if len(tt) >= 1 else np.array([]))
+    gaps = np.concatenate(gaps_j) if gaps_j else np.array([])
+    cens = np.concatenate([c for c in cens_j if len(c)]) if any(len(c) for c in cens_j) else np.array([])
+    return gaps, cens
+
+# Construir gaps y censuras
+gaps_mil, cens_mil = construir_gaps_censura(idx_mil, datos_milstein["n_sim"], T_dias_mil)
+gaps_si, cens_si = construir_gaps_censura(idx_si, datos_si["n_sim"], T_dias_si)
+
+# Calcular Kaplan-Meier
+km_mil = kaplan_meier(gaps_mil, cens_mil)
+km_si = kaplan_meier(gaps_si, cens_si)
+
+# Ajustes paramétricos (Exponencial, Weibull, Gamma)
+def ajustar_tiempos_simple(comp, cens):
+    media = max(comp.mean(), 1.0)
+    rate = len(comp) / (comp.sum() + cens.sum())
+    return {"rate": rate}
+
+pars_mil = ajustar_tiempos_simple(gaps_mil, cens_mil)
+pars_si = ajustar_tiempos_simple(gaps_si, cens_si)
+
+# =============================================================================
+# SUPERVIVENCIA MILSTEIN
+# =============================================================================
+
+fig_km_mil = go.Figure()
+
 # Kaplan-Meier
-# ---------------------------------------------------------
+fig_km_mil.add_trace(go.Scatter(
+    x=km_mil["tiempo_dias"], 
+    y=km_mil["S_KM"], 
+    mode='lines', 
+    line=dict(shape='hv', color='blue', width=2), 
+    name="Kaplan-Meier"
+))
 
-fig.add_trace(
-    go.Scatter(
-        x=km["tiempo_dias"],
-        y=km["S_KM"],
-        mode="lines",
-        line=dict(
-            width=2.5,
-            shape="hv"
-        ),
-        name="Kaplan-Meier",
-        hovertemplate=(
-            "Tiempo: %{x:.2f} días<br>"
-            "Supervivencia: %{y:.4f}"
-            "<extra></extra>"
-        )
-    )
-)
+# Exponencial
+xx = np.linspace(0, max(gaps_mil.max(), cens_mil.max() if len(cens_mil) else 1), 400)
+fig_km_mil.add_trace(go.Scatter(
+    x=xx, 
+    y=np.exp(-pars_mil["rate"] * xx), 
+    mode='lines', 
+    line=dict(dash='dash', color='orange'),
+    name="Exponencial (censurada)"
+))
 
-# ---------------------------------------------------------
-# Supervivencias paramétricas 
-# ---------------------------------------------------------
-
-if pars_t:
-
-    xmax = max(
-        np.max(gaps_completos) if len(gaps_completos) else 1,
-        np.max(censurados) if len(censurados) else 1
-    )
-
-    xx = np.linspace(0, xmax, 500)
-
-    # Exponencial
-    p = pars_t["Exponencial"]
-
-    fig.add_trace(
-        go.Scatter(
-            x=xx,
-            y=np.exp(-p["rate"] * xx),
-            mode="lines",
-            line=dict(width=2),
-            name="Exponencial (censurada)",
-            hovertemplate=(
-                "Tiempo: %{x:.2f} días<br>"
-                "S(t): %{y:.4f}"
-                "<extra>Exponencial</extra>"
-            )
-        )
-    )
-
-    # Weibull
-    p = pars_t["Weibull"]
-
-    fig.add_trace(
-        go.Scatter(
-            x=xx,
-            y=stats.weibull_min.sf(
-                xx,
-                p["shape"],
-                scale=p["scale"]
-            ),
-            mode="lines",
-            line=dict(width=2),
-            name="Weibull (censurada)",
-            hovertemplate=(
-                "Tiempo: %{x:.2f} días<br>"
-                "S(t): %{y:.4f}"
-                "<extra>Weibull</extra>"
-            )
-        )
-    )
-
-    # Gamma
-    p = pars_t["Gamma"]
-
-    fig.add_trace(
-        go.Scatter(
-            x=xx,
-            y=stats.gamma.sf(
-                xx,
-                p["shape"],
-                scale=p["scale"]
-            ),
-            mode="lines",
-            line=dict(width=2),
-            name="Gamma (censurada)",
-            hovertemplate=(
-                "Tiempo: %{x:.2f} días<br>"
-                "S(t): %{y:.4f}"
-                "<extra>Gamma</extra>"
-            )
-        )
-    )
-
-fig.update_layout(
+fig_km_mil.update_layout(
     title="Milstein Compensado: supervivencia de los tiempos entre detecciones",
     xaxis_title="Tiempo entre detecciones (días)",
     yaxis_title="Supervivencia",
-    yaxis=dict(
-        range=[0, 1.02]
-    ),
+    yaxis=dict(range=[0, 1.6]),
     template="plotly_white",
-    hovermode="x unified",
-    width=800,
     height=500,
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="right",
-        x=1
-    ),
+    width=800,
     margin=dict(
         l=80,
         r=70,
@@ -2889,7 +1927,8 @@ fig.update_layout(
         )
 )
 
-fig.show()
+fig_km_mil.show()
+
 ```
 
 ```{python}
@@ -2901,255 +1940,107 @@ fig.show()
 #| fig-height: 5.5
 #| fig-cap: "Función de supervivencia Kaplan--Meier y ajustes paramétricos auxiliares para los tiempos entre detecciones mediante  del esquema Semi-Implícito Compensado."
 
-import plotly.graph_objects as go
-import numpy as np
+# =============================================================================
+# SUPERVIVENCIA SEMI-IMPLÍCITO
+# =============================================================================
+fig_km_si = go.Figure()
 
-fig = go.Figure()
-
-# ------------------------------------------------------------------
 # Kaplan-Meier
-# ------------------------------------------------------------------
+fig_km_si.add_trace(go.Scatter(
+    x=km_si["tiempo_dias"], 
+    y=km_si["S_KM"], 
+    mode='lines', 
+    line=dict(shape='hv', color='blue', width=2), 
+    name="Kaplan-Meier"
+))
 
-fig.add_trace(
-    go.Scatter(
-        x=km["tiempo_dias"],
-        y=km["S_KM"],
-        mode="lines",
-        line=dict(
-            width=3,
-            shape="hv"
-        ),
-        name="Kaplan-Meier",
-        hovertemplate=(
-            "Tiempo: %{x:.2f} días<br>"
-            "Supervivencia: %{y:.4f}"
-            "<extra>Kaplan-Meier</extra>"
-        )
-    )
-)
+# Exponencial
+xx = np.linspace(0, max(gaps_si.max(), cens_si.max() if len(cens_si) else 1), 400)
+fig_km_si.add_trace(go.Scatter(
+    x=xx, 
+    y=np.exp(-pars_si["rate"] * xx), 
+    mode='lines', 
+    line=dict(dash='dash', color='orange'),
+    name="Exponencial (censurada)"
+))
 
-# ------------------------------------------------------------------
-# Curvas ajustadas
-# ------------------------------------------------------------------
-
-if pars_t:
-
-    xmax = max(
-        np.max(gaps_completos)
-        if len(gaps_completos) else 1,
-
-        np.max(censurados)
-        if len(censurados) else 1
-    )
-
-    xx = np.linspace(0, xmax, 500)
-
-    # --------------------------------------------------------------
-    # Exponencial
-    # --------------------------------------------------------------
-
-    p = pars_t["Exponencial"]
-
-    S_exp = np.exp(
-        -p["rate"] * xx
-    )
-
-    fig.add_trace(
-        go.Scatter(
-            x=xx,
-            y=S_exp,
-            mode="lines",
-            line=dict(width=2.5),
-            name="Exponencial (censurada)",
-            hovertemplate=(
-                "Tiempo: %{x:.2f} días<br>"
-                "Supervivencia: %{y:.4f}"
-                "<extra>Exponencial</extra>"
-            )
-        )
-    )
-
-    # --------------------------------------------------------------
-    # Weibull
-    # --------------------------------------------------------------
-
-    p = pars_t["Weibull"]
-
-    S_weibull = (
-        np.exp(
-            -(
-                xx / p["scale"]
-            ) ** p["shape"]
-        )
-    )
-
-    fig.add_trace(
-        go.Scatter(
-            x=xx,
-            y=S_weibull,
-            mode="lines",
-            line=dict(width=2.5),
-            name="Weibull (censurada)",
-            hovertemplate=(
-                "Tiempo: %{x:.2f} días<br>"
-                "Supervivencia: %{y:.4f}"
-                "<extra>Weibull</extra>"
-            )
-        )
-    )
-
-    # --------------------------------------------------------------
-    # Gamma
-    # --------------------------------------------------------------
-
-    # Se utiliza scipy solamente para reproducir exactamente
-    # la supervivencia Gamma que ya estaba calculada en el código.
-    from scipy import stats
-
-    p = pars_t["Gamma"]
-
-    S_gamma = stats.gamma.sf(
-        xx,
-        p["shape"],
-        scale=p["scale"]
-    )
-
-    fig.add_trace(
-        go.Scatter(
-            x=xx,
-            y=S_gamma,
-            mode="lines",
-            line=dict(width=2.5),
-            name="Gamma (censurada)",
-            hovertemplate=(
-                "Tiempo: %{x:.2f} días<br>"
-                "Supervivencia: %{y:.4f}"
-                "<extra>Gamma</extra>"
-            )
-        )
-    )
-
-# ------------------------------------------------------------------
-# Configuración
-# ------------------------------------------------------------------
-
-fig.update_layout(
-    title=dict(
-        text=(
-            "Semi-Implícito Compensado: "
-            "supervivencia de los tiempos entre detecciones"
-        ),
-        x=0.5,
-        xanchor="center"
-    ),
-
-    xaxis=dict(
-        title="Tiempo entre detecciones (días)",
-        showgrid=True,
-        zeroline=False
-    ),
-
-    yaxis=dict(
-        title="Supervivencia",
-        range=[0, 1.02],
-        showgrid=True
-    ),
-
+fig_km_si.update_layout(
+    title="Semi-Implícito Compensado: supervivencia de los tiempos entre detecciones",
+    xaxis_title="Tiempo entre detecciones (días)",
+    yaxis_title="Supervivencia",
+    yaxis=dict(range=[0, 1.6]),
     template="plotly_white",
-
-    width=900,
-    height=550,
-
-    hovermode="x unified",
-
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="right",
-        x=1
-    ),
-
+    height=500,
+    width=800,
     margin=dict(
-        l=90,
+        l=80,
         r=70,
         t=150,
-        b=100
-    )
+        b=100 
+        )
 )
 
-fig.show()
+fig_km_si.show()
 ```
 
 #### Ajustes paramétricos auxiliares para los tiempos
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 El programa ajusta exclusivamente las familias Exponencial, Weibull y Gamma utilizando la verosimilitud censurada de @eq-9-6-loglik-censurada. Para el caso homogéneo de un proceso de Poisson con intensidad constante $\lambda$, los tiempos entre eventos presentan distribución Exponencial. Sin embargo, la sola comparación con una familia Exponencial no implica que el proceso de detecciones sea homogéneo [@abgk1993].
-
-::::
+:::
 
 | Familia | Milstein: logLik | Milstein: AIC | Parámetros |
-|---|---:|---:|---|
+|------------------|------------------:|------------------:|------------------|
 | Exponencial | -4,832.743080 | 9,667.486161 | rate $=0.002068509$ |
 | Weibull | -4,832.116455 | 9,668.232911 | shape $=1.036538$, scale $=476.216322$ |
 | Gamma | -4,832.237563 | 9,668.475126 | shape $=1.043957$, scale $=454.015731$ |
 
-: Ajustes temporales censurados: Milstein compensado. {#tbl-9-6-aic-tiempo-mil}
+: Ajustes temporales censurados: Milstein compensado.
 
 | Familia | Semi-Implícito: logLik | Semi-Implícito: AIC | Parámetros |
-|---|---:|---:|---|
+|------------------|------------------:|------------------:|------------------|
 | Exponencial | -4,832.743080 | 9,667.486161 | rate $=0.002068509$ |
 | Weibull | -4,832.116455 | 9,668.232911 | shape $=1.036538$, scale $=476.216322$ |
 | Gamma | -4,832.237563 | 9,668.475126 | shape $=1.043957$, scale $=454.015731$ |
 
-: Ajustes temporales censurados: Semi-Implícito compensado. {#tbl-9-6-aic-tiempo-si}
+: Ajustes temporales censurados: Semi-Implícito compensado.
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 La Exponencial presenta el menor AIC en ambos esquemas. La diferencia respecto de Weibull es aproximadamente $0.747$ y respecto de Gamma aproximadamente $0.989$. Las diferencias son pequeñas en escala absoluta de AIC; por ello, el resultado debe interpretarse como una comparación dentro del conjunto de familias implementadas y no como una identificación concluyente de la ley generadora de los tiempos.
-
-::::
+:::
 
 #### Bootstrap de los tiempos
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 La incertidumbre de las estadísticas temporales se obtiene mediante bootstrap por trayectoria. Los intervalos percentiles reportados por el programa son
+:::
 
-::::
+| Estadístico             |  Milstein compensado | Semi-Implícito compensado |
+|-------------------------|---------------------:|--------------------------:|
+| Media, IC 95 % (días)   | \[185.419; 209.735\] |      \[185.419; 209.735\] |
+| Mediana, IC 95 % (días) | \[132.000; 166.512\] |      \[132.000; 166.512\] |
+| $CV^2$, IC 95 %         |   \[0.6108; 0.7445\] |        \[0.6108; 0.7445\] |
 
-| Estadístico | Milstein compensado | Semi-Implícito compensado |
-|---|---:|---:|
-| Media, IC 95 % (días) | [185.419; 209.735] | [185.419; 209.735] |
-| Mediana, IC 95 % (días) | [132.000; 166.512] | [132.000; 166.512] |
-| $CV^2$, IC 95 % | [0.6108; 0.7445] | [0.6108; 0.7445] |
+: Intervalos bootstrap de los estadísticos de los tiempos entre detecciones.
 
-: Intervalos bootstrap de los estadísticos de los tiempos entre detecciones. {#tbl-9-6-bootstrap-gaps}
+### Estimación de la intensidad estacional de las detecciones
 
-###  Estimación de la intensidad estacional de las detecciones
-
-:::: {style="text-align:justify"}
-
-
+::: {style="text-align:justify"}
 La intensidad se estima mediante un kernel gaussiano circular anual. Para un día del año $t$ y tiempos de detección $\tau_k^{(j)}$, se utiliza una distancia circular con periodo anual de 365 días y se consideran los anchos de banda
 
-$$
-b\in\{30,60,91,182\}\text{días}.
-$$ {#eq-9-6-bandwidths}
+$$b\in\{30,60,91,182\}\text{días}.$$ {#eq-9-6-bandwidths}
 
 La estimación mediante funciones núcleo pertenece al marco no paramétrico de estimación de intensidades de procesos de puntos [@ramlauhansen1983]. El programa conserva las cuatro curvas y utiliza $b=30$ días como referencia gráfica.
+:::
 
-::::
+| Ancho de banda $b$ (días) |   Mínimo |   Máximo |    Media |
+|--------------------------:|---------:|---------:|---------:|
+|                        30 | 0.002372 | 0.005481 | 0.003896 |
+|                        60 | 0.002897 | 0.004835 | 0.003887 |
+|                        91 | 0.003188 | 0.004258 | 0.003721 |
+|                       182 | 0.002555 | 0.002777 | 0.002665 |
 
-| Ancho de banda $b$ (días) | Mínimo | Máximo | Media |
-|---:|---:|---:|---:|
-| 30 | 0.002372 | 0.005481 | 0.003896 |
-| 60 | 0.002897 | 0.004835 | 0.003887 |
-| 91 | 0.003188 | 0.004258 | 0.003721 |
-| 182 | 0.002555 | 0.002777 | 0.002665 |
-
-: Sensibilidad de la intensidad estimada al ancho de banda para las detecciones. {#tbl-9-6-intensidad}
+: Sensibilidad de la intensidad estimada al ancho de banda para las detecciones.
 
 ```{python}
 #| label: fig-milstein-intensidad-kernel
@@ -3160,45 +2051,48 @@ La estimación mediante funciones núcleo pertenece al marco no paramétrico de 
 #| fig-height: 5.5
 #| fig-cap: "Sensibilidad de la intensidad estimada de detecciones respecto al ancho de banda para Milstein Compensado."
 
-import plotly.graph_objects as go
 
-fig = go.Figure()
+def kernel_circular(doy, grid, b, M):
+    lam = np.zeros(len(grid))
+    if len(doy) == 0:
+        return lam
+    for k, x in enumerate(grid):
+        d = np.abs(doy - x)
+        d = np.minimum(d, DIAS_ANIO - d)
+        lam[k] = stats.norm.pdf(d / b).sum() / (M * b)
+    return lam
 
-for bw in bandwidths:
+# Calcular day-of-year para las detecciones
+doy_mil = np.mod(idx_mil[:, 1].astype(float), DIAS_ANIO) if len(idx_mil) else np.array([])
+doy_si = np.mod(idx_si[:, 1].astype(float), DIAS_ANIO) if len(idx_si) else np.array([])
 
-    fig.add_trace(
-        go.Scatter(
-            x=grid_doy,
-            y=intensidades[bw],
-            mode="lines",
-            line=dict(width=2.5),
-            name=f"b={bw} días",
-            hovertemplate=(
-                "Día del año: %{x:.1f}<br>"
-                "Intensidad: %{y:.6f}"
-                f"<extra>b={bw} días</extra>"
-            )
-        )
-    )
+grid = np.arange(DIAS_ANIO, dtype=float)
 
-fig.update_layout(
-    title="Milstein Compensado: sensibilidad del suavizado de intensidad",
+# Calcular intensidades para diferentes anchos de banda
+lam_mil = {b: kernel_circular(doy_mil, grid, b, datos_milstein["n_sim"]) for b in BANDWIDTHS}
+lam_si = {b: kernel_circular(doy_si, grid, b, datos_si["n_sim"]) for b in BANDWIDTHS}
+
+# =============================================================================
+# FIGURA 9.13: INTENSIDAD MILSTEIN
+# =============================================================================
+fig_int_mil = go.Figure()
+
+for b in BANDWIDTHS:
+    fig_int_mil.add_trace(go.Scatter(
+        x=grid, 
+        y=lam_mil[b], 
+        mode='lines', 
+        name=f"b = {b} días"
+    ))
+
+fig_int_mil.update_layout(
+    title="Milstein Compensado: intensidad circular anual de las detecciones",
     xaxis_title="Día del año",
-    yaxis_title=(
-        "Intensidad estimada de detecciones "
-        "por trayectoria y día"
-    ),
+    yaxis_title="Intensidad de detecciones (por trayectoria y día)",
     template="plotly_white",
-    hovermode="x unified",
-    width=800,
     height=500,
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="right",
-        x=1
-    ),
+    width=800,
+    showlegend=True,
     margin=dict(
         l=80,
         r=70,
@@ -3207,150 +2101,102 @@ fig.update_layout(
         )
 )
 
-fig.show()
+fig_int_mil.show()
+
 ```
 
-
 ```{python}
-#| label: fig-semi-intensidad-kernel
+#| label: fig-milstein-intensidad-kernel-Semi-Implícito
 #| echo: true
 #| output: true
 #| warning: false
 #| fig-width: 9
 #| fig-height: 5.5
-#| fig-cap: "Sensibilidad de la intensidad estimada de detecciones respecto al ancho de banda para el esquema Semi-Implícito Compensado."
+#| fig-cap: "Sensibilidad de la intensidad estimada de detecciones respecto al ancho de banda para Semi-Implícito Compensado."
 
-import plotly.graph_objects as go
+# =============================================================================
+# INTENSIDAD SEMI-IMPLÍCITO
+# =============================================================================
+fig_int_si = go.Figure()
 
-fig = go.Figure()
+for b in BANDWIDTHS:
+    fig_int_si.add_trace(go.Scatter(
+        x=grid, 
+        y=lam_si[b], 
+        mode='lines', 
+        name=f"b = {b} días"
+    ))
 
-for bw in bandwidths:
-
-    fig.add_trace(
-        go.Scatter(
-            x=grid_doy,
-            y=intensidades[bw],
-            mode="lines",
-            line=dict(width=2.5),
-            name=f"b={bw} días",
-            hovertemplate=(
-                "Día del año: %{x:.1f}<br>"
-                "Intensidad: %{y:.6f}"
-                f"<extra>b={bw} días</extra>"
-            )
-        )
-    )
-
-fig.update_layout(
-    title=dict(
-        text=(
-            "Semi-Implícito Compensado: "
-            "sensibilidad del suavizado de intensidad"
-        ),
-        x=0.5,
-        xanchor="center"
-    ),
-
-    xaxis=dict(
-        title="Día del año",
-        showgrid=True,
-        zeroline=False
-    ),
-
-    yaxis=dict(
-        title=(
-            "Intensidad estimada de detecciones "
-            "por trayectoria y día"
-        ),
-        showgrid=True,
-        zeroline=False
-    ),
-
+fig_int_si.update_layout(
+    title="Semi-Implícito Compensado: intensidad circular anual de las detecciones",
+    xaxis_title="Día del año",
+    yaxis_title="Intensidad de detecciones (por trayectoria y día)",
     template="plotly_white",
-
-    hovermode="x unified",
-
-    width=900,
-    height=550,
-
-    legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=1.02,
-        xanchor="right",
-        x=1
-    ),
-
+    height=500,
+    width=800,
+    showlegend=True,
     margin=dict(
-        l=90,
+        l=80,
         r=70,
         t=150,
-        b=100
-    )
+        b=100 
+        )
 )
 
-fig.show()
+fig_int_si.show()
+
 ```
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 En la realización Monte Carlo estudiada, los índices temporales de detección de ambos esquemas coinciden, por lo que las curvas de intensidad obtenidas a partir de esas detecciones coinciden numéricamente. Esta igualdad es una propiedad de esta ejecución y no una propiedad teórica general de los dos esquemas.
-
-::::
+:::
 
 ### Diagnóstico mediante el cambio de tiempo
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 Sea $\Lambda$ el compensador verdadero del proceso de detecciones. El teorema de cambio de tiempo establece, bajo sus hipótesis de regularidad, que los incrementos del tiempo transformado construidos con el compensador verdadero presentan distribución Exponencial de parámetro uno [@brown2002].
 
 En el análisis computacional, sin embargo, el compensador se estima a partir de las mismas detecciones. El programa calcula
 
-$$
-\widehat{\Delta S}_k
+$$\widehat{\Delta S}_k
 =
 \widehat{\Lambda}(\tau_k)
 -
-\widehat{\Lambda}(\tau_{k-1}),
-$$ {#eq-9-6-rescaling}
+\widehat{\Lambda}(\tau_{k-1}),$$ {#eq-9-6-rescaling}
 
 y posteriormente
 
-$$
-V_k
+$$V_k
 =
-1-\exp\left(-\widehat{\Delta S}_k\right).
-$$ {#eq-9-6-uniformes}
+1-\exp\left(-\widehat{\Delta S}_k\right).$$ {#eq-9-6-uniformes}
 
 Si el modelo estuviera correctamente especificado y el compensador verdadero fuera conocido, la transformación produciría variables Uniforme$(0,1)$. En el presente experimento $\widehat{\Lambda}$ es estimado de las propias detecciones; por ello, el estadístico
 
-$$
-D_{\mathrm{TR},q}
+$$D_{\mathrm{TR},q}
 =
 \sup_{u\in[0,1]}
 \left|
 \widehat F_{V,q}(u)-u
-\right|
-$$ {#eq-9-6-DTR}
+\right|$$ {#eq-9-6-DTR}
 
 se utiliza únicamente como diagnóstico de cambio de tiempo.
-::::
+:::
 
-| Diagnóstico | Milstein compensado | Semi-Implícito compensado |
-|---|---:|---:|
-| Número de residuos | 673 | 673 |
-| Media de $V_k$ | 0.464129 | 0.464129 |
-| Mediana de $V_k$ | 0.459566 | 0.459566 |
-| $D_{\mathrm{TR}}$ | 0.076027 | 0.076027 |
+| Diagnóstico        | Milstein compensado | Semi-Implícito compensado |
+|--------------------|--------------------:|--------------------------:|
+| Número de residuos |                 673 |                       673 |
+| Media de $V_k$     |            0.464129 |                  0.464129 |
+| Mediana de $V_k$   |            0.459566 |                  0.459566 |
+| $D_{\mathrm{TR}}$  |            0.076027 |                  0.076027 |
 
-: Diagnóstico basado en residuos de cambio de tiempo. {#tbl-9-6-rescaling}
+: Diagnóstico basado en residuos de cambio de tiempo.
 
 La igualdad observada en esta ejecución deriva de la coincidencia de las detecciones temporales entre ambos esquemas.
 
 ### Comparación integrada de los resultados
 
 | Resultado | Milstein compensado | Semi-Implícito compensado |
-|---|---:|---:|
+|--------------------|-------------------------:|-------------------------:|
 | Detecciones válidas | 1,422 | 1,422 |
 | Media de severidad (USD) | 1,792,982.74 | 1,793,024.23 |
 | Mediana de severidad (USD) | 1,513,050.23 | 1,513,140.12 |
@@ -3363,22 +2209,16 @@ La igualdad observada en esta ejecución deriva de la coincidencia de las detecc
 | Familia temporal con menor AIC | Exponencial | Exponencial |
 | $D_{\mathrm{TR}}$ | 0.076027 | 0.076027 |
 
-: Comparación integrada de las distribuciones de severidad y tiempos entre detecciones. {#tbl-9-6-comparacion}
+: Comparación integrada de las distribuciones de severidad y tiempos entre detecciones.
 
-:::: {style="text-align:justify"}
-
-
+::: {style="text-align:justify"}
 Los resultados muestran que, para esta realización, ambos esquemas producen exactamente el mismo número de detecciones y la misma estructura temporal de detecciones, mientras que las severidades agregadas presentan diferencias numéricas muy pequeñas. La diferencia relativa de las medias de severidad es aproximadamente $0.00231 \%$, y la diferencia relativa de las medianas es aproximadamente $0.00594 \%$. Asimismo, los ajustes paramétricos auxiliares presentan valores de AIC prácticamente coincidentes entre ambos métodos.
 
 La coincidencia de los resultados temporales no debe confundirse con una equivalencia teórica de los esquemas numéricos. La inferencia aquí presentada es condicional a la realización Monte Carlo concreta y a la configuración del detector $(\alpha,\varpi)=(3.5,0.45)$.
+:::
 
-::::
-
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 La interpretación estadística de los resultados se sustenta en el marco desarrollado en las Secciones 6.4.2 y 6.4.3 y en las referencias bibliográficas de la tesis: detección no paramétrica de saltos [@mancini2009; @lee2008,], variación bipotencia [@barndorffnielsen2004], estimación de densidad mediante núcleos [@silverman1986], procesos de conteo y análisis de supervivencia [@aalen1978; @abgk1993], estimación de intensidades mediante funciones núcleo [@ramlauhansen1983], tratamiento de censura [@kaplanmeier1958], criterio de información de Akaike [@akaike1974], bootstrap [@Efrontibshirani1993] y cambio de tiempo para procesos de eventos [@brown2002].
-
-
 
 ## Implicaciones para la Gestión de Riesgos en el Contexto de la CDMX
 
@@ -3389,26 +2229,24 @@ Para una aseguradora operando en la CDMX con exposición significativa a riesgos
 2.  **Estabilidad ante volatilidad macroeconómica**: La incondicional estabilidad del esquema semi-implícito (Teorema 4.2 en @higham2002strong) garantiza convergencia incluso ante shocks en $r(t)$, como los observados durante la política monetaria restrictiva de Banxico (2023-2024). En contraste, el esquema de Milstein requiere $\Delta t < 2/r_{\max}$ para estabilidad, limitando su aplicabilidad en escenarios de alta inflación.
 
 3.  **Eficiencia computacional para horizontes extendidos**: Para simulaciones a $5$ años ($T=5$), el esquema semi-implícito permite aumentar $\Delta t$ a $1/12$ (mensual) sin pérdida de estabilidad, reduciendo el costo computacional en un $96.7\%$ ($365 \to 12$ pasos/año) mientras mantiene errores relativos $< 0.5\%$ en la mediana. Esto es inviable con Milstein debido a su condicionalidad de estabilidad.
-::::
 :::
+::::::::::::::::::::::
 
-::: {.content-visible when-format="pdf"}
-
-
-![Trayectorias implementadas por el método Milstein, medianas e intervalos de confianza $90\%$ (5%-95%) para ambos esquemas. Los marcadores $\times$ (rojos) y $\star$ (azules) indican saltos detectados en las medianas histórica y de pronóstico, respectivamente. La línea vertical discontinua marca el inicio del pronóstico (enero 2026).](milstein.png){#fig-milstein fig-pos="H" fig-align="center" width="600" height="400"}
+:::::::::::::::::::::: {.content-visible when-format="pdf"}
+![Trayectorias implementadas por el método Milstein, medianas e intervalos de confianza $90\%$ (5%-95%) para ambos esquemas. Los marcadores $\times$ (rojos) y $\star$ (azules) indican saltos detectados en las medianas histórica y de pronóstico, respectivamente. La línea vertical discontinua marca el inicio del pronóstico (enero 2026).](milstein.png){#fig-milstein_pdf fig-pos="H" fig-align="center" width="600" height="400"}
 
 ![Trayectorias implementadas por el método Semi-Implícito, medianas e intervalos de confianza $90\%$ (5%-95%) para ambos esquemas. Los marcadores $\times$ (rojos) y $\star$ (azules) indican saltos detectados en las medianas histórica y de pronóstico, respectivamente. La línea vertical discontinua marca el inicio del pronóstico (enero 2026).](Semi_implicito_grafica_pdf.png){#fig-semi_implicito_pdf fig-pos="H" fig-align="center" width="600" height="400"}
 
-## Análisis de la Trayectoria Mediana y Estructura de Saltos {#sec-an_tra_med_sal}
+## Análisis de la Trayectoria Mediana y Estructura de Saltos
 
-:::: {style="text-align:justify"}
-La @fig-milstein y la @fig-semi_implicito_pdf presenta las trayectorias medianas e intervalos de confianza. Se observan tres hallazgos críticos:
+::: {style="text-align:justify"}
+La @fig-milstein_pdf y la @fig-semi_implicito_pdf presenta las trayectorias medianas e intervalos de confianza. Se observan tres hallazgos críticos:
 
-a)  **Sesgo sistemático en la tendencia**: El esquema semi-implícito genera reservas medianas consistentemente superiores ($+2.30\%$ al final del periodo). Esto se explica matemáticamente por la desigualdad: $$\frac{1}{1 - r\Delta t} > 1 + r\Delta t + \mathcal{O}((r\Delta t)^2), \quad \forall r\Delta t \in (0,1),$$ {#eq-sesgo_implicito}
+a)  **Sesgo sistemático en la tendencia**: El esquema semi-implícito genera reservas medianas consistentemente superiores ($+2.30\%$ al final del periodo). Esto se explica matemáticamente por la desigualdad: $$\frac{1}{1 - r\Delta t} > 1 + r\Delta t + \mathcal{O}((r\Delta t)^2), \quad \forall r\Delta t \in (0,1),$$
 
 que amplifica el efecto de capitalización del término $r(t)U(t)$. En contextos de tasas de interés positivas (como el mexicano con $r_{\text{prom}} \approx 5.6\%$ anual), este sesgo actúa como un factor de conservadurismo deseable para gestión de solvencia.
 
-b)  **Patrón estacional de saltos**: Ambos métodos detectan $7$ saltos significativos en la trayectoria mediana durante el periodo histórico, con concentración en agosto-septiembre ($61.1\%$ de los saltos), coincidiendo con la temporada de huracanes (@fig-milstein, @fig-semi_implicito_pdf marcadores rojos/azules). La coincidencia espacio-temporal de los saltos ($94.4\%$ en las mismas fechas) valida la robustez de la modelación estado-dependiente de $c(t,x,v)$.
+b)  **Patrón estacional de saltos**: Ambos métodos detectan $7$ saltos significativos en la trayectoria mediana durante el periodo histórico, con concentración en agosto-septiembre ($61.1\%$ de los saltos), coincidiendo con la temporada de huracanes (@fig-milstein_pdf, @fig-semi_implicito_pdf marcadores rojos/azules). La coincidencia espacio-temporal de los saltos ($94.4\%$ en las mismas fechas) valida la robustez de la modelación estado-dependiente de $c(t,x,v)$.
 
 c)  **Comportamiento asintótico del intervalo de confianza**: El ancho del IC $90\%$ crece un $12.54\%$ más rápido en el esquema Semi-implícito. Esto refleja una mayor dispersión en las trayectorias extremas, atribuible a la no linealidad introducida por el denominador $1 - r(t_n)\Delta t$ en la @eq-semiimplicito_formal, que amplifica las realizaciones con $\Delta W_n > 0$.
 
@@ -3422,42 +2260,36 @@ La elección de la mediana como estadístico de pronóstico es rigurosamente jus
 
 ## Distribución de severidad de los saltos detectados y distribución de los tiempos entre detecciones
 
-La presente sección constituye la continuación del análisis de la trayectoria mediana  y de la formulación metodológica establecida en la @sec-Es_N_Pa_D_S_S  y @sec-Dis_tiem_entre_saltos. Mientras que en la Sección @sec-an_tra_med_sal se estudia la trayectoria agregada mediante estadísticos del ensamble, en esta sección se utiliza la información completa de las $N_{\mathrm{sim}}=1000$ trayectorias simuladas mediante los esquemas de **Milstein compensado** y **Semi-Implícito compensado**.
+La presente sección constituye la continuación del análisis de la trayectoria mediana y de la formulación metodológica establecida en la @sec-Es_N_Pa_D_S_S y @sec-Dis_tiem_entre_saltos. Mientras que en la Sección @sec-an_tra_med_sal se estudia la trayectoria agregada mediante estadísticos del ensamble, en esta sección se utiliza la información completa de las $N_{\mathrm{sim}}=1000$ trayectorias simuladas mediante los esquemas de **Milstein compensado** y **Semi-Implícito compensado**.
 
 Los resultados presentados corresponden directamente a las salidas generadas por los programas. Ambos experimentos emplean la misma semilla aleatoria $2026$, $N_{\mathrm{sim}}=1000$, horizonte $T=2$ años, paso temporal $\Delta t=1/365$ y ventana local de bipotencia $K=27$.
-::::
+:::
 
 ### Configuración común y calibración del detector
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 La detección de saltos se realiza sobre las trayectorias completas de cada esquema. Para cada observación se utiliza el umbral
 
-$$
-\tau_n(t_{i-1})
+$$\tau_n(t_{i-1})
 =
 \alpha\widehat{\sigma}(t_{i-1})
-\Delta_n^{\varpi},
-$$ {#eq-9-6-umbral}
+\Delta_n^{\varpi},$$
 
 donde $\widehat{\sigma}$ es la estimación local de escala obtenida mediante la construcción de variación bipotencia agregada y $(\alpha,\varpi)$ determina el nivel de sensibilidad del detector. La formulación está relacionada con los procedimientos de detección no paramétrica mediante umbral desarrollados para procesos con difusión estocástica y saltos [@mancini2009], mientras que la utilización de estadísticos normalizados para detectar saltos constituye un antecedente relacionado en [@lee2008,].
 
 El cual genera una tabla de sensibilidad para
 
-$$
-\alpha\in\{2.00,2.25,\ldots,5.00\},
+$$\alpha\in\{2.00,2.25,\ldots,5.00\},
 \qquad
-\varpi\in\{0.40,0.45,0.49\}.
-$$ {#eq-9-6-grid-umbral}
+\varpi\in\{0.40,0.45,0.49\}.$$
 
 El par $(\alpha,\varpi)=(3.5,0.45)$ se fija como configuración de referencia para el resto del análisis. Por tanto, $(3.5,0.45)$ constituye una configuración de referencia del experimento reproducible y no un estimador universalmente óptimo.
 
-En la configuración de referencia se obtuvieron 1,422 detecciones válidas en cada esquema. 
-
-::::
+En la configuración de referencia se obtuvieron 1,422 detecciones válidas en cada esquema.
+:::
 
 | Parámetro | Milstein compensado | Semi-Implícito compensado |
-|---|---:|---:|
+|----|---:|---:|
 | Semilla | 2026 | 2026 |
 | $N_{\mathrm{sim}}$ | 1000 | 1000 |
 | $T$ (años) | 2 | 2 |
@@ -3470,85 +2302,72 @@ En la configuración de referencia se obtuvieron 1,422 detecciones válidas en c
 | Detecciones por trayectoria | 1.422 | 1.422 |
 | Detecciones descartadas por signo/no finitas | 1 | 1 |
 
-: Configuración común y resultados del detector en la configuración de referencia. {#tbl-9-6-configuracion}
-
+: Configuración común y resultados del detector en la configuración de referencia.
 
 ### Distribución agregada de las severidades detectadas
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 Para cada esquema $q\in\{\mathrm{Mil},\mathrm{SI}\}$ se construye una única muestra agregada de severidades positivas detectadas,
 
-$$
-\mathcal{Y}_q
+$$\mathcal{Y}_q
 =
 \left\{
 \widehat{Y}_{i}^{(q,j)}
 :
 i\in D^{(q,j)},
 \ \widehat{Y}_{i}^{(q,j)}>0
-\right\}.
-$$ {#eq-9-6-muestra-severidad}
+\right\}.$$
 
 Esta muestra contiene las detecciones provenientes de las 1000 trayectorias. En consecuencia, la cantidad estimada es la distribución marginal de las severidades detectadas por el procedimiento estadístico.
-::::
+:::
 
 | Estadístico | Milstein compensado | Semi-Implícito compensado |
-|---|---:|---:|
+|--------------------|-------------------------:|-------------------------:|
 | Número de severidades detectadas | 1,422 | 1,422 |
 | Media (USD) | 1,792,982.74 | 1,793,024.23 |
 | Mediana (USD) | 1,513,050.23 | 1,513,140.12 |
-| IC 95 % de la media | [1,733,759.19; 1,854,807.13] | [1,733,800.71; 1,854,849.50] |
-| IC 95 % de la mediana | [1,466,575.04; 1,566,256.61] | [1,466,569.85; 1,566,329.17] |
+| IC 95 % de la media | \[1,733,759.19; 1,854,807.13\] | \[1,733,800.71; 1,854,849.50\] |
+| IC 95 % de la mediana | \[1,466,575.04; 1,566,256.61\] | \[1,466,569.85; 1,566,329.17\] |
 
-: Estadísticos de la distribución agregada de severidades y sus intervalos bootstrap. {#tbl-9-6-severidad-resumen}
+: Estadísticos de la distribución agregada de severidades y sus intervalos bootstrap.
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 La diferencia entre las medias de severidad es
 
-$$
-\Delta\overline{Y}
+$$\Delta\overline{Y}
 =
 \overline{Y}_{\mathrm{SI}}
 -
 \overline{Y}_{\mathrm{Mil}}
 =
-41.489063 \text{USD},
-$$ {#eq-9-6-diferencia-media}
+41.489063 \text{USD},$$
 
 equivalente aproximadamente a $0.00231 \%$ de la media de Milstein. Para las medianas,
 
-$$
-\Delta\operatorname{Med}(Y)
+$$\Delta\operatorname{Med}(Y)
 =
 \operatorname{Med}(Y_{\mathrm{SI}})
 -
 \operatorname{Med}(Y_{\mathrm{Mil}})
 =
-89.884675 \text{USD},
-$$ {#eq-9-6-diferencia-mediana}
+89.884675 \text{USD},$$
 
 equivalente aproximadamente a $0.00594 \%$. Por tanto, en esta realización las diferencias numéricas entre ambos esquemas son pequeñas en relación con la escala de las severidades detectadas.
-::::
+:::
 
 ### Estimación no paramétrica mediante ECDF
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 La estimación no paramétrica de la función de distribución se obtiene mediante la función de distribución empírica,
 
-$$
-\widehat{F}_{Y,q}(y)
+$$\widehat{F}_{Y,q}(y)
 =
 \frac{1}{n_Y}
 \sum_{\ell=1}^{n_Y}
-\mathbf{1}_{\{Y_\ell\leq y\}}.
-$$ {#eq-9-6-ecdf-severidad}
+\mathbf{1}_{\{Y_\ell\leq y\}}.$$
 
 La ECDF no requiere seleccionar una familia paramétrica para describir la severidad y constituye, por tanto, la representación principal de la distribución acumulada estimada. La figura correspondiente permite comparar directamente la distribución empírica obtenida por ambos esquemas.
-
-::::
+:::
 
 ![Función de distribución empírica de las severidades detectadas mediante el esquema de Milstein Compensado.](15_severidad_ecdf_milstein.png){#fig-9-6-mil-ecdf fig-pos="H" fig-align="center" width="600" height="400"}
 
@@ -3556,120 +2375,98 @@ La ECDF no requiere seleccionar una familia paramétrica para describir la sever
 
 ## 9.6.2.2. Estimación de densidad mediante KDE
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 Para representar suavemente la densidad de severidad, el programa transforma la variable mediante
 
-$$
-Z=\log(Y),
-$$ {#eq-9-6-log-severidad}
+$$Z=\log(Y),$$
 
 y estima la densidad de $Z$ mediante un estimador de núcleo. La transformación inversa requiere incorporar el jacobiano correspondiente,
 
-$$
-\widehat{f}_{Y,q}(y)
+$$\widehat{f}_{Y,q}(y)
 =
 \frac{1}{y}
 \widehat{f}_{Z,q}(\log y),
-\qquad y>0.
-$$ {#eq-9-6-kde-severidad}
+\qquad y>0.$$
 
-La utilización de métodos de núcleo para estimación no paramétrica de densidades se encuentra establecida en [@silverman1986]. 
+La utilización de métodos de núcleo para estimación no paramétrica de densidades se encuentra establecida en [@silverman1986].
 
 A partir del conjunto agregado de severidades de los saltos detectados en las $(1000)$ trayectorias simuladas mediante cada uno de los esquemas numéricos, se obtuvo una estimación no paramétrica de la densidad de severidad mediante el método de estimación por núcleos (Kernel Density Estimation, KDE). La estimación se construyó directamente a partir de las observaciones detectadas, sin imponer una familia paramétrica para la distribución subyacente. En las figuras correspondientes, el histograma representa la distribución empírica de las severidades en términos de densidad, mientras que la curva suavizada corresponde a $\widehat f_Y(y)$. La forma obtenida permite identificar las regiones de mayor concentración de severidades y observar el comportamiento de la cola derecha de la muestra
-
-::::
+:::
 
 ![Estimación no paramétrica de la densidad de las severidades de los saltos detectados en las trayectorias generadas mediante el esquema Milstein compensado.](14_severidad_kde_milstein.png){#fig-9-6-mil-kde fig-pos="H" fig-align="center" width="600" height="400"}
 
-![Estimación no paramétrica de la densidad de las severidades de los saltos detectados en las trayectorias generadas mediante el esquema Semi-Implícito Compensado.](14_severidad_kde_semi_implicito.png){#fig-9-6-si-kde fig-pos="H" fig-align="center" width="600" height="400"}
+![Estimación no paramétrica de la densidad de las severidades de los saltos detectados en las trayectorias generadas mediante el esquema Semi-Implícito Compensado.](14_severidad_kde_semi_implicito.png){fig-pos="H" fig-align="center" width="600" height="400"}
 
 ### Ajustes paramétricos auxiliares
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 Como complemento descriptivo de la estimación no paramétrica se ajustaron las familias Lognormal, Gamma y Weibull. Estos modelos no sustituyen la ECDF ni la KDE; se emplean para disponer de representaciones paramétricas comparables mediante máxima verosimilitud y el criterio de información de Akaike,
 
-$$
-AIC=2k-2\widehat{\ell},
-$$ {#eq-9-6-aic-severidad}
+$$AIC=2k-2\widehat{\ell},$$
 
 donde $k$ es el número de parámetros estimados y $\widehat{\ell}$ es la log-verosimilitud maximizada. El AIC se utiliza únicamente para comparar las tres familias implementadas en el programa [@akaike1974].
-
-::::
+:::
 
 | Familia | Milstein: logLik | Milstein: AIC | Parámetros |
-|---|---:|---:|---|
+|------------------|------------------:|------------------:|------------------|
 | Lognormal | -21,197.836650 | 42,399.673300 | $\mu_{\log}=14.276370$, $\sigma_{\log}=0.454640$ |
 | Gamma | -21,350.264824 | 42,704.529647 | shape $=4.223838$, scale $=424,491.405$ |
 | Weibull | -21,572.054840 | 43,148.109681 | shape $=1.664944$, scale $=2,020,400.435$ |
 
-: Ajustes paramétricos auxiliares de severidad: Milstein compensado. {#tbl-9-6-aic-sev-mil}
+: Ajustes paramétricos auxiliares de severidad: Milstein compensado.
 
 | Familia | Semi-Implícito: logLik | Semi-Implícito: AIC | Parámetros |
-|---|---:|---:|---|
+|------------------|------------------:|------------------:|------------------|
 | Lognormal | -21,197.860641 | 42,399.721281 | $\mu_{\log}=14.276395$, $\sigma_{\log}=0.454636$ |
 | Gamma | -21,350.286911 | 42,704.573822 | shape $=4.223916$, scale $=424,493.379$ |
 | Weibull | -21,572.080175 | 43,148.160350 | shape $=1.664955$, scale $=2,020,447.324$ |
 
-: Ajustes paramétricos auxiliares de severidad: Semi-Implícito compensado. {#tbl-9-6-aic-sev-si}
+: Ajustes paramétricos auxiliares de severidad: Semi-Implícito compensado.
 
-:::: {style="text-align:justify"}
-
-En ambos esquemas la familia Lognormal presenta el menor AIC dentro del conjunto de tres familias consideradas. La diferencia de AIC respecto de Gamma es aproximadamente $304.86$, mientras que respecto de Weibull es aproximadamente $748.44$. 
-
-::::
+::: {style="text-align:justify"}
+En ambos esquemas la familia Lognormal presenta el menor AIC dentro del conjunto de tres familias consideradas. La diferencia de AIC respecto de Gamma es aproximadamente $304.86$, mientras que respecto de Weibull es aproximadamente $748.44$.
+:::
 
 ### Distribución de los tiempos entre detecciones
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 Los tiempos entre detecciones se calculan exclusivamente dentro de cada trayectoria. Si
 
-$$
-\tau_1^{(j)}<\tau_2^{(j)}<\cdots<\tau_{K_j}^{(j)}
-$$ {#eq-9-6-tiempos-deteccion}
+$$\tau_1^{(j)}<\tau_2^{(j)}<\cdots<\tau_{K_j}^{(j)}$$
 
 son los tiempos detectados en la trayectoria $j$, los gaps completos se definen mediante
 
-$$
-\Delta\tau_k^{(j)}
+$$\Delta\tau_k^{(j)}
 =
 \tau_k^{(j)}
 -
 \tau_{k-1}^{(j)},
 \qquad
-k=2,\ldots,K_j.
-$$ {#eq-9-6-gap}
+k=2,\ldots,K_j.$$
 
 En la realización estudiada se obtuvieron 673 gaps completos y 749 observaciones censuradas al final del horizonte de observación.
+:::
 
-::::
+| Estadístico         | Milstein compensado | Semi-Implícito compensado |
+|---------------------|--------------------:|--------------------------:|
+| *Gaps* completos    |                 673 |                       673 |
+| Censuras terminales |                 749 |                       749 |
+| Media (días)        |            196.5973 |                  196.5973 |
+| Mediana (días)      |                 147 |                       147 |
+| $CV^2$              |            0.677208 |                  0.677208 |
 
-| Estadístico | Milstein compensado | Semi-Implícito compensado |
-|---|---:|---:|
-| *Gaps* completos | 673 | 673 |
-| Censuras terminales | 749 | 749 |
-| Media (días) | 196.5973 | 196.5973 |
-| Mediana (días) | 147 | 147 |
-| $CV^2$ | 0.677208 | 0.677208 |
+: Estadísticos descriptivos de los tiempos entre detecciones.
 
-: Estadísticos descriptivos de los tiempos entre detecciones. {#tbl-9-6-gaps}
-
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 El coeficiente de variación cuadrático se calcula mediante
 
-$$
-CV^2
+$$CV^2
 =
 \frac{\operatorname{Var}(\Delta\tau)}
-{\left[\mathbb{E}(\Delta\tau)\right]^2}.
-$$ {#eq-9-6-cv2}
+{\left[\mathbb{E}(\Delta\tau)\right]^2}.$$
 
 El valor $CV^2=0.677208$ es inferior a uno. Esta observación es puramente descriptiva: no constituye por sí misma una prueba de un proceso de Poisson ni permite ignorar la censura o la posible dependencia entre detecciones.
-
-::::
+:::
 
 ![Histograma de *gaps* completos para Milstein compensado.](16_gaps_histograma_milstein.png){#fig-9-6-mil-gaps fig-pos="H" fig-align="center" width="600" height="400"}
 
@@ -3677,31 +2474,25 @@ El valor $CV^2=0.677208$ es inferior a uno. Esta observación es puramente descr
 
 #### Censura administrativa y verosimilitud
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 Si una trayectoria presenta una última detección en $\tau_{K_j}^{(j)}$ y no se observa una detección posterior antes de $T$, el tiempo hasta el siguiente evento es desconocido. La información disponible es que dicho tiempo excede la duración restante
 
-$$
-C^{(j)}
+$$C^{(j)}
 =
-T-\tau_{K_j}^{(j)}.
-$$ {#eq-9-6-censura}
+T-\tau_{K_j}^{(j)}.$$
 
 La verosimilitud paramétrica utiliza la contribución de densidad para los intervalos completos y la función de supervivencia para las observaciones censuradas,
 
-$$
-\ell_q(\theta)
+$$\ell_q(\theta)
 =
 \sum_{\mathrm{completos}}
 \log f(\Delta\tau;\theta)
 +
 \sum_{\mathrm{censurados}}
-\log S(C;\theta).
-$$ {#eq-9-6-loglik-censurada}
+\log S(C;\theta).$$
 
 Este tratamiento corresponde a la formulación estándar de inferencia con censura por la derecha en procesos de conteo y análisis de supervivencia [@aalen1978; @abgk1993; @kaplanmeier1958].
-
-::::
+:::
 
 ![Supervivencia de los tiempos entre detecciones para Milstein compensado.](17_gaps_supervivencia_milstein.png){#fig-9-6-mil-surv fig-pos="H" fig-align="center" width="600" height="400"}
 
@@ -3709,137 +2500,117 @@ Este tratamiento corresponde a la formulación estándar de inferencia con censu
 
 #### Ajustes paramétricos auxiliares para los tiempos
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 El programa ajusta exclusivamente las familias Exponencial, Weibull y Gamma utilizando la verosimilitud censurada de @eq-9-6-loglik-censurada. Para el caso homogéneo de un proceso de Poisson con intensidad constante $\lambda$, los tiempos entre eventos presentan distribución Exponencial. Sin embargo, la sola comparación con una familia Exponencial no implica que el proceso de detecciones sea homogéneo [@abgk1993].
-
-::::
+:::
 
 | Familia | Milstein: logLik | Milstein: AIC | Parámetros |
-|---|---:|---:|---|
+|------------------|------------------:|------------------:|------------------|
 | Exponencial | -4,832.743080 | 9,667.486161 | rate $=0.002068509$ |
 | Weibull | -4,832.116455 | 9,668.232911 | shape $=1.036538$, scale $=476.216322$ |
 | Gamma | -4,832.237563 | 9,668.475126 | shape $=1.043957$, scale $=454.015731$ |
 
-: Ajustes temporales censurados: Milstein compensado. {#tbl-9-6-aic-tiempo-mil}
+: Ajustes temporales censurados: Milstein compensado.
 
 | Familia | Semi-Implícito: logLik | Semi-Implícito: AIC | Parámetros |
-|---|---:|---:|---|
+|------------------|------------------:|------------------:|------------------|
 | Exponencial | -4,832.743080 | 9,667.486161 | rate $=0.002068509$ |
 | Weibull | -4,832.116455 | 9,668.232911 | shape $=1.036538$, scale $=476.216322$ |
 | Gamma | -4,832.237563 | 9,668.475126 | shape $=1.043957$, scale $=454.015731$ |
 
-: Ajustes temporales censurados: Semi-Implícito compensado. {#tbl-9-6-aic-tiempo-si}
+: Ajustes temporales censurados: Semi-Implícito compensado.
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 La Exponencial presenta el menor AIC en ambos esquemas. La diferencia respecto de Weibull es aproximadamente $0.747$ y respecto de Gamma aproximadamente $0.989$. Las diferencias son pequeñas en escala absoluta de AIC; por ello, el resultado debe interpretarse como una comparación dentro del conjunto de familias implementadas y no como una identificación concluyente de la ley generadora de los tiempos.
-
-::::
+:::
 
 #### Bootstrap de los tiempos
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 La incertidumbre de las estadísticas temporales se obtiene mediante bootstrap por trayectoria. Los intervalos percentiles reportados por el programa son
+:::
 
-::::
+| Estadístico             |  Milstein compensado | Semi-Implícito compensado |
+|-------------------------|---------------------:|--------------------------:|
+| Media, IC 95 % (días)   | \[185.419; 209.735\] |      \[185.419; 209.735\] |
+| Mediana, IC 95 % (días) | \[132.000; 166.512\] |      \[132.000; 166.512\] |
+| $CV^2$, IC 95 %         |   \[0.6108; 0.7445\] |        \[0.6108; 0.7445\] |
 
-| Estadístico | Milstein compensado | Semi-Implícito compensado |
-|---|---:|---:|
-| Media, IC 95 % (días) | [185.419; 209.735] | [185.419; 209.735] |
-| Mediana, IC 95 % (días) | [132.000; 166.512] | [132.000; 166.512] |
-| $CV^2$, IC 95 % | [0.6108; 0.7445] | [0.6108; 0.7445] |
+: Intervalos bootstrap de los estadísticos de los tiempos entre detecciones.
 
-: Intervalos bootstrap de los estadísticos de los tiempos entre detecciones. {#tbl-9-6-bootstrap-gaps}
+### Estimación de la intensidad estacional de las detecciones
 
-###  Estimación de la intensidad estacional de las detecciones
-
-:::: {style="text-align:justify"}
-
-
+::: {style="text-align:justify"}
 La intensidad se estima mediante un kernel gaussiano circular anual. Para un día del año $t$ y tiempos de detección $\tau_k^{(j)}$, se utiliza una distancia circular con periodo anual de 365 días y se consideran los anchos de banda
 
-$$
-b\in\{30,60,91,182\}\text{días}.
-$$ {#eq-9-6-bandwidths}
+$$b\in\{30,60,91,182\}\text{días}.$$
 
 La estimación mediante funciones núcleo pertenece al marco no paramétrico de estimación de intensidades de procesos de puntos [@ramlauhansen1983]. El programa conserva las cuatro curvas y utiliza $b=30$ días como referencia gráfica.
+:::
 
-::::
+| Ancho de banda $b$ (días) |   Mínimo |   Máximo |    Media |
+|--------------------------:|---------:|---------:|---------:|
+|                        30 | 0.002372 | 0.005481 | 0.003896 |
+|                        60 | 0.002897 | 0.004835 | 0.003887 |
+|                        91 | 0.003188 | 0.004258 | 0.003721 |
+|                       182 | 0.002555 | 0.002777 | 0.002665 |
 
-| Ancho de banda $b$ (días) | Mínimo | Máximo | Media |
-|---:|---:|---:|---:|
-| 30 | 0.002372 | 0.005481 | 0.003896 |
-| 60 | 0.002897 | 0.004835 | 0.003887 |
-| 91 | 0.003188 | 0.004258 | 0.003721 |
-| 182 | 0.002555 | 0.002777 | 0.002665 |
-
-: Sensibilidad de la intensidad estimada al ancho de banda para las detecciones. {#tbl-9-6-intensidad}
+: Sensibilidad de la intensidad estimada al ancho de banda para las detecciones.
 
 ![Intensidad circular anual estimada para Milstein compensado.](18_intensidad_kernel_milstein.png){#fig-9-6-mil-intensidad fig-pos="H" fig-align="center" width="600" height="400"}
 
 ![Intensidad circular anual estimada para Semi-Implícito compensado.](18_intensidad_kernel_semi_implicito.png){#fig-9-6-si-intensidad fig-pos="H" fig-align="center" width="600" height="400"}
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 En la realización Monte Carlo estudiada, los índices temporales de detección de ambos esquemas coinciden, por lo que las curvas de intensidad obtenidas a partir de esas detecciones coinciden numéricamente. Esta igualdad es una propiedad de esta ejecución y no una propiedad teórica general de los dos esquemas.
-
-::::
+:::
 
 ### Diagnóstico mediante el cambio de tiempo
 
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 Sea $\Lambda$ el compensador verdadero del proceso de detecciones. El teorema de cambio de tiempo establece, bajo sus hipótesis de regularidad, que los incrementos del tiempo transformado construidos con el compensador verdadero presentan distribución Exponencial de parámetro uno [@brown2002].
 
 En el análisis computacional, sin embargo, el compensador se estima a partir de las mismas detecciones. El programa calcula
 
-$$
-\widehat{\Delta S}_k
+$$\widehat{\Delta S}_k
 =
 \widehat{\Lambda}(\tau_k)
 -
-\widehat{\Lambda}(\tau_{k-1}),
-$$ {#eq-9-6-rescaling}
+\widehat{\Lambda}(\tau_{k-1}),$$
 
 y posteriormente
 
-$$
-V_k
+$$V_k
 =
-1-\exp\left(-\widehat{\Delta S}_k\right).
-$$ {#eq-9-6-uniformes}
+1-\exp\left(-\widehat{\Delta S}_k\right).$$
 
 Si el modelo estuviera correctamente especificado y el compensador verdadero fuera conocido, la transformación produciría variables Uniforme$(0,1)$. En el presente experimento $\widehat{\Lambda}$ es estimado de las propias detecciones; por ello, el estadístico
 
-$$
-D_{\mathrm{TR},q}
+$$D_{\mathrm{TR},q}
 =
 \sup_{u\in[0,1]}
 \left|
 \widehat F_{V,q}(u)-u
-\right|
-$$ {#eq-9-6-DTR}
+\right|$$
 
 se utiliza únicamente como diagnóstico de cambio de tiempo.
-::::
+:::
 
-| Diagnóstico | Milstein compensado | Semi-Implícito compensado |
-|---|---:|---:|
-| Número de residuos | 673 | 673 |
-| Media de $V_k$ | 0.464129 | 0.464129 |
-| Mediana de $V_k$ | 0.459566 | 0.459566 |
-| $D_{\mathrm{TR}}$ | 0.076027 | 0.076027 |
+| Diagnóstico        | Milstein compensado | Semi-Implícito compensado |
+|--------------------|--------------------:|--------------------------:|
+| Número de residuos |                 673 |                       673 |
+| Media de $V_k$     |            0.464129 |                  0.464129 |
+| Mediana de $V_k$   |            0.459566 |                  0.459566 |
+| $D_{\mathrm{TR}}$  |            0.076027 |                  0.076027 |
 
-: Diagnóstico basado en residuos de cambio de tiempo. {#tbl-9-6-rescaling}
+: Diagnóstico basado en residuos de cambio de tiempo.
 
 La igualdad observada en esta ejecución deriva de la coincidencia de las detecciones temporales entre ambos esquemas.
 
 ### Comparación integrada de los resultados
 
 | Resultado | Milstein compensado | Semi-Implícito compensado |
-|---|---:|---:|
+|--------------------|-------------------------:|-------------------------:|
 | Detecciones válidas | 1,422 | 1,422 |
 | Media de severidad (USD) | 1,792,982.74 | 1,793,024.23 |
 | Mediana de severidad (USD) | 1,513,050.23 | 1,513,140.12 |
@@ -3852,21 +2623,17 @@ La igualdad observada en esta ejecución deriva de la coincidencia de las detecc
 | Familia temporal con menor AIC | Exponencial | Exponencial |
 | $D_{\mathrm{TR}}$ | 0.076027 | 0.076027 |
 
-: Comparación integrada de las distribuciones de severidad y tiempos entre detecciones. {#tbl-9-6-comparacion}
+: Comparación integrada de las distribuciones de severidad y tiempos entre detecciones.
 
-:::: {style="text-align:justify"}
-
-
+::: {style="text-align:justify"}
 Los resultados muestran que, para esta realización, ambos esquemas producen exactamente el mismo número de detecciones y la misma estructura temporal de detecciones, mientras que las severidades agregadas presentan diferencias numéricas muy pequeñas. La diferencia relativa de las medias de severidad es aproximadamente $0.00231 \%$, y la diferencia relativa de las medianas es aproximadamente $0.00594 \%$. Asimismo, los ajustes paramétricos auxiliares presentan valores de AIC prácticamente coincidentes entre ambos métodos.
 
 La coincidencia de los resultados temporales no debe confundirse con una equivalencia teórica de los esquemas numéricos. La inferencia aquí presentada es condicional a la realización Monte Carlo concreta y a la configuración del detector $(\alpha,\varpi)=(3.5,0.45)$.
+:::
 
-::::
-
-:::: {style="text-align:justify"}
-
+::: {style="text-align:justify"}
 La interpretación estadística de los resultados se sustenta en el marco desarrollado en las Secciones 6.4.2 y 6.4.3 y en las referencias bibliográficas de la tesis: detección no paramétrica de saltos [@mancini2009; @lee2008,], variación bipotencia [@barndorffnielsen2004], estimación de densidad mediante núcleos [@silverman1986], procesos de conteo y análisis de supervivencia [@aalen1978; @abgk1993], estimación de intensidades mediante funciones núcleo [@ramlauhansen1983], tratamiento de censura [@kaplanmeier1958], criterio de información de Akaike [@akaike1974], bootstrap [@Efrontibshirani1993] y cambio de tiempo para procesos de eventos [@brown2002].
- 
+
 ## Implicaciones para la Gestión de Riesgos en el Contexto de la CDMX
 
 Para una aseguradora operando en la CDMX con exposición significativa a riesgos catastróficos, el esquema semi-implícito compensado ofrece tres ventajas críticas sobre Milstein:
@@ -3876,6 +2643,5 @@ Para una aseguradora operando en la CDMX con exposición significativa a riesgos
 2.  **Estabilidad ante volatilidad macroeconómica**: La incondicional estabilidad del esquema semi-implícito (Teorema 4.2 en \autocite{higham2002strong}) garantiza convergencia incluso ante shocks en $r(t)$, como los observados durante la política monetaria restrictiva de Banxico (2023-2024). En contraste, el esquema de Milstein requiere $\Delta t < 2/r_{\max}$ para estabilidad, limitando su aplicabilidad en escenarios de alta inflación.
 
 3.  **Eficiencia computacional para horizontes extendidos**: Para simulaciones a $5$ años ($T=5$), el esquema semi-implícito permite aumentar $\Delta t$ a $1/12$ (mensual) sin pérdida de estabilidad, reduciendo el costo computacional en un $96.7\%$ ($365 \to 12$ pasos/año) mientras mantiene errores relativos $< 0.5\%$ en la mediana. Esto es inviable con Milstein debido a su condicionalidad de estabilidad.
-::::
 :::
-
+::::::::::::::::::::::

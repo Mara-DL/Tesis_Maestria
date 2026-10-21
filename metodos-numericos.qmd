@@ -37,22 +37,30 @@ X_t = {}& X_0 + \int_0^t a(s,X_s)\,d s + \int_0^t b(s,X_s)\,d W_s
 La SDE con saltos compensados es: $$dX_t = \underbrace{a(t, X_t)\,dt}_{\text{drift original}} + \underbrace{b(t, X_t)\,dW_t}_{\text{difusión}} + \underbrace{\int_E R(t, X_{t-}, v)\,\tilde{p}_\phi(dv, dt)}_{\text{saltos compensados}}$$ donde la medida compensada es: $$\tilde{p}_\phi(dv, dt) = p_\phi(dv, dt) - \phi(dv)\,dt$$ Al expandir la integral con la medida compensada, obtenemos: $$\int_E R(t, X_{t-}, v)\,\tilde{p}_\phi(dv, dt) = \underbrace{\int_E R(t, X_{t-}, v)\,p_\phi(dv, dt)}_{\text{saltos brutos}} - \underbrace{\int_E R(t, X_{t-}, v)\,\phi(dv)\,dt}_{\text{compensación}}$$ Por lo tanto, la EDE completa se puede escribir como: $$dX_t = a(t, X_t)\,dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\,p_\phi(dv, dt) - \int_E R(t, X_{t-}, v)\,\phi(dv)\,dt$$ Para discretizar esta ecuación, reorganizamos los términos de la siguiente manera: $$dX_t = \underbrace{\left[a(t, X_t) - \int_E R(t, X_{t-}, v)\,\phi(dv)\right]}_{\text{drift compensado}} dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\,p_\phi(dv, dt)$$ El término de compensación cambia de signo al moverse al drift, porque: $$a(t, X_t)\,dt - \int_E R(t, X_{t-}, v)\,\phi(dv)\,dt = \left[a(t, X_t) - \int_E c(t, X_{t-}, v)\,\phi(dv)\right] dt$$
 :::
 
-### Formulación general del modelo de Cramér–Lundberg con reinversión como EDESJ.
+### Formulación general del modelo de Cramér–Lundberg con reinversión como EDESJ. {#sec-For_gen_mod_CL}
 
 ::: {style="text-align:justify"}
-El modelo de Cramér–Lundberg extendido con reinversión y parámetros temporales puede escribirse como una ecuación diferencial estocástica con saltos (EDE). Consideremos la siguiente ecuación diferencial estocástica con saltos (EDE): $$d X_t = \underbrace{c(t)\,dt}_{\text{primas}} + \underbrace{r(t) X_t\,dt}_{\text{rendimiento}} + \underbrace{\sigma(t) X_t\,d W_t}_{\text{volatilidad}} - \underbrace{\int_E R(t, X_{t-}, v)\,\tilde{p}_\phi(dv, dt)}_{\text{saltos compensados}},$$ {#eq-sdej} donde
+El modelo de Cramér–Lundberg extendido con reinversión y parámetros temporales se escribe, en forma compensada, como la ecuación diferencial estocástica con saltos
 
-- $c(t) \in \mathbb{R}$ es un flujo de primas determinista y acotado,
+$$dX_t=\underbrace{\big[c(t)+r(t)X_{t^-}-\Lambda(t)\big]}_{\text{deriva neta de siniestros esperados}}dt
++\underbrace{\sigma(t)X_{t^-}}_{\text{volatilidad}}dW_t
+-\underbrace{\int_E y\;\tilde p(dv,dt)}_{d\tilde J_t\ \text{(saltos compensados)}},$$ {#eq-ede-sj}
 
-- $r(t), \sigma(t)$ son funciones acotadas y medibles,
+donde:
 
-- $R(t, x, v)$ es la magnitud del salto, dependiente del tiempo $t$, del estado $x$ y de la marca $v$, - $\tilde{p}_\phi(dv, d t) = p_\phi(d v, dt) - \phi(dv)d t$ es la medida de Poisson compensada, - $\phi(E) < \infty$ y $\int_E |R(t, x, v)|^2 \phi(d v) < \infty$ para todo $t \in [0,T]$, $x \in \mathbb{R}$.
+- $c(t)$ es el flujo de primas; $r(t)$ y $\sigma(t)$ son funciones acotadas y Lipschitz en $t$ (se obtienen por interpolación lineal de los valores mensuales).
+- $E=(0,\infty)\times\{\text{meteo},\text{sismo}\}$ es el espacio de marcas; una marca $v=(y,k)$ representa un siniestro de monto $y>0$ de tipo $k$.
+- $p(dv,dt)$ es una medida aleatoria de Poisson con intensidad $\nu(t,dv)\,dt$, donde $$\nu(t,dv)=\lambda_{\text{meteo}}(t)\,F_{\text{meteo}}(dy)\,\delta_{\text{meteo}}(dk)+\lambda_{\text{sismo}}\,F_{\text{sismo}}(dy)\,\delta_{\text{sismo}}(dk),$$ con $\sup_t\nu(t,E)<\infty$ (actividad finita), y $\tilde p(dv,dt)=p(dv,dt)-\nu(t,dv)\,dt$ es la medida compensada.
+- Las severidades $Y$ son i.i.d., independientes de los procesos de conteo, del movimiento browniano y **del estado** $X$ (@sec-severidad).
+- El costo esperado de siniestros por unidad de tiempo es $$\Lambda(t)=\int_E y\,\nu(t,dv)=\lambda_{\text{meteo}}(t)\,\mathbb E[Y_{\text{meteo}}]+\lambda_{\text{sismo}}\,\mathbb E[Y_{\text{sismo}}],$$ y la varianza instantánea del salto es $\Gamma(t)=\int_E y^2\,\nu(t,dv)=\lambda_{\text{meteo}}(t)\mathbb E[Y_{\text{meteo}}^2]+\lambda_{\text{sismo}}\mathbb E[Y_{\text{sismo}}^2]$.
+- $J_t=\sum_{i\le N_{\text{meteo}}(t)}Y^{\text{meteo}}_i+\sum_{j\le N_{\text{sismo}}(t)}Y^{\text{sismo}}_j$ es el proceso de siniestros agregados y $\tilde J_t=J_t-\int_0^t\Lambda(s)\,ds$ su versión compensada: una martingala de cuadrado integrable con $\mathbb E[\tilde J_t^{\,2}]=\int_0^t\Gamma(s)\,ds$.
 :::
 
 ## Esquema de Milstein {#sec-Milstein}
 
 :::: {style="text-align:justify"}
-Sea la ecuación diferencial estocástica con saltos: $$dX_t = a(t, X_t)\,dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\, p_\phi(dv, dt), \tag{1}$$ donde $p_\phi$ es la medida aleatoria de Poisson con intensidad $\phi(dv)dt$.
+Sea la ecuación diferencial estocástica con saltos: $$dX_t = a(t, X_t)\,dt + b(t, X_t)\,dW_t + \int_E R(t, X_{t-}, v)\, p_\phi(dv, dt),$$ {#eq-ede-sj_mil}
+ donde $p_\phi$ es la medida aleatoria de Poisson con intensidad $\phi(dv)dt$.
 
 La discretización de Milstein **sin compensación** se define como: $$\begin{aligned}
 Y_{n+1} = Y_n &+ a(t_n, Y_n),\Delta t \\
@@ -78,380 +86,408 @@ Y_{n+1} = Y_n &+ a(t_n, Y_n),\Delta t \\
 ::: {#thm-convergencia_fuerte}
 (Convergencia fuerte de orden $\gamma = 1/2$). Bajo las hipótesis:
 
-1.  **Lipschitz global:** $|a(t,x_1)-a(t,x_2)| \leq L_a|x_1-x_2|$, análogo para $b$ y $R$.
-2.  **Crecimiento lineal:** $|a|+|b|+(\int_E |R|^2\phi)^{1/2} \leq K(1+|x|)$.
-3.  **Momentos finitos:** $\int_E |R(t,x,v)|^4 \phi(dv) < \infty$.
-4.  **Condiciones iniciales:** $\mathbb{E}[|X_0|^2]<\infty$, $Y_0=X_0$.
+1.  **Lipschitz global**: $\|a(t, x_1) - a(t, x_2)\| \leq L_a \|x_1 - x_2\|$, análogo para $b$ y $R$.
+2.  **Crecimiento lineal**: $\|a\| + \|b\| + \left(\int_E \|R\|^2 \phi\right)^{1/2} \leq K(1 + \|x\|)$.
+3.  **Momentos finitos de saltos**: $\int_E \|R(t, x, v)\|^4 \phi(dv) < \infty$.
+4.  **Condiciones iniciales**: $\mathbb{E}[\|X_0\|^2] < \infty$ y $Y_0 = X_0$.
+
+Entonces, existe una constante $C > 0$, independiente de $\Delta t$, tal que:
+
+$$\max_{0 \leq n \leq N} \left(\mathbb{E}[\|X_{t_n} - Y_n\|^2]\right)^{1/2} \leq C \sqrt{\Delta t}.$$ {#eq-convergencia_milstein}
+
+Es decir, el esquema converge fuertemente con orden $\gamma = 1/2$.
 :::
 ::::
 
 ## Esquema de Milstein Compensado {#sec-Milstein_compensado}
 
 ::: {style="text-align:justify"}
-Sea $Y_n$ la aproximación numérica dada por el esquema Milstein compensado: $$\begin{aligned}
-Y_{n+1} = Y_n &+ \left[ a(t_n, Y_n) - \int_E R(t_n, Y_n, v) \phi(d v) \right]\Delta t \\
-&+ b(t_n, Y_n) \Delta W_n \\
-&+ \frac{1}{2} b(t_n, Y_n) b_x(t_n, Y_n) \left[ (\Delta W_n)^2 - \Delta t \right] \\
-&+ \sum_{i=1}^{\Delta N_n} R(t_n, Y_n, \xi_i),
-\end{aligned}$$ {#eq-milstein_ec}
-
-- $\Delta t = t_{n+1} - t_n$ es el paso de tiempo,
-- $\Delta W_n \sim \mathcal{N}(0, \Delta t)$ es el incremento del proceso de Wiener,
-- $\Delta N_n \sim \text{Poisson}(\lambda \Delta t)$, $\lambda = \phi(E)$, es el número de saltos en el intervalo,
-- $\xi_i \stackrel{\text{i.i.d.}}{\sim} \phi(dv)/\lambda$ son las marcas de los saltos,
-- $b_x = \partial b / \partial x$ es la derivada parcial del coeficiente de difusión,
-- $a(t, x) = c(t) + r(t)x$ y $b(t, x) = \sigma(t)x$.
-:::
-
-::: {}
-(Convergencia fuerte de orden $\gamma = 1/2$ ). Supongamos las siguientes hipótesis:
-
-1.  **Lipschitz global**: Los coeficientes $a(t,x)$ y $b(t,x)$ son globalmente Lipschitz en $x$, y $c(t,x,v)$ es globalmente Lipschitz en $x$ uniformemente en $t$ y $v$: $$|c(t, x_1, v) - c(t, x_2, v)| \leq L_c |x_1 - x_2|, \quad \forall t \in [0,T], \, x_1, x_2 \in \mathbb{R}, \, v \in E.$$
-
-2.  **Crecimiento lineal**: Existe $K > 0$ tal que $$|a(t,x)| + |b(t,x)| + \left( \int_E |R(t, x, v)|^2 \phi(d v) \right)^{1/2} \leq K(1 + |x|),$$ para todo $t \in [0,T]$ y $x \in \mathbb{R}$.
-
-3.  **Momentos finitos de saltos**: $\int_E |R(t, x, v)|^4 \phi(d v) < \infty$ para todo $t \in [0,T]$ y $x \in \mathbb{R}$.
-
-4.  **Condiciones iniciales**: $\mathbb{E}[|X_0|^2] < \infty$ y $Y_0 = X_0$. Entonces, existe una constante $C > 0$, independiente de $\, dt$, tal que: $$\max_{0 \leq n \leq N} \left( \mathbb{E}\left[ |X_{t_n} - Y_n|^2 \right] \right)^{1/2} \leq C \sqrt{dt}.$$ {#eq-convergencia} Es decir, el esquema converge fuertemente con orden $\gamma = 1/2$.
-:::
-
-:::: {.content-visible when-format="html"}
-::: {.proof style="text-align:justify"}
-La EDE @eq-sdej puede reescribirse en la forma estándar @platen2010numerical, Ec. (1.8.2): $$d X_t = a(t,X_t)\,d t + b(t,X_t)\,dW_t + \int_E R(t,X_{t-},v)\,p_\phi(dv, d t),$$ {#eq-sdej_estandar}
-
-donde:
-
-- $a(t,x) = c(t) + r(t)x$ (drift original),
-
-- $b(t,x) = \sigma(t)x$,
-
-- $R(t,x,v)$ es el tamaño del salto bruto, dependiente del estado. Las hipótesis de Lipschitz y crecimiento lineal garantizan que los coeficientes satisfacen las condiciones del Teorema 1.9.3 de @platen2010numerical, que establece la existencia y unicidad de una solución fuerte $X_t$.
-
-Además, el Teorema 1.9.3 garantiza que la solución tiene momentos finitos de segundo orden: $$\mathbb{E}\left[ \sup_{0 \leq t \leq T} |X_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|X_0|^2]) < \infty.$$ {#eq-exact_moment}
-
-El esquema @eq-milstein_ec incluye la corrección de Milstein, que corresponde a truncar la expansión estocástica de Wagner-Platen (ver @platen2010numerical, Ec. (4.4.7)) después de los términos de orden $\mathcal{O}((dt)^{3/2})$.
-
-Para una SDE con saltos, la expansión completa incluye términos adicionales relacionados con la medida de Poisson. Como el modelo es aditivo en los saltos (aunque $c(t,x,v)$ depende de $x$, no hay términos cruzados de orden superior), los operadores de salto y difusión conmutan trivialmente, lo que simplifica el análisis.
-
-El error local $R_n = X_{t_{n+1}} - Y_{n+1}$ puede descomponerse como:
-
-$$R_n = R_n^{\text{dif}} + R_n^{\text{jump}},$$ {#eq-error_descomp} donde
-
-- $R_n^{\text{dif}}$ es el error de la parte difusiva,
-- $R_n^{\text{jump}}$ es el error de la parte de saltos.
-
-Por la expansión de Wagner-Platen para difusiones puras (@platen2010numerical, Ec. (5.3.19)), el error local de la parte difusiva satisface:
-
-$$\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \mathcal{F}_{t_n} \right] \leq K_1 (1 + |Y_n|^2) (\,dt)^3.$$ {#eq-diff_error} Para la parte de saltos, el error local es: $$R_n^{\text{jump}} = \int_{t_n}^{t_{n+1}} \int_E R(s, X_{s-}, v)\,\tilde{p}_\phi(dv, ds) - \sum_{i=1}^{\Delta N_n} R(t_n, Y_n, \xi_i) - \int_E R(t_n, Y_n, v)\phi(dv)\,dt$$ {#eq-error_saltos}
-
-Usando propiedades de la medida de Poisson compensada (ver @platen2010numerical, Ec. (4.2.1)) y la condición de Lipschitz para $c$, se tiene: $$\mathbb{E}\left[ |R_n^{\text{jump}}|^2 \mid \mathcal{F}_{t_n} \right] \leq K_2 \,dt + K_3 |X_{t_n} - Y_n|^2 \,dt.$$ {#eq-error_saltos_limite} Combinando @eq-diff_error y @eq-error_saltos_limite usando la desigualdad $(a+b)^2 \leq 2a^2 + 2b^2$, obtenemos: $$ 
-\begin{aligned}
-\mathbb{E}\left[ |R_n|^2 \mid \mathcal{F}_{t_n} \right] \leq {}& 2K_1 (1 + |Y_n|^2) (\,dt)^3 + 2K_2 \,dt + 2K_3 |e_n|^2 \,dt \\
-& \leq K_4 (1 + |Y_n|^2 + |e_n|^2) (\,dt)^2,
-\end{aligned}$$ {#eq-error_total_limite}
-
-donde en el último paso usamos que $\, dt \leq 1$ (paso de tiempo pequeño) y $e_n = X_{t_n} - Y_n$ es el error global.
-
-Para demostrar que el esquema tiene momentos finitos, usamos un argumento de tipo Grönwall discreto. Definimos: $$M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |Y_k|^2 \right].$$ {#eq-momentos_Def}
-
-Tomando cuadrados en @eq-milstein_ec y esperanza, y usando las cotas de Lipschitz y crecimiento lineal, se obtiene: $$M_{n+1} \leq (1 + K_5 \, dt) M_n + K_6 \, dt.$$ {#eq-momentos_recursivos} Iterando esta desigualdad y usando que $M_0 = \mathbb{E}[|Y_0|^2] < \infty$, se obtiene: $$M_N \leq M_0 e^{K_5 T} + \frac{K_6}{K_5} (e^{K_5 T} - 1) < \infty.$$ {#eq-momentos_ligados} Por lo tanto, el esquema numérico tiene momentos finitos uniformes.
-
-Definimos el error global $e_n = X_{t_n} - Y_n$. Usando la fórmula de Itô para la solución exacta y la definición del esquema, podemos escribir: $$e_{n+1} = e_n + \delta a_n \,dt + \delta b_n \,dW_n + \delta c_n + R_n,$$ {#eq-global_error_descomposicion} donde
-
-- $\delta a_n = a(t_n, X_{t_n}) - a(t_n, Y_n)$,
-
-- $\delta b_n = b(t_n, X_{t_n}) - b(t_n, Y_n)$,
-
-- $\delta c_n = \int_E [c(t_n, X_{t_n}, v) - c(t_n, Y_n, v)] \phi(\,D v) \, dt$,
-
-- $R_n$ es el residuo total (error local).
-
-Por la condición de Lipschitz: $$|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \, dt,$$ {#eq-lipschitz_limite}
-
-donde $L_a, L_b, L_c$ son las constantes de Lipschitz de $a$, $b$ y $c$, respectivamente.
-
-Tomamos cuadrados en @eq-global_error_descomposicion: $$\begin{aligned}
-|e_{n+1}|^2 &= |e_n|^2 + 2e_n \cdot \delta a_n \, dt + 2e_n \cdot \delta b_n \, dW_n + 2e_n \cdot \delta c_n \\
-&\quad + |\delta a_n|^2 (\, dt)^2 + 2\delta a_n \cdot \delta b_n \, dt \, dW_n + 2\delta a_n \cdot \delta c_n \, dt \\
-&\quad + |\delta b_n|^2 (\, dW_n)^2 + 2\delta b_n \cdot \delta c_n \, dW_n + |\delta c_n|^2 \\
-&\quad + 2e_n \cdot R_n + 2\delta a_n \cdot R_n \, dt + 2\delta b_n \cdot R_n \, dW_n + 2\delta c_n \cdot R_n + |R_n|^2.
-\end{aligned}$$ {#eq-error_cuadratico} Tomamos esperanza condicional dado $\mathcal{F}_{t_n}$. Notamos que:
-
-- $\mathbb{E}[\,dW_n \mid \mathcal{F}_{t_n}] = 0$,
-- $\mathbb{E}[(\,dW_n)^2 \mid \mathcal{F}_{t_n}] = dt$,
-- Los términos con $\,dW_n$ tienen esperanza cero.
-
-Por lo tanto: $$\begin{aligned}
-\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] &\leq |e_n|^2 + 2e_n \cdot \delta a_n \, dt + 2e_n \cdot \delta c_n + |\delta b_n|^2 \, dt \\
-&\quad + |\delta a_n|^2 (\, dt)^2 + 2|\delta a_n| |\delta c_n| \, dt + |\delta c_n|^2 \\
-&\quad + 2|e_n| |R_n| + 2|\delta a_n| |R_n| \, dt + 2|\delta c_n| |R_n| + |R_n|^2.
-\end{aligned}$$ {#eq-condicional_error_r_1}
-
-Usando las cotas de Lipschitz @eq-lipschitz_limite y la desigualdad $2ab \leq a^2 + b^2$, obtenemos: $$\begin{aligned}
-\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] &\leq |e_n|^2 + 2L_a |e_n|^2 \, dt + 2L_c |e_n|^2 \, dt + L_b^2 |e_n|^2 \, dt \\
-&\quad + L_a^2 |e_n|^2 (\, dt)^2 + 2L_a L_c |e_n|^2 (\, dt)^2 + L_c^2 |e_n|^2 (\, dt)^2 \\
-&\quad + |e_n|^2 + |R_n|^2 + L_a^2 |e_n|^2 (\, dt)^2 + |R_n|^2 (\, dt)^2 \\
-&\quad + L_c^2 |e_n|^2 (\, dt)^2 + |R_n|^2 + |R_n|^2.
-\end{aligned}$$ {#eq-condicional_error_r_2}
-
-Simplificando y usando que $\, dt \leq 1$: $$\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] \leq (1 + K_7 \, dt) |e_n|^2 + K_8 |R_n|^2,$$ {#eq-condicional_error_r_3} donde $K_7 = 2L_a + 2L_c + L_b^2 + L_a^2 + 2L_a L_c + L_c^2 + 1$ y $K_8 = 4 + (\, dt)^2 \leq 5$. Usando la cota del error local @eq-error_total_limite: $$\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] \leq (1 + K_7 \, dt) |e_n|^2 + K_8 K_4 (1 + |Y_n|^2 + |e_n|^2) (\, dt)^2.$$ Usando la desigualdad $|Y_n|^2 \leq 2|X_{t_n}|^2 + 2|e_n|^2$ y tomando esperanza total: $$\mathbb{E}[|e_{n+1}|^2] \leq (1 + K_7 \, dt + 2K_8 K_4 (\, dt)^2) \mathbb{E}[|e_n|^2] + 2K_8 K_4 (\, dt)^2 \mathbb{E}[|X_{t_n}|^2] + K_8 K_4 (\, dt)^2.$$ {#eq-total_error_1} Definiendo $E_n = \mathbb{E}[|e_n|^2]$ y usando la cota de momentos de la solución exacta @eq-exact_moment:
-
-$$E_{n+1} \leq (1 + K_9 \, dt) E_n + K_{10} (\, dt)^2,$$ {#eq-recursive_error}
-
-donde $K_9 = K_7 + 2K_8 K_4 \, dt \leq K_7 + 2K_8 K_4 \ \text{y} K_{10} = 2K_8 K_4 C_1 (1 + \mathbb{E}[|X_0|^2]) + K_8 K_4$.
-
-Iteramos la desigualdad @eq-recursive_error: $$\begin{aligned}
-E_1 &\leq (1 + K_9 \, dt) E_0 + K_{10} (\, dt)^2, \\
-E_2 &\leq (1 + K_9 \, dt)^2 E_0 + K_{10} (\, dt)^2 \left[1 + (1 + K_9 \, dt)\right], \\
-&\vdots \\
-E_N &\leq (1 + K_9 \, dt)^N E_0 + K_{10} (\, dt)^2 \sum_{k=0}^{N-1} (1 + K_9 \, dt)^k.
-\end{aligned}$$ {#eq-iteration}
-
-Como $E_0 = 0$ (condiciones iniciales iguales), el primer término se anula. La suma geométrica se puede acotar: $$\sum_{k=0}^{N-1} (1 + K_9 \, dt)^k = \frac{(1 + K_9 \, dt)^N - 1}{K_9 \, dt}.$$ {#eq-geometric_sum}
-
-Usando la desigualdad $(1 + x)^N \leq e^{Nx}$ para $x \geq 0$, y notando que $N\, dt = T$, obtenemos: $$(1 + K_9 \, dt)^N \leq e^{K_9 T}$$ {#eq-exponential_bound} donde $C = K_{10} (e^{K_9 T} - 1)/K_9$ es una constante independiente de $\,dt$. Tomando raíz cuadrada, obtenemos finalmente: $$\left( \mathbb{E}[|X_T - Y_N|^2] \right)^{1/2} \leq C \sqrt{\,dt}. \quad \square$$ {#eq-final_result}
-:::
-::::
-
-:::: {.content-visible when-format="pdf"}
-::: {.proof style="text-align:justify"}
-La EDE @eq-sdej puede reescribirse en la forma estándar @platen2010numerical, Ec. (1.8.2): $$d X_t = a(t,X_t)\,d t + b(t,X_t)\,dW_t + \int_E R(t,X_{t-},v)\,p_\phi(dv, d t),$$ {#eq-sdej_estandar_pdf}
-
-donde:
-
-- $a(t,x) = c(t) + r(t)x$ (drift original),
-
-- $b(t,x) = \sigma(t)x$,
-
-- $R(t,x,v)$ es el tamaño del salto bruto, dependiente del estado. Las hipótesis de Lipschitz y crecimiento lineal garantizan que los coeficientes satisfacen las condiciones del Teorema 1.9.3 de @platen2010numerical, que establece la existencia y unicidad de una solución fuerte $X_t$.
-
-Además, el Teorema 1.9.3 garantiza que la solución tiene momentos finitos de segundo orden: $$\mathbb{E}\left[ \sup_{0 \leq t \leq T} |X_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|X_0|^2]) < \infty.$$ {#eq-exact_moment_pdf}
-
-El esquema @eq-milstein_ec incluye la corrección de Milstein, que corresponde a truncar la expansión estocástica de Wagner-Platen (ver @platen2010numerical, Ec. (4.4.7)) después de los términos de orden $\mathcal{O}((dt)^{3/2})$.
-
-Para una SDE con saltos, la expansión completa incluye términos adicionales relacionados con la medida de Poisson. Como el modelo es aditivo en los saltos (aunque $c(t,x,v)$ depende de $x$, no hay términos cruzados de orden superior), los operadores de salto y difusión conmutan trivialmente, lo que simplifica el análisis.
-
-El error local $R_n = X_{t_{n+1}} - Y_{n+1}$ puede descomponerse como:
-
-$$R_n = R_n^{\text{dif}} + R_n^{\text{jump}},$$ {#eq-error_descomp_pdf} donde
-
-- $R_n^{\text{dif}}$ es el error de la parte difusiva,
-- $R_n^{\text{jump}}$ es el error de la parte de saltos.
-
-Por la expansión de Wagner-Platen para difusiones puras (@platen2010numerical, Ec. (5.3.19)), el error local de la parte difusiva satisface:
-
-$$\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \mathcal{F}_{t_n} \right] \leq K_1 (1 + |Y_n|^2) (\,dt)^3.$$ {#eq-diff_error_pdf} Para la parte de saltos, el error local es: $$R_n^{\text{jump}} = \int_{t_n}^{t_{n+1}} \int_E R(s, X_{s-}, v)\,\tilde{p}_\phi(dv, ds) - \sum_{i=1}^{\Delta N_n} R(t_n, Y_n, \xi_i) - \int_E R(t_n, Y_n, v)\phi(dv)\,dt$$ {#eq-error_saltos_pdf}
-
-Usando propiedades de la medida de Poisson compensada (ver @platen2010numerical, Ec. (4.2.1)) y la condición de Lipschitz para $c$, se tiene: $$\mathbb{E}\left[ |R_n^{\text{jump}}|^2 \mid \mathcal{F}_{t_n} \right] \leq K_2 \,dt + K_3 |X_{t_n} - Y_n|^2 \,dt.$$ {#eq-error_saltos_limite_pdf} Combinando @eq-diff_error_pdf y @eq-error_saltos_limite_pdf usando la desigualdad $(a+b)^2 \leq 2a^2 + 2b^2$, obtenemos: $$ 
-\begin{aligned}
-\mathbb{E}\left[ |R_n|^2 \mid \mathcal{F}_{t_n} \right] \leq {}& 2K_1 (1 + |Y_n|^2) (\,dt)^3 + 2K_2 \,dt + 2K_3 |e_n|^2 \,dt \\
-& \leq K_4 (1 + |Y_n|^2 + |e_n|^2) (\,dt)^2,
-\end{aligned}$$ {#eq-error_total_limite_pdf}
-
-donde en el último paso usamos que $\, dt \leq 1$ (paso de tiempo pequeño) y $e_n = X_{t_n} - Y_n$ es el error global.
-
-Para demostrar que el esquema tiene momentos finitos, usamos un argumento de tipo Grönwall discreto. Definimos: $$M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |Y_k|^2 \right].$$ {#eq-momentos_Def_pdf}
-
-Tomando cuadrados en @eq-milstein_ec y esperanza, y usando las cotas de Lipschitz y crecimiento lineal, se obtiene: $$M_{n+1} \leq (1 + K_5 \, dt) M_n + K_6 \, dt.$$ {#eq-momentos_recursivos_pdf} Iterando esta desigualdad y usando que $M_0 = \mathbb{E}[|Y_0|^2] < \infty$, se obtiene: $$M_N \leq M_0 e^{K_5 T} + \frac{K_6}{K_5} (e^{K_5 T} - 1) < \infty.$$ {#eq-momentos_ligados_pdf} Por lo tanto, el esquema numérico tiene momentos finitos uniformes.
-
-Definimos el error global $e_n = X_{t_n} - Y_n$. Usando la fórmula de Itô para la solución exacta y la definición del esquema, podemos escribir: $$e_{n+1} = e_n + \delta a_n \,dt + \delta b_n \,dW_n + \delta c_n + R_n,$$ {#eq-global_error_descomposicion_pdf} donde
-
-- $\delta a_n = a(t_n, X_{t_n}) - a(t_n, Y_n)$,
-
-- $\delta b_n = b(t_n, X_{t_n}) - b(t_n, Y_n)$,
-
-- $\delta c_n = \int_E [c(t_n, X_{t_n}, v) - c(t_n, Y_n, v)] \phi(\,D v) \, dt$,
-
-- $R_n$ es el residuo total (error local).
-
-Por la condición de Lipschitz: $$|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \, dt,$$ {#eq-lipschitz_limite_pdf}
-
-donde $L_a, L_b, L_c$ son las constantes de Lipschitz de $a$, $b$ y $c$, respectivamente.
-
-Tomamos cuadrados en @eq-global_error_descomposicion_pdf : $$\begin{aligned}
-|e_{n+1}|^2 &= |e_n|^2 + 2e_n \cdot \delta a_n \, dt + 2e_n \cdot \delta b_n \, dW_n + 2e_n \cdot \delta c_n \\
-&\quad + |\delta a_n|^2 (\, dt)^2 + 2\delta a_n \cdot \delta b_n \, dt \, dW_n + 2\delta a_n \cdot \delta c_n \, dt \\
-&\quad + |\delta b_n|^2 (\, dW_n)^2 + 2\delta b_n \cdot \delta c_n \, dW_n + |\delta c_n|^2 \\
-&\quad + 2e_n \cdot R_n + 2\delta a_n \cdot R_n \, dt + 2\delta b_n \cdot R_n \, dW_n + 2\delta c_n \cdot R_n + |R_n|^2.
-\end{aligned}$$ {#eq-error_cuadratico_pdf} Tomamos esperanza condicional dado $\mathcal{F}_{t_n}$. Notamos que:
-
-- $\mathbb{E}[\,dW_n \mid \mathcal{F}_{t_n}] = 0$,
-- $\mathbb{E}[(\,dW_n)^2 \mid \mathcal{F}_{t_n}] = dt$,
-- Los términos con $\,dW_n$ tienen esperanza cero.
-
-Por lo tanto: $$\begin{aligned}
-\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] &\leq |e_n|^2 + 2e_n \cdot \delta a_n \, dt + 2e_n \cdot \delta c_n + |\delta b_n|^2 \, dt \\
-&\quad + |\delta a_n|^2 (\, dt)^2 + 2|\delta a_n| |\delta c_n| \, dt + |\delta c_n|^2 \\
-&\quad + 2|e_n| |R_n| + 2|\delta a_n| |R_n| \, dt + 2|\delta c_n| |R_n| + |R_n|^2.
-\end{aligned}$$ {#eq-condicional_error_r_1_pdf}
-
-Usando las cotas de Lipschitz @eq-lipschitz_limite_pdf y la desigualdad $2ab \leq a^2 + b^2$, obtenemos: $$\begin{aligned}
-\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] &\leq |e_n|^2 + 2L_a |e_n|^2 \, dt + 2L_c |e_n|^2 \, dt + L_b^2 |e_n|^2 \, dt \\
-&\quad + L_a^2 |e_n|^2 (\, dt)^2 + 2L_a L_c |e_n|^2 (\, dt)^2 + L_c^2 |e_n|^2 (\, dt)^2 \\
-&\quad + |e_n|^2 + |R_n|^2 + L_a^2 |e_n|^2 (\, dt)^2 + |R_n|^2 (\, dt)^2 \\
-&\quad + L_c^2 |e_n|^2 (\, dt)^2 + |R_n|^2 + |R_n|^2.
-\end{aligned}$$ {#eq-condicional_error_r_2_pdf}
-
-Simplificando y usando que $\, dt \leq 1$: $$\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] \leq (1 + K_7 \, dt) |e_n|^2 + K_8 |R_n|^2,$$ {#eq-condicional_error_r_3_pdf} donde $K_7 = 2L_a + 2L_c + L_b^2 + L_a^2 + 2L_a L_c + L_c^2 + 1$ y $K_8 = 4 + (\, dt)^2 \leq 5$. Usando la cota del error local @eq-error_total_limite_pdf : $$\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F}_{t_n}] \leq (1 + K_7 \, dt) |e_n|^2 + K_8 K_4 (1 + |Y_n|^2 + |e_n|^2) (\, dt)^2.$$ Usando la desigualdad $|Y_n|^2 \leq 2|X_{t_n}|^2 + 2|e_n|^2$ y tomando esperanza total: $$\mathbb{E}[|e_{n+1}|^2] \leq (1 + K_7 \, dt + 2K_8 K_4 (\, dt)^2) \mathbb{E}[|e_n|^2] + 2K_8 K_4 (\, dt)^2 \mathbb{E}[|X_{t_n}|^2] + K_8 K_4 (\, dt)^2.$$ {#eq-total_error_1_pdf} Definiendo $E_n = \mathbb{E}[|e_n|^2]$ y usando la cota de momentos de la solución exacta @eq-exact_moment_pdf:
-
-$$E_{n+1} \leq (1 + K_9 \, dt) E_n + K_{10} (\, dt)^2,$$ {#eq-recursive_error_pdf}
-
-donde $K_9 = K_7 + 2K_8 K_4 \, dt \leq K_7 + 2K_8 K_4 \ \text{y} K_{10} = 2K_8 K_4 C_1 (1 + \mathbb{E}[|X_0|^2]) + K_8 K_4$.
-
-Iteramos la desigualdad @eq-recursive_error_pdf: $$\begin{aligned}
-E_1 &\leq (1 + K_9 \, dt) E_0 + K_{10} (\, dt)^2, \\
-E_2 &\leq (1 + K_9 \, dt)^2 E_0 + K_{10} (\, dt)^2 \left[1 + (1 + K_9 \, dt)\right], \\
-&\vdots \\
-E_N &\leq (1 + K_9 \, dt)^N E_0 + K_{10} (\, dt)^2 \sum_{k=0}^{N-1} (1 + K_9 \, dt)^k.
-\end{aligned}$$ {#eq-iteration_pdf}
-
-Como $E_0 = 0$ (condiciones iniciales iguales), el primer término se anula. La suma geométrica se puede acotar: $$\sum_{k=0}^{N-1} (1 + K_9 \, dt)^k = \frac{(1 + K_9 \, dt)^N - 1}{K_9 \, dt}.$$ {#eq-geometric_sum_pdf}
-
-Usando la desigualdad $(1 + x)^N \leq e^{Nx}$ para $x \geq 0$, y notando que $N\, dt = T$, obtenemos: $$(1 + K_9 \, dt)^N \leq e^{K_9 T}$$ {#eq-exponential_bound_pdf} donde $C = K_{10} (e^{K_9 T} - 1)/K_9$ es una constante independiente de $\,dt$. Tomando raíz cuadrada, obtenemos finalmente: $$\left( \mathbb{E}[|X_T - Y_N|^2] \right)^{1/2} \leq C \sqrt{\,dt}.$$ {#eq-final_result_pdf}
-:::
-::::
-
-## Esquema Semi-Implícito Compensado
-
-::: {style="text-align:justify"}
-El método semi-implícito compensado se define aplicando una regla de Euler implícita en el drift y explícita en la difusión y el salto compensado $$U_{n+1} = U_n + [c_{n+1} + r_{n+1}U_{n+1}]\Delta t + \sigma_n U_n \Delta W_n - \tilde{J}_n,$$ {#eq-esquema_semiimplicito}
-
-donde $c_{n+1} = c(t_{n+1})$, $r_{n+1} = r(t_{n+1})$, $\sigma_n = \sigma(t_n)$, y $\Delta W_n = W_{t_{n+1}} - W_{t_n}$.
-
-Reordenando algebraicamente para despejar $U_{n+1}$:
-
-$$U_{n+1}(1 - r_{n+1}\Delta t) = U_n(1 + \sigma_n \Delta W_n) + c_{n+1}\Delta t + \mathbb{E}[\Delta J_n] - \Delta J_n,$$ lo que da lugar a la fórmula cerrada central:
-
-$$U_{n+1} = 
-\frac{U_n (1 + \sigma(t_n) \Delta W_n ) + c(t_n)\Delta t + \int_E c(t_n, U_n, v) \phi(dv) \Delta t - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i)
-}{1 - r(t_{n+1}) \Delta t}$$ {#eq-esquema_semiimplicito_despeje} donde:
-
-- $\Delta t = t_{n+1} - t_n$,
-- $\Delta W_n \sim \mathcal{N}(0, \Delta t)$,
-- $\Delta N_n \sim \text{Poisson}(\lambda \Delta t)$, $\lambda = \phi(E)$,
-- $\xi_i \stackrel{\text{i.i.d.}}{\sim} \phi(dv)/\lambda$.
-:::
-
-::: {#thm-convergencia_fuerte_semi_impli}
-(Convergencia fuerte de orden $\gamma = 1/2$) Supongamos las siguientes hipótesis:
-
-- *(H1)* ***Lipschitz global:*** Los coeficientes $a(t,u) = c(t) + r(t)u$ y $b(t,u) = \sigma(t)u$ son globalmente Lipschitz en $u$, y $c(t,u,v)$ es globalmente Lipschitz en $u$ uniformemente en $t$ y $v$: $$ |c(t, u_1, v) - c(t, u_2, v)| \leq L_c |u_1 - u_2|, \quad \forall t \in [0,T], \, u_1, u_2 \in \mathbb{R}, \, v \in E.
-   \tag{H1}
-   $$
-
-- *(H2)* ***Crecimiento lineal***: Existe $K > 0$ tal que $$  |a(t,u)| + |b(t,u)| + \left( \int_E |c(t, u, v)|^2 \phi(dv) \right)^{1/2} \leq K(1 + |u|),
-    \tag{H2}
-    $$ para todo $t \in [0,T]$ y $u \in \mathbb{R}$ (@platen2010numerical, Ec. (1.9.3)).
-
-- *(H3)* ***Momentos finitos de saltos***: $\int_E |c(t, u, v)|^4 \phi(dv) < \infty$ para todo $t \in [0,T]$ y $u \in \mathbb{R}$ (@wang2007, Hipótesis 3.1).
-
-- *(H4)* ***Estabilidad numérica***: Existe $\Delta t_0 > 0$ y $\delta > 0$ tales que $1 - r(t_{n+1})\Delta t \geq \delta > 0$ para todo $\Delta t \leq \Delta t_0$ (@higham2005, Lema 2.1).
-
-- *(H5)**Condiciones iniciales***: $\mathbb{E}[|U_0|^2] < \infty$ y $U_0 = _0$.
-
-Bajo las hipótesis (H1)--(H5), existe una constante $C > 0$, independiente de $\Delta t$, tal que: $$\max_{0 \leq n \leq N} \left( \mathbb{E}\left[ |U_{t_n} - U_n|^2 \right] \right)^{1/2} \leq C \sqrt{\Delta t}.$$ {#eq-convergence_result_semiimplicit}
-:::
-
-:::: {.content-visible when-format="html"}
-::: {.proof style="text-align:justify"}
-Reescribimos la SDEJ(@eq-sdej) en forma estándar (@platen2010numerical, Ec. (1.8.2)):
-
-$$dU_t = a(t,U_t)\,dt  + b(t,U_t)\,dW_t + \int_E c(t,U_{t-},v)\,p_\phi(dv, dt),$$ {#eq-sdej_standard_semiimplicit}
-
-donde $a(t,u) = c(t) + r(t)u$ y $b(t,u) = \sigma(t)u$. Las hipótesis (H1) y (H2) satisfacen las condiciones del \textbf{Teorema 1.9.4} de @platen2010numerical, que garantiza la existencia y unicidad de una solución fuerte $U_t$. Además asegura que la solución tiene momentos finitos de segundo orden: $$\mathbb{E}\left[ \sup_{0 \leq t \leq T} |U_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|U_0|^2]) < \infty.$$ {#eq-exact_moment_semiimplicit} Esta cota es esencial para controlar el crecimiento de la solución exacta durante la propagación del error.
-
-Definimos el error local $R_n = U_{t_{n+1}} - U_{n+1}$ y lo descomponemos como: $$R_n = R_n^{\text{dif}} + R_n^{\text{jump}} + R_n^{\text{implicit}},$$ {#eq-error_decomp_semiimplicit}
-
-donde $R_n^{\text{dif}}$ es el error de difusión, $R_n^{\text{jump}}$ el error de saltos y $R_n^{\text{implicit}}$ el error de implicitidad.
-
-Por la expansión de Euler-Maruyama para difusiones puras (@higham2005, Ec. (2.3)), el error local de la parte difusiva satisface: $$\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_1 (1 + |U_n|^2) (\Delta t)^2$$ {#eq-diff_error_bound_semiimplicit}
-
-Esta cota es de orden $(\Delta t)^3$ en $L^2$ debido a que el esquema semi-implícito utiliza una aproximación de Euler para la parte difusiva, cuyo error local en $L^2$ es $\mathcal{O}((\Delta t)^{3/2})$. El error local asociado a los saltos es: $$\begin{aligned}
-R_n^{\text{jump}} = {}& \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{p}_\phi(dv, ds)  \\
-& - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i)  \\
-& + \int_E c(t_n, U_n, v) \phi(dv)\,\Delta t.
-\end{aligned}$$ {#eq-jump_error_semiimplicit}
-
-Aplicando la desigualdad de Cauchy-Schwarz, la condición de Lipschitz (H1) y las propiedades de la medida compensada (@platen2010numerical, Ec. (4.2.1)), obtenemos:
-
-$$\begin{align}
-\mathbb{E}\left[ |R_n^{\text{jump}}|^2 \mid \mathcal{F_{t_n}} \right] 
-&\leq 2\mathbb{E}\left[ \left| \int_{t_n}^{t_{n+1}} \int_E [c(s, U_{s-}, v) - c(t_n, U_n, v)] \tilde{p}_\phi(dv, ds) \right|^2 \mid \mathcal{F_{t_n}} \right] \nonumber \\
-&\quad \ \ \ \ \ \ \ \ \ \ \ + 2\mathbb{E}\Biggl[ \Biggl| \int_{t_n}^{t_{n+1}} \int_E c(t_n, U_n, v) \tilde{p}_\phi(dv, ds) - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i) \\
-&\quad \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ + \int_E c(t_n, U_n, v) \phi(dv)\Delta t \Biggl|^2 \mid \mathcal{F_{t_n}} \Biggr] \nonumber \\
-&\leq 2L_c^2 \mathbb{E}\left[ \int_{t_n}^{t_{n+1}} |U_s - U_n|^2 ds \mid \mathcal{F_{t_n}} \right] \int_E \phi(dv) + 2 \int_E |c(t_n, U_n, v)|^2 \phi(dv) \Delta t \nonumber \\
-&\leq K_2 \Delta t + K_3 |U_{t_n} - U_n|^2 \Delta t,
-\end{align}$$ {#eq-jump_error_bound_semiimplicit} donde en la última desigualdad usamos la cota de momentos de la solución exacta @eq-exact_moment_semiimplicit y la condición de crecimiento lineal (H2). El primer término proviene de la variación del estado durante el intervalo, y el segundo de la diferencia entre el estado exacto y el numérico. Expandiendo el denominador mediante serie de Taylor (@wang2007, Lema 3.1): $$\frac{1}{1 - r(t_{n+1})\Delta t} = 1 + r(t_{n+1})\Delta t + \mathcal{O}((\Delta t)^2),$$ {#eq-taylor_denom_semiimplicit}
-
-lo que implica que el error introducido por la implicitidad satisface: $$\mathbb{E}\left[|R_n^{\text{implicit}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_4 (1 + |U_n|^2) (\Delta t)^4.$$ {#eq-implicit_error_bound_semiimplicit}
-
-Este término es de orden superior y no afectará el orden global de convergencia.
-
-Combinando @eq-diff_error_bound_semiimplicit, @eq-jump_error_bound_semiimplicit y @eq-implicit_error_bound_semiimplicit, y usando $(a+b+c)^2 \leq 3a^2 + 3b^2 + 3c^2$: $$\mathbb{E}\left[ |R_n|^2 \mid \mathcal{F_{t_n}} \right] \leq K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t,$$ {#eq-total_error_bound_semiimplicit} donde $e_n = U_{t_n} - U_n$ es el error global y usamos que $\Delta t \leq 1$ para absorber los términos de orden superior. Definiendo $M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |U_k|^2 \right]$, y tomando cuadrados en @eq-esquema_semiimplicito_despeje seguido de esperanza, aplicamos las cotas de Lipschitz (H1), crecimiento lineal (H2) y la cota de estabilidad (H4). Siguiendo el argumento del Teorema 3.2 de @higham2005, obtenemos: $$M_{n+1} \leq (1 + K_6 \Delta t) M_n + K_7 \Delta t.$$ {#eq-moments_recursion_semiimplicit} Iterando esta desigualdad y usando $M_0 = \mathbb{E}[|U_0|^2] < \infty$: $$M_N \leq M_0 e^{K_6 T} + \frac{K_7}{K_6} (e^{K_6 T} - 1) < \infty.$$ {#eq-moments_bound_semiimplicit} Por lo tanto, el esquema numérico tiene momentos finitos uniformes, condición esencial para la convergencia fuerte. Para la descomposición del error global definimos $e_n = U_{t_n} - U_n$. Usando la fórmula de Itô para la solución exacta y la definición del esquema @eq-esquema_semiimplicito_despeje, obtenemos: $$e_{n+1} = e_n + \delta a_n \Delta t + \delta b_n \Delta W_n + \delta c_n + R_n,$$ {#eq-global_error_decomp_semiimplicit} donde: $$\begin{aligned}
-\delta a_n &= a(t_n, U_{t_n}) - a(t_n, U_n), \\
-\delta b_n &= b(t_n, U_{t_n}) - b(t_n, U_n), \\
-\delta c_n &= \int_E [c(t_n, U_{t_n}, v) - c(t_n, U_n, v)] \phi(dv) \Delta t.
-\end{aligned}$$ Por la condición de Lipschitz (H1): $$|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \Delta t.$$ {#eq-lipschitz_bounds_semiimplicit} Tomamos cuadrados en @eq-global_error_decomp_semiimplicit y esperanza condicional $\mathbb{E}[\cdot \mid \mathcal{F_{t_n}}].$ Usando $\mathbb{E}[\Delta W_n \mid \mathcal{F_{t_n}}] = 0$, $\mathbb{E}[(\Delta W_n)^2 \mid \mathcal{F_{t_n}}] = \Delta t$, y que los términos con $\Delta W_n$ tienen esperanza cero: $$\begin{aligned}
-\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}] 
-&\leq |e_n|^2 + 2e_n \cdot \delta a_n \Delta t + 2e_n \cdot \delta c_n + |\delta b_n|^2 \Delta t + \mathbb{E}[|R_n|^2 \mid \mathcal{F_{t_n}}] \nonumber \\
-&\leq |e_n|^2 + 2L_a |e_n|^2 \Delta t + 2L_c |e_n|^2 \Delta t + L_b^2 |e_n|^2 \Delta t + K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t \nonumber \\
-&\leq (1 + K_8 \Delta t) |e_n|^2 + K_9 (1 + |U_n|^2) \Delta t,
-\end{aligned}$$ {#eq-conditional_error_semiimplicit} donde $K_8 = 2L_a + 2L_c + L_b^2 + K_5$ y $K_9 = K_5$. Usando la desigualdad $|U_n|^2 \leq 2|U_{t_n}|^2 + 2|e_n|^2$ y la cota de momentos de la solución exacta @eq-exact_moment_semiimplicit: $$\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}] \leq (1 + K_{10} \Delta t) |e_n|^2 + K_{11} \Delta t,$$ donde $K_{10} = K_8 + 2K_9$ y $K_{11} = 2K_9 C_1 (1 + \mathbb{E}[|U_0|^2]) + K_9$. Tomando esperanza total y definiendo $E_n = \mathbb{E}[|e_n|^2]$: $$E_{n+1} \leq (1 + K_{10} \Delta t) E_n + K_{11} \Delta t.$$ {#eq-recursive_error_semiimplicit} Iteramos la desigualdad @eq-recursive_error_semiimplicit con $E_0 = 0$: $$E_N \leq K_{11} \Delta t \sum_{k=0}^{N-1} (1 + K_{10} \Delta t)^k = K_{11} \Delta t \frac{(1 + K_{10} \Delta t)^N - 1}{K_{10} \Delta t}.$$ {#eq-iteration_semiimplicit} Usando la desigualdad $(1 + x)^N \leq e^{Nx}$ para $x \geq 0$ y $N\Delta t = T$ @platen2010numerical, (Lema 1.2.1): $$(1 + K_{10} \Delta t)^N \leq e^{K_{10} T}.$$ {#eq-exponential_bound_semiimplicit} Sustituyendo en @eq-iteration_semiimplicit: $$E_N \leq K_{11} \frac{e^{K_{10} T} - 1}{K_{10}} \Delta t = C \Delta t,$$ {#eq-final_bound_semiimplicit} donde $C = K_{11} (e^{K_{10} T} - 1)/K_{10}$ es independiente de $\Delta t$. Tomando raíz cuadrada: $$\left( \mathbb{E}[|U_T - U_N|^2] \right)^{1/2} \leq C \sqrt{\Delta t}. \quad \square$$
-:::
-::::
-
-:::: {.content-visible when-format="pdf"}
-::: {.proof style="text-align:justify"}
-Reescribimos la SDEJ(@eq-sdej) en forma estándar (@platen2010numerical, Ec. (1.8.2)):
-
-$$dU_t = a(t,U_t)\,dt  + b(t,U_t)\,dW_t + \int_E c(t,U_{t-},v)\,p_\phi(dv, dt),$$ {#eq-sdej_standard_semiimplicit_pdf}
-
-donde $a(t,u) = c(t) + r(t)u$ y $b(t,u) = \sigma(t)u$. Las hipótesis (H1) y (H2) satisfacen las condiciones del \textbf{Teorema 1.9.4} de @platen2010numerical, que garantiza la existencia y unicidad de una solución fuerte $U_t$. Además asegura que la solución tiene momentos finitos de segundo orden: $$\mathbb{E}\left[ \sup_{0 \leq t \leq T} |U_t|^2 \right] \leq C_1 (1 + \mathbb{E}[|U_0|^2]) < \infty.$$ {#eq-exact_moment_semiimplicit_pdf} Esta cota es esencial para controlar el crecimiento de la solución exacta durante la propagación del error.
-
-Definimos el error local $R_n = U_{t_{n+1}} - U_{n+1}$ y lo descomponemos como: $$R_n = R_n^{\text{dif}} + R_n^{\text{jump}} + R_n^{\text{implicit}},$$ {#eq-error_decomp_semiimplicit_pdf}
-
-donde $R_n^{\text{dif}}$ es el error de difusión, $R_n^{\text{jump}}$ el error de saltos y $R_n^{\text{implicit}}$ el error de implicitidad.
-
-Por la expansión de Euler-Maruyama para difusiones puras (@higham2005, Ec. (2.3)), el error local de la parte difusiva satisface: $$\mathbb{E}\left[ |R_n^{\text{dif}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_1 (1 + |U_n|^2) (\Delta t)^2$$ {#eq-diff_error_bound_semiimplicit_pdf}
-
-Esta cota es de orden $(\Delta t)^3$ en $L^2$ debido a que el esquema semi-implícito utiliza una aproximación de Euler para la parte difusiva, cuyo error local en $L^2$ es $\mathcal{O}((\Delta t)^{3/2})$. El error local asociado a los saltos es: $$\begin{aligned}
-R_n^{\text{jump}} = {}& \int_{t_n}^{t_{n+1}} \int_E c(s, U_{s-}, v)\,\tilde{p}_\phi(dv, ds)  \\
-& - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i)  \\
-& + \int_E c(t_n, U_n, v) \phi(dv)\,\Delta t.
-\end{aligned}$$ {#eq-jump_error_semiimplicit_pdf}
-
-Aplicando la desigualdad de Cauchy-Schwarz, la condición de Lipschitz (H1) y las propiedades de la medida compensada (@platen2010numerical, Ec. (4.2.1)), obtenemos:
+Para el modelo @eq-ede-sj, el esquema de Milstein compensado con paso $\Delta t=t_{n+1}-t_n$ es
 
 $$\begin{aligned}
-\mathbb{E}\left[ |R_n^{\text{jump}}|^2 \mid \mathcal{F_{t_n}} \right] 
-&\leq 2\mathbb{E}\left[ \left| \int_{t_n}^{t_{n+1}} \int_E [c(s, U_{s-}, v) - c(t_n, U_n, v)] \tilde{p}_\phi(dv, ds) \right|^2 \mid \mathcal{F_{t_n}} \right] \nonumber \\
-&\quad \ \ \ \ \ \ \ \ \ \ \ + 2\mathbb{E}\Biggl[ \Biggl| \int_{t_n}^{t_{n+1}} \int_E c(t_n, U_n, v) \tilde{p}_\phi(dv, ds) - \sum_{i=1}^{\Delta N_n} c(t_n, U_n, \xi_i) \\
-&\quad \ \ \ \ \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ + \int_E c(t_n, U_n, v) \phi(dv)\Delta t \Biggl|^2 \mid \mathcal{F_{t_n}} \Biggr] \nonumber \\
-&\leq 2L_c^2 \mathbb{E}\left[ \int_{t_n}^{t_{n+1}} |U_s - U_n|^2 ds \mid \mathcal{F_{t_n}} \right] \int_E \phi(dv) + 2 \int_E |c(t_n, U_n, v)|^2 \phi(dv) \Delta t \nonumber \\
-&\leq K_2 \Delta t + K_3 |U_{t_n} - U_n|^2 \Delta t,
-\end{aligned}$$ {#eq-jump_error_bound_semiimplicit_pdf} donde en la última desigualdad usamos la cota de momentos de la solución exacta @eq-exact_moment_semiimplicit_pdf y la condición de crecimiento lineal (H2). El primer término proviene de la variación del estado durante el intervalo, y el segundo de la diferencia entre el estado exacto y el numérico. Expandiendo el denominador mediante serie de Taylor (@wang2007, Lema 3.1): $$\frac{1}{1 - r(t_{n+1})\Delta t} = 1 + r(t_{n+1})\Delta t + \mathcal{O}((\Delta t)^2),$$ {#eq-taylor_denom_semiimplicit_pdf}
+Y_{n+1}={}&Y_n+\big[c_n+r_nY_n-\Lambda_n\big]\Delta t+\sigma_nY_n\,\Delta W_n\\
+&+\tfrac12\,\sigma_n^2\,Y_n\big[(\Delta W_n)^2-\Delta t\big]-\Delta\tilde J_n,
+\end{aligned}$$ {#eq-milstein-modelo}
 
-lo que implica que el error introducido por la implicitidad satisface: $$\mathbb{E}\left[|R_n^{\text{implicit}}|^2 \mid \mathcal{F_{t_n}} \right] \leq K_4 (1 + |U_n|^2) (\Delta t)^4.$$ {#eq-implicit_error_bound_semiimplicit_pdf}
+donde $c_n=c(t_n)$, $r_n=r(t_n)$, $\sigma_n=\sigma(t_n)$, $\Lambda_n=\Lambda(t_n)$, $\Delta W_n\sim\mathcal N(0,\Delta t)$ y
 
-Este término es de orden superior y no afectará el orden global de convergencia.
+$$\Delta\tilde J_n=\Delta J_n-\Lambda_n\Delta t,\qquad
+\Delta J_n=\sum_{i=1}^{\Delta N^{\text{meteo}}_n}Y^{\text{meteo}}_i+\sum_{j=1}^{\Delta N^{\text{sismo}}_n}Y^{\text{sismo}}_j,$$
 
-Combinando la @eq-diff_error_bound_semiimplicit_pdf, @eq-jump_error_bound_semiimplicit_pdf y @eq-implicit_error_bound_semiimplicit_pdf, y usando $(a+b+c)^2 \leq 3a^2 + 3b^2 + 3c^2$: $$\mathbb{E}\left[ |R_n|^2 \mid \mathcal{F_{t_n}} \right] \leq K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t,$$ {#eq-total_error_bound_semiimplicit_pdf} donde $e_n = U_{t_n} - U_n$ es el error global y usamos que $\Delta t \leq 1$ para absorber los términos de orden superior. Definiendo $M_n = \mathbb{E}\left[ \sup_{0 \leq k \leq n} |U_k|^2 \right]$, y tomando cuadrados en @eq-esquema_semiimplicito_despeje seguido de esperanza, aplicamos las cotas de Lipschitz (H1), crecimiento lineal (H2) y la cota de estabilidad (H4). Siguiendo el argumento del Teorema 3.2 de @higham2005, obtenemos: $$M_{n+1} \leq (1 + K_6 \Delta t) M_n + K_7 \Delta t.$$ {#eq-moments_recursion_semiimplicit_pdf} Iterando esta desigualdad y usando $M_0 = \mathbb{E}[|U_0|^2] < \infty$: $$M_N \leq M_0 e^{K_6 T} + \frac{K_7}{K_6} (e^{K_6 T} - 1) < \infty.$$ {#eq-moments_bound_semiimplicit_pdf} Por lo tanto, el esquema numérico tiene momentos finitos uniformes, condición esencial para la convergencia fuerte. Para la descomposición del error global definimos $e_n = U_{t_n} - U_n$. Usando la fórmula de Itô para la solución exacta y la definición del esquema @eq-esquema_semiimplicito_despeje, obtenemos: $$e_{n+1} = e_n + \delta a_n \Delta t + \delta b_n \Delta W_n + \delta c_n + R_n,$$ {#eq-global_error_decomp_semiimplicit_pdf} donde: $$\begin{aligned}
-\delta a_n &= a(t_n, U_{t_n}) - a(t_n, U_n), \\
-\delta b_n &= b(t_n, U_{t_n}) - b(t_n, U_n), \\
-\delta c_n &= \int_E [c(t_n, U_{t_n}, v) - c(t_n, U_n, v)] \phi(dv) \Delta t.
-\end{aligned}$$ Por la condición de Lipschitz (H1): $$|\delta a_n| \leq L_a |e_n|, \quad |\delta b_n| \leq L_b |e_n|, \quad |\delta c_n| \leq L_c |e_n| \Delta t.$$ {#eq-lipschitz_bounds_semiimplicit_pdf} Tomamos cuadrados en @eq-global_error_decomp_semiimplicit_pdf y esperanza condicional $\mathbb{E}[\cdot \mid \mathcal{F_{t_n}}].$ Usando $\mathbb{E}[\Delta W_n \mid \mathcal{F_{t_n}}] = 0$, $\mathbb{E}[(\Delta W_n)^2 \mid \mathcal{F_{t_n}}] = \Delta t$, y que los términos con $\Delta W_n$ tienen esperanza cero: $$\begin{aligned}
-\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}] 
-&\leq |e_n|^2 + 2e_n \cdot \delta a_n \Delta t + 2e_n \cdot \delta c_n + |\delta b_n|^2 \Delta t + \mathbb{E}[|R_n|^2 \mid \mathcal{F_{t_n}}] \nonumber \\
-&\leq |e_n|^2 + 2L_a |e_n|^2 \Delta t + 2L_c |e_n|^2 \Delta t + L_b^2 |e_n|^2 \Delta t + K_5 (1 + |U_n|^2 + |e_n|^2) \Delta t \nonumber \\
-&\leq (1 + K_8 \Delta t) |e_n|^2 + K_9 (1 + |U_n|^2) \Delta t,
-\end{aligned}$$ {#eq-conditional_error_semiimplicit_pdf} donde $K_8 = 2L_a + 2L_c + L_b^2 + K_5$ y $K_9 = K_5$. Usando la desigualdad $|U_n|^2 \leq 2|U_{t_n}|^2 + 2|e_n|^2$ y la cota de momentos de la solución exacta @eq-exact_moment_semiimplicit_pdf: $$\mathbb{E}[|e_{n+1}|^2 \mid \mathcal{F_{t_n}}] \leq (1 + K_{10} \Delta t) |e_n|^2 + K_{11} \Delta t,$$ donde $K_{10} = K_8 + 2K_9$ y $K_{11} = 2K_9 C_1 (1 + \mathbb{E}[|U_0|^2]) + K_9$. Tomando esperanza total y definiendo $E_n = \mathbb{E}[|e_n|^2]$: $$E_{n+1} \leq (1 + K_{10} \Delta t) E_n + K_{11} \Delta t.$$ {#eq-recursive_error_semiimplicit_pdf} Iteramos la desigualdad @eq-recursive_error_semiimplicit_pdf con $E_0 = 0$: $$E_N \leq K_{11} \Delta t \sum_{k=0}^{N-1} (1 + K_{10} \Delta t)^k = K_{11} \Delta t \frac{(1 + K_{10} \Delta t)^N - 1}{K_{10} \Delta t}.$$ {#eq-iteration_semiimplicit_pdf} Usando la desigualdad $(1 + x)^N \leq e^{Nx}$ para $x \geq 0$ y $N\Delta t = T$ @platen2010numerical, (Lema 1.2.1): $$(1 + K_{10} \Delta t)^N \leq e^{K_{10} T}.$$ {#eq-exponential_bound_semiimplicit_pdf} Sustituyendo en @eq-iteration_semiimplicit_pdf: $$E_N \leq K_{11} \frac{e^{K_{10} T} - 1}{K_{10}} \Delta t = C \Delta t,$$ {#eq-final_bound_semiimplicit_pdf} donde $C = K_{11} (e^{K_{10} T} - 1)/K_{10}$ es independiente de $\Delta t$. Tomando raíz cuadrada: $$\left( \mathbb{E}[|U_T - U_N|^2] \right)^{1/2} \leq C \sqrt{\Delta t}. $$
+con $\Delta N^{\text{meteo}}_n\sim\text{Poisson}(\lambda_{\text{meteo}}(t_n)\Delta t)$ y $\Delta N^{\text{sismo}}_n\sim\text{Poisson}(\lambda_{\text{sismo}}\Delta t)$ independientes. Los incrementos $\Delta J_n$ se generan de forma exacta (número de siniestros y severidades).
+
+$[a-\int R\nu]\Delta t+\sum R(\xi_i)=[c_n+r_nY_n]\Delta t-\Delta J_n$. El término $\tfrac12\sigma_n^2Y_n[(\Delta W_n)^2-\Delta t]$ es la corrección de Milstein para la difusión multiplicativa ($b\,b_x=\sigma^2x$; con ruido escalar no se requieren áreas de Lévy).
 :::
-::::
 
-## Método Monte Carlo
+::: {#thm-convergencia_fuerte_milste_comp}
+(Convergencia fuerte, esquema de Milstein compensado). Considérese la @eq-ede-sj_mil en el intervalo finito $[0,T]$, con $(X_0\in L^2(\Omega))$. Supóngase que:
 
-::: {style="text-align:justify"}
-El método Monte Carlo (MC) constituye una clase de algoritmos computacionales que se basan en el muestreo aleatorio repetido para obtener resultados numéricos. En el contexto de esta tesis, el objetivo fundamental es aproximar cantidades de interés deterministas, tales como integrales multidimensionales o valores esperados de sistemas estocásticos complejos, mediante la simulación de un sistema un gran número de veces bajo condiciones aleatorias.
+- (H1)  Regularidad de los coeficientes: $c,r,\sigma:[0,T]\to\mathbb R$ son acotadas y Lipschitz; existen $K,L>0$ tales que
+
+$$|c(t)|+|r(t)|+|\sigma(t)|\leq K,
+\qquad t\in[0,T],
+$$
+y
+$$
+|f(t)-f(s)|\leq L|t-s|,
+\qquad f\in{c,r,\sigma},\quad s,t\in[0,T].
+$$
+
+- (H2) Saltos de actividad finita: $J$ es un proceso de Poisson compuesto con intensidad $\lambda(t)$ uniformemente acotada y marcas $(Z_i){i\geq 1}$ independientes entre sí, del movimiento browniano y del estado del proceso, que satisfacen
+$$
+\sup{t\in[0,T]}\lambda(t)<\infty,
+\qquad \mathbb E|Z_1|^4<\infty.
+$$
+
+
+- (H3) Regularidad de la intensidad compensada: $\Lambda:[0,T]\to\mathbb R$ es acotada y constante por tramos, con un número finito de discontinuidades.
+
+- (H4) $Y_0=X_0$, y $X_0$ tiene segundo momento finito.
+
+Sea $h=T/N$, $t_n=nh$, y considérese el esquema
+$$
+\begin{aligned}
+Y_{n+1}={}&Y_n+(c_n+r_nY_n)h+\sigma_nY_n\Delta W_n\
+&+\frac12\sigma_n^2Y_n\big((\Delta W_n)^2-h\big)-\Delta J_n,
+\end{aligned}
+$$ {#eq-4}
+donde $\Delta W_n=W_{t_{n+1}}-W_{t_n}\sim N(0,h)$, y $\Delta J_n=J_{t_{n+1}}-J_{t_n}$ se simula con el número de saltos y sus marcas.
+
+Entonces existe una constante $C$, independiente de $h$, tal que
+$$
+\boxed{
+\max_{0\le n\le N}
+\left(\mathbb E|X_{t_n}-Y_n|^2\right)^{1/2}
+\le C h^{1/2}.
+}
+$$ {#eq-5}
+
+Por tanto, el esquema de @eq-4 converge fuertemente con orden al menos $1/2$ en los tiempos de la malla.
+
+:::
+
+
+:::: {.content-visible when-format="pdf"}
+::: {.proof style="text-align:justify"}
+Denotamos el paso de la malla uniforme como $h = \Delta t = T/N$, con nodos $t_n = nh$ para $n=0,1,\dots,N$. Bajo las hip\'otesis de regularidad y crecimiento lineal (H1) sobre los coeficientes de deriva $a(t,x)=c(t)+r(t)x$ y difusi\'on $b(t,x)=\sigma(t)x$, junto con la condici\'on de momentos finitos de los saltos (H2) y la regularidad de la intensidad compensada (H3), se satisfacen las condiciones est\'andar de Lipschitz global para ecuaciones diferenciales estoc\'asticas de It\^o con saltos de actividad finita. En virtud de los resultados cl\'asicos de existencia, unicidad y estimaciones de momentos (obtenidos mediante la desigualdad de Burkholder--Davis--Gundy y el lema de Gr\"onwall, como se estableci\'o en el Teorema 6.1), la soluci\'on exacta $X_t$ posee momentos de segundo orden uniformemente acotados en el horizonte finito $[0,T]$. En particular, se tiene que
+$$
+\sup_{0\le t\le T}\,\mathbb{E}\left[|X_t|^2\right] \le C\bigl(1+\mathbb{E}|X_0|^2\bigr) < \infty,
+$$ {#eq-momentos_solucion_exacta}
+
+donde $C>0$ es una constante independiente del paso de discretización $h$.
+
+A continuación, se analiza la estabilidad en segundo momento de la aplicación numérica de un paso. Para un estado inicial $x$, definimos el operador de transición del esquema de Milstein compensado como
+$$
+    \Psi_n^{M}(x)=x+(c_n+r_nx)h+\sigma_nx\Delta W_n +\frac{1}{2}\sigma_n^2x\big((\Delta W_n)^2-h\big)-\Delta \tilde{J}_n,
+$$
+donde $\Delta \tilde{J}_n = \Delta J_n - \Lambda_n h$ es el incremento compensado del proceso de saltos. Al evaluar la diferencia entre dos estados iniciales $x$ e $y$, los términos aditivos deterministas y los incrementos de salto compensados se cancelan idénticamente, lo que nos permite factorizar la diferencia como
+$$
+    \Psi_n^{M}(x)-\Psi_n^{M}(y)=A_n^M(x-y),
+$$
+
+donde el factor de propagación estocástica está dado por
+$$
+    A_n^M=1+r_nh+\sigma_n\Delta W_n +\frac{1}{2}\sigma_n^2\big((\Delta W_n)^2-h\big).
+$$ {#eq-factor_propagacion_milstein}
+
+Dado que el incremento de Wiener $\Delta W_n$ es independiente de la filtraci\'on $\mathcal{F}_{t_n}$, posee media cero y sus momentos de segundo y cuarto orden satisfacen $\mathbb{E}[(\Delta W_n)^2]=h$ y $\mathbb{E}[(\Delta W_n)^4]=3h^2$. Aprovechando la acotaci\'on de los coeficientes $r_n$ y $\sigma_n$ (hip\'otesis (H1)), as\'i como la ortogonalidad de los t\'erminos en la expansi\'on de $\mathbb{E}[(A_n^M)^2]$, se deduce que, para $0<h\le h_0$, existe una constante $C>0$ tal que
+$$
+    \mathbb{E}[(A_n^M)^2]\le 1+Ch. 
+$$ {#eq-cota_factor_propagacion}
+En consecuencia, la estabilidad condicional en segundo momento del esquema se expresa como
+$$
+    \mathbb{E}\left[ |\Psi_n^M(x)-\Psi_n^M(y)|^2 \mid \mathcal{F}_{t_n} \right] \le (1+Ch)|x-y|^2.
+$$ {#eq-estabilidad_segundo_momento}
+
+Ahora se demostrarán las estimaciones locales a partir de la representación exacta de la solución y de las propiedades de los incrementos brownianos y de la medida de Poisson compensada.
+
+Para ello, defínase el factor de evolución de la ecuación homogénea (parte continua) mediante
+$$
+G(s,u)=
+\exp\left(
+\int_u^s\left(r(v)-\frac{1}{2}\sigma^2(v)\right)\,dv
++\int_u^s\sigma(v)\,dW_v
+\right),\qquad u\leq s.
+$$
+
+Dado que el esquema numérico es compensado, es conveniente escribir la ecuaciónn exacta separando la medida de Poisson pura $N(ds, dz)$ de su compensador $\nu(dz)ds$. La fórmula de variación de constantes proporciona
+
+$$
+\begin{aligned}
+X_{t_{n+1}}
+={}&G(t_{n+1},t_n)X_{t_n}
++\int_{t_n}^{t_{n+1}} G(t_{n+1},s)\bigl[c(s)-\Lambda(s)\bigr]\,ds\\
+&+\int_{t_n}^{t_{n+1}}\int_E z\, G(t_{n+1},s)\,\tilde{N}(ds, dz),
+\end{aligned}
+$$ {#eq-variacion_constantes}
+
+donde $\tilde{N}(ds, dz) = N(ds, dz) - \nu(dz)ds$ es la medida de Poisson compensada definida en el Cap\'itulo 5 (Definición 5.18), y $\Lambda(s) = \int_E z\,\nu(dz)$ es la intensidad compensada asociada al costo esperado de los siniestros por unidad de tiempo.
+
+Por otra parte, la aplicación numérica del esquema de Milstein compensado puede escribirse como
+$$
+\begin{aligned}
+\Psi_n^M(X_{t_n})
+={}&P_n^M X_{t_n}+(c_n-\Lambda_n)h
++\int_{t_n}^{t_{n+1}}\int_E z\,\tilde{N}(ds, dz),
+\end{aligned} 
+$$ {#eq-esquema_descompuesto}
+donde
+$$
+P_n^M=
+1+r_nh+\sigma_n\Delta W_n
++\frac{1}{2}\sigma_n^2\bigl((\Delta W_n)^2-h\bigr).
+$$
+En consecuencia, el defecto local $\rho_n^M = X_{t_{n+1}} - \Psi_n^M(X_{t_n})$ admite la descomposici\'on
+$$
+\rho_n^M=R_n^{\mathrm{cont}}+R_n^{\mathrm{salto}},
+$$
+con
+$$
+\begin{aligned}
+R_n^{\mathrm{cont}}
+={}&X_{t_n}\bigl(G(t_{n+1},t_n)-P_n^M\bigr)\\
+&+\int_{t_n}^{t_{n+1}} \Bigl[G(t_{n+1},s)\bigl(c(s)-\Lambda(s)\bigr) - (c_n-\Lambda_n)\Bigr]\,ds
+\end{aligned}
+$$ {#eq-residuo_continuo}
+
+y el residuo de interaccón salto--difus}omn dado por
+
+$$
+R_n^{\mathrm{salto}}
+=\int_{t_n}^{t_{n+1}}\int_E z\,\bigl(G(t_{n+1},s)-1\bigr)\,\tilde{N}(ds, dz).
+$$ {#eq-residuo_salto}
+Esta descomposición separa el residuo de la aproximación continua de Milstein de los t\'erminos que describen la interacci\'on entre los saltos y la difusión.
+
+Bajo las hipótesis de regularidad (H1) y acotamiento de los coeficientes, la expansión estocástica del factor $G(t_{n+1},t_n)$ hasta los términos de segundo orden en el incremento browniano da
+$$
+G(t_{n+1},t_n)
+=P_n^M+\mathcal{R}_n^G,
+$$
+donde el residuo satisface las estimaciones
+$$
+|\mathcal{R}_n^G|_{L^2}\leq Ch^{3/2},
+\qquad
+\left|\mathbb{E}[\mathcal{R}_n^G]\right|\leq Ch^2.
+$$
+La primera cota se obtiene controlando los términos iterados de las integrales estoc\'asticas que no aparecen en la expansión de Milstein y la variación temporal de $r$ y $\sigma$. La segunda se obtiene tomando esperanza en la expansi\'on: los incrementos brownianos centrados desaparecen y los términos deterministas restantes son de orden al menos $h^2$. Las constantes son uniformes respecto de $n$.
+
+De manera análoga, la regularidad Lipschitz de $c$ y $\Lambda$ (hip\'otesis (H1) y (H3)), junto con la estimación
+$$
+\|G(t_{n+1},s)-1\|_{L^2}
+\leq C(t_{n+1}-s)^{1/2},
+$$
+implican que
+$$
+\left\|
+\int_{t_n}^{t_{n+1}}
+G(t_{n+1},s)\bigl(c(s)-\Lambda(s)\bigr)\,ds-(c_n-\Lambda_n)h
+\right\|_{L^2}
+\leq Ch^{3/2}.
+$$
+En efecto, se descompone la diferencia como
+$$
+\begin{aligned}
+&\int_{t_n}^{t_{n+1}}
+G(t_{n+1},s)\bigl(c(s)-\Lambda(s)\bigr)\,ds-(c_n-\Lambda_n)h\\
+&\quad =
+\int_{t_n}^{t_{n+1}}
+\bigl(G(t_{n+1},s)-1\bigr)\bigl(c(s)-\Lambda(s)\bigr)\,ds\\
+&\qquad+
+\int_{t_n}^{t_{n+1}}\bigl[\bigl(c(s)-\Lambda(s)\bigr)-\bigl(c_n-\Lambda_n\bigr)\bigr]\,ds.
+\end{aligned}
+$$
+El primer t\'ermino se estima mediante la desigualdad integral de Minkowski y la cota anterior para $G-1$, mientras que el segundo es de orden $h^2$ por la condici\'on Lipschitz de $c$ y $\Lambda$. Adem\'as, como
+$$
+\mathbb{E}[G(t_{n+1},s)]
+=\exp\left(\int_s^{t_{n+1}}r(v)\,dv\right),
+$$
+se obtiene
+$$
+\left|
+\mathbb{E}\left[
+\int_{t_n}^{t_{n+1}}
+G(t_{n+1},s)\bigl(c(s)-\Lambda(s)\bigr)\,ds-(c_n-\Lambda_n)h
+\right]
+\right|
+\leq Ch^2.
+$$
+
+Puesto que $X_{t_n}$ es $\mathcal{F}_{t_n}$-medible y los incrementos futuros son independientes de $\mathcal{F}_{t_n}$, las estimaciones anteriores implican
+$$
+\|R_n^{\mathrm{cont}}\|_{L^2}
+\leq Ch^{3/2}
+\left(1+\|X_{t_n}\|_{L^2}\right)
+$$
+y
+$$
+\left\|
+\mathbb{E}[R_n^{\mathrm{cont}}\mid\mathcal{F}_{t_n}]
+\right\|_{L^2}
+\leq Ch^2
+\left(1+\|X_{t_n}\|_{L^2}\right).
+$$
+La estimación de momentos @eq-momentos_solucion_exacta garantiza que las cantidades $\|X_{t_n}\|_{L^2}$ están uniformemente acotadas para $t_n\in[0,T]$. Por tanto,
+$$
+\|R_n^{\mathrm{cont}}\|_{L^2}\leq Ch^{3/2},
+\qquad
+\left\|
+\mathbb{E}[R_n^{\mathrm{cont}}\mid\mathcal{F}_{t_n}]
+\right\|_{L^2}
+\leq Ch^2.
+$$
+
+Para controlar la contribución de los saltos, observemos que la integral estocástica respecto a la medida compensada $\tilde{N}$ es una martingala de cuadrado integrable (Teorema 5.17). Usando la isometría de It\^o para la medida de Poisson compensada y la acotación de la intensidad $\lambda(s)$ (hip\'otesis (H2)) y del segundo momento de las marcas $\int_E z^2\,\nu(dz) \le C$, obtenemos directamente el segundo momento incondicional:
+$$
+\begin{aligned}
+\mathbb{E}\bigl|R_n^{\mathrm{salto}}\bigr|^2
+&= \mathbb{E}\left[\int_{t_n}^{t_{n+1}}\int_E z^2\,\bigl|G(t_{n+1},s)-1\bigr|^2\,\nu(dz)\,ds\right]\\
+&\le C\int_{t_n}^{t_{n+1}}\mathbb{E}\left[\bigl|G(t_{n+1},s)-1\bigr|^2\right]\,ds.
+\end{aligned}
+$$
+Dado que $\mathbb{E}[|G(t_{n+1},s)-1|^2] \le C(t_{n+1}-s)$, la integral está acotada por
+$$
+C\int_{t_n}^{t_{n+1}}(t_{n+1}-s)\,ds \leq Ch^2.
+$$
+Por consiguiente, $\|R_n^{\mathrm{salto}}\|_{L^2}\leq Ch$. Además, como la integral compensada tiene esperanza condicional cero respecto a la filtración $\mathcal{F}_{t_n}$ (por ser una integral estocástica respecto a una martingala con integrando predecible), y el factor $G(t_{n+1},s)-1$ es $\mathcal{F}_{t_{n+1}}$-medible pero independiente de los saltos futuros, se tiene que
+$$
+\left\|\mathbb{E}\bigl[R_n^{\mathrm{salto}}\mid\mathcal{F}_{t_n}\bigr]\right\|_{L^2} \le Ch^2.
+$$
+
+Al combinar las estimaciones de las contribuciones continua y de salto, se obtiene
+
+$$
+\begin{aligned}
+\|\rho_n^M\|_{L^2}
+&\leq
+\|R_n^{\mathrm{cont}}\|_{L^2}
++\|R_n^{\mathrm{salto}}\|_{L^2}\\
+&\leq C(h^{3/2}+h)
+\leq Ch,
+\end{aligned}
+$$ {#eq-cota_defecto_L2}
+
+para $h\leq h_0$, ajustando la constante si es necesario. De igual manera, la linealidad de la esperanza condicional proporciona
+$$
+\begin{aligned}
+&\left\|
+\mathbb{E}[\rho_n^M\mid\mathcal{F}_{t_n}]
+\right\|_{L^2}\\
+&\quad\leq
+\left\|
+\mathbb{E}[R_n^{\mathrm{cont}}\mid\mathcal{F}_{t_n}]
+\right\|_{L^2}
++
+\left\|
+\mathbb{E}[R_n^{\mathrm{salto}}\mid\mathcal{F}_{t_n}]
+\right\|_{L^2}\\
+&\quad\leq Ch^2.
+\end{aligned}
+$$ {#eq-cota_defecto_esperanza}
+
+Se han demostrado, por tanto, las dos estimaciones locales fundamentales:
+$$
+    \|\rho_n^M\|_{L^2}\le Ch, \qquad \text{y} \qquad \|\mathbb{E}[\rho_n^M\mid\mathcal{F}_{t_n}]\|_{L^2} \le Ch^2.
+$$
+
+Finalmente, para establecer la cota de covarianza cruzada, recordemos que $\mathbb{E}[A_n^M]=1+r_nh$. Por la expresi\'on de $A_n^M$ y los momentos del incremento browniano,
+$$
+\begin{aligned}
+\mathbb{E}\left[
+(A_n^M-\mathbb{E} A_n^M)^2
+\right]
+&=\sigma_n^2h+\frac{1}{2}\sigma_n^4h^2\\
+&\leq Ch.
+\end{aligned}
+$$
+Además, $A_n^M-\mathbb{E} A_n^M$ tiene esperanza condicional cero respecto de $\mathcal{F}_{t_n}$, y su segundo momento condicional es determinista. Aplicando la desigualdad de Cauchy--Schwarz condicional, se obtiene
+$$
+\begin{aligned}
+&\left|
+\mathbb{E}\left[
+(A_n^M-\mathbb{E} A_n^M)\rho_n^M
+\mid\mathcal{F}_{t_n}
+\right]
+\right|\\
+&\quad\leq
+\left(
+\mathbb{E}\bigl[
+(A_n^M-\mathbb{E} A_n^M)^2
+\mid\mathcal{F}_{t_n}\bigr]
+\right)^{1/2}\\
+&\qquad\quad\times
+\left(
+\mathbb{E}\bigl[
+|\rho_n^M|^2
+\mid\mathcal{F}_{t_n}\bigr]
+\right)^{1/2}\\
+&\quad\leq
+Ch^{1/2}
+\left(
+\mathbb{E}\bigl[
+|\rho_n^M|^2
+\mid\mathcal{F}_{t_n}\bigr]
+\right)^{1/2}.
+\end{aligned}
+$$
+Tomando la norma $L^2$ y usando la primera estimación de @eq-cotas_defecto_local_norma, resulta
+$$
+\begin{aligned}
+&\left\|
+\mathbb{E}\left[
+(A_n^M-\mathbb{E} A_n^M)\rho_n^M
+\mid\mathcal{F}_{t_n}
+\right]
+\right\|_{L^2}\\
+&\qquad\leq Ch^{1/2}\|\rho_n^M\|_{L^2}
+\leq Ch^{3/2}.
+\end{aligned}
+$$ {#eq-cota_covarianza}
+
+Una vez establecidas las cotas locales, procedemos a analizar la propagación del error global. Definimos el error en el paso $n$ como $e_n=X_{t_n}-Y_n$. Por la definición del defecto local, la recurrencia del error se descompone como
+$$
+    e_{n+1}=A_n^M e_n+\rho_n^M.
+$$ {#eq-recurrencia_error}
+
+Esta identidad representa una descomposición entre la aplicación numérica evaluada en dos estados y el defecto local, sin afirmar que el flujo exacto y el esquema compartan el mismo factor de propagación. Al elevar @eq-recurrencia_error al cuadrado y tomar esperanza incondicional, obtenemos
+$$
+    \mathbb{E}|e_{n+1}|^2 = \mathbb{E}[(A_n^M)^2e_n^2] + 2\mathbb{E}[A_n^Me_n\rho_n^M] + \mathbb{E}|\rho_n^M|^2.
+$$ {#eq-error_cuadrado_expandido}
+Gracias a la cota @eq-cota_factor_propagacion y a la $\mathcal{F}_{t_n}$-medibilidad de $e_n$, el primer término se acota mediante
+$$
+    \mathbb{E}[(A_n^M)^2e_n^2] \le (1+Ch)\mathbb{E}|e_n|^2.
+$$  {#eq-cota_primer_termino}
+
+Para acotar el término cruzado, descomponemos el defecto en su esperanza condicional y su parte centrada:
+$$
+    \rho_n^M=\mathbb{E}[\rho_n^M\mid\mathcal{F}_{t_n}] + \Big(\rho_n^M-\mathbb{E}[\rho_n^M\mid\mathcal{F}_{t_n}]\Big).
+$$
+
+La primera parte se controla mediante las cotas de \eqref{eq:cotas_defecto_local_norma} y la desigualdad de Young. La segunda parte se domina utilizando la cota de covarianza @eq-cota_covarianza, aprovechando nuevamente que $e_n$ es $\mathcal{F}_{t_n}$-medible. Aplicando la desigualdad de Young con un parámetro $\epsilon$ adecuadamente elegido, se obtiene
+$$ 
+    2\left|\mathbb{E}[A_n^Me_n\rho_n^M]\right| \le Ch\,\mathbb{E}|e_n|^2+Ch^2.
+$$ {#eq-cota_termino_cruzado}
+Adicionalmente, la cota $L^2$ del defecto local \eqref{eq:cota_defecto_L2} implica directamente que
+$$
+    \mathbb{E}|\rho_n^M|^2\le Ch^2.
+$$ {#eq-cota_defecto_cuadrado}
+Sustituyendo @eq-cota_primer_termino, @eq-cota_termino_cruzado y @eq-cota_defecto_cuadrado en @eq-error_cuadrado_expandido, arribamos a la desigualdad de energía discreta:
+$$
+    \mathbb{E}|e_{n+1}|^2 \le (1+Ch)\mathbb{E}|e_n|^2+Ch^2.
+$$ {#eq-desigualdad_energia}
+
+Finalmente, para obtener la cota global, aplicamos el lema de Gr\"onwall discreto a la recurrencia \eqref{eq:desigualdad_energia}. Dado que el error inicial es nulo ($e_0=0$ por la hip\'otesis (H4)), la iteraci\'on de la desigualdad conduce a
+$$
+    \begin{aligned}
+        \mathbb{E}|e_n|^2 &\le Ch^2\sum_{k=0}^{n-1}(1+Ch)^k \\
+        &\le Ch^2\frac{(1+Ch)^n-1}{Ch} \le C_T h,
+    \end{aligned}
+$$ {#eq-iteracion_gronwall}
+
+donde hemos utilizado que $nh\le T$ y la cota exponencial $(1+Ch)^n\le e^{CT} \equiv C_T$. Tomando la ra\'iz cuadrada y el m\'aximo sobre todos los pasos de la malla, concluimos que
+$$
+    \max_{0\le n\le N} \left(\mathbb{E}|X_{t_n}-Y_n|^2\right)^{1/2} \le C_T^{1/2}h^{1/2}.
+$$
+Esto demuestra rigurosamente la convergencia fuerte de orden al menos $1/2$ bajo las hip\'otesis (H1)--(H4) y las estimaciones locales establecidas.
 :::
 
 ### Estimador de Monte Carlo
@@ -472,7 +508,7 @@ El estimador $\hat{I}_N$ es un estimador insesgado de $I$. Es decir, $\mathbb{E}
 
 :::: {.content-visible when-format="html"}
 ::: {.proof style="text-align:justify"}
-Dado que la esperanza es un operador lineal y las variables $X_i$ son i.i.d.: $$\begin{aligned}
+Dado que el valor esperado es un operador lineal y las variables $X_i$ son i.i.d.: $$\begin{aligned}
     \mathbb{E}[\hat{I}_N] &= \mathbb{E}\left[ \frac{1}{N} \sum_{i=1}^{N} f(X_i) \right] \\
     &= \frac{1}{N} \sum_{i=1}^{N} \mathbb{E}[f(X_i)] \\
     &= \frac{1}{N} \sum_{i=1}^{N} I = \frac{1}{N} \cdot N \cdot I = I.
@@ -482,7 +518,7 @@ Dado que la esperanza es un operador lineal y las variables $X_i$ son i.i.d.: $$
 
 :::: {.content-visible when-format="pdf"}
 ::: {.proof style="text-align:justify"}
-Dado que la esperanza es un operador lineal y las variables $X_i$ son i.i.d.: $$\begin{aligned}
+Dado que el valor esperado es un operador lineal y las variables $X_i$ son i.i.d.: $$\begin{aligned}
     \mathbb{E}[\hat{I}_N] &= \mathbb{E}\left[ \frac{1}{N} \sum_{i=1}^{N} f(X_i) \right] \\
     &= \frac{1}{N} \sum_{i=1}^{N} \mathbb{E}[f(X_i)] \\
     &= \frac{1}{N} \sum_{i=1}^{N} I = \frac{1}{N} \cdot N \cdot I = I.
@@ -541,7 +577,7 @@ Dado que la convergencia es lenta ($1/\sqrt{N}$), reducir la varianza $\sigma^2$
 #### Variables de control.
 
 ::: {style="text-align:justify"}
-Una de las técnicas más rigurosas es el uso de variables de control. Supongamos que existe una variable aleatoria $Y$ correlacionada con $f(X)$ cuya esperanza $\mu_Y = \mathbb{E}[Y]$ es conocida analíticamente. Definimos un nuevo estimador: $$\hat{I}_{CV}(c) = \hat{I}_N - c(\hat{Y}_N - \mu_Y),$$ donde $\hat{Y}_N = \frac{1}{N}\sum Y_i$ y $c$ es una constante. Este estimador sigue siendo insesgado para cualquier $c \in \mathbb{R}$. La varianza de este nuevo estimador es: $$\mathbb{V}[\hat{I}_{CV}(c)] = \mathbb{V}[\hat{I}_N] + c^2 \mathbb{V}[\hat{Y}_N] - 2c \text{Cov}(\hat{I}_N, \hat{Y}_N).$$
+Una de las técnicas más rigurosas es el uso de variables de control. Supongamos que existe una variable aleatoria $Y$ correlacionada con $f(X)$ cuyo valor esperado $\mu_Y = \mathbb{E}[Y]$ es conocida analíticamente. Definimos un nuevo estimador: $$\hat{I}_{CV}(c) = \hat{I}_N - c(\hat{Y}_N - \mu_Y),$$ donde $\hat{Y}_N = \frac{1}{N}\sum Y_i$ y $c$ es una constante. Este estimador sigue siendo insesgado para cualquier $c \in \mathbb{R}$. La varianza de este nuevo estimador es: $$\mathbb{V}[\hat{I}_{CV}(c)] = \mathbb{V}[\hat{I}_N] + c^2 \mathbb{V}[\hat{Y}_N] - 2c \text{Cov}(\hat{I}_N, \hat{Y}_N).$$
 
 Minimizando esta expresión respecto a $c$, obtenemos el coeficiente óptimo: $$c^* = \frac{\text{Cov}(f(X), Y)}{\mathbb{V}(Y)}.$$ Sustituyendo $c^*$, se demuestra que la varianza se reduce en un factor de $(1 - \rho^2)$, donde $\rho$ es el coeficiente de correlación entre $f(X)$ e $Y$. Si existe una alta correlación, la eficiencia del método mejora drásticamente.
 :::
