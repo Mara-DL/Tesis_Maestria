@@ -20,7 +20,8 @@ affiliations:
     name: "Universidad Autónoma de Chiapas"
 ---
 
-
+:::::::::::::::::::::: {.content-visible when-format="html"}
 ::: {style="text-align:justify"}
 ![Trayectorias de reservas de empresas de aseguradoras](1792701783.png){#fig-trayectoria_reservas_aseguradoras fig-pos="H" fig-align="center" width="600" height="400"}
 :::
+::::::::::::::::::::::
