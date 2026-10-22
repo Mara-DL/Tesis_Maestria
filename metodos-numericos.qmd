@@ -169,7 +169,7 @@ Por tanto, el esquema de @eq-4 converge fuertemente con orden al menos $1/2$ en 
 
 :::: {.content-visible when-format="pdf"}
 ::: {.proof style="text-align:justify"}
-Denotamos el paso de la malla uniforme como $h = \Delta t = T/N$, con nodos $t_n = nh$ para $n=0,1,\dots,N$. Bajo las hip\'otesis de regularidad y crecimiento lineal (H1) sobre los coeficientes de deriva $a(t,x)=c(t)+r(t)x$ y difusi\'on $b(t,x)=\sigma(t)x$, junto con la condici\'on de momentos finitos de los saltos (H2) y la regularidad de la intensidad compensada (H3), se satisfacen las condiciones est\'andar de Lipschitz global para ecuaciones diferenciales estoc\'asticas de It\^o con saltos de actividad finita. En virtud de los resultados cl\'asicos de existencia, unicidad y estimaciones de momentos (obtenidos mediante la desigualdad de Burkholder--Davis--Gundy y el lema de Gr\"onwall, como se estableci\'o en el Teorema 6.1), la soluci\'on exacta $X_t$ posee momentos de segundo orden uniformemente acotados en el horizonte finito $[0,T]$. En particular, se tiene que
+Denotamos el paso de la malla uniforme como $h = \Delta t = T/N$, con nodos $t_n = nh$ para $n=0,1,\dots,N$. Bajo las hipótesis de regularidad y crecimiento lineal (H1) sobre los coeficientes de deriva $a(t,x)=c(t)+r(t)x$ y difusión $b(t,x)=\sigma(t)x$, junto con la condición de momentos finitos de los saltos (H2) y la regularidad de la intensidad compensada (H3), se satisfacen las condiciones estándar de Lipschitz global para ecuaciones diferenciales estocásticas de It\^o con saltos de actividad finita. En virtud de los resultados clásicos de existencia, unicidad y estimaciones de momentos (obtenidos mediante la desigualdad de Burkholder--Davis--Gundy y el lema de Gr\"onwall, como se estableció en el Teorema 6.1), la solución exacta $X_t$ posee momentos de segundo orden uniformemente acotados en el horizonte finito $[0,T]$. En particular, se tiene que
 $$
 \sup_{0\le t\le T}\,\mathbb{E}\left[|X_t|^2\right] \le C\bigl(1+\mathbb{E}|X_0|^2\bigr) < \infty,
 $$ {#eq-momentos_solucion_exacta}
@@ -190,7 +190,7 @@ $$
     A_n^M=1+r_nh+\sigma_n\Delta W_n +\frac{1}{2}\sigma_n^2\big((\Delta W_n)^2-h\big).
 $$ {#eq-factor_propagacion_milstein}
 
-Dado que el incremento de Wiener $\Delta W_n$ es independiente de la filtraci\'on $\mathcal{F}_{t_n}$, posee media cero y sus momentos de segundo y cuarto orden satisfacen $\mathbb{E}[(\Delta W_n)^2]=h$ y $\mathbb{E}[(\Delta W_n)^4]=3h^2$. Aprovechando la acotaci\'on de los coeficientes $r_n$ y $\sigma_n$ (hip\'otesis (H1)), as\'i como la ortogonalidad de los t\'erminos en la expansi\'on de $\mathbb{E}[(A_n^M)^2]$, se deduce que, para $0<h\le h_0$, existe una constante $C>0$ tal que
+Dado que el incremento de Wiener $\Delta W_n$ es independiente de la filtración $\mathcal{F}_{t_n}$, posee media cero y sus momentos de segundo y cuarto orden satisfacen $\mathbb{E}[(\Delta W_n)^2]=h$ y $\mathbb{E}[(\Delta W_n)^4]=3h^2$. Aprovechando la acotación de los coeficientes $r_n$ y $\sigma_n$ (hipótesis (H1)), así como la ortogonalidad de los términos en la expansión de $\mathbb{E}[(A_n^M)^2]$, se deduce que, para $0<h\le h_0$, existe una constante $C>0$ tal que
 $$
     \mathbb{E}[(A_n^M)^2]\le 1+Ch. 
 $$ {#eq-cota_factor_propagacion}
@@ -221,7 +221,7 @@ X_{t_{n+1}}
 \end{aligned}
 $$ {#eq-variacion_constantes}
 
-donde $\tilde{N}(ds, dz) = N(ds, dz) - \nu(dz)ds$ es la medida de Poisson compensada definida en el Cap\'itulo 5 (Definición 5.18), y $\Lambda(s) = \int_E z\,\nu(dz)$ es la intensidad compensada asociada al costo esperado de los siniestros por unidad de tiempo.
+donde $\tilde{N}(ds, dz) = N(ds, dz) - \nu(dz)ds$ es la medida de Poisson compensada definida en el Capítulo 5 (Definición 5.18), y $\Lambda(s) = \int_E z\,\nu(dz)$ es la intensidad compensada asociada al costo esperado de los siniestros por unidad de tiempo.
 
 Por otra parte, la aplicación numérica del esquema de Milstein compensado puede escribirse como
 $$
@@ -237,7 +237,7 @@ P_n^M=
 1+r_nh+\sigma_n\Delta W_n
 +\frac{1}{2}\sigma_n^2\bigl((\Delta W_n)^2-h\bigr).
 $$
-En consecuencia, el defecto local $\rho_n^M = X_{t_{n+1}} - \Psi_n^M(X_{t_n})$ admite la descomposici\'on
+En consecuencia, el defecto local $\rho_n^M = X_{t_{n+1}} - \Psi_n^M(X_{t_n})$ admite la descomposición
 $$
 \rho_n^M=R_n^{\mathrm{cont}}+R_n^{\mathrm{salto}},
 $$
@@ -256,7 +256,7 @@ $$
 R_n^{\mathrm{salto}}
 =\int_{t_n}^{t_{n+1}}\int_E z\,\bigl(G(t_{n+1},s)-1\bigr)\,\tilde{N}(ds, dz).
 $$ {#eq-residuo_salto}
-Esta descomposición separa el residuo de la aproximación continua de Milstein de los t\'erminos que describen la interacci\'on entre los saltos y la difusión.
+Esta descomposición separa el residuo de la aproximación continua de Milstein de los términos que describen la interacción entre los saltos y la difusión.
 
 Bajo las hipótesis de regularidad (H1) y acotamiento de los coeficientes, la expansión estocástica del factor $G(t_{n+1},t_n)$ hasta los términos de segundo orden en el incremento browniano da
 $$
@@ -269,9 +269,9 @@ $$
 \qquad
 \left|\mathbb{E}[\mathcal{R}_n^G]\right|\leq Ch^2.
 $$
-La primera cota se obtiene controlando los términos iterados de las integrales estoc\'asticas que no aparecen en la expansión de Milstein y la variación temporal de $r$ y $\sigma$. La segunda se obtiene tomando esperanza en la expansi\'on: los incrementos brownianos centrados desaparecen y los términos deterministas restantes son de orden al menos $h^2$. Las constantes son uniformes respecto de $n$.
+La primera cota se obtiene controlando los términos iterados de las integrales estocásticas que no aparecen en la expansión de Milstein y la variación temporal de $r$ y $\sigma$. La segunda se obtiene tomando esperanza en la expansión: los incrementos brownianos centrados desaparecen y los términos deterministas restantes son de orden al menos $h^2$. Las constantes son uniformes respecto de $n$.
 
-De manera análoga, la regularidad Lipschitz de $c$ y $\Lambda$ (hip\'otesis (H1) y (H3)), junto con la estimación
+De manera análoga, la regularidad Lipschitz de $c$ y $\Lambda$ (hipótesis (H1) y (H3)), junto con la estimación
 $$
 \|G(t_{n+1},s)-1\|_{L^2}
 \leq C(t_{n+1}-s)^{1/2},
@@ -296,7 +296,7 @@ G(t_{n+1},s)\bigl(c(s)-\Lambda(s)\bigr)\,ds-(c_n-\Lambda_n)h\\
 \int_{t_n}^{t_{n+1}}\bigl[\bigl(c(s)-\Lambda(s)\bigr)-\bigl(c_n-\Lambda_n\bigr)\bigr]\,ds.
 \end{aligned}
 $$
-El primer t\'ermino se estima mediante la desigualdad integral de Minkowski y la cota anterior para $G-1$, mientras que el segundo es de orden $h^2$ por la condici\'on Lipschitz de $c$ y $\Lambda$. Adem\'as, como
+El primer término se estima mediante la desigualdad integral de Minkowski y la cota anterior para $G-1$, mientras que el segundo es de orden $h^2$ por la condición Lipschitz de $c$ y $\Lambda$. Además, como
 $$
 \mathbb{E}[G(t_{n+1},s)]
 =\exp\left(\int_s^{t_{n+1}}r(v)\,dv\right),
@@ -336,7 +336,7 @@ $$
 \leq Ch^2.
 $$
 
-Para controlar la contribución de los saltos, observemos que la integral estocástica respecto a la medida compensada $\tilde{N}$ es una martingala de cuadrado integrable (Teorema 5.17). Usando la isometría de It\^o para la medida de Poisson compensada y la acotación de la intensidad $\lambda(s)$ (hip\'otesis (H2)) y del segundo momento de las marcas $\int_E z^2\,\nu(dz) \le C$, obtenemos directamente el segundo momento incondicional:
+Para controlar la contribución de los saltos, observemos que la integral estocástica respecto a la medida compensada $\tilde{N}$ es una martingala de cuadrado integrable (Teorema 5.17). Usando la isometría de It\^o para la medida de Poisson compensada y la acotación de la intensidad $\lambda(s)$ (hipótesis (H2)) y del segundo momento de las marcas $\int_E z^2\,\nu(dz) \le C$, obtenemos directamente el segundo momento incondicional:
 $$
 \begin{aligned}
 \mathbb{E}\bigl|R_n^{\mathrm{salto}}\bigr|^2
@@ -389,7 +389,7 @@ $$
     \|\rho_n^M\|_{L^2}\le Ch, \qquad \text{y} \qquad \|\mathbb{E}[\rho_n^M\mid\mathcal{F}_{t_n}]\|_{L^2} \le Ch^2.
 $$
 
-Finalmente, para establecer la cota de covarianza cruzada, recordemos que $\mathbb{E}[A_n^M]=1+r_nh$. Por la expresi\'on de $A_n^M$ y los momentos del incremento browniano,
+Finalmente, para establecer la cota de covarianza cruzada, recordemos que $\mathbb{E}[A_n^M]=1+r_nh$. Por la expresión de $A_n^M$ y los momentos del incremento browniano,
 $$
 \begin{aligned}
 \mathbb{E}\left[
@@ -462,11 +462,11 @@ $$
     \rho_n^M=\mathbb{E}[\rho_n^M\mid\mathcal{F}_{t_n}] + \Big(\rho_n^M-\mathbb{E}[\rho_n^M\mid\mathcal{F}_{t_n}]\Big).
 $$
 
-La primera parte se controla mediante las cotas de \eqref{eq:cotas_defecto_local_norma} y la desigualdad de Young. La segunda parte se domina utilizando la cota de covarianza @eq-cota_covarianza, aprovechando nuevamente que $e_n$ es $\mathcal{F}_{t_n}$-medible. Aplicando la desigualdad de Young con un parámetro $\epsilon$ adecuadamente elegido, se obtiene
+La primera parte se controla mediante las cotas de @eq-cotas_defecto_local_norma y la desigualdad de Young. La segunda parte se domina utilizando la cota de covarianza @eq-cota_covarianza, aprovechando nuevamente que $e_n$ es $\mathcal{F}_{t_n}$-medible. Aplicando la desigualdad de Young con un parámetro $\epsilon$ adecuadamente elegido, se obtiene
 $$ 
     2\left|\mathbb{E}[A_n^Me_n\rho_n^M]\right| \le Ch\,\mathbb{E}|e_n|^2+Ch^2.
 $$ {#eq-cota_termino_cruzado}
-Adicionalmente, la cota $L^2$ del defecto local \eqref{eq:cota_defecto_L2} implica directamente que
+Adicionalmente, la cota $L^2$ del defecto local @eq-cota_defecto_L2 implica directamente que
 $$
     \mathbb{E}|\rho_n^M|^2\le Ch^2.
 $$ {#eq-cota_defecto_cuadrado}
@@ -475,7 +475,7 @@ $$
     \mathbb{E}|e_{n+1}|^2 \le (1+Ch)\mathbb{E}|e_n|^2+Ch^2.
 $$ {#eq-desigualdad_energia}
 
-Finalmente, para obtener la cota global, aplicamos el lema de Gr\"onwall discreto a la recurrencia \eqref{eq:desigualdad_energia}. Dado que el error inicial es nulo ($e_0=0$ por la hip\'otesis (H4)), la iteraci\'on de la desigualdad conduce a
+Finalmente, para obtener la cota global, aplicamos el lema de Grönwall discreto a la recurrencia @eq-desigualdad_energia. Dado que el error inicial es nulo ($e_0=0$ por la hipótesis (H4)), la iteración de la desigualdad conduce a
 $$
     \begin{aligned}
         \mathbb{E}|e_n|^2 &\le Ch^2\sum_{k=0}^{n-1}(1+Ch)^k \\
@@ -483,11 +483,46 @@ $$
     \end{aligned}
 $$ {#eq-iteracion_gronwall}
 
-donde hemos utilizado que $nh\le T$ y la cota exponencial $(1+Ch)^n\le e^{CT} \equiv C_T$. Tomando la ra\'iz cuadrada y el m\'aximo sobre todos los pasos de la malla, concluimos que
+donde hemos utilizado que $nh\le T$ y la cota exponencial $(1+Ch)^n\le e^{CT} \equiv C_T$. Tomando la raíz cuadrada y el máximo sobre todos los pasos de la malla, concluimos que
 $$
     \max_{0\le n\le N} \left(\mathbb{E}|X_{t_n}-Y_n|^2\right)^{1/2} \le C_T^{1/2}h^{1/2}.
 $$
-Esto demuestra rigurosamente la convergencia fuerte de orden al menos $1/2$ bajo las hip\'otesis (H1)--(H4) y las estimaciones locales establecidas.
+Esto demuestra rigurosamente la convergencia fuerte de orden al menos $1/2$ bajo las hipótesis (H1)--(H4) y las estimaciones locales establecidas.
+:::
+::::
+
+
+## Esquema Semi-Implícito compensado
+
+El método semi-implícito compensado aplica una regla de Euler implícita al término de inversión $r(t)X$ y explícita a la difusión y al salto compensado:
+
+$$
+\hat U_{n+1}=\hat U_n+\big[c_n-\Lambda_n+r_n\hat U_{n+1}\big]\Delta t+\sigma_n\hat U_n\,\Delta W_n-\Delta\tilde J_n ,
+$$
+
+con $c_n,r_n,\sigma_n,\Lambda_n$ evaluados en $t_n$ (como en la implementación; evaluarlos en $t_{n+1}$ solo modifica las constantes). Despejando $\hat U_{n+1}$ se tiene:
+
+$$
+\hat U_{n+1}=\frac{\hat U_n\big[1+\sigma_n\Delta W_n\big]+\big(c_n-\Lambda_n\big)\Delta t-\Delta\tilde J_n}{1-r_n\Delta t}
+=\frac{\hat U_n\big[1+\sigma_n\Delta W_n\big]+c_n\Delta t-\Delta J_n}{1-r_n\Delta t},
+$$
+
+::: {#thm-convergencia_fuerte_semi_impl_comp}
+(Convergencia fuerte, esquema semi-implícito compensado). Con los coeficientes de @eq-coeficientes, supóngase:
+
+(H1) Lipschitz global: $a(t,u)=c(t)+r(t)u-\Lambda(t)$ y $b(t,u)=\sigma(t)u$ son globalmente Lipschitz en $u$, y $R(t,u,v)=-y$ no depende de $u$ ($L_R=0$).
+
+(H2) Crecimiento lineal: igual que (H2) del Teorema 7.1 (Platen y Bruti-Liberati [28], Ec. (1.9.3)).
+
+(H3) Momentos finitos de saltos: $\int_E|R|^4\nu(t,dv)<\infty$ (Wang, Mei y Xue [35], Hipótesis 3.1).
+
+(H4) Condición numérica: $\bar r\,\Delta t\le\tfrac12$, con $\bar r=\sup_t r(t)$, de modo que $1-r_n\Delta t\ge\tfrac12$ (Higham y Kloeden [16], Lema 2.1). En la implementación esta condición se verifica antes de simular y el programa se detiene si no se cumple (con los datos del estudio, $\bar r\Delta t\approx2\times10^{-4}$).
+
+(H5) Regularidad temporal: como (H4) del Teorema 7.1.
+
+(H6) Condición inicial: $\hat U_0=X_0$ con $\mathbb E[X_0^2]<\infty$.
+
+Entonces existe $C>0$, independiente de $\Delta t$, tal que $\max_{n}\big(\mathbb E|U_{t_n}-\hat U_n|^2\big)^{1/2}\le C\sqrt{\Delta t}$. Demostración: véase el Bloque A.7.
 :::
 
 ### Estimador de Monte Carlo
@@ -496,7 +531,7 @@ Esto demuestra rigurosamente la convergencia fuerte de orden al menos $1/2$ bajo
 La base teórica del método reside en la construcción de un estimador no sesgado basado en muestras independientes.
 :::
 
-::: {#def-Espacio_probabilidad_filtrado}
+::: {#def-Estimador de Monte Carlo}
 (Estimador de Monte Carlo).Sean $X_1, X_2, \dots, X_N$ variables aleatorias independientes e idénticamente distribuidas (i.i.d.) con la misma distribución que $X$. Definimos el estimador de Monte Carlo $\hat{I}_N$ como la media muestral de las realizaciones de la función $f$: $$ \hat{I}_N = \frac{1}{N} \sum_{i=1}^{N} f(X_i).$$ {#eq-mc_estimator}
 :::
 

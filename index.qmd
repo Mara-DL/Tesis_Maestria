@@ -33,9 +33,9 @@ Los resultados muestran que el esquema semi-implícito compensado presenta venta
 
 i.  Prudencia regulatoria ($+2.30\%$ en reserva mediana);
 
-ii.  Estabilidad incondicional ante shocks en tasas de interés;
+ii. Estabilidad incondicional ante shocks en tasas de interés;
 
-iii.  Eficiencia computacional (reducción del 96.7% en pasos de tiempo para horizontes extendidos). Se concluye que, para sistemas dominados por saltos catastróficos y volatilidad macroeconómica, el esquema semi-implícito es preferible sobre Milstein.
+iii. Eficiencia computacional (reducción del 96.7% en pasos de tiempo para horizontes extendidos). Se concluye que, para sistemas dominados por saltos catastróficos y volatilidad macroeconómica, el esquema semi-implícito es preferible sobre Milstein.
 
 **Palabras clave**: Ecuaciones diferenciales estocásticas con saltos, método de Milstein, esquema semi-implícito, convergencia fuerte, modelo de Cramér-Lundberg, simulación Monte Carlo, gestión de riesgos, seguros de vivienda, Ciudad de México.
 
