@@ -83,35 +83,6 @@ ul.task-list li input[type="checkbox"] {
   });
 </script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <meta property="og:title" content="Aproximación numérica de la solución para ecuaciones diferenciales estocasticas con saltos">
 <meta property="og:image" content="assets/UNACH.png">
@@ -290,7 +261,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Resumen</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
@@ -360,7 +331,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Resumen</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -473,37 +444,6 @@ window.Quarto = {
 </header>
 
 
-<div style="text-align: justify">
-<section id="resumen" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Resumen</h1>
-<p>En este trabajo se aborda el problema de la aproximación numérica de soluciones de ecuaciones diferenciales estocásticas con difusión y saltos (EDESJs), con aplicación al modelo de Cramér-Lundberg extendido para el cálculo de reservas técnicas en el sector asegurador de vivienda de la Ciudad de México. Se establece un marco riguroso de cálculo estocástico que incluye la demostración de existencia y unicidad de soluciones fuertes bajo condiciones de Lipschitz local y crecimiento lineal global; la isometría de Itô para la parte de saltos; y las desigualdades de Burkholder-Davis-Gundy en espacios de Hilbert.</p>
-<p>Se implementan y analizan dos esquemas numéricos: el método de Milstein compensado, que alcanza convergencia fuerte de orden <span class="math inline">\(\gamma = 1/2\)</span> para la componente difusiva, y el esquema Semi-implícito compensado, que trata el término de interés <span class="math inline">\(r(t)U(t)\)</span> de forma implícita, garantizando estabilidad incondicional. Bajo hipótesis de regularidad de los coeficientes (Lipschitz global, crecimiento lineal, momentos finitos de saltos), se demuestra que ambos esquemas convergen fuertemente con orden <span class="math inline">\(\gamma = 1/2\)</span>, utilizando técnicas de descomposición del error local, estimaciones recursivas y la desigualdad de Grönwall discreta.</p>
-<p>La calibración del modelo incorpora datos reales del mercado mexicano: primas ajustadas por inflación (INEGI), tasa de inversión combinada con activos locales (CETES) y globales (bonos USD), volatilidad estacional basada en el índice ILS, e intensidades de siniestros hidrometeorológicos (CONAGUA) y sísmicos (SSN). Mediante simulación Monte Carlo (<span class="math inline">\(N_{\text{sim}} = 1000\)</span>) se comparan los esquemas en términos de mediana final, intervalos de confianza al <span class="math inline">\(90\%\)</span> y detección de saltos, validando la robustez del modelo.</p>
-<p>Los resultados muestran que el esquema semi-implícito compensado presenta ventajas críticas para la gestión de riesgos en la CDMX:</p>
-<ol type="i">
-<li><p>Prudencia regulatoria (<span class="math inline">\(+2.30\%\)</span> en reserva mediana);</p></li>
-<li><p>Estabilidad incondicional ante shocks en tasas de interés;</p></li>
-<li><p>Eficiencia computacional (reducción del 96.7% en pasos de tiempo para horizontes extendidos). Se concluye que, para sistemas dominados por saltos catastróficos y volatilidad macroeconómica, el esquema semi-implícito es preferible sobre Milstein.</p></li>
-</ol>
-<p><strong>Palabras clave</strong>: Ecuaciones diferenciales estocásticas con saltos, método de Milstein, esquema semi-implícito, convergencia fuerte, modelo de Cramér-Lundberg, simulación Monte Carlo, gestión de riesgos, seguros de vivienda, Ciudad de México.</p>
-<section id="abstract" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="abstract"><span class="header-section-number">1.1</span> Abstract</h2>
-</section>
-</section>
-<section id="abstract-1" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Abstract</h1>
-<p>This work addresses the numerical approximation problem of stochastic differential equations with diffusion and jumps (SDEJs), applied to an extended Cramér-Lundberg model for calculating technical reserves in the housing insurance sector in Mexico City. A rigorous stochastic calculus framework is established, including the demonstration of existence and uniqueness of strong solutions under local Lipschitz and global linear growth conditions; Itô isometry for the jump component; and Burkholder-Davis-Gundy inequalities in Hilbert spaces.</p>
-<p>Two numerical schemes are implemented and analyzed: the compensated Milstein method, which achieves strong convergence of order γ = 1/2 for the diffusive component, and the compensated semi-implicit scheme, which treats the interest term r(t)U(t) implicitly, guaranteeing unconditional stability. Under regularity hypotheses of the coefficients (global Lipschitz, linear growth, finite jump moments), it is demonstrated that both schemes converge strongly with order γ = 1/2, using local error decomposition techniques, recursive estimates, and the discrete Grönwall inequality.</p>
-<p>The model calibration incorporates real data from the Mexican market: inflation-adjusted premiums (INEGI), combined investment rate with local (CETES) and global (USD bonds) assets, seasonal volatility based on the ILS index, and intensities of hydrometeorological (CONAGUA) and seismic (SSN) claims. Through Monte Carlo simulation (N_sim = 1000), the schemes are compared in terms of final median, 90% confidence intervals, and jump detection, validating the robustness of the model.</p>
-<p>The results show that the compensated semi-implicit scheme presents critical advantages for risk management in Mexico City:</p>
-<ol type="i">
-<li><p>Regulatory prudence (+2.30% in median reserve);</p></li>
-<li><p>Unconditional stability against interest rate shocks;</p></li>
-<li><p>Computational efficiency (96.7% reduction in time steps for extended horizons). It is concluded that for systems dominated by catastrophic jumps and macroeconomic volatility, the semi-implicit scheme is preferable over Milstein.</p></li>
-</ol>
-<p><strong>Keywords:</strong> Stochastic differential equations with jumps, Milstein method, semi-implicit scheme, strong convergence, Cramér-Lundberg model, Monte Carlo simulation, risk management, housing insurance, Mexico City.</p>
-</section>
-</div>
 
 
 
