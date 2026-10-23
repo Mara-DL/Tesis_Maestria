@@ -34,7 +34,6 @@ book:
 
   chapters:
     - index.qmd
-    - Introduccion.qmd
     - objetivos.qmd
     - fundamentos_estocasticos.qmd
     - edes_saltos.qmd
