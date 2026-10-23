@@ -1225,14 +1225,14 @@ En la configuración de referencia se obtuvieron 1,422 detecciones válidas en c
 | $T$ (años) | 2 | 2 |
 | $\Delta t$ | $1/365$ | $1/365$ |
 | $K$ | 27 | 27 |
-| $\alpha$ | 3.50 | 3.50 |
+| $\alpha$ | 3.00 | 3.00 |
 | $\varpi$ | 0.45 | 0.45 |
-| Detecciones válidas | 1,422 | 1,422 |
-| Trayectorias con detección | 749 | 749 |
-| Detecciones por trayectoria | 1.422 | 1.422 |
-| Detecciones descartadas por signo/no finitas | 1 | 1 |
+| Detecciones válidas | 216 | 217 |
+| Trayectorias con detección | 191 | 192 |
+| Detecciones por trayectoria | 0.216 | 0.217 |
+| Detecciones descartadas por signo/no finitas | 39 | 38 |
 
-: Configuración común y resultados del detector en la configuración de referencia.
+: Configuración común y resultados del detector en la configuración de referencia. {#tbl-9_2}
 
 ### Distribución agregada de las severidades detectadas
 
@@ -1252,14 +1252,16 @@ Esta muestra contiene las detecciones provenientes de las 1000 trayectorias. En 
 :::
 
 | Estadístico | Milstein compensado | Semi-Implícito compensado |
-|--------------------|-------------------------:|-------------------------:|
-| Número de severidades detectadas | 1,422 | 1,422 |
-| Media (USD) | 1,792,982.74 | 1,793,024.23 |
-| Mediana (USD) | 1,513,050.23 | 1,513,140.12 |
-| IC 95 % de la media | \[1,733,759.19; 1,854,807.13\] | \[1,733,800.71; 1,854,849.50\] |
-| IC 95 % de la mediana | \[1,466,575.04; 1,566,256.61\] | \[1,466,569.85; 1,566,329.17\] |
+|:-----------------------|-----------------------:|-----------------------:|
+| Número de severidades detectadas | 216 | 217 |
+| Media (USD) | 4,005,019.04 | 4,001,696.85 |
+| Mediana (USD) | 3,602,854.23 | 3,605,456.96 |
+| Cuantil 90 % (USD) | 5,723,239.00 | 5,725,004.14 |
+| Máximo (USD) | 14,656,854.97 | 14,659,420.38 |
+| IC 95 % de la media | \[3,768,446.23; 4,262,517.70\] | \[3,765,254.61; 4,259,344.06\] |
+| IC 95 % de la mediana | \[3,429,948.29; 3,858,368.00\] | \[3,430,854.71; 3,861,549.23\] |
 
-: Estadísticos de la distribución agregada de severidades y sus intervalos bootstrap.
+: Estadísticos de la distribución agregada de severidades y sus intervalos bootstrap. {#tbl-9_3}
 
 ::: {style="text-align:justify"}
 La diferencia entre las medias de severidad es
@@ -1650,28 +1652,28 @@ fig_kde_si.show()
 ### Ajustes paramétricos auxiliares
 
 ::: {style="text-align:justify"}
-Como complemento descriptivo de la estimación no paramétrica se ajustaron las familias Lognormal, Gamma y Weibull. Estos modelos no sustituyen la ECDF ni la KDE; se emplean para disponer de representaciones paramétricas comparables mediante máxima verosimilitud y el criterio de información de Akaike,
+Como complemento descriptivo de la estimación no paramétrica se ajustaron las familia auxis Lognormal, Gamma y Weibull. Estos modelos no sustituyen la ECDF ni la KDE; se emplean para disponer de representaciones paramétricas comparables mediante máxima verosimilitud y el criterio de información de Akaike,
 
 $$AIC=2k-2\widehat{\ell},$$ {#eq-9-6-aic-severidad}
 
 donde $k$ es el número de parámetros estimados y $\widehat{\ell}$ es la log-verosimilitud maximizada. El AIC se utiliza únicamente para comparar las tres familias implementadas en el programa [@akaike1974].
 :::
 
-| Familia | Milstein: logLik | Milstein: AIC | Parámetros |
-|------------------|------------------:|------------------:|------------------|
-| Lognormal | -21,197.836650 | 42,399.673300 | $\mu_{\log}=14.276370$, $\sigma_{\log}=0.454640$ |
-| Gamma | -21,350.264824 | 42,704.529647 | shape $=4.223838$, scale $=424,491.405$ |
-| Weibull | -21,572.054840 | 43,148.109681 | shape $=1.664944$, scale $=2,020,400.435$ |
+| Familia | logLik | AIC | Parametros |
+|:-----------------|-----------------:|-----------------:|-----------------:|
+| Lognormal | -3,364.285120 | 6,732.570240 | mu_log = 15.123098, sigma_log = 0.380358 |
+| Gamma | -3,377.946992 | 6,759.893984 | shape = 6.415160, scale = 624,305.363 |
+| Weibull | -3,407.535493 | 6,819.070986 | shape = 2.214266, scale = 4,525,209.519 |
 
-: Ajustes paramétricos auxiliares de severidad: Milstein compensado.
+: Ajustes paramétricos auxiliares de severidad: Milstein compensado. {#tbl-9_4}
 
-| Familia | Semi-Implícito: logLik | Semi-Implícito: AIC | Parámetros |
-|------------------|------------------:|------------------:|------------------|
-| Lognormal | -21,197.860641 | 42,399.721281 | $\mu_{\log}=14.276395$, $\sigma_{\log}=0.454636$ |
-| Gamma | -21,350.286911 | 42,704.573822 | shape $=4.223916$, scale $=424,493.379$ |
-| Weibull | -21,572.080175 | 43,148.160350 | shape $=1.664955$, scale $=2,020,447.324$ |
+| Familia | logLik | AIC | Parametros |
+|:-----------------|-----------------:|-----------------:|-----------------:|
+| Lognormal | -3,379.467032 | 6,762.934064 | mu_log = 15.122401, sigma_log = 0.379933 |
+| Gamma | -3,393.249297 | 6,790.498595 | shape = 6.425575, scale = 622,776.487 |
+| Weibull | -3,423.059805 | 6,850.119609 | shape = 2.214786, scale = 4,521,379.652 |
 
-: Ajustes paramétricos auxiliares de severidad: Semi-Implícito compensado.
+: Ajustes paramétricos auxiliares de severidad: Semi-Implícito compensado. {#tbl-9_5}
 
 ::: {style="text-align:justify"}
 En ambos esquemas la familia Lognormal presenta el menor AIC dentro del conjunto de tres familias consideradas. La diferencia de AIC respecto de Gamma es aproximadamente $304.86$, mientras que respecto de Weibull es aproximadamente $748.44$.
@@ -1698,14 +1700,14 @@ En la realización estudiada se obtuvieron 673 gaps completos y 749 observacione
 :::
 
 | Estadístico         | Milstein compensado | Semi-Implícito compensado |
-|---------------------|--------------------:|--------------------------:|
-| *Gaps* completos    |                 673 |                       673 |
-| Censuras terminales |                 749 |                       749 |
-| Media (días)        |            196.5973 |                  196.5973 |
-| Mediana (días)      |                 147 |                       147 |
-| $CV^2$              |            0.677208 |                  0.677208 |
+|:--------------------|--------------------:|--------------------------:|
+| Gaps completos      |                  25 |                        25 |
+| Censuras terminales |                 191 |                       192 |
+| Media (días)        |            202.5600 |                  202.5600 |
+| Mediana (días)      |               175.0 |                     175.0 |
+| CV²                 |            0.712337 |                  0.712337 |
 
-: Estadísticos descriptivos de los tiempos entre detecciones.
+: Estadísticos descriptivos de los tiempos entre detecciones. {#tbl-9_6}
 
 ::: {style="text-align:justify"}
 El coeficiente de variación cuadrático se calcula mediante
@@ -1989,21 +1991,22 @@ fig_km_si.show()
 El programa ajusta exclusivamente las familias Exponencial, Weibull y Gamma utilizando la verosimilitud censurada de @eq-9-6-loglik-censurada. Para el caso homogéneo de un proceso de Poisson con intensidad constante $\lambda$, los tiempos entre eventos presentan distribución Exponencial. Sin embargo, la sola comparación con una familia Exponencial no implica que el proceso de detecciones sea homogéneo [@abgk1993].
 :::
 
-| Familia | Milstein: logLik | Milstein: AIC | Parámetros |
-|------------------|------------------:|------------------:|------------------|
-| Exponencial | -4,832.743080 | 9,667.486161 | rate $=0.002068509$ |
-| Weibull | -4,832.116455 | 9,668.232911 | shape $=1.036538$, scale $=476.216322$ |
-| Gamma | -4,832.237563 | 9,668.475126 | shape $=1.043957$, scale $=454.015731$ |
+| Familia     |      logLik |        AIC |                             Parametros |
+|:--------------|--------------:|--------------:|--------------------------:|
+| Gamma       | -224.617521 | 453.235041 | shape = 0.730669, scale = 7,780.116645 |
+| Weibull     | -224.624933 | 453.249865 | shape = 0.747435, scale = 6,080.480524 |
+| Exponencial | -226.052375 | 454.104750 |                     rate = 0.000321634 |
 
-: Ajustes temporales censurados: Milstein compensado.
 
-| Familia | Semi-Implícito: logLik | Semi-Implícito: AIC | Parámetros |
-|------------------|------------------:|------------------:|------------------|
-| Exponencial | -4,832.743080 | 9,667.486161 | rate $=0.002068509$ |
-| Weibull | -4,832.116455 | 9,668.232911 | shape $=1.036538$, scale $=476.216322$ |
-| Gamma | -4,832.237563 | 9,668.475126 | shape $=1.043957$, scale $=454.015731$ |
+: Ajustes temporales censurados: Milstein compensado. {#tbl-9_7}
 
-: Ajustes temporales censurados: Semi-Implícito compensado.
+| Familia     |      logLik |        AIC |                             Parametros |
+|:--------------|--------------:|--------------:|--------------------------:|
+| Gamma       | -224.788400 | 453.576800 | shape = 0.729682, scale = 7,885.735482 |
+| Weibull     | -224.795437 | 453.590874 | shape = 0.746374, scale = 6,159.833690 |
+| Exponencial | -226.235996 | 454.471991 |                     rate = 0.000319281 |
+
+: Ajustes temporales censurados: Semi-Implícito compensado. {#tbl-9_8}
 
 ::: {style="text-align:justify"}
 La Exponencial presenta el menor AIC en ambos esquemas. La diferencia respecto de Weibull es aproximadamente $0.747$ y respecto de Gamma aproximadamente $0.989$. Las diferencias son pequeñas en escala absoluta de AIC; por ello, el resultado debe interpretarse como una comparación dentro del conjunto de familias implementadas y no como una identificación concluyente de la ley generadora de los tiempos.
@@ -2016,12 +2019,12 @@ La incertidumbre de las estadísticas temporales se obtiene mediante bootstrap p
 :::
 
 | Estadístico             |  Milstein compensado | Semi-Implícito compensado |
-|-------------------------|---------------------:|--------------------------:|
-| Media, IC 95 % (días)   | \[185.419; 209.735\] |      \[185.419; 209.735\] |
-| Mediana, IC 95 % (días) | \[132.000; 166.512\] |      \[132.000; 166.512\] |
-| $CV^2$, IC 95 %         |   \[0.6108; 0.7445\] |        \[0.6108; 0.7445\] |
+|:------------------------|---------------------:|--------------------------:|
+| Media, IC 95 % (días)   | \[133.172; 268.274\] |      \[133.172; 268.274\] |
+| Mediana, IC 95 % (días) |  \[97.500; 260.000\] |       \[97.500; 260.000\] |
+| CV², IC 95 %            |   \[0.3914; 1.1464\] |        \[0.3914; 1.1464\] |
 
-: Intervalos bootstrap de los estadísticos de los tiempos entre detecciones.
+: Intervalos bootstrap de los estadísticos de los tiempos entre detecciones. {#tbl-9_9}
 
 ### Estimación de la intensidad estacional de las detecciones
 
@@ -2033,14 +2036,14 @@ $$b\in\{30,60,91,182\}\text{días}.$$ {#eq-9-6-bandwidths}
 La estimación mediante funciones núcleo pertenece al marco no paramétrico de estimación de intensidades de procesos de puntos [@ramlauhansen1983]. El programa conserva las cuatro curvas y utiliza $b=30$ días como referencia gráfica.
 :::
 
-| Ancho de banda $b$ (días) |   Mínimo |   Máximo |    Media |
-|--------------------------:|---------:|---------:|---------:|
-|                        30 | 0.002372 | 0.005481 | 0.003896 |
-|                        60 | 0.002897 | 0.004835 | 0.003887 |
-|                        91 | 0.003188 | 0.004258 | 0.003721 |
-|                       182 | 0.002555 | 0.002777 | 0.002665 |
+| b (días) | Mil: mín | Mil: máx | Mil: media |  SI: mín |  SI: máx | SI: media |
+|:---------|---------:|---------:|-----------:|---------:|---------:|----------:|
+| 30       | 0.000430 | 0.000802 |   0.000592 | 0.000430 | 0.000815 |  0.000595 |
+| 60       | 0.000500 | 0.000692 |   0.000590 | 0.000501 | 0.000699 |  0.000593 |
+| 91       | 0.000513 | 0.000616 |   0.000565 | 0.000513 | 0.000621 |  0.000568 |
+| 182      | 0.000393 | 0.000415 |   0.000405 | 0.000394 | 0.000418 |  0.000407 |
 
-: Sensibilidad de la intensidad estimada al ancho de banda para las detecciones.
+: Sensibilidad de la intensidad estimada al ancho de banda para las detecciones. {#tbl-9_1_0}
 
 ```{python}
 #| label: fig-milstein-intensidad-kernel
@@ -2183,33 +2186,34 @@ se utiliza únicamente como diagnóstico de cambio de tiempo.
 :::
 
 | Diagnóstico        | Milstein compensado | Semi-Implícito compensado |
-|--------------------|--------------------:|--------------------------:|
-| Número de residuos |                 673 |                       673 |
-| Media de $V_k$     |            0.464129 |                  0.464129 |
-| Mediana de $V_k$   |            0.459566 |                  0.459566 |
-| $D_{\mathrm{TR}}$  |            0.076027 |                  0.076027 |
+|:-------------------|--------------------:|--------------------------:|
+| Número de residuos |                  25 |                        25 |
+| Media de V_k       |            0.110500 |                  0.111003 |
+| Mediana de V_k     |            0.099974 |                  0.100394 |
+| D_TR               |            0.719367 |                  0.717934 |
 
-: Diagnóstico basado en residuos de cambio de tiempo.
+
+: Diagnóstico basado en residuos de cambio de tiempo. {#tbl-9_1_1}
 
 La igualdad observada en esta ejecución deriva de la coincidencia de las detecciones temporales entre ambos esquemas.
 
 ### Comparación integrada de los resultados
 
 | Resultado | Milstein compensado | Semi-Implícito compensado |
-|--------------------|-------------------------:|-------------------------:|
-| Detecciones válidas | 1,422 | 1,422 |
-| Media de severidad (USD) | 1,792,982.74 | 1,793,024.23 |
-| Mediana de severidad (USD) | 1,513,050.23 | 1,513,140.12 |
+|:-----------------------|-----------------------:|-----------------------:|
+| Detecciones válidas | 216 | 217 |
+| Media de severidad (USD) | 4,005,019.04 | 4,001,696.85 |
+| Mediana de severidad (USD) | 3,602,854.23 | 3,605,456.96 |
 | Familia paramétrica auxiliar de severidad con menor AIC | Lognormal | Lognormal |
-| *Gaps* completos | 673 | 673 |
-| Censuras terminales | 749 | 749 |
-| Media del *gap* (días) | 196.5973 | 196.5973 |
-| Mediana del *gap* (días) | 147 | 147 |
-| $CV^2$ | 0.677208 | 0.677208 |
-| Familia temporal con menor AIC | Exponencial | Exponencial |
-| $D_{\mathrm{TR}}$ | 0.076027 | 0.076027 |
+| Gaps completos | 25 | 25 |
+| Censuras terminales | 191 | 192 |
+| Media del gap (días) | 202.5600 | 202.5600 |
+| Mediana del gap (días) | 175.0 | 175.0 |
+| CV² | 0.712337 | 0.712337 |
+| Familia temporal con menor AIC | Gamma | Gamma |
+| D_TR | 0.719367 | 0.717934 |
 
-: Comparación integrada de las distribuciones de severidad y tiempos entre detecciones.
+: Comparación integrada de las distribuciones de severidad y tiempos entre detecciones. {#tbl-9_1_2}
 
 ::: {style="text-align:justify"}
 Los resultados muestran que, para esta realización, ambos esquemas producen exactamente el mismo número de detecciones y la misma estructura temporal de detecciones, mientras que las severidades agregadas presentan diferencias numéricas muy pequeñas. La diferencia relativa de las medias de severidad es aproximadamente $0.00231 \%$, y la diferencia relativa de las medianas es aproximadamente $0.00594 \%$. Asimismo, los ajustes paramétricos auxiliares presentan valores de AIC prácticamente coincidentes entre ambos métodos.
@@ -2288,21 +2292,22 @@ El par $(\alpha,\varpi)=(3.5,0.45)$ se fija como configuración de referencia pa
 En la configuración de referencia se obtuvieron 1,422 detecciones válidas en cada esquema.
 :::
 
-| Parámetro | Milstein compensado | Semi-Implícito compensado |
-|----|---:|---:|
-| Semilla | 2026 | 2026 |
-| $N_{\mathrm{sim}}$ | 1000 | 1000 |
-| $T$ (años) | 2 | 2 |
-| $\Delta t$ | $1/365$ | $1/365$ |
-| $K$ | 27 | 27 |
-| $\alpha$ | 3.50 | 3.50 |
-| $\varpi$ | 0.45 | 0.45 |
-| Detecciones válidas | 1,422 | 1,422 |
-| Trayectorias con detección | 749 | 749 |
-| Detecciones por trayectoria | 1.422 | 1.422 |
-| Detecciones descartadas por signo/no finitas | 1 | 1 |
 
-: Configuración común y resultados del detector en la configuración de referencia.
+| Parámetro | Milstein compensado | Semi-Implícito compensado |
+|:---|---:|---:|
+| Semilla de la simulación | 2026 | 2026 |
+| $N_sim$ | 1000 | 1000 |
+| T (años) | 2 | 2 |
+| $\Delta t$ | 1/365 | 1/365 |
+| K | 27 | 27 |
+| $\alpha$ | 3.00 | 3.00 |
+| $\widetilde{\omega}$ | 0.45 | 0.45 |
+| Detecciones válidas | 216 | 217 |
+| Trayectorias con detección | 191 | 192 |
+| Detecciones por trayectoria | 0.216 | 0.217 |
+| Detecciones descartadas por signo/no finitas | 39 | 38 |
+
+: Configuración común y resultados del detector en la configuración de referencia. {#tbl-9_2}
 
 ### Distribución agregada de las severidades detectadas
 
@@ -2322,14 +2327,16 @@ Esta muestra contiene las detecciones provenientes de las 1000 trayectorias. En 
 :::
 
 | Estadístico | Milstein compensado | Semi-Implícito compensado |
-|--------------------|-------------------------:|-------------------------:|
-| Número de severidades detectadas | 1,422 | 1,422 |
-| Media (USD) | 1,792,982.74 | 1,793,024.23 |
-| Mediana (USD) | 1,513,050.23 | 1,513,140.12 |
-| IC 95 % de la media | \[1,733,759.19; 1,854,807.13\] | \[1,733,800.71; 1,854,849.50\] |
-| IC 95 % de la mediana | \[1,466,575.04; 1,566,256.61\] | \[1,466,569.85; 1,566,329.17\] |
+|:-----------------------|-----------------------:|-----------------------:|
+| Número de severidades detectadas | 216 | 217 |
+| Media (USD) | 4,005,019.04 | 4,001,696.85 |
+| Mediana (USD) | 3,602,854.23 | 3,605,456.96 |
+| Cuantil 90 % (USD) | 5,723,239.00 | 5,725,004.14 |
+| Máximo (USD) | 14,656,854.97 | 14,659,420.38 |
+| IC 95 % de la media | \[3,768,446.23; 4,262,517.70\] | \[3,765,254.61; 4,259,344.06\] |
+| IC 95 % de la mediana | \[3,429,948.29; 3,858,368.00\] | \[3,430,854.71; 3,861,549.23\] |
 
-: Estadísticos de la distribución agregada de severidades y sus intervalos bootstrap.
+: Estadísticos de la distribución agregada de severidades y sus intervalos bootstrap. {#tbl-9_3}
 
 ::: {style="text-align:justify"}
 La diferencia entre las medias de severidad es
@@ -2407,21 +2414,21 @@ $$AIC=2k-2\widehat{\ell},$$
 donde $k$ es el número de parámetros estimados y $\widehat{\ell}$ es la log-verosimilitud maximizada. El AIC se utiliza únicamente para comparar las tres familias implementadas en el programa [@akaike1974].
 :::
 
-| Familia | Milstein: logLik | Milstein: AIC | Parámetros |
-|------------------|------------------:|------------------:|------------------|
-| Lognormal | -21,197.836650 | 42,399.673300 | $\mu_{\log}=14.276370$, $\sigma_{\log}=0.454640$ |
-| Gamma | -21,350.264824 | 42,704.529647 | shape $=4.223838$, scale $=424,491.405$ |
-| Weibull | -21,572.054840 | 43,148.109681 | shape $=1.664944$, scale $=2,020,400.435$ |
+| Familia | logLik | AIC | Parametros |
+|:-----------------|-----------------:|-----------------:|-----------------:|
+| Lognormal | -3,364.285120 | 6,732.570240 | mu_log = 15.123098, sigma_log = 0.380358 |
+| Gamma | -3,377.946992 | 6,759.893984 | shape = 6.415160, scale = 624,305.363 |
+| Weibull | -3,407.535493 | 6,819.070986 | shape = 2.214266, scale = 4,525,209.519 |
 
-: Ajustes paramétricos auxiliares de severidad: Milstein compensado.
+: Ajustes paramétricos auxiliares de severidad: Milstein compensado. {#tbl-9_4}
 
-| Familia | Semi-Implícito: logLik | Semi-Implícito: AIC | Parámetros |
-|------------------|------------------:|------------------:|------------------|
-| Lognormal | -21,197.860641 | 42,399.721281 | $\mu_{\log}=14.276395$, $\sigma_{\log}=0.454636$ |
-| Gamma | -21,350.286911 | 42,704.573822 | shape $=4.223916$, scale $=424,493.379$ |
-| Weibull | -21,572.080175 | 43,148.160350 | shape $=1.664955$, scale $=2,020,447.324$ |
+| Familia | logLik | AIC | Parametros |
+|:-----------------|-----------------:|-----------------:|-----------------:|
+| Lognormal | -3,379.467032 | 6,762.934064 | mu_log = 15.122401, sigma_log = 0.379933 |
+| Gamma | -3,393.249297 | 6,790.498595 | shape = 6.425575, scale = 622,776.487 |
+| Weibull | -3,423.059805 | 6,850.119609 | shape = 2.214786, scale = 4,521,379.652 |
 
-: Ajustes paramétricos auxiliares de severidad: Semi-Implícito compensado.
+: Ajustes paramétricos auxiliares de severidad: Semi-Implícito compensado. {#tbl-9_5}
 
 ::: {style="text-align:justify"}
 En ambos esquemas la familia Lognormal presenta el menor AIC dentro del conjunto de tres familias consideradas. La diferencia de AIC respecto de Gamma es aproximadamente $304.86$, mientras que respecto de Weibull es aproximadamente $748.44$.
@@ -2448,14 +2455,14 @@ En la realización estudiada se obtuvieron 673 gaps completos y 749 observacione
 :::
 
 | Estadístico         | Milstein compensado | Semi-Implícito compensado |
-|---------------------|--------------------:|--------------------------:|
-| *Gaps* completos    |                 673 |                       673 |
-| Censuras terminales |                 749 |                       749 |
-| Media (días)        |            196.5973 |                  196.5973 |
-| Mediana (días)      |                 147 |                       147 |
-| $CV^2$              |            0.677208 |                  0.677208 |
+|:--------------------|--------------------:|--------------------------:|
+| Gaps completos      |                  25 |                        25 |
+| Censuras terminales |                 191 |                       192 |
+| Media (días)        |            202.5600 |                  202.5600 |
+| Mediana (días)      |               175.0 |                     175.0 |
+| CV²                 |            0.712337 |                  0.712337 |
 
-: Estadísticos descriptivos de los tiempos entre detecciones.
+: Estadísticos descriptivos de los tiempos entre detecciones. {#tbl-9_6}
 
 ::: {style="text-align:justify"}
 El coeficiente de variación cuadrático se calcula mediante
@@ -2504,21 +2511,21 @@ Este tratamiento corresponde a la formulación estándar de inferencia con censu
 El programa ajusta exclusivamente las familias Exponencial, Weibull y Gamma utilizando la verosimilitud censurada de @eq-9-6-loglik-censurada. Para el caso homogéneo de un proceso de Poisson con intensidad constante $\lambda$, los tiempos entre eventos presentan distribución Exponencial. Sin embargo, la sola comparación con una familia Exponencial no implica que el proceso de detecciones sea homogéneo [@abgk1993].
 :::
 
-| Familia | Milstein: logLik | Milstein: AIC | Parámetros |
-|------------------|------------------:|------------------:|------------------|
-| Exponencial | -4,832.743080 | 9,667.486161 | rate $=0.002068509$ |
-| Weibull | -4,832.116455 | 9,668.232911 | shape $=1.036538$, scale $=476.216322$ |
-| Gamma | -4,832.237563 | 9,668.475126 | shape $=1.043957$, scale $=454.015731$ |
+| Familia     |      logLik |        AIC |                             Parametros |
+|:--------------|--------------:|--------------:|--------------------------:|
+| Gamma       | -224.617521 | 453.235041 | shape = 0.730669, scale = 7,780.116645 |
+| Weibull     | -224.624933 | 453.249865 | shape = 0.747435, scale = 6,080.480524 |
+| Exponencial | -226.052375 | 454.104750 |                     rate = 0.000321634 |
 
-: Ajustes temporales censurados: Milstein compensado.
+: Ajustes temporales censurados: Milstein compensado. {#tbl-9_7}
 
-| Familia | Semi-Implícito: logLik | Semi-Implícito: AIC | Parámetros |
-|------------------|------------------:|------------------:|------------------|
-| Exponencial | -4,832.743080 | 9,667.486161 | rate $=0.002068509$ |
-| Weibull | -4,832.116455 | 9,668.232911 | shape $=1.036538$, scale $=476.216322$ |
-| Gamma | -4,832.237563 | 9,668.475126 | shape $=1.043957$, scale $=454.015731$ |
+| Familia     |      logLik |        AIC |                             Parametros |
+|:--------------|--------------:|--------------:|--------------------------:|
+| Gamma       | -224.788400 | 453.576800 | shape = 0.729682, scale = 7,885.735482 |
+| Weibull     | -224.795437 | 453.590874 | shape = 0.746374, scale = 6,159.833690 |
+| Exponencial | -226.235996 | 454.471991 |                     rate = 0.000319281 |
 
-: Ajustes temporales censurados: Semi-Implícito compensado.
+: Ajustes temporales censurados: Semi-Implícito compensado. {#tbl-9_8}
 
 ::: {style="text-align:justify"}
 La Exponencial presenta el menor AIC en ambos esquemas. La diferencia respecto de Weibull es aproximadamente $0.747$ y respecto de Gamma aproximadamente $0.989$. Las diferencias son pequeñas en escala absoluta de AIC; por ello, el resultado debe interpretarse como una comparación dentro del conjunto de familias implementadas y no como una identificación concluyente de la ley generadora de los tiempos.
@@ -2531,12 +2538,12 @@ La incertidumbre de las estadísticas temporales se obtiene mediante bootstrap p
 :::
 
 | Estadístico             |  Milstein compensado | Semi-Implícito compensado |
-|-------------------------|---------------------:|--------------------------:|
-| Media, IC 95 % (días)   | \[185.419; 209.735\] |      \[185.419; 209.735\] |
-| Mediana, IC 95 % (días) | \[132.000; 166.512\] |      \[132.000; 166.512\] |
-| $CV^2$, IC 95 %         |   \[0.6108; 0.7445\] |        \[0.6108; 0.7445\] |
+|:------------------------|---------------------:|--------------------------:|
+| Media, IC 95 % (días)   | \[133.172; 268.274\] |      \[133.172; 268.274\] |
+| Mediana, IC 95 % (días) |  \[97.500; 260.000\] |       \[97.500; 260.000\] |
+| $CV^2$, IC 95 %            |   \[0.3914; 1.1464\] |        \[0.3914; 1.1464\] |
 
-: Intervalos bootstrap de los estadísticos de los tiempos entre detecciones.
+: Intervalos bootstrap de los estadísticos de los tiempos entre detecciones. {#tbl-9_9}
 
 ### Estimación de la intensidad estacional de las detecciones
 
@@ -2548,14 +2555,14 @@ $$b\in\{30,60,91,182\}\text{días}.$$
 La estimación mediante funciones núcleo pertenece al marco no paramétrico de estimación de intensidades de procesos de puntos [@ramlauhansen1983]. El programa conserva las cuatro curvas y utiliza $b=30$ días como referencia gráfica.
 :::
 
-| Ancho de banda $b$ (días) |   Mínimo |   Máximo |    Media |
-|--------------------------:|---------:|---------:|---------:|
-|                        30 | 0.002372 | 0.005481 | 0.003896 |
-|                        60 | 0.002897 | 0.004835 | 0.003887 |
-|                        91 | 0.003188 | 0.004258 | 0.003721 |
-|                       182 | 0.002555 | 0.002777 | 0.002665 |
+| b (días) | Mil: mín | Mil: máx | Mil: media |  SI: mín |  SI: máx | SI: media |
+|:---------|---------:|---------:|-----------:|---------:|---------:|----------:|
+| 30       | 0.000430 | 0.000802 |   0.000592 | 0.000430 | 0.000815 |  0.000595 |
+| 60       | 0.000500 | 0.000692 |   0.000590 | 0.000501 | 0.000699 |  0.000593 |
+| 91       | 0.000513 | 0.000616 |   0.000565 | 0.000513 | 0.000621 |  0.000568 |
+| 182      | 0.000393 | 0.000415 |   0.000405 | 0.000394 | 0.000418 |  0.000407 |
 
-: Sensibilidad de la intensidad estimada al ancho de banda para las detecciones.
+: Sensibilidad de la intensidad estimada al ancho de banda para las detecciones. {#tbl-9_1_0}
 
 ![Intensidad circular anual estimada para Milstein compensado.](18_intensidad_kernel_milstein.png){#fig-9-6-mil-intensidad fig-pos="H" fig-align="center" width="600" height="400"}
 
@@ -2597,33 +2604,33 @@ se utiliza únicamente como diagnóstico de cambio de tiempo.
 :::
 
 | Diagnóstico        | Milstein compensado | Semi-Implícito compensado |
-|--------------------|--------------------:|--------------------------:|
-| Número de residuos |                 673 |                       673 |
-| Media de $V_k$     |            0.464129 |                  0.464129 |
-| Mediana de $V_k$   |            0.459566 |                  0.459566 |
-| $D_{\mathrm{TR}}$  |            0.076027 |                  0.076027 |
+|:-------------------|--------------------:|--------------------------:|
+| Número de residuos |                  25 |                        25 |
+| Media de V_k       |            0.110500 |                  0.111003 |
+| Mediana de V_k     |            0.099974 |                  0.100394 |
+| D_TR               |            0.719367 |                  0.717934 |
 
-: Diagnóstico basado en residuos de cambio de tiempo.
+: Diagnóstico basado en residuos de cambio de tiempo. {#tbl-9_1_1}
 
 La igualdad observada en esta ejecución deriva de la coincidencia de las detecciones temporales entre ambos esquemas.
 
 ### Comparación integrada de los resultados
 
 | Resultado | Milstein compensado | Semi-Implícito compensado |
-|--------------------|-------------------------:|-------------------------:|
-| Detecciones válidas | 1,422 | 1,422 |
-| Media de severidad (USD) | 1,792,982.74 | 1,793,024.23 |
-| Mediana de severidad (USD) | 1,513,050.23 | 1,513,140.12 |
+|:-----------------------|-----------------------:|-----------------------:|
+| Detecciones válidas | 216 | 217 |
+| Media de severidad (USD) | 4,005,019.04 | 4,001,696.85 |
+| Mediana de severidad (USD) | 3,602,854.23 | 3,605,456.96 |
 | Familia paramétrica auxiliar de severidad con menor AIC | Lognormal | Lognormal |
-| *Gaps* completos | 673 | 673 |
-| Censuras terminales | 749 | 749 |
-| Media del *gap* (días) | 196.5973 | 196.5973 |
-| Mediana del *gap* (días) | 147 | 147 |
-| $CV^2$ | 0.677208 | 0.677208 |
-| Familia temporal con menor AIC | Exponencial | Exponencial |
-| $D_{\mathrm{TR}}$ | 0.076027 | 0.076027 |
+| Gaps completos | 25 | 25 |
+| Censuras terminales | 191 | 192 |
+| Media del gap (días) | 202.5600 | 202.5600 |
+| Mediana del gap (días) | 175.0 | 175.0 |
+| CV² | 0.712337 | 0.712337 |
+| Familia temporal con menor AIC | Gamma | Gamma |
+| D_TR | 0.719367 | 0.717934 |
 
-: Comparación integrada de las distribuciones de severidad y tiempos entre detecciones.
+: Comparación integrada de las distribuciones de severidad y tiempos entre detecciones. {#tbl-9_1_2}
 
 ::: {style="text-align:justify"}
 Los resultados muestran que, para esta realización, ambos esquemas producen exactamente el mismo número de detecciones y la misma estructura temporal de detecciones, mientras que las severidades agregadas presentan diferencias numéricas muy pequeñas. La diferencia relativa de las medias de severidad es aproximadamente $0.00231 \%$, y la diferencia relativa de las medianas es aproximadamente $0.00594 \%$. Asimismo, los ajustes paramétricos auxiliares presentan valores de AIC prácticamente coincidentes entre ambos métodos.

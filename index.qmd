@@ -22,7 +22,6 @@ affiliations:
 
 # Introducción
 
-
 ::: {style="text-align:justify"}
 La modelación matemática de fenómenos dinámicos sometidos a incertidumbre ha experimentado un desarrollo extraordinario en las últimas décadas, particularmente en el ámbito de las ecuaciones diferenciales estocásticas (EDEs). Cuando estos fenómenos presentan, además de evolución continua gobernada por procesos de difusión, discontinuidades abruptas inducidas por eventos extremos o choques externos, el marco teórico natural lo constituyen las ecuaciones diferenciales estocásticas con saltos (EDEs con saltos, o SDEJs por sus siglas en inglés: Jump-Diffusion Stochastic Differential Equations).
 
