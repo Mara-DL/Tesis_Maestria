@@ -662,7 +662,7 @@ U_t^2=U_0^2+2\!\int_0^t\!U_{s-}(c+rU_{s-})\,ds+2\!\int_0^t\!\sigma U_{s-}^2\,dW_
 <div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>Los incrementos futuros de <span class="math inline">\(N^h\)</span> son independientes de <span class="math inline">\(\mathcal F_{t_n}\)</span>, por lo que la esperanza condicional es la esperanza, que es <span class="math inline">\(\int_{t_n}^t\Lambda^h\,ds=\Lambda_n(t-t_n)\)</span> (la intensidad es constante en <span class="math inline">\([t_n,t_{n+1})\)</span>). Escribimos <span class="math inline">\(J^h_t-J^h_{t_n}=\int_{t_n}^t\!\!\int y\,\widetilde N^h+\int_{t_n}^t\Lambda^h\,ds\)</span>: el primer sumando tiene media cero y, por la isometría respecto de <span class="math inline">\(\widetilde N^h\)</span>, segundo momento <span class="math inline">\(\int_{t_n}^t\Gamma^h\,ds\)</span>; el segundo es determinista. Los términos cruzados se anulan, lo que da la identidad. Finalmente <span class="math inline">\(\int_{t_n}^t\Gamma^h\,ds\le\bar\Gamma(t-t_n)\)</span> y <span class="math inline">\((\int_{t_n}^t\Lambda^h\,ds)^2\le\bar\Lambda^2(t-t_n)^2\le\bar\Lambda^2T(t-t_n)\)</span>. Es el análogo de para severidades aleatorias. <span class="math inline">\(\quad \square\)</span></p>
 </div>
-<div id="lem-incr" class="theorem lemma">
+<div id="lem-inc" class="theorem lemma">
 <p><span class="theorem-title"><strong>Lema 5.4</strong></span> [Incrementos de la solución] Para todo <span class="math inline">\(n\)</span> y <span class="math inline">\(t\in[t_n,t_{n+1}]\)</span>, <span id="eq-incr"><span class="math display">\[
 \mathbb E|U_t-U_{t_n}|^2\le C\,(t-t_n)\le C\,h_n .
 \tag{5.13}\]</span></span></p>
@@ -687,7 +687,7 @@ U_t^2=U_0^2+2\!\int_0^t\!U_{s-}(c+rU_{s-})\,ds+2\!\int_0^t\!\sigma U_{s-}^2\,dW_
 <p><span class="theorem-title"><strong>Lema 5.6</strong></span> Para todo <span class="math inline">\(n\)</span>, <span class="math inline">\(\widehat U_n\)</span> es <span class="math inline">\(\mathcal F_{t_n}\)</span>-medible y está en <span class="math inline">\(L^2(\Omega)\)</span>. En consecuencia, <span class="math inline">\(e_n:=U_{t_n}-\widehat U_n\)</span> es <span class="math inline">\(\mathcal F_{t_n}\)</span>-medible y está en <span class="math inline">\(L^2(\Omega)\)</span>.</p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>Inducción: <span class="math inline">\(\widehat U_{n+1}=A_n\widehat U_n+q_n(c_nh_n-\Delta J_n)\)</span>, con <span class="math inline">\(A_n\in L^2\)</span> independiente de <span class="math inline">\(\widehat U_n\in L^2\)</span> y <span class="math inline">\(\Delta J_n\in L^2\)</span> (<a href="#lem-incr" class="quarto-xref">Lema&nbsp;<span>5.4</span></a>). Para <span class="math inline">\(e_n\)</span> se usa además <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.12</span></a>. <span class="math inline">\(\quad \square\)</span></p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Inducción: <span class="math inline">\(\widehat U_{n+1}=A_n\widehat U_n+q_n(c_nh_n-\Delta J_n)\)</span>, con <span class="math inline">\(A_n\in L^2\)</span> independiente de <span class="math inline">\(\widehat U_n\in L^2\)</span> y <span class="math inline">\(\Delta J_n\in L^2\)</span> (<a href="#lem-inc" class="quarto-xref">Lema&nbsp;<span>5.4</span></a>). Para <span class="math inline">\(e_n\)</span> se usa además <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.12</span></a>. <span class="math inline">\(\quad \square\)</span></p>
 </div>
 <p>Definimos aplicando un paso del esquema a la solución exacta en <span class="math inline">\(t_n\)</span>, con los mismos incrementos: <span id="eq-defecto"><span class="math display">\[
 \rho_n:=U_{t_{n+1}}-q_n\Bigl[U_{t_n}(1+\sigma_n\Delta W_n)+c_nh_n-\Delta J_n\Bigr].
@@ -741,7 +741,7 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 <ul>
 <li>Por definición, <span class="math inline">\(R_{r,2} = r_n \int_{t_n}^{t_{n+1}} [U_{s-} - U_n] \, ds\)</span>. Tomando norma <span class="math inline">\(L^2\)</span> y aplicando Minkowski: <span class="math display">\[
 \|R_{r,2}\|_{L^2} \le |r_n| \int_{t_n}^{t_{n+1}} \|U_{s-} - U_n\|_{L^2} \, ds \le \bar{r} \int_{t_n}^{t_{n+1}} \|U_{s-} - U_n\|_{L^2} \, ds.
-\]</span> Usando el <a href="#lem-incr" class="quarto-xref">Lema&nbsp;<span>5.4</span></a> (<a href="#eq-incr" class="quarto-xref">Ecuación&nbsp;<span>5.13</span></a>), <span class="math inline">\(\mathbb{E}|U_t - U_{t_n}|^2 \leq C(t - t_n)\)</span>. Tomando raíz cuadrada: <span class="math display">\[
+\]</span> Usando el <a href="#lem-inc" class="quarto-xref">Lema&nbsp;<span>5.4</span></a> (<a href="#eq-incr" class="quarto-xref">Ecuación&nbsp;<span>5.13</span></a>), <span class="math inline">\(\mathbb{E}|U_t - U_{t_n}|^2 \leq C(t - t_n)\)</span>. Tomando raíz cuadrada: <span class="math display">\[
 \|U_{s-} - U_n\|_{L^2} = \left( \mathbb{E}|U_{s-} - U_n|^2 \right)^{1/2} \le C(s - t_n)^{1/2}.
 \]</span> Integrando:</li>
 </ul>
@@ -753,7 +753,7 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 \|R_\sigma\|_{L^2}^2 = \mathbb{E}\left| \int_{t_n}^{t_{n+1}} [\sigma(s) U_{s-} - \sigma_n U_n] \, dW_s \right|^2 = \int_{t_n}^{t_{n+1}} \mathbb{E}|\sigma(s) U_{s-} - \sigma_n U_n|^2 \, ds.
 \]</span> Descomponemos la diferencia como <span class="math inline">\(\sigma(s) U_{s-} - \sigma_n U_n = [\sigma(s) - \sigma_n] U_{s-} + \sigma_n [U_{s-} - U_n]\)</span>. Aplicando la desigualdad <span class="math inline">\((a+b)^2 \le 2a^2 + 2b^2\)</span>: <span class="math display">\[
 |\sigma(s) U_{s-} - \sigma_n U_n|^2 \le 2|\sigma(s) - \sigma_n|^2 |U_{s-}|^2 + 2\sigma_n^2 |U_{s-} - U_n|^2.
-\]</span> Acotamos cada término usando (H1), el <a href="#lem-mom" class="quarto-xref">Lema&nbsp;<span>5.2</span></a> y el <a href="#lem-incr" class="quarto-xref">Lema&nbsp;<span>5.4</span></a>: <span class="math display">\[
+\]</span> Acotamos cada término usando (H1), el <a href="#lem-mom" class="quarto-xref">Lema&nbsp;<span>5.2</span></a> y el <a href="#lem-inc" class="quarto-xref">Lema&nbsp;<span>5.4</span></a>: <span class="math display">\[
 \mathbb{E}|\sigma(s) U_{s-} - \sigma_n U_n|^2 \leq 2L_\sigma^2 (s - t_n) \cdot C + 2\bar{\sigma}^2 \cdot C(s - t_n) = C(s - t_n).
 \]</span> Integrando: <span class="math display">\[
 \|R_\sigma\|_{L^2}^2 \leq C \int_{t_n}^{t_{n+1}} (s - t_n) \, ds = C \left[ \frac{(s - t_n)^2}{2} \right]_{t_n}^{t_{n+1}} = C \frac{h_n^2}{2}.
