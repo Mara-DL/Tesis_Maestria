@@ -168,6 +168,7 @@ Por tanto, el esquema de @eq-4 converge fuertemente con orden al menos $1/2$ en 
 
 
 :::: {.content-visible when-format="pdf"}
+
 ::: {.proof style="text-align:justify"}
 Denotamos el paso de la malla uniforme como $h = \Delta t = T/N$, con nodos $t_n = nh$ para $n=0,1,\dots,N$. Bajo las hipótesis de regularidad y crecimiento lineal (H1) sobre los coeficientes de deriva $a(t,x)=c(t)+r(t)x$ y difusión $b(t,x)=\sigma(t)x$, junto con la condición de momentos finitos de los saltos (H2) y la regularidad de la intensidad compensada (H3), se satisfacen las condiciones estándar de Lipschitz global para ecuaciones diferenciales estocásticas de It\^o con saltos de actividad finita. En virtud de los resultados clásicos de existencia, unicidad y estimaciones de momentos (obtenidos mediante la desigualdad de Burkholder--Davis--Gundy y el lema de Gr\"onwall, como se estableció en el Teorema 6.1), la solución exacta $X_t$ posee momentos de segundo orden uniformemente acotados en el horizonte finito $[0,T]$. En particular, se tiene que
 $$
@@ -336,7 +337,7 @@ $$
 \leq Ch^2.
 $$
 
-Para controlar la contribución de los saltos, observemos que la integral estocástica respecto a la medida compensada $\tilde{N}$ es una martingala de cuadrado integrable (Teorema 5.17). Usando la isometría de It\^o para la medida de Poisson compensada y la acotación de la intensidad $\lambda(s)$ (hipótesis (H2)) y del segundo momento de las marcas $\int_E z^2\,\nu(dz) \le C$, obtenemos directamente el segundo momento incondicional:
+Para controlar la contribución de los saltos, observemos que la integral estocástica respecto a la medida compensada $\tilde{N}$ es una martingala de cuadrado integrable (Teorema 5.17). Usando la isometría de Itô para la medida de Poisson compensada y la acotación de la intensidad $\lambda(s)$ (hipótesis (H2)) y del segundo momento de las marcas $\int_E z^2\,\nu(dz) \le C$, obtenemos directamente el segundo momento incondicional:
 $$
 \begin{aligned}
 \mathbb{E}\bigl|R_n^{\mathrm{salto}}\bigr|^2
@@ -489,10 +490,12 @@ $$
 $$
 Esto demuestra rigurosamente la convergencia fuerte de orden al menos $1/2$ bajo las hipótesis (H1)--(H4) y las estimaciones locales establecidas.
 :::
+
 ::::
 
 
 ## Esquema Semi-Implícito compensado
+
 
 El método semi-implícito compensado aplica una regla de Euler implícita al término de inversión $r(t)X$ y explícita a la difusión y al salto compensado:
 
@@ -507,25 +510,659 @@ $$
 =\frac{\hat U_n\big[1+\sigma_n\Delta W_n\big]+c_n\Delta t-\Delta J_n}{1-r_n\Delta t},
 $$
 
-::: {#thm-convergencia_fuerte_semi_impl_comp}
-(Convergencia fuerte, esquema semi-implícito compensado). Con los coeficientes de @eq-coeficientes, supóngase:
+Sea $(\Omega,\mathcal F,(\mathcal F_t)_{t\in[0,T]},\mathbb P)$ un espacio filtrado que satisface las condiciones usuales. Sea $\pi_h=\{0=t_0<\dots<t_N=T\}$ una partición, $h_n=t_{n+1}-t_n$ y $h=\max_n h_n$.
 
-(H1) Lipschitz global: $a(t,u)=c(t)+r(t)u-\Lambda(t)$ y $b(t,u)=\sigma(t)u$ son globalmente Lipschitz en $u$, y $R(t,u,v)=-y$ no depende de $u$ ($L_R=0$).
+Sea $E=(0,\infty)\times\{m,s\}$ (monto y tipo de siniestro: meteorológico o sísmico). Para cada tipo $k\in\{m,s\}$, $F_k$ es la ley de la severidad $\zeta_k$ y $\lambda_k(\cdot)$ la intensidad. Las intensidades se \emph{congelan} en el extremo izquierdo de cada paso:
+$$
+\lambda_k^h(s):=\lambda_k(t_n),\qquad s\in[t_n,t_{n+1}),
+$$ {#eq-lamcong}
 
-(H2) Crecimiento lineal: igual que (H2) del Teorema 7.1 (Platen y Bruti-Liberati [28], Ec. (1.9.3)).
+Sea $N^h(ds,dv)$ una medida aleatoria de Poisson sobre $[0,T]\times E$ con intensidad $\nu^h(s,dy\times\{k\})\,ds=\lambda_k^h(s)F_k(dy) \ ds$, y
+$$
+J^h_t=\int_0^t\!\!\int_E y\,N^h(ds,dv),\qquad
+\Lambda^h(s)=\sum_{k}\lambda_k^h(s) \ \mathbb E[\zeta_k],\qquad
+\Gamma^h(s)=\sum_{k}\lambda_k^h(s)\,\mathbb E[\zeta_k^2].
+$$ {#eq-Jh}
+$\Lambda^h$ es el costo esperado de siniestros por unidad de tiempo y $\Gamma^h$ el segundo momento instantáneo del salto. Escribimos $\widetilde N^h=N^h-\nu^h \ ds$ y $\widetilde J^h_t=J^h_t-\int_0^t\Lambda^h(s) \ ds$.
 
-(H3) Momentos finitos de saltos: $\int_E|R|^4\nu(t,dv)<\infty$ (Wang, Mei y Xue [35], Hipótesis 3.1).
+ El proceso de reservas $U$ (que depende de $h$ a través de $J^h$) satisface
+$$
+dU_t=\bigl(c(t)+r(t)U_{t-}\bigr)dt+\sigma(t)U_{t-}\,dW_t-dJ^h_t,\qquad U_0 \text{ dado}.
+$$ {#eq-ecU}
+Como $dJ^h_t=d\widetilde J^h_t+\Lambda^h(t)\,dt$, la ecuación @eq-ecU es equivalente a la forma compensada
+$$
+dU_t=(c+rU_{t-}-\Lambda^h)\,dt+\sigma U_{t-}\,dW_t-d\widetilde J^h_t
+$$
+los términos $\pm\Lambda^h\,dt$ se cancelan, de modo que la compensación es una reescritura algebraica y no cambia la dinámica.
 
-(H4) Condición numérica: $\bar r\,\Delta t\le\tfrac12$, con $\bar r=\sup_t r(t)$, de modo que $1-r_n\Delta t\ge\tfrac12$ (Higham y Kloeden [16], Lema 2.1). En la implementación esta condición se verifica antes de simular y el programa se detiene si no se cumple (con los datos del estudio, $\bar r\Delta t\approx2\times10^{-4}$).
+Con $c_n=c(t_n)$, $r_n=r(t_n)$, $\sigma_n=\sigma(t_n)$, $\Lambda_n=\Lambda^h(t_n)$, $\Delta W_n=W_{t_{n+1}}-W_{t_n}$, $\Delta J_n=J^h_{t_{n+1}}-J^h_{t_n}$ y $\Delta\widetilde J_n=\Delta J_n-\Lambda_nh_n$, el esquema semi-implícito compensado trata de forma implícita el término de inversión $r(t)U$ y de forma explícita la difusión y los saltos:
+$$
+\widehat U_{n+1}=\widehat U_n+\bigl[c_n-\Lambda_n+r_n\widehat U_{n+1}\bigr]h_n+\sigma_n\widehat U_n\Delta W_n-\Delta\widetilde J_n,\qquad \widehat U_0=U_0 .
+$$
+Con $q_n:=(1-r_nh_n)^{-1}$ y despejando,
 
-(H5) Regularidad temporal: como (H4) del Teorema 7.1.
+$$
+\boxed{\;\widehat U_{n+1}=q_n\Bigl[\widehat U_n(1+\sigma_n\Delta W_n)+(c_n-\Lambda_n)h_n-\Delta\widetilde J_n\Bigr]
+=q_n\Bigl[\widehat U_n(1+\sigma_n\Delta W_n)+c_nh_n-\Delta J_n\Bigr]\;}
+$$ {#eq-esquema}
 
-(H6) Condición inicial: $\hat U_0=X_0$ con $\mathbb E[X_0^2]<\infty$.
+donde la segunda igualdad es la cancelación de $\pm\Lambda_nh_n$.
 
-Entonces existe $C>0$, independiente de $\Delta t$, tal que $\max_{n}\big(\mathbb E|U_{t_n}-\hat U_n|^2\big)^{1/2}\le C\sqrt{\Delta t}$. Demostración: véase el Bloque A.7.
+
+:::: {.content-visible when-format="pdf"}
+::: {#lem-equiv_comp}
+Para todo $x\in\mathbb R$ y todo $n$: $(c_n-\Lambda_n)h_n-\Delta\widetilde J_n=c_nh_n-\Delta J_n$. En consecuencia, el esquema compensado coincide con el no compensado.
 :::
 
-### Estimador de Monte Carlo
+::: {.proof style="text-align:justify"}
+Se sustituye $\Delta\widetilde J_n=\Delta J_n-\Lambda_nh_n$.
+:::
+ 
+
+El teorema se demuestra para $U$ dirigido por $J^h$, el proceso cuyos incrementos genera el programa. Si las $\lambda_k$ son constantes por tramos y la malla se alinea con las discontinuidades, $J^h$ y $J$ tienen la misma ley. En general, para aproximar el modelo con $\lambda_k(t)$ se simula $\Delta N\sim\mathrm{Poisson}\bigl(\int_{t_n}^{t_{n+1}}\lambda_k\bigr)$ y se usa esa integral en $\Lambda_n$; entonces $\Delta J_n$ tiene la ley exacta de los inc
+7os de $J$, $\mathbb E[\Delta J_n\mid\mathcal F_{t_n}]=\int_{t_n}^{t_{n+1}}\Lambda$, y toda la demostración se repite con $U$ del modelo original.
+
+### Hipótesis:
+**(H1).** $c,r,\sigma:[0,T]\to\mathbb R$ son medibles, acotados ($|c|\le\bar c$, $|r|\le\bar r$, $|\sigma|\le\bar\sigma$) y Hölder de exponente $1/2$: existen constantes $L_f$ tales que $|f(t)-f(s)|\le L_f|t-s|^{1/2}$ para $f\in\{c,r,\sigma\}$. En particular, toda función Lipschitz cumple (HS1), como las interpolaciones lineales de los valores mensuales.
+**(H2).** $N^h$ es una medida de Poisson como en @eq-lamcong -- @eq-Jh; $0\le\lambda_k(t)\le\bar\lambda$; las severidades son positivas, independientes entre sí, de los conteos y de $W$, y $\mathbb E[\zeta_m^2]+\mathbb E[\zeta_s^2]<\infty$. Se denotan $\bar\Lambda=\sup\Lambda^h$ y $\bar\Gamma=\sup\Gamma^h$ (cotas uniformes en $h$).
+**(H3).** $U_0$ es $\mathcal F_0$-medible, independiente de $(W,N^h)$, y $\mathbb E[U_0^2]<\infty$. (Puede ser determinista.)
+**(H4).** Sea $\bar r^+=\sup_t\max\{r(t),0\}$. El paso cumple $h\le h_0:=1/(2\bar r^+)$ (sin restricción si $\bar r^+=0$).
+**(H5).** $W$ y $N^h$ son $(\mathcal F_t)$-adaptados con incrementos futuros independientes de $\mathcal F_t$; la solución y el esquema usan los mismos $\Delta W_n,\Delta J_n$.
+
+::: {#lem-mom} 
+[Existencia, unicidad y segundos momentos]
+Bajo **(HS1)--(HS3) y (HS5)**, la ecuación @eq-ecU tiene una única solución fuerte càdlàg y
+$$
+\sup_{0\le t\le T}\mathbb E|U_t|^2\le C\,(1+\mathbb E|U_0|^2).
+$$ {#eq-mom2}
+:::
+
+::: {.proof style="text-align:justify"}
+Sea $\Phi_t=\exp\bigl(\int_0^t(r-\tfrac12\sigma^2)\,ds+\int_0^t\sigma\,dW\bigr)$, que es continuo, adaptado, positivo y satisface $d\Phi=\Phi(r\,dt+\sigma\,dW)$. Sea $Y_t=U_0+\int_0^t\Phi_s^{-1}\bigl(c(s)\,ds-dJ^h_s\bigr)$, que es de variación finita (las integrales respecto de $J^h$ son sumas finitas sobre los saltos). Como $\Phi$ es continuo e $Y$ es de variación finita, $[\Phi,Y]=0$, y por la regla del producto $d(\Phi Y)=\Phi\,dY+Y_{-}\,d\Phi=(c\,dt-dJ^h)+(\Phi Y)_{-}(r\,dt+\sigma\,dW)$, de modo que $U:=\Phi Y$ resuelve @eq-ecU.
+
+Luego si $U,U'$ son dos soluciones, $D=U-U'$ es continuo (los saltos coinciden) y satisface $dD=rD\,dt+\sigma D\,dW$, $D_0=0$. Por Itô, $d\Phi^{-1}=\Phi^{-1}\bigl((-r+\sigma^2)\,dt-\sigma\,dW\bigr)$ y $d[\Phi^{-1},D]=-\sigma^2\Phi^{-1}D\,dt$, de donde $d(\Phi^{-1}D)=0$; por tanto $\Phi^{-1}D\equiv0$ y $D\equiv0$. (Aplicando el teorema de existencia y unicidad de la tesis a la representación de $J^h$ como integral respecto de una medida de Poisson marcada; ver también Applebaum \cite{applebaum}, cap.~6.)
+
+Sea $\tau_k=\inf\{t:|U_t|>k\}$; como las trayectorias càdlàg son acotadas en $[0,T]$, $\tau_k\uparrow\infty$ c.s. Por integración por partes, con $[U]_t=\int_0^t\sigma^2U_{s-}^2\,ds+\sum_{s\le t}(\Delta J^h_s)^2$,
+$$
+U_t^2=U_0^2+2\!\int_0^t\!U_{s-}(c+rU_{s-})\,ds+2\!\int_0^t\!\sigma U_{s-}^2\,dW_s-2\!\int_0^t\!\!\int_E\!U_{s-}\,y\,N^h(ds,dv)+[U]_t .
+$$
+Escribimos $N^h=\widetilde N^h+\nu^h\,ds$, de modo que el penúltimo término es $-2\int\!\!\int U_{s-}y\,\widetilde N^h-2\int U_{s-}\Lambda^h(s)\,ds$. 
+Detenidas en $\tau_k$ se tiene $|U_{s-}|\le k$ para $s\le\tau_k$. Por (HS1), con
+$\bar\sigma=\sup_t|\sigma(t)|$, el integrando browniano cumple
+$|\sigma(s)U_{s-}^2|\le\bar\sigma k^2$, de modo que
+$\mathbb E\int_0^{t\wedge\tau_k}\sigma^2U_{s-}^4\,ds\le\bar\sigma^2k^4T<\infty$ y
+$\int\sigma U_{s-}^2\,dW_s$ es una martingala de media cero. El integrando de
+saltos, $U_{s-}\,y$, es de cuadrado integrable:
+$\mathbb E\int\!\!\int k^2y^2\,\nu^h\,ds\le k^2\bar\Gamma T<\infty$, por lo que
+$\int\!\!\int U_{s-}\,y\,\widetilde N^h$ es también una martingala de media cero.
+
+Además $\mathbb E\sum_{s\le t\wedge\tau_k}(\Delta J^h_s)^2\le\bar\Gamma T$. Tomando valor esperado y usando $2|u|a\le u^2+a^2$ en los términos $2U_{s-}c$ y $-2U_{s-}\Lambda^h$ se tiene que
+$$
+\mathbb E|U_{t\wedge\tau_k}|^2\le\mathbb E U_0^2+(\bar c^2+\bar\Lambda^2+\bar\Gamma)T+(2\bar r+\bar\sigma^2+2)\int_0^t\mathbb E|U_{s\wedge\tau_k}|^2\,ds ,
+$$
+
+Por el lema de Grönwall, $\mathbb E|U_{t\wedge\tau_k}|^2\le C(1+\mathbb EU_0^2)$ uniformemente en $k$, y el lema de Fatou con $k\to\infty$ da @eq-mom2. Es la versión de segundo orden de \cite[Lemas~5 y~1]{hk05}, adaptada a una medida de Poisson con severidades aleatorias.
+:::
+ 
+::: {#lem-saltos}  
+Para todo $n$ y $t\in[t_n,t_{n+1}]$:
+$$
+\mathbb E\bigl[J^h_t-J^h_{t_n}\mid\mathcal F_{t_n}\bigr]=\Lambda_n(t-t_n),\qquad
+\mathbb E|J^h_t-J^h_{t_n}|^2=\int_{t_n}^t\Gamma^h\,ds+\Bigl(\int_{t_n}^t\Lambda^h\,ds\Bigr)^2\le C\,(t-t_n).
+$$
+En particular, $\|\Delta J_n\|\le C\,h_n^{1/2}$ y $\mathbb E[\Delta J_n\mid\mathcal F_{t_n}]=\Lambda_nh_n$.
+:::
+::: {.proof style="text-align:justify"}
+Los incrementos futuros de $N^h$ son independientes de $\mathcal F_{t_n}$, por lo que la esperanza condicional es la esperanza, que es $\int_{t_n}^t\Lambda^h\,ds=\Lambda_n(t-t_n)$ (la intensidad es constante en $[t_n,t_{n+1})$). Escribimos $J^h_t-J^h_{t_n}=\int_{t_n}^t\!\!\int y\,\widetilde N^h+\int_{t_n}^t\Lambda^h\,ds$: el primer sumando tiene media cero y, por la isometría respecto de $\widetilde N^h$, segundo momento $\int_{t_n}^t\Gamma^h\,ds$; el segundo es determinista. Los términos cruzados se anulan, lo que da la identidad. Finalmente $\int_{t_n}^t\Gamma^h\,ds\le\bar\Gamma(t-t_n)$ y $(\int_{t_n}^t\Lambda^h\,ds)^2\le\bar\Lambda^2(t-t_n)^2\le\bar\Lambda^2T(t-t_n)$. Es el análogo de \cite[(20) y~(41)]{hk05} para severidades aleatorias.
+:::
+
+::: {#lem-inc} 
+[Incrementos de la solución]
+Para todo $n$ y $t\in[t_n,t_{n+1}]$,
+$$
+\mathbb E|U_t-U_{t_n}|^2\le C\,(t-t_n)\le C\,h_n .
+$$ {#eq-incr}
+:::
+
+
+::: {.proof style="text-align:justify"}
+De @eq-ecU se tiene $U_t-U_{t_n}=\int_{t_n}^t(c+rU_{s-})\,ds+\int_{t_n}^t\sigma U_{s-}\,dW_s-(J^h_t-J^h_{t_n})$. 
+
+Por Cauchy--Schwarz y @eq-mom2, el primer término tiene segundo momento $\leq(t-t_n)\int_{t_n}^t\mathbb E|c+rU_{s-}|^2\,ds\leq C(t-t_n)^2$. Por la isometría de Itô y @eq-mom2, el segundo termino es $\leq\bar\sigma^2\int_{t_n}^t\mathbb E|U_{s-}|^2\,ds\leq C(t-t_n)$. 
+Para el tercero termino, por la isometría respecto de $\widetilde N^h$ y la fórmula de varianza más cuadrado de la media,
+$\mathbb E|J^h_t-J^h_{t_n}|^2=\int_{t_n}^t\Gamma^h\,ds+\bigl(\int_{t_n}^t\Lambda^h\,ds\bigr)^2\leq\bar\Gamma(t-t_n)+\bar\Lambda^2(t-t_n)^2$ (cf.\ \cite[(20) y (41)]{hk05}).
+ Se combina con $|x+y+z|^2\le3(|x|^2+|y|^2+|z|^2)$ y $t-t_n\le T$.
+:::
+
+::: {#lem-factor_propa} 
+Sea $A_n:=q_n(1+\sigma_n\Delta W_n)$. Bajo (HS1) y (HS4), para $h\le h_0$:
+$$
+\begin{gathered}
+0<q_n\le2,\qquad\mathbb E[A_n\mid\mathcal F_{t_n}]=q_n,\qquad
+\mathbb E[A_n^2\mid\mathcal F_{t_n}]\le1+Ch_n,\\
+\mathbb E\bigl[(A_n-q_n)^2\mid\mathcal F_{t_n}\bigr]=q_n^2\sigma_n^2h_n\le4\bar\sigma^2h_n .
+\end{gathered}
+$$ {#eq-factor}  
+:::
+
+::: {.proof style="text-align:justify"}
+Si $r_n<0$, $1-r_nh_n>1$; si $r_n\geq0$, $1-r_nh_n\geq1-\bar r^+h\geq\tfrac12$, de donde $q_n\leq2$. Como $\Delta W_n$ es independiente de $\mathcal F_{t_n}$, con media $0$ y varianza $h_n$, valen las dos igualdades y $\mathbb E[A_n^2\mid\mathcal F_{t_n}]=q_n^2(1+\sigma_n^2h_n)$. Para $x=r_nh_n\in[0,\tfrac12]$, la función convexa $(1-x)^{-2}$ queda por debajo de su cuerda entre $0$ y $\tfrac12$, así que $(1-x)^{-2}\leq1+6x$; para $x<0$, $(1-x)^{-2}\leq1$. Luego $q_n^2(1+\sigma_n^2h_n)\leq e^{\bar\sigma^2h_n}(1+6\bar r^+h_n)\leq1+Ch_n$.
+:::
+ 
+::: {#lem-bienplanteado}
+Para todo $n$, $\widehat U_n$ es $\mathcal F_{t_n}$-medible y está en $L^2(\Omega)$.
+En consecuencia, $e_n:=U_{t_n}-\widehat U_n$ es $\mathcal F_{t_n}$-medible y está en $L^2(\Omega)$.
+:::
+
+::: {.proof style="text-align:justify"}
+Inducción: $\widehat U_{n+1}=A_n\widehat U_n+q_n(c_nh_n-\Delta J_n)$, con $A_n\in L^2$ independiente de $\widehat U_n\in L^2$ y $\Delta J_n\in L^2$ (@lem-inc). Para $e_n$ se usa además @eq-mom2.
+:::
+
+ Definimos aplicando un paso del esquema a la solución exacta en $t_n$, con los mismos incrementos:
+$$
+\rho_n:=U_{t_{n+1}}-q_n\Bigl[U_{t_n}(1+\sigma_n\Delta W_n)+c_nh_n-\Delta J_n\Bigr].
+$$ {#eq-defecto}
+
+Como el esquema es afín en el estado, restando @eq-esquema se obtiene exactamente:
+$$
+e_{n+1}=A_n\,e_n+\rho_n,\qquad e_0=0 .
+$$ {#eq-recur}
+ 
+::: {#lem-descomp}
+Sean $U_n:=U_{t_n}$ y
+$I_c=\int_{t_n}^{t_{n+1}}c\,ds$, $I_r=\int_{t_n}^{t_{n+1}}rU_{s-}\,ds$, $I_\sigma=\int_{t_n}^{t_{n+1}}\sigma U_{s-}\,dW_s$, de modo que $U_{t_{n+1}}-U_n=I_c+I_r+I_\sigma-\Delta J_n$. Entonces
+
+$$
+(1-r_nh_n)\rho_n=R_{c}+R_{r,1}+R_{r,2}+R_{\sigma}+R_{J}+R_{\mathrm{impl}},
+$$ {#eq-desc}
+donde
+$$
+\begin{align*}
+R_c&=\int_{t_n}^{t_{n+1}}(c(s)-c_n)\,ds, &
+R_{r,1}&=\int_{t_n}^{t_{n+1}}(r(s)-r_n)U_{s-}\,ds,\\
+R_{r,2}&=r_n\int_{t_n}^{t_{n+1}}(U_{s-}-U_n)\,ds, &
+R_\sigma&=\int_{t_n}^{t_{n+1}}\bigl(\sigma(s)U_{s-}-\sigma_nU_n\bigr)\,dW_s,\\
+R_J&=r_nh_n\,\Delta J_n, &
+R_{\mathrm{impl}}&=-\,r_nh_n\,(I_c+I_r+I_\sigma).
+\end{align*}
+$$
+
+:::
+
+::: {.proof style="text-align:justify"}
+Multiplicando @eq-defecto por $1-r_nh_n$:
+
+$$(1-r_nh_n)\rho_n=(U_{t_{n+1}}-U_n)-r_nh_nU_{t_{n+1}}-\sigma_nU_n\Delta W_n-c_nh_n+\Delta J_n.$$
+
+Como $-r_nh_nU_{t_{n+1}}=-r_nh_nU_n-r_nh_n(U_{t_{n+1}}-U_n)$, y $U_{t_{n+1}}-U_n+\Delta J_n=I_c+I_r+I_\sigma$, nos queda
+$$
+(1-r_nh_n)\rho_n=[I_c-c_nh_n]+[I_r-r_nh_nU_n]-r_nh_n(I_c+I_r+I_\sigma)+[I_\sigma-\sigma_nU_n\Delta W_n]+r_nh_n\Delta J_n .
+$$
+Finalmente $I_c-c_nh_n=R_c$, $I_r-r_nh_nU_n=R_{r,1}+R_{r,2}$, y $I_\sigma-\sigma_nU_n\Delta W_n=R_\sigma$.
+:::
+ 
+::: {#prp-defecto}
+
+Bajo (H1)--(H5) y $h\le h_0$ se tiene:
+$$
+\boxed{\;\|\rho_n\|\le C\,h_n,\qquad\bigl\|\mathbb E[\rho_n\mid\mathcal F_{t_n}]\bigr\|\le C\,h_n^{3/2}\;}
+$$ {#eq-cotasrho}
+(de hecho, si $c,r$ son Lipschitz, el segundo término es $\leq Ch_n^2$).
+:::
+
+::: {.proof style="text-align:justify"}
+Sea $M:=\sup_t\|U_t\|\le C$ por @eq-mom2}. Usamos $h_n\le T$, por lo que $h_n^{3/2}\le\sqrt T\,h_n$.
+
+Por @eq-desc, $(1-r_nh_n)\rho_n$ es la suma de seis términos, y para acotar $\|\rho_n\|$ basta acotar la norma $L^2(\Omega)$ de cada uno. Teniendo así las siguientes estimaciones de norma $L^2$ para cada uno de los términos:
+
+\begin{itemize}
+\item Por definición, $R_c = \int_{t_n}^{t_{n+1}} [c(s) - c_n] \, ds$. Aplicando la hipótesis (H1) (Hölder-$1/2$ en el tiempo), se tiene que $|c(s) - c(t_n)| \leq L_c |s - t_n|^{1/2}$. Tomando valor absoluto e integrando:
+$$
+|R_c| \leq \int_{t_n}^{t_{n+1}} |c(s) - c_n| \, ds \leq \int_{t_n}^{t_{n+1}} L_c (s - t_n)^{1/2} \, ds.
+$$
+Calculando la integral explícitamente mediante el cambio de variable $u = s - t_n$:
+$$
+\int_{t_n}^{t_{n+1}} (s - t_n)^{1/2} \, ds = \int_0^{h_n} u^{1/2} \, du = \left[ \frac{2}{3} u^{3/2} \right]_0^{h_n} = \frac{2}{3} h_n^{3/2}.
+$$
+Por tanto, $|R_c| \leq L_c \cdot \frac{2}{3} h_n^{3/2} = C h_n^{3/2}$. 
+Este término mide el error por evaluar $c(t)$ en $t_n$.
+
+\item $\|R_{r,1}\|_{L^2}:$ Por definición, $R_{r,1} = \int_{t_n}^{t_{n+1}} [r(s) - r_n] U_{s-} \, ds$. Aplicando Hölder en $r$ (hipótesis HS1), $|r(s) - r(t_n)| \leq L_r |s - t_n|^{1/2}$. 
+Tomando norma $L^2$ y aplicando la desigualdad de Minkowski integral:
+
+$$
+||R_{r,1}||_{L^2} = \left\| \int_{t_n}^{t_{n+1}} [r(s) - r_n] U_{s-} \, ds \right\|_{L^2} \leq \int_{t_n}^{t_{n+1}} ||[r(s) - r_n] U_{s-}||_{L^2} \, ds.
+$$
+Como $r(s) - r_n$ es determinista, $\|[r(s) - r_n] U_{s-}\|_{L^2} = |r(s) - r_n| \cdot \|U_{s-}\|_{L^2} \le L_r (s - t_n)^{1/2} \cdot M$, donde $M = \sup_t \|U_t\|_{L^2}$ está acotado por el @lem-mom. Integrando:
+$$
+\|R_{r,1}\|_{L^2} \le L_r M \int_{t_n}^{t_{n+1}} (s - t_n)^{1/2} \, ds = L_r M \cdot \frac{2}{3} h_n^{3/2} \le C h_n^{3/2}.
+$$
+
+\item Por definición, $R_{r,2} = r_n \int_{t_n}^{t_{n+1}} [U_{s-} - U_n] \, ds$. Tomando norma $L^2$ y aplicando Minkowski:
+$$
+\|R_{r,2}\|_{L^2} \le |r_n| \int_{t_n}^{t_{n+1}} \|U_{s-} - U_n\|_{L^2} \, ds \le \bar{r} \int_{t_n}^{t_{n+1}} \|U_{s-} - U_n\|_{L^2} \, ds.
+$$
+Usando el @lem-inc (@eq-incr), $\mathbb{E}|U_t - U_{t_n}|^2 \leq C(t - t_n)$. Tomando raíz cuadrada:
+$$
+\|U_{s-} - U_n\|_{L^2} = \left( \mathbb{E}|U_{s-} - U_n|^2 \right)^{1/2} \le C(s - t_n)^{1/2}.
+$$
+Integrando:
+
+$$
+\|R_{r,2}\|_{L^2} \le \bar{r} C \int_{t_n}^{t_{n+1}} (s - t_n)^{1/2} \, ds = C h_n^{3/2}.
+$$ 
+
+\item Por definición, $R_\sigma = \int_{t_n}^{t_{n+1}} [\sigma(s) U_{s-} - \sigma_n U_n] \, dW_s$. Aplicando la isometría de Itô (Teorema~5.16 de la tesis, o Karatzas--Shreve~\cite{karatzas}, Teorema~3.2.1):
+$$
+\|R_\sigma\|_{L^2}^2 = \mathbb{E}\left| \int_{t_n}^{t_{n+1}} [\sigma(s) U_{s-} - \sigma_n U_n] \, dW_s \right|^2 = \int_{t_n}^{t_{n+1}} \mathbb{E}|\sigma(s) U_{s-} - \sigma_n U_n|^2 \, ds.
+$$
+Descomponemos la diferencia como $\sigma(s) U_{s-} - \sigma_n U_n = [\sigma(s) - \sigma_n] U_{s-} + \sigma_n [U_{s-} - U_n]$. Aplicando la desigualdad $(a+b)^2 \le 2a^2 + 2b^2$:
+$$
+|\sigma(s) U_{s-} - \sigma_n U_n|^2 \le 2|\sigma(s) - \sigma_n|^2 |U_{s-}|^2 + 2\sigma_n^2 |U_{s-} - U_n|^2.
+$$
+Acotamos cada término usando (H1), el @lem-mom y el @lem-inc:
+$$
+\mathbb{E}|\sigma(s) U_{s-} - \sigma_n U_n|^2 \leq 2L_\sigma^2 (s - t_n) \cdot C + 2\bar{\sigma}^2 \cdot C(s - t_n) = C(s - t_n).
+$$
+Integrando:
+$$
+\|R_\sigma\|_{L^2}^2 \leq C \int_{t_n}^{t_{n+1}} (s - t_n) \, ds = C \left[ \frac{(s - t_n)^2}{2} \right]_{t_n}^{t_{n+1}} = C \frac{h_n^2}{2}.
+$$
+Por tanto, $\|R_\sigma\|_{L^2} \leq C h_n$.
+
+\item Por definición, $R_J = r_n h_n \Delta J_n$. Tomando norma $L^2$:
+$$
+\|R_J\|_{L^2} = |r_n| h_n \|\Delta J_n\|_{L^2} \le \bar{r} h_n \|\Delta J_n\|_{L^2}.
+$$
+Para calcular $\|\Delta J_n\|_{L^2}$, usamos las propiedades de los procesos de Poisson compuestos (@eq-Jh y Higham \& Kloeden~\cite{hk05}, ecuaciones (20) y (41)):
+$$
+\mathbb{E}|\Delta J_n|^2 = \int_{t_n}^{t_{n+1}} \Gamma^h(s) \, ds + \left( \int_{t_n}^{t_{n+1}} \Lambda^h(s) \, ds \right)^2 \le \bar{\Gamma} h_n + \bar{\Lambda}^2 h_n^2 \le C h_n,
+$$
+pues $h_n \le T$ implica $h_n^2 \le T h_n$. Tomando raíz cuadrada, $\|\Delta J_n\|_{L^2} \le C h_n^{1/2}$. Sustituyendo:
+$$
+\|R_J\|_{L^2} \le \bar{r} h_n \cdot C h_n^{1/2} = C h_n^{3/2}.
+$$
+
+
+\item Por definición, $R_{\mathrm{impl}} = -r_n h_n (I_c + I_r + I_\sigma)$, donde $I_c = \int_{t_n}^{t_{n+1}} c(s) \, ds$, $I_r = \int_{t_n}^{t_{n+1}} r(s) U_{s-} \, ds$, e $I_\sigma = \int_{t_n}^{t_{n+1}} \sigma(s) U_{s-} \, dW_s$. Acotamos cada integral por separado:
+\begin{itemize}
+    \item $|I_c| \le \int_{t_n}^{t_{n+1}} |c(s)| \, ds \le \bar{c} h_n$.
+    \item $\|I_r\|_{L^2} \le \int_{t_n}^{t_{n+1}} \|r(s) U_{s-}\|_{L^2} \, ds \le \bar{r} M h_n \le C h_n$.
+    \item Para $I_\sigma$, aplicamos la isometría de Itô: $\|I_\sigma\|_{L^2}^2 = \int_{t_n}^{t_{n+1}} \mathbb{E}|\sigma(s) U_{s-}|^2 \, ds \le \bar{\sigma}^2 M^2 h_n$, de donde $\|I_\sigma\|_{L^2} \le C h_n^{1/2}$.
+
+\end{itemize}
+\end{itemize}
+
+Combinando mediante la desigualdad triangular:
+$$
+\|I_c + I_r + I_\sigma\|_{L^2} \le C h_n + C h_n + C h_n^{1/2} \le C h_n^{1/2},
+$$
+pues $h_n \le h_n^{1/2}$ para $h_n \le 1$. Multiplicando por $r_n h_n$:
+$$
+\|R_{\mathrm{impl}}\|_{L^2} \le \bar{r} h_n \cdot C h_n^{1/2} = C h_n^{3/2}.
+$$
+
+Sumando todas las cotas y usando que $q_n \le 2$ (@lem-factor_prop), de la @eq-desc se concluye que $\|\rho_n\|_{L^2} \le C h_n$, demostrando la primera cota de la @prp-defecto (@eq-cotasrho).
+
+Se toma $\mathbb E[\,\cdot\mid\mathcal F_{t_n}]$ en @eq-desc (el factor $1-r_nh_n$ es determinista); se usa la desigualdad de Jensen condicional, $\|\mathbb E[g\mid\mathcal F]\|\le\|g\|$, y el teorema de Fubini condicional.
+\begin{itemize}
+\item $R_c$ es determinista: $\le Ch_n^{3/2}$.
+\item $\mathbb E[R_{r,1}\mid\mathcal F_{t_n}]=\int(r(s)-r_n)\,\mathbb E[U_{s-}\mid\mathcal F_{t_n}]\,ds$, de norma $\le L_rM\int(s-t_n)^{1/2}\,ds\le Ch_n^{3/2}$.
+\item Para $R_{r,2}$: en la ecuación de $U_s-U_n$ (con $s\in(t_n,t_{n+1}]$) la integral de Itô aporta cero (martingala, por @eq-mom2) y, por independencia de los incrementos y @eq-Jh, $\mathbb E[J^h_s-J^h_{t_n}\mid\mathcal F_{t_n}]=\Lambda_n(s-t_n)$. Así
+$\mathbb E[U_s-U_n\mid\mathcal F_{t_n}]=\int_{t_n}^s\mathbb E[c(u)+r(u)U_{u-}\mid\mathcal F_{t_n}]\,du-\Lambda_n(s-t_n)$, cuya norma es $\le(\bar c+\bar rM+\bar\Lambda)(s-t_n)$ (para cada $s$ fijo $U_{s-}=U_s$ c.s., pues $J^h$ no salta en tiempos fijos). Por tanto $\|\mathbb E[R_{r,2}\mid\mathcal F_{t_n}]\|\le\bar r\,C\int(s-t_n)\,ds\le Ch_n^2$.
+\item $\mathbb E[R_\sigma\mid\mathcal F_{t_n}]=0$: integral de Itô con integrando predecible y de cuadrado integrable.
+\item $\mathbb E[R_J\mid\mathcal F_{t_n}]=r_nh_n\Lambda_nh_n$, de módulo $\le\bar r\bar\Lambda h_n^2$.
+\item $\mathbb E[R_{\mathrm{impl}}\mid\mathcal F_{t_n}]=-r_nh_n\bigl(I_c+\mathbb E[I_r\mid\mathcal F_{t_n}]\bigr)$ (pues $\mathbb E[I_\sigma\mid\mathcal F_{t_n}]=0$), de norma $\le\bar rh_n(\bar ch_n+Ch_n)\le Ch_n^2$.
+\end{itemize}
+Sumando se obtiene la segunda cota de @eq-cotasrho; si $c,r$ son Lipschitz, $R_c$ y $R_{r,1}$ son $O(h_n^2)$.
+:::
+
+::: {#thm-convergencia_fuerte_milste_comp}
+Supóngase (H1)--(H5). Existe $C_T>0$, que depende únicamente de $T,\bar c,\bar r,\bar\sigma,L_c,L_r,L_\sigma,\bar\Lambda,\bar\Gamma$ y $\mathbb E U_0^2$, tal que para toda partición con $h\le h_0$:
+$$
+\boxed{\;\max_{0\le n\le N}\bigl(\mathbb E|U_{t_n}-\widehat U_n|^2\bigr)^{1/2}\le C_T\,h^{1/2}\;}
+$$ {#eq-teo}
+Es decir, el esquema converge fuertemente en $L^2$, en los nodos, con orden al menos $1/2$.
+:::
+ 
+
+::: {.proof style="text-align:justify"}
+La estructura (defecto local con cotas $h_n$ en norma y $h_n^{3/2}$ en esperanza condicional, recurrencia del error y Grönwall discreto) es la de Wang, Mei y Xue \cite[Teoremas~3.1 y~3.2]{wmx07}, que a su vez sigue a Baker y Buckwar; aquí la hacemos completa y explícita para el modelo de reservas, con el defecto descompuesto en @eq-desc.
+ 
+\emph{Paso 1 (recurrencia).} Por @eq-recur, $e_0=0$ y $e_{n+1}=A_ne_n+\rho_n$. Por los @lem-factor_prop, @lem-bienplanteado y la @prp-defecto, $A_ne_n\in L^2$ ($A_n$ es independiente de $e_n$, que es $\mathcal F_{t_n}$-medible) y $\rho_n\in L^2$; todos los términos siguientes son integrables.
+ 
+Elevando al cuadrado y tomando esperanza,
+$$
+\mathbb E|e_{n+1}|^2=\mathbb E[A_n^2e_n^2]+2\,\mathbb E[A_n e_n\rho_n]+\mathbb E|\rho_n|^2 .
+$$ {#eq-expansion}
+Como $e_n$ es $\mathcal F_{t_n}$-medible, por @eq-factor,
+$\mathbb E[A_n^2e_n^2]=\mathbb E\bigl[e_n^2\,\mathbb E[A_n^2\mid\mathcal F_{t_n}]\bigr]\le(1+Ch_n)\,\mathbb E|e_n|^2$.
+ 
+Descomponemos $A_n=q_n+q_n\sigma_n\Delta W_n$, con $q_n$ determinista:
+$$
+\mathbb E[A_n e_n\rho_n]=\mathbb E\bigl[q_ne_n\,\mathbb E[\rho_n\mid\mathcal F_{t_n}]\bigr]+\mathbb E\bigl[q_n\sigma_ne_n\,\mathbb E[\Delta W_n\rho_n\mid\mathcal F_{t_n}]\bigr].
+$$
+Para el primer sumando, por $q_n\le2$, Cauchy--Schwarz y @eq-cotasrho: $\le2\|e_n\|\,Ch_n^{3/2}$. Para el segundo, la desigualdad de Cauchy--Schwarz condicional y $\mathbb E[\Delta W_+n^2\mid\mathcal F_{t_n}]=h_n$ dan $|\mathbb E[\Delta W_n\rho_n\mid\mathcal F_{t_n}]|\le\sqrt{h_n}\bigl(\mathbb E[\rho_n^2\mid\mathcal F_{t_n}]\bigr)^{1/2}$; luego, por Cauchy--Schwarz en $L^2(\Omega)$ y @eq-cotasrho, el sumando es $\le2\bar\sigma\sqrt{h_n}\,\|e_n\|\,\|\rho_n\|\le Ch_n^{3/2}\|e_n\|$. Entonces
+$$
+|\mathbb E[A_n e_n\rho_n]|\le C\,h_n^{3/2}\|e_n\| .
+$$
+ 
+Por @eq-cotasrho, $\mathbb E|\rho_n|^2\le Ch_n^2$. Con la desigualdad de Young, $2Ch_n^{3/2}\|e_n\|\le Ch_n\|e_n\|^2+Ch_n^2$, se obtiene
+$$
+\boxed{\;\mathbb E|e_{n+1}|^2\le(1+Ch_n)\,\mathbb E|e_n|^2+Ch_n^2\;}
+$$ {#eq-rec2}
+ 
+Sea $u_n=\mathbb E|e_n|^2$, $u_0=0$. Iterando @eq-rec2,
+$u_n\le C\sum_{j=0}^{n-1}h_j^2\prod_{k=j+1}^{n-1}(1+Ch_k)$. Como $1+x\le e^x$ y $\sum_kh_k\le T$, cada producto es $\le e^{CT}$; además $\sum_jh_j^2\le h\sum_jh_j\le hT$. Por tanto $u_n\le C\,T\,e^{CT}h=:C_T^2h$ para $0\le n\le N$. Tomando raíz cuadrada y máximo sobre $n$ se obtiene @eq-teo.
+:::
+::::
+
+
+
+:::: {.content-visible when-format="html"}
+::: {#lem-equiv_comp}
+Para todo $x\in\mathbb R$ y todo $n$: $(c_n-\Lambda_n)h_n-\Delta\widetilde J_n=c_nh_n-\Delta J_n$. En consecuencia, el esquema compensado coincide con el no compensado.
+:::
+
+::: {.proof style="text-align:justify"}
+Se sustituye $\Delta\widetilde J_n=\Delta J_n-\Lambda_nh_n$.  $\quad \square$
+:::
+ 
+
+El teorema se demuestra para $U$ dirigido por $J^h$, el proceso cuyos incrementos genera el programa. Si las $\lambda_k$ son constantes por tramos y la malla se alinea con las discontinuidades, $J^h$ y $J$ tienen la misma ley. En general, para aproximar el modelo con $\lambda_k(t)$ se simula $\Delta N\sim\mathrm{Poisson}\bigl(\int_{t_n}^{t_{n+1}}\lambda_k\bigr)$ y se usa esa integral en $\Lambda_n$; entonces $\Delta J_n$ tiene la ley exacta de los inc
+7os de $J$, $\mathbb E[\Delta J_n\mid\mathcal F_{t_n}]=\int_{t_n}^{t_{n+1}}\Lambda$, y toda la demostración se repite con $U$ del modelo original.
+
+### Hipótesis:
+- **(H1).** $c,r,\sigma:[0,T]\to\mathbb R$ son medibles, acotados ($|c|\le\bar c$, $|r|\le\bar r$, $|\sigma|\le\bar\sigma$) y Hölder de exponente $1/2$: existen constantes $L_f$ tales que $|f(t)-f(s)|\le L_f|t-s|^{1/2}$ para $f\in\{c,r,\sigma\}$. En particular, toda función Lipschitz cumple (HS1), como las interpolaciones lineales de los valores mensuales.
+- **(H2).** $N^h$ es una medida de Poisson como en @eq-lamcong -- @eq-Jh; $0\le\lambda_k(t)\le\bar\lambda$; las severidades son positivas, independientes entre sí, de los conteos y de $W$, y $\mathbb E[\zeta_m^2]+\mathbb E[\zeta_s^2]<\infty$. Se denotan $\bar\Lambda=\sup\Lambda^h$ y $\bar\Gamma=\sup\Gamma^h$ (cotas uniformes en $h$).
+- **(H3).** $U_0$ es $\mathcal F_0$-medible, independiente de $(W,N^h)$, y $\mathbb E[U_0^2]<\infty$. (Puede ser determinista.)
+- **(H4).** Sea $\bar r^+=\sup_t\max\{r(t),0\}$. El paso cumple $h\le h_0:=1/(2\bar r^+)$ (sin restricción si $\bar r^+=0$).
+- **(H5).** $W$ y $N^h$ son $(\mathcal F_t)$-adaptados con incrementos futuros independientes de $\mathcal F_t$; la solución y el esquema usan los mismos $\Delta W_n,\Delta J_n$.
+
+::: {#lem-mom} 
+[Existencia, unicidad y segundos momentos]
+Bajo **(HS1)--(HS3) y (HS5)**, la ecuación @eq-ecU tiene una única solución fuerte càdlàg y
+$$
+\sup_{0\le t\le T}\mathbb E|U_t|^2\le C\,(1+\mathbb E|U_0|^2).
+$$ {#eq-mom2}
+:::
+
+::: {.proof style="text-align:justify"}
+Sea $\Phi_t=\exp\bigl(\int_0^t(r-\tfrac12\sigma^2)\,ds+\int_0^t\sigma\,dW\bigr)$, que es continuo, adaptado, positivo y satisface $d\Phi=\Phi(r\,dt+\sigma\,dW)$. Sea $Y_t=U_0+\int_0^t\Phi_s^{-1}\bigl(c(s)\,ds-dJ^h_s\bigr)$, que es de variación finita (las integrales respecto de $J^h$ son sumas finitas sobre los saltos). Como $\Phi$ es continuo e $Y$ es de variación finita, $[\Phi,Y]=0$, y por la regla del producto $d(\Phi Y)=\Phi\,dY+Y_{-}\,d\Phi=(c\,dt-dJ^h)+(\Phi Y)_{-}(r\,dt+\sigma\,dW)$, de modo que $U:=\Phi Y$ resuelve @eq-ecU.
+
+Luego si $U,U'$ son dos soluciones, $D=U-U'$ es continuo (los saltos coinciden) y satisface $dD=rD\,dt+\sigma D\,dW$, $D_0=0$. Por Itô, $d\Phi^{-1}=\Phi^{-1}\bigl((-r+\sigma^2)\,dt-\sigma\,dW\bigr)$ y $d[\Phi^{-1},D]=-\sigma^2\Phi^{-1}D\,dt$, de donde $d(\Phi^{-1}D)=0$; por tanto $\Phi^{-1}D\equiv0$ y $D\equiv0$. (Aplicando el teorema de existencia y unicidad de la tesis a la representación de $J^h$ como integral respecto de una medida de Poisson marcada; ver también Applebaum \cite{applebaum}, cap.~6.)
+
+Sea $\tau_k=\inf\{t:|U_t|>k\}$; como las trayectorias càdlàg son acotadas en $[0,T]$, $\tau_k\uparrow\infty$ c.s. Por integración por partes, con $[U]_t=\int_0^t\sigma^2U_{s-}^2\,ds+\sum_{s\le t}(\Delta J^h_s)^2$,
+$$
+U_t^2=U_0^2+2\!\int_0^t\!U_{s-}(c+rU_{s-})\,ds+2\!\int_0^t\!\sigma U_{s-}^2\,dW_s-2\!\int_0^t\!\!\int_E\!U_{s-}\,y\,N^h(ds,dv)+[U]_t .
+$$
+Escribimos $N^h=\widetilde N^h+\nu^h\,ds$, de modo que el penúltimo término es $-2\int\!\!\int U_{s-}y\,\widetilde N^h-2\int U_{s-}\Lambda^h(s)\,ds$. 
+Detenidas en $\tau_k$ se tiene $|U_{s-}|\le k$ para $s\le\tau_k$. Por (HS1), con
+$\bar\sigma=\sup_t|\sigma(t)|$, el integrando browniano cumple
+$|\sigma(s)U_{s-}^2|\le\bar\sigma k^2$, de modo que
+$\mathbb E\int_0^{t\wedge\tau_k}\sigma^2U_{s-}^4\,ds\le\bar\sigma^2k^4T<\infty$ y
+$\int\sigma U_{s-}^2\,dW_s$ es una martingala de media cero. El integrando de
+saltos, $U_{s-}\,y$, es de cuadrado integrable:
+$\mathbb E\int\!\!\int k^2y^2\,\nu^h\,ds\le k^2\bar\Gamma T<\infty$, por lo que
+$\int\!\!\int U_{s-}\,y\,\widetilde N^h$ es también una martingala de media cero.
+
+Además $\mathbb E\sum_{s\le t\wedge\tau_k}(\Delta J^h_s)^2\le\bar\Gamma T$. Tomando valor esperado y usando $2|u|a\le u^2+a^2$ en los términos $2U_{s-}c$ y $-2U_{s-}\Lambda^h$ se tiene que
+$$
+\mathbb E|U_{t\wedge\tau_k}|^2\le\mathbb E U_0^2+(\bar c^2+\bar\Lambda^2+\bar\Gamma)T+(2\bar r+\bar\sigma^2+2)\int_0^t\mathbb E|U_{s\wedge\tau_k}|^2\,ds ,
+$$
+
+Por el lema de Grönwall, $\mathbb E|U_{t\wedge\tau_k}|^2\le C(1+\mathbb EU_0^2)$ uniformemente en $k$, y el lema de Fatou con $k\to\infty$ da @eq-mom2. Es la versión de segundo orden de \cite[Lemas~5 y~1]{hk05}, adaptada a una medida de Poisson con severidades aleatorias.  $\quad \square$
+:::
+ 
+::: {#lem-saltos}  
+Para todo $n$ y $t\in[t_n,t_{n+1}]$:
+$$
+\mathbb E\bigl[J^h_t-J^h_{t_n}\mid\mathcal F_{t_n}\bigr]=\Lambda_n(t-t_n),\qquad
+\mathbb E|J^h_t-J^h_{t_n}|^2=\int_{t_n}^t\Gamma^h\,ds+\Bigl(\int_{t_n}^t\Lambda^h\,ds\Bigr)^2\le C\,(t-t_n).
+$$
+En particular, $\|\Delta J_n\|\le C\,h_n^{1/2}$ y $\mathbb E[\Delta J_n\mid\mathcal F_{t_n}]=\Lambda_nh_n$.
+:::
+::: {.proof style="text-align:justify"}
+Los incrementos futuros de $N^h$ son independientes de $\mathcal F_{t_n}$, por lo que la esperanza condicional es la esperanza, que es $\int_{t_n}^t\Lambda^h\,ds=\Lambda_n(t-t_n)$ (la intensidad es constante en $[t_n,t_{n+1})$). Escribimos $J^h_t-J^h_{t_n}=\int_{t_n}^t\!\!\int y\,\widetilde N^h+\int_{t_n}^t\Lambda^h\,ds$: el primer sumando tiene media cero y, por la isometría respecto de $\widetilde N^h$, segundo momento $\int_{t_n}^t\Gamma^h\,ds$; el segundo es determinista. Los términos cruzados se anulan, lo que da la identidad. Finalmente $\int_{t_n}^t\Gamma^h\,ds\le\bar\Gamma(t-t_n)$ y $(\int_{t_n}^t\Lambda^h\,ds)^2\le\bar\Lambda^2(t-t_n)^2\le\bar\Lambda^2T(t-t_n)$. Es el análogo de \cite[(20) y~(41)]{hk05} para severidades aleatorias.  $\quad \square$
+:::
+
+::: {#lem-inc} 
+[Incrementos de la solución]
+Para todo $n$ y $t\in[t_n,t_{n+1}]$,
+$$
+\mathbb E|U_t-U_{t_n}|^2\le C\,(t-t_n)\le C\,h_n .
+$$ {#eq-incr}
+:::
+
+
+::: {.proof style="text-align:justify"}
+De @eq-ecU se tiene $U_t-U_{t_n}=\int_{t_n}^t(c+rU_{s-})\,ds+\int_{t_n}^t\sigma U_{s-}\,dW_s-(J^h_t-J^h_{t_n})$. 
+
+Por Cauchy--Schwarz y @eq-mom2, el primer término tiene segundo momento $\leq(t-t_n)\int_{t_n}^t\mathbb E|c+rU_{s-}|^2\,ds\leq C(t-t_n)^2$. Por la isometría de Itô y @eq-mom2, el segundo termino es $\leq\bar\sigma^2\int_{t_n}^t\mathbb E|U_{s-}|^2\,ds\leq C(t-t_n)$. 
+Para el tercero termino, por la isometría respecto de $\widetilde N^h$ y la fórmula de varianza más cuadrado de la media,
+$\mathbb E|J^h_t-J^h_{t_n}|^2=\int_{t_n}^t\Gamma^h\,ds+\bigl(\int_{t_n}^t\Lambda^h\,ds\bigr)^2\leq\bar\Gamma(t-t_n)+\bar\Lambda^2(t-t_n)^2$ (cf.\ \cite[(20) y (41)]{hk05}).
+ Se combina con $|x+y+z|^2\le3(|x|^2+|y|^2+|z|^2)$ y $t-t_n\le T$.  $\quad \square$
+:::
+
+::: {#lem-factor_propa} 
+Sea $A_n:=q_n(1+\sigma_n\Delta W_n)$. Bajo (HS1) y (HS4), para $h\le h_0$:
+$$
+\begin{gathered}
+0<q_n\le2,\qquad\mathbb E[A_n\mid\mathcal F_{t_n}]=q_n,\qquad
+\mathbb E[A_n^2\mid\mathcal F_{t_n}]\le1+Ch_n,\\
+\mathbb E\bigl[(A_n-q_n)^2\mid\mathcal F_{t_n}\bigr]=q_n^2\sigma_n^2h_n\le4\bar\sigma^2h_n .
+\end{gathered}
+$$ {#eq-factor}  
+:::
+
+::: {.proof style="text-align:justify"}
+Si $r_n<0$, $1-r_nh_n>1$; si $r_n\geq0$, $1-r_nh_n\geq1-\bar r^+h\geq\tfrac12$, de donde $q_n\leq2$. Como $\Delta W_n$ es independiente de $\mathcal F_{t_n}$, con media $0$ y varianza $h_n$, valen las dos igualdades y $\mathbb E[A_n^2\mid\mathcal F_{t_n}]=q_n^2(1+\sigma_n^2h_n)$. Para $x=r_nh_n\in[0,\tfrac12]$, la función convexa $(1-x)^{-2}$ queda por debajo de su cuerda entre $0$ y $\tfrac12$, así que $(1-x)^{-2}\leq1+6x$; para $x<0$, $(1-x)^{-2}\leq1$. Luego $q_n^2(1+\sigma_n^2h_n)\leq e^{\bar\sigma^2h_n}(1+6\bar r^+h_n)\leq1+Ch_n$.  $\quad \square$
+:::
+ 
+::: {#lem-bienplanteado}
+Para todo $n$, $\widehat U_n$ es $\mathcal F_{t_n}$-medible y está en $L^2(\Omega)$.
+En consecuencia, $e_n:=U_{t_n}-\widehat U_n$ es $\mathcal F_{t_n}$-medible y está en $L^2(\Omega)$.
+:::
+
+::: {.proof style="text-align:justify"}
+Inducción: $\widehat U_{n+1}=A_n\widehat U_n+q_n(c_nh_n-\Delta J_n)$, con $A_n\in L^2$ independiente de $\widehat U_n\in L^2$ y $\Delta J_n\in L^2$ (@lem-inc). Para $e_n$ se usa además @eq-mom2.  $\quad \square$
+:::
+
+ Definimos aplicando un paso del esquema a la solución exacta en $t_n$, con los mismos incrementos:
+$$
+\rho_n:=U_{t_{n+1}}-q_n\Bigl[U_{t_n}(1+\sigma_n\Delta W_n)+c_nh_n-\Delta J_n\Bigr].
+$$ {#eq-defecto}
+
+Como el esquema es afín en el estado, restando @eq-esquema se obtiene exactamente:
+$$
+e_{n+1}=A_n\,e_n+\rho_n,\qquad e_0=0 .
+$$ {#eq-recur} 
+$\quad \square$
+ 
+::: {#lem-descomp}
+Sean $U_n:=U_{t_n}$ y
+$I_c=\int_{t_n}^{t_{n+1}}c\,ds$, $I_r=\int_{t_n}^{t_{n+1}}rU_{s-}\,ds$, $I_\sigma=\int_{t_n}^{t_{n+1}}\sigma U_{s-}\,dW_s$, de modo que $U_{t_{n+1}}-U_n=I_c+I_r+I_\sigma-\Delta J_n$. Entonces
+
+$$
+(1-r_nh_n)\rho_n=R_{c}+R_{r,1}+R_{r,2}+R_{\sigma}+R_{J}+R_{\mathrm{impl}},
+$$ {#eq-desc}
+donde
+$$
+\begin{align*}
+R_c&=\int_{t_n}^{t_{n+1}}(c(s)-c_n)\,ds, &
+R_{r,1}&=\int_{t_n}^{t_{n+1}}(r(s)-r_n)U_{s-}\,ds,\\
+R_{r,2}&=r_n\int_{t_n}^{t_{n+1}}(U_{s-}-U_n)\,ds, &
+R_\sigma&=\int_{t_n}^{t_{n+1}}\bigl(\sigma(s)U_{s-}-\sigma_nU_n\bigr)\,dW_s,\\
+R_J&=r_nh_n\,\Delta J_n, &
+R_{\mathrm{impl}}&=-\,r_nh_n\,(I_c+I_r+I_\sigma).
+\end{align*}
+$$
+
+:::
+
+::: {.proof style="text-align:justify"}
+Multiplicando @eq-defecto por $1-r_nh_n$:
+
+$$(1-r_nh_n)\rho_n=(U_{t_{n+1}}-U_n)-r_nh_nU_{t_{n+1}}-\sigma_nU_n\Delta W_n-c_nh_n+\Delta J_n.$$
+
+Como $-r_nh_nU_{t_{n+1}}=-r_nh_nU_n-r_nh_n(U_{t_{n+1}}-U_n)$, y $U_{t_{n+1}}-U_n+\Delta J_n=I_c+I_r+I_\sigma$, nos queda
+$$
+(1-r_nh_n)\rho_n=[I_c-c_nh_n]+[I_r-r_nh_nU_n]-r_nh_n(I_c+I_r+I_\sigma)+[I_\sigma-\sigma_nU_n\Delta W_n]+r_nh_n\Delta J_n .
+$$
+Finalmente $I_c-c_nh_n=R_c$, $I_r-r_nh_nU_n=R_{r,1}+R_{r,2}$, y $I_\sigma-\sigma_nU_n\Delta W_n=R_\sigma$.
+:::
+ 
+::: {#prp-defecto}
+
+Bajo (H1)--(H5) y $h\le h_0$ se tiene:
+$$
+\boxed{\;\|\rho_n\|\le C\,h_n,\qquad\bigl\|\mathbb E[\rho_n\mid\mathcal F_{t_n}]\bigr\|\le C\,h_n^{3/2}\;}
+$$ {#eq-cotasrho}
+(de hecho, si $c,r$ son Lipschitz, el segundo término es $\leq Ch_n^2$).
+:::
+
+::: {.proof style="text-align:justify"}
+Sea $M:=\sup_t\|U_t\|\le C$ por @eq-mom2}. Usamos $h_n\le T$, por lo que $h_n^{3/2}\le\sqrt T\,h_n$.
+
+Por @eq-desc, $(1-r_nh_n)\rho_n$ es la suma de seis términos, y para acotar $\|\rho_n\|$ basta acotar la norma $L^2(\Omega)$ de cada uno. Teniendo así las siguientes estimaciones de norma $L^2$ para cada uno de los términos:
+
+- Por definición, $R_c = \int_{t_n}^{t_{n+1}} [c(s) - c_n] \, ds$. Aplicando la hipótesis (H1) (Hölder-$1/2$ en el tiempo), se tiene que $|c(s) - c(t_n)| \leq L_c |s - t_n|^{1/2}$. Tomando valor absoluto e integrando:
+$$
+|R_c| \leq \int_{t_n}^{t_{n+1}} |c(s) - c_n| \, ds \leq \int_{t_n}^{t_{n+1}} L_c (s - t_n)^{1/2} \, ds.
+$$
+Calculando la integral explícitamente mediante el cambio de variable $u = s - t_n$:
+$$
+\int_{t_n}^{t_{n+1}} (s - t_n)^{1/2} \, ds = \int_0^{h_n} u^{1/2} \, du = \left[ \frac{2}{3} u^{3/2} \right]_0^{h_n} = \frac{2}{3} h_n^{3/2}.
+$$
+Por tanto, $|R_c| \leq L_c \cdot \frac{2}{3} h_n^{3/2} = C h_n^{3/2}$. 
+Este término mide el error por evaluar $c(t)$ en $t_n$.
+
+- $\|R_{r,1}\|_{L^2}:$ Por definición, $R_{r,1} = \int_{t_n}^{t_{n+1}} [r(s) - r_n] U_{s-} \, ds$. Aplicando Hölder en $r$ (hipótesis HS1), $|r(s) - r(t_n)| \leq L_r |s - t_n|^{1/2}$. 
+Tomando norma $L^2$ y aplicando la desigualdad de Minkowski integral:
+
+$$
+||R_{r,1}||_{L^2} = \left\| \int_{t_n}^{t_{n+1}} [r(s) - r_n] U_{s-} \, ds \right\|_{L^2} \leq \int_{t_n}^{t_{n+1}} ||[r(s) - r_n] U_{s-}||_{L^2} \, ds.
+$$
+Como $r(s) - r_n$ es determinista, $\|[r(s) - r_n] U_{s-}\|_{L^2} = |r(s) - r_n| \cdot \|U_{s-}\|_{L^2} \le L_r (s - t_n)^{1/2} \cdot M$, donde $M = \sup_t \|U_t\|_{L^2}$ está acotado por el @lem-mom. Integrando:
+$$
+\|R_{r,1}\|_{L^2} \le L_r M \int_{t_n}^{t_{n+1}} (s - t_n)^{1/2} \, ds = L_r M \cdot \frac{2}{3} h_n^{3/2} \le C h_n^{3/2}.
+$$
+
+- Por definición, $R_{r,2} = r_n \int_{t_n}^{t_{n+1}} [U_{s-} - U_n] \, ds$. Tomando norma $L^2$ y aplicando Minkowski:
+$$
+\|R_{r,2}\|_{L^2} \le |r_n| \int_{t_n}^{t_{n+1}} \|U_{s-} - U_n\|_{L^2} \, ds \le \bar{r} \int_{t_n}^{t_{n+1}} \|U_{s-} - U_n\|_{L^2} \, ds.
+$$
+Usando el @lem-inc (@eq-incr), $\mathbb{E}|U_t - U_{t_n}|^2 \leq C(t - t_n)$. Tomando raíz cuadrada:
+$$
+\|U_{s-} - U_n\|_{L^2} = \left( \mathbb{E}|U_{s-} - U_n|^2 \right)^{1/2} \le C(s - t_n)^{1/2}.
+$$
+Integrando:
+
+$$
+\|R_{r,2}\|_{L^2} \le \bar{r} C \int_{t_n}^{t_{n+1}} (s - t_n)^{1/2} \, ds = C h_n^{3/2}.
+$$ 
+
+- Por definición, $R_\sigma = \int_{t_n}^{t_{n+1}} [\sigma(s) U_{s-} - \sigma_n U_n] \, dW_s$. Aplicando la isometría de Itô (Teorema~5.16 de la tesis, o Karatzas--Shreve~\cite{karatzas}, Teorema~3.2.1):
+$$
+\|R_\sigma\|_{L^2}^2 = \mathbb{E}\left| \int_{t_n}^{t_{n+1}} [\sigma(s) U_{s-} - \sigma_n U_n] \, dW_s \right|^2 = \int_{t_n}^{t_{n+1}} \mathbb{E}|\sigma(s) U_{s-} - \sigma_n U_n|^2 \, ds.
+$$
+Descomponemos la diferencia como $\sigma(s) U_{s-} - \sigma_n U_n = [\sigma(s) - \sigma_n] U_{s-} + \sigma_n [U_{s-} - U_n]$. Aplicando la desigualdad $(a+b)^2 \le 2a^2 + 2b^2$:
+$$
+|\sigma(s) U_{s-} - \sigma_n U_n|^2 \le 2|\sigma(s) - \sigma_n|^2 |U_{s-}|^2 + 2\sigma_n^2 |U_{s-} - U_n|^2.
+$$
+Acotamos cada término usando (H1), el @lem-mom y el @lem-inc:
+$$
+\mathbb{E}|\sigma(s) U_{s-} - \sigma_n U_n|^2 \leq 2L_\sigma^2 (s - t_n) \cdot C + 2\bar{\sigma}^2 \cdot C(s - t_n) = C(s - t_n).
+$$
+Integrando:
+$$
+\|R_\sigma\|_{L^2}^2 \leq C \int_{t_n}^{t_{n+1}} (s - t_n) \, ds = C \left[ \frac{(s - t_n)^2}{2} \right]_{t_n}^{t_{n+1}} = C \frac{h_n^2}{2}.
+$$
+Por tanto, $\|R_\sigma\|_{L^2} \leq C h_n$.
+
+- Por definición, $R_J = r_n h_n \Delta J_n$. Tomando norma $L^2$:
+$$
+\|R_J\|_{L^2} = |r_n| h_n \|\Delta J_n\|_{L^2} \le \bar{r} h_n \|\Delta J_n\|_{L^2}.
+$$
+Para calcular $\|\Delta J_n\|_{L^2}$, usamos las propiedades de los procesos de Poisson compuestos (@eq-Jh y Higham \& Kloeden~\cite{hk05}, ecuaciones (20) y (41)):
+$$
+\mathbb{E}|\Delta J_n|^2 = \int_{t_n}^{t_{n+1}} \Gamma^h(s) \, ds + \left( \int_{t_n}^{t_{n+1}} \Lambda^h(s) \, ds \right)^2 \le \bar{\Gamma} h_n + \bar{\Lambda}^2 h_n^2 \le C h_n,
+$$
+pues $h_n \le T$ implica $h_n^2 \le T h_n$. Tomando raíz cuadrada, $\|\Delta J_n\|_{L^2} \le C h_n^{1/2}$. Sustituyendo:
+$$
+\|R_J\|_{L^2} \le \bar{r} h_n \cdot C h_n^{1/2} = C h_n^{3/2}.
+$$
+
+
+- Por definición, $R_{\mathrm{impl}} = -r_n h_n (I_c + I_r + I_\sigma)$, donde $I_c = \int_{t_n}^{t_{n+1}} c(s) \, ds$, $I_r = \int_{t_n}^{t_{n+1}} r(s) U_{s-} \, ds$, e $I_\sigma = \int_{t_n}^{t_{n+1}} \sigma(s) U_{s-} \, dW_s$. Acotamos cada integral por separado:
+    - $|I_c| \le \int_{t_n}^{t_{n+1}} |c(s)| \, ds \le \bar{c} h_n$.
+    -  $\|I_r\|_{L^2} \le \int_{t_n}^{t_{n+1}} \|r(s) U_{s-}\|_{L^2} \, ds \le \bar{r} M h_n \le C h_n$.
+    -  Para $I_\sigma$, aplicamos la isometría de Itô: $\|I_\sigma\|_{L^2}^2 = \int_{t_n}^{t_{n+1}} \mathbb{E}|\sigma(s) U_{s-}|^2 \, ds \le \bar{\sigma}^2 M^2 h_n$, de donde $\|I_\sigma\|_{L^2} \le C h_n^{1/2}$.
+
+Combinando mediante la desigualdad triangular:
+$$
+\|I_c + I_r + I_\sigma\|_{L^2} \le C h_n + C h_n + C h_n^{1/2} \le C h_n^{1/2},
+$$
+pues $h_n \le h_n^{1/2}$ para $h_n \le 1$. Multiplicando por $r_n h_n$:
+$$
+\|R_{\mathrm{impl}}\|_{L^2} \le \bar{r} h_n \cdot C h_n^{1/2} = C h_n^{3/2}.
+$$
+
+Sumando todas las cotas y usando que $q_n \le 2$ (@lem-factor_prop), de la @eq-desc se concluye que $\|\rho_n\|_{L^2} \le C h_n$, demostrando la primera cota de la @prp-defecto (@eq-cotasrho).
+
+Se toma $\mathbb E[\,\cdot\mid\mathcal F_{t_n}]$ en @eq-desc (el factor $1-r_nh_n$ es determinista); se usa la desigualdad de Jensen condicional, $\|\mathbb E[g\mid\mathcal F]\|\le\|g\|$, y el teorema de Fubini condicional.
+
+- $R_c$ es determinista: $\le Ch_n^{3/2}$.
+- $\mathbb E[R_{r,1}\mid\mathcal F_{t_n}]=\int(r(s)-r_n)\,\mathbb E[U_{s-}\mid\mathcal F_{t_n}]\,ds$, de norma $\le L_rM\int(s-t_n)^{1/2}\,ds\le Ch_n^{3/2}$.
+- Para $R_{r,2}$: en la ecuación de $U_s-U_n$ (con $s\in(t_n,t_{n+1}]$) la integral de Itô aporta cero (martingala, por @eq-mom2) y, por independencia de los incrementos y @eq-Jh, $\mathbb E[J^h_s-J^h_{t_n}\mid\mathcal F_{t_n}]=\Lambda_n(s-t_n)$. Así
+$\mathbb E[U_s-U_n\mid\mathcal F_{t_n}]=\int_{t_n}^s\mathbb E[c(u)+r(u)U_{u-}\mid\mathcal F_{t_n}]\,du-\Lambda_n(s-t_n)$, cuya norma es $\le(\bar c+\bar rM+\bar\Lambda)(s-t_n)$ (para cada $s$ fijo $U_{s-}=U_s$ c.s., pues $J^h$ no salta en tiempos fijos). Por tanto $\|\mathbb E[R_{r,2}\mid\mathcal F_{t_n}]\|\le\bar r\,C\int(s-t_n)\,ds\le Ch_n^2$.
+- $\mathbb E[R_\sigma\mid\mathcal F_{t_n}]=0$: integral de Itô con integrando predecible y de cuadrado integrable.
+-  $\mathbb E[R_J\mid\mathcal F_{t_n}]=r_nh_n\Lambda_nh_n$, de módulo $\le\bar r\bar\Lambda h_n^2$.
+- $\mathbb E[R_{\mathrm{impl}}\mid\mathcal F_{t_n}]=-r_nh_n\bigl(I_c+\mathbb E[I_r\mid\mathcal F_{t_n}]\bigr)$ (pues $\mathbb E[I_\sigma\mid\mathcal F_{t_n}]=0$), de norma $\le\bar rh_n(\bar ch_n+Ch_n)\le Ch_n^2$.
+Sumando se obtiene la segunda cota de @eq-cotasrho; si $c,r$ son Lipschitz, $R_c$ y $R_{r,1}$ son $O(h_n^2)$. $\quad \square$
+:::
+
+::: {#thm-convergencia_fuerte_milste_comp}
+Supóngase (H1)--(H5). Existe $C_T>0$, que depende únicamente de $T,\bar c,\bar r,\bar\sigma,L_c,L_r,L_\sigma,\bar\Lambda,\bar\Gamma$ y $\mathbb E U_0^2$, tal que para toda partición con $h\le h_0$:
+$$
+\boxed{\;\max_{0\le n\le N}\bigl(\mathbb E|U_{t_n}-\widehat U_n|^2\bigr)^{1/2}\le C_T\,h^{1/2}\;}
+$$ {#eq-teo}
+Es decir, el esquema converge fuertemente en $L^2$, en los nodos, con orden al menos $1/2$. 
+:::
+ 
+
+::: {.proof style="text-align:justify"}
+La estructura (defecto local con cotas $h_n$ en norma y $h_n^{3/2}$ en esperanza condicional, recurrencia del error y Grönwall discreto) es la de Wang, Mei y Xue \cite[Teoremas~3.1 y~3.2]{wmx07}, que a su vez sigue a Baker y Buckwar; aquí la hacemos completa y explícita para el modelo de reservas, con el defecto descompuesto en @eq-desc.
+ 
+\emph{Paso 1 (recurrencia).} Por @eq-recur, $e_0=0$ y $e_{n+1}=A_ne_n+\rho_n$. Por los @lem-factor_prop, @lem-bienplanteado y la @prp-defecto, $A_ne_n\in L^2$ ($A_n$ es independiente de $e_n$, que es $\mathcal F_{t_n}$-medible) y $\rho_n\in L^2$; todos los términos siguientes son integrables.
+ 
+Elevando al cuadrado y tomando esperanza,
+$$
+\mathbb E|e_{n+1}|^2=\mathbb E[A_n^2e_n^2]+2\,\mathbb E[A_n e_n\rho_n]+\mathbb E|\rho_n|^2 .
+$$ {#eq-expansion}
+Como $e_n$ es $\mathcal F_{t_n}$-medible, por @eq-factor,
+$\mathbb E[A_n^2e_n^2]=\mathbb E\bigl[e_n^2\,\mathbb E[A_n^2\mid\mathcal F_{t_n}]\bigr]\le(1+Ch_n)\,\mathbb E|e_n|^2$.
+ 
+Descomponemos $A_n=q_n+q_n\sigma_n\Delta W_n$, con $q_n$ determinista:
+$$
+\mathbb E[A_n e_n\rho_n]=\mathbb E\bigl[q_ne_n\,\mathbb E[\rho_n\mid\mathcal F_{t_n}]\bigr]+\mathbb E\bigl[q_n\sigma_ne_n\,\mathbb E[\Delta W_n\rho_n\mid\mathcal F_{t_n}]\bigr].
+$$
+Para el primer sumando, por $q_n\le2$, Cauchy--Schwarz y @eq-cotasrho: $\le2\|e_n\|\,Ch_n^{3/2}$. Para el segundo, la desigualdad de Cauchy--Schwarz condicional y $\mathbb E[\Delta W_+n^2\mid\mathcal F_{t_n}]=h_n$ dan $|\mathbb E[\Delta W_n\rho_n\mid\mathcal F_{t_n}]|\le\sqrt{h_n}\bigl(\mathbb E[\rho_n^2\mid\mathcal F_{t_n}]\bigr)^{1/2}$; luego, por Cauchy--Schwarz en $L^2(\Omega)$ y @eq-cotasrho, el sumando es $\le2\bar\sigma\sqrt{h_n}\,\|e_n\|\,\|\rho_n\|\le Ch_n^{3/2}\|e_n\|$. Entonces
+$$
+|\mathbb E[A_n e_n\rho_n]|\le C\,h_n^{3/2}\|e_n\| .
+$$
+ 
+Por @eq-cotasrho, $\mathbb E|\rho_n|^2\le Ch_n^2$. Con la desigualdad de Young, $2Ch_n^{3/2}\|e_n\|\le Ch_n\|e_n\|^2+Ch_n^2$, se obtiene
+$$
+\boxed{\;\mathbb E|e_{n+1}|^2\le(1+Ch_n)\,\mathbb E|e_n|^2+Ch_n^2\;}
+$$ {#eq-rec2}
+ 
+Sea $u_n=\mathbb E|e_n|^2$, $u_0=0$. Iterando @eq-rec2,
+$u_n\le C\sum_{j=0}^{n-1}h_j^2\prod_{k=j+1}^{n-1}(1+Ch_k)$. Como $1+x\le e^x$ y $\sum_kh_k\le T$, cada producto es $\le e^{CT}$; además $\sum_jh_j^2\le h\sum_jh_j\le hT$. Por tanto $u_n\le C\,T\,e^{CT}h=:C_T^2h$ para $0\le n\le N$. Tomando raíz cuadrada y máximo sobre $n$ se obtiene @eq-teo. $\quad \square$
+:::
+::::
+
+## Estimador de Monte Carlo
 
 ::: {style="text-align:justify"}
 La base teórica del método reside en la construcción de un estimador no sesgado basado en muestras independientes.
@@ -543,11 +1180,13 @@ El estimador $\hat{I}_N$ es un estimador insesgado de $I$. Es decir, $\mathbb{E}
 
 :::: {.content-visible when-format="html"}
 ::: {.proof style="text-align:justify"}
-Dado que el valor esperado es un operador lineal y las variables $X_i$ son i.i.d.: $$\begin{aligned}
+Dado que el valor esperado es un operador lineal y las variables $X_i$ son i.i.d.: 
+$$\begin{aligned}
     \mathbb{E}[\hat{I}_N] &= \mathbb{E}\left[ \frac{1}{N} \sum_{i=1}^{N} f(X_i) \right] \\
     &= \frac{1}{N} \sum_{i=1}^{N} \mathbb{E}[f(X_i)] \\
     &= \frac{1}{N} \sum_{i=1}^{N} I = \frac{1}{N} \cdot N \cdot I = I.
-\end{aligned} $$ lo que prueba el resultado. $\quad \square$
+\end{aligned} $$ 
+lo que prueba el resultado. $\quad \square$
 :::
 ::::
 
