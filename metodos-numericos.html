@@ -603,22 +603,23 @@ Y_{n+1}={}&amp;Y_n+(c_n+r_nY_n)h+\sigma_nY_n\Delta W_n\
 <p>Sea <span class="math inline">\(E=(0,\infty)\times\{m,s\}\)</span> (monto y tipo de siniestro: meteorológico o sísmico). Para cada tipo <span class="math inline">\(k\in\{m,s\}\)</span>, <span class="math inline">\(F_k\)</span> es la ley de la severidad <span class="math inline">\(\zeta_k\)</span> y <span class="math inline">\(\lambda_k(\cdot)\)</span> la intensidad. Las intensidades se en el extremo izquierdo de cada paso: <span id="eq-lamcong"><span class="math display">\[
 \lambda_k^h(s):=\lambda_k(t_n),\qquad s\in[t_n,t_{n+1}),
 \tag{5.8}\]</span></span></p>
-<p>Sea <span class="math inline">\(N^h(ds,dv)\)</span> una medida aleatoria de Poisson sobre <span class="math inline">\([0,T]\times E\)</span> con intensidad <span class="math inline">\(\nu^h(s,dy\times\{k\})\,ds=\lambda_k^h(s)F_k(dy) \ ds\)</span>, y <span id="eq-Jh"><span class="math display">\[
+<p>Sea <span class="math inline">\(N^h(ds,dv)\)</span> una medida aleatoria de Poisson sobre <span class="math inline">\([0,T]\times E\)</span> con intensidad <span class="math inline">\(\nu^h(s,dy\times\{k\})\,ds=\lambda_k^h(s)F_k(dy) \ ds\)</span>. Se definen <span id="eq-Jh"><span class="math display">\[
 J^h_t=\int_0^t\!\!\int_E y\,N^h(ds,dv),\qquad
 \Lambda^h(s)=\sum_{k}\lambda_k^h(s) \ \mathbb E[\zeta_k],\qquad
 \Gamma^h(s)=\sum_{k}\lambda_k^h(s)\,\mathbb E[\zeta_k^2].
-\tag{5.9}\]</span></span> <span class="math inline">\(\Lambda^h\)</span> es el costo esperado de siniestros por unidad de tiempo y <span class="math inline">\(\Gamma^h\)</span> el segundo momento instantáneo del salto. Escribimos <span class="math inline">\(\widetilde N^h=N^h-\nu^h \ ds\)</span> y <span class="math inline">\(\widetilde J^h_t=J^h_t-\int_0^t\Lambda^h(s) \ ds\)</span>.</p>
+\tag{5.9}\]</span></span> <span class="math inline">\(\Lambda^h\)</span> es el costo esperado de siniestros por unidad de tiempo y <span class="math inline">\(\Gamma^h\)</span> el segundo momento instantáneo del salto. Escribimos <span class="math inline">\(\widetilde N^h=N^h-\nu^h \ ds\)</span> para la medida compensada y <span class="math inline">\(\widetilde J^h_t=J^h_t-\int_0^t\Lambda^h(s) \ ds\)</span>.</p>
 <p>El proceso de reservas <span class="math inline">\(U\)</span> (que depende de <span class="math inline">\(h\)</span> a través de <span class="math inline">\(J^h\)</span>) satisface <span id="eq-ecU"><span class="math display">\[
 dU_t=\bigl(c(t)+r(t)U_{t-}\bigr)dt+\sigma(t)U_{t-}\,dW_t-dJ^h_t,\qquad U_0 \text{ dado}.
-\tag{5.10}\]</span></span> Como <span class="math inline">\(dJ^h_t=d\widetilde J^h_t+\Lambda^h(t)\,dt\)</span>, la ecuación <a href="#eq-ecU" class="quarto-xref">Ecuación&nbsp;<span>5.10</span></a> es equivalente a la forma compensada <span class="math display">\[
+\tag{5.10}\]</span></span></p>
+<p>Como <span class="math inline">\(dJ^h_t=d\widetilde J^h_t+\Lambda^h(t)\,dt\)</span>, la <a href="#eq-ecU" class="quarto-xref">Ecuación&nbsp;<span>5.10</span></a> es equivalente a la forma compensada <span class="math display">\[
 dU_t=(c+rU_{t-}-\Lambda^h)\,dt+\sigma U_{t-}\,dW_t-d\widetilde J^h_t
 \]</span> los términos <span class="math inline">\(\pm\Lambda^h\,dt\)</span> se cancelan, de modo que la compensación es una reescritura algebraica y no cambia la dinámica.</p>
 <p>Con <span class="math inline">\(c_n=c(t_n)\)</span>, <span class="math inline">\(r_n=r(t_n)\)</span>, <span class="math inline">\(\sigma_n=\sigma(t_n)\)</span>, <span class="math inline">\(\Lambda_n=\Lambda^h(t_n)\)</span>, <span class="math inline">\(\Delta W_n=W_{t_{n+1}}-W_{t_n}\)</span>, <span class="math inline">\(\Delta J_n=J^h_{t_{n+1}}-J^h_{t_n}\)</span> y <span class="math inline">\(\Delta\widetilde J_n=\Delta J_n-\Lambda_nh_n\)</span>, el esquema semi-implícito compensado trata de forma implícita el término de inversión <span class="math inline">\(r(t)U\)</span> y de forma explícita la difusión y los saltos: <span class="math display">\[
 \widehat U_{n+1}=\widehat U_n+\bigl[c_n-\Lambda_n+r_n\widehat U_{n+1}\bigr]h_n+\sigma_n\widehat U_n\Delta W_n-\Delta\widetilde J_n,\qquad \widehat U_0=U_0 .
 \]</span> Con <span class="math inline">\(q_n:=(1-r_nh_n)^{-1}\)</span> y despejando,</p>
 <p><span id="eq-esquema"><span class="math display">\[
-\boxed{\;\widehat U_{n+1}=q_n\Bigl[\widehat U_n(1+\sigma_n\Delta W_n)+(c_n-\Lambda_n)h_n-\Delta\widetilde J_n\Bigr]
-=q_n\Bigl[\widehat U_n(1+\sigma_n\Delta W_n)+c_nh_n-\Delta J_n\Bigr]\;}
+\widehat U_{n+1}=q_n\Bigl[\widehat U_n(1+\sigma_n\Delta W_n)+(c_n-\Lambda_n)h_n-\Delta\widetilde J_n\Bigr]
+=q_n\Bigl[\widehat U_n(1+\sigma_n\Delta W_n)+c_nh_n-\Delta J_n\Bigr]
 \tag{5.11}\]</span></span></p>
 <p>donde la segunda igualdad es la cancelación de <span class="math inline">\(\pm\Lambda_nh_n\)</span>.</p>
 <div id="lem-equiv_comp" class="theorem lemma">
@@ -663,7 +664,7 @@ U_t^2=U_0^2+2\!\int_0^t\!U_{s-}(c+rU_{s-})\,ds+2\!\int_0^t\!\sigma U_{s-}^2\,dW_
 <p><span class="proof-title"><em>Demostración</em>. </span>Los incrementos futuros de <span class="math inline">\(N^h\)</span> son independientes de <span class="math inline">\(\mathcal F_{t_n}\)</span>, por lo que la esperanza condicional es la esperanza, que es <span class="math inline">\(\int_{t_n}^t\Lambda^h\,ds=\Lambda_n(t-t_n)\)</span> (la intensidad es constante en <span class="math inline">\([t_n,t_{n+1})\)</span>). Escribimos <span class="math inline">\(J^h_t-J^h_{t_n}=\int_{t_n}^t\!\!\int y\,\widetilde N^h+\int_{t_n}^t\Lambda^h\,ds\)</span>: el primer sumando tiene media cero y, por la isometría respecto de <span class="math inline">\(\widetilde N^h\)</span>, segundo momento <span class="math inline">\(\int_{t_n}^t\Gamma^h\,ds\)</span>; el segundo es determinista. Los términos cruzados se anulan, lo que da la identidad. Finalmente <span class="math inline">\(\int_{t_n}^t\Gamma^h\,ds\le\bar\Gamma(t-t_n)\)</span> y <span class="math inline">\((\int_{t_n}^t\Lambda^h\,ds)^2\le\bar\Lambda^2(t-t_n)^2\le\bar\Lambda^2T(t-t_n)\)</span>. Es el análogo de para severidades aleatorias. <span class="math inline">\(\quad \square\)</span></p>
 </div>
 <div id="lem-inc" class="theorem lemma">
-<p><span class="theorem-title"><strong>Lema 5.4</strong></span> [Incrementos de la solución] Para todo <span class="math inline">\(n\)</span> y <span class="math inline">\(t\in[t_n,t_{n+1}]\)</span>, <span id="eq-incr"><span class="math display">\[
+<p><span class="theorem-title"><strong>Lema 5.4</strong></span> (Incrementos de la solución). Para todo <span class="math inline">\(n\)</span> y <span class="math inline">\(t\in[t_n,t_{n+1}]\)</span>, <span id="eq-incr"><span class="math display">\[
 \mathbb E|U_t-U_{t_n}|^2\le C\,(t-t_n)\le C\,h_n .
 \tag{5.13}\]</span></span></p>
 </div>
