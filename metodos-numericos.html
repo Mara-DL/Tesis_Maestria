@@ -662,7 +662,7 @@ U_t^2=U_0^2+2\!\int_0^t\!U_{s-}(c+rU_{s-})\,ds+2\!\int_0^t\!\sigma U_{s-}^2\,dW_
 <div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>Los incrementos futuros de <span class="math inline">\(N^h\)</span> son independientes de <span class="math inline">\(\mathcal F_{t_n}\)</span>, por lo que la esperanza condicional es la esperanza, que es <span class="math inline">\(\int_{t_n}^t\Lambda^h\,ds=\Lambda_n(t-t_n)\)</span> (la intensidad es constante en <span class="math inline">\([t_n,t_{n+1})\)</span>). Escribimos <span class="math inline">\(J^h_t-J^h_{t_n}=\int_{t_n}^t\!\!\int y\,\widetilde N^h+\int_{t_n}^t\Lambda^h\,ds\)</span>: el primer sumando tiene media cero y, por la isometría respecto de <span class="math inline">\(\widetilde N^h\)</span>, segundo momento <span class="math inline">\(\int_{t_n}^t\Gamma^h\,ds\)</span>; el segundo es determinista. Los términos cruzados se anulan, lo que da la identidad. Finalmente <span class="math inline">\(\int_{t_n}^t\Gamma^h\,ds\le\bar\Gamma(t-t_n)\)</span> y <span class="math inline">\((\int_{t_n}^t\Lambda^h\,ds)^2\le\bar\Lambda^2(t-t_n)^2\le\bar\Lambda^2T(t-t_n)\)</span>. Es el análogo de para severidades aleatorias. <span class="math inline">\(\quad \square\)</span></p>
 </div>
-<div id="lem-inc" class="theorem lemma">
+<div id="lem-incr" class="theorem lemma">
 <p><span class="theorem-title"><strong>Lema 5.4</strong></span> [Incrementos de la solución] Para todo <span class="math inline">\(n\)</span> y <span class="math inline">\(t\in[t_n,t_{n+1}]\)</span>, <span id="eq-incr"><span class="math display">\[
 \mathbb E|U_t-U_{t_n}|^2\le C\,(t-t_n)\le C\,h_n .
 \tag{5.13}\]</span></span></p>
@@ -683,11 +683,11 @@ U_t^2=U_0^2+2\!\int_0^t\!U_{s-}(c+rU_{s-})\,ds+2\!\int_0^t\!\sigma U_{s-}^2\,dW_
 <div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>Si <span class="math inline">\(r_n&lt;0\)</span>, <span class="math inline">\(1-r_nh_n&gt;1\)</span>; si <span class="math inline">\(r_n\geq0\)</span>, <span class="math inline">\(1-r_nh_n\geq1-\bar r^+h\geq\tfrac12\)</span>, de donde <span class="math inline">\(q_n\leq2\)</span>. Como <span class="math inline">\(\Delta W_n\)</span> es independiente de <span class="math inline">\(\mathcal F_{t_n}\)</span>, con media <span class="math inline">\(0\)</span> y varianza <span class="math inline">\(h_n\)</span>, valen las dos igualdades y <span class="math inline">\(\mathbb E[A_n^2\mid\mathcal F_{t_n}]=q_n^2(1+\sigma_n^2h_n)\)</span>. Para <span class="math inline">\(x=r_nh_n\in[0,\tfrac12]\)</span>, la función convexa <span class="math inline">\((1-x)^{-2}\)</span> queda por debajo de su cuerda entre <span class="math inline">\(0\)</span> y <span class="math inline">\(\tfrac12\)</span>, así que <span class="math inline">\((1-x)^{-2}\leq1+6x\)</span>; para <span class="math inline">\(x&lt;0\)</span>, <span class="math inline">\((1-x)^{-2}\leq1\)</span>. Luego <span class="math inline">\(q_n^2(1+\sigma_n^2h_n)\leq e^{\bar\sigma^2h_n}(1+6\bar r^+h_n)\leq1+Ch_n\)</span>. <span class="math inline">\(\quad \square\)</span></p>
 </div>
-<div id="lem-factor_bienplanteado" class="theorem lemma">
+<div id="lem-bienplanteado" class="theorem lemma">
 <p><span class="theorem-title"><strong>Lema 5.6</strong></span> Para todo <span class="math inline">\(n\)</span>, <span class="math inline">\(\widehat U_n\)</span> es <span class="math inline">\(\mathcal F_{t_n}\)</span>-medible y está en <span class="math inline">\(L^2(\Omega)\)</span>. En consecuencia, <span class="math inline">\(e_n:=U_{t_n}-\widehat U_n\)</span> es <span class="math inline">\(\mathcal F_{t_n}\)</span>-medible y está en <span class="math inline">\(L^2(\Omega)\)</span>.</p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>Inducción: <span class="math inline">\(\widehat U_{n+1}=A_n\widehat U_n+q_n(c_nh_n-\Delta J_n)\)</span>, con <span class="math inline">\(A_n\in L^2\)</span> independiente de <span class="math inline">\(\widehat U_n\in L^2\)</span> y <span class="math inline">\(\Delta J_n\in L^2\)</span> (<span class="quarto-unresolved-ref">?lem-incr</span>). Para <span class="math inline">\(e_n\)</span> se usa además <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.12</span></a>. <span class="math inline">\(\quad \square\)</span></p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Inducción: <span class="math inline">\(\widehat U_{n+1}=A_n\widehat U_n+q_n(c_nh_n-\Delta J_n)\)</span>, con <span class="math inline">\(A_n\in L^2\)</span> independiente de <span class="math inline">\(\widehat U_n\in L^2\)</span> y <span class="math inline">\(\Delta J_n\in L^2\)</span> (<a href="#lem-incr" class="quarto-xref">Lema&nbsp;<span>5.4</span></a>). Para <span class="math inline">\(e_n\)</span> se usa además <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.12</span></a>. <span class="math inline">\(\quad \square\)</span></p>
 </div>
 <p>Definimos aplicando un paso del esquema a la solución exacta en <span class="math inline">\(t_n\)</span>, con los mismos incrementos: <span id="eq-defecto"><span class="math display">\[
 \rho_n:=U_{t_{n+1}}-q_n\Bigl[U_{t_n}(1+\sigma_n\Delta W_n)+c_nh_n-\Delta J_n\Bigr].
@@ -717,8 +717,8 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 (1-r_nh_n)\rho_n=[I_c-c_nh_n]+[I_r-r_nh_nU_n]-r_nh_n(I_c+I_r+I_\sigma)+[I_\sigma-\sigma_nU_n\Delta W_n]+r_nh_n\Delta J_n .
 \]</span> Finalmente <span class="math inline">\(I_c-c_nh_n=R_c\)</span>, <span class="math inline">\(I_r-r_nh_nU_n=R_{r,1}+R_{r,2}\)</span>, y <span class="math inline">\(I_\sigma-\sigma_nU_n\Delta W_n=R_\sigma\)</span>.</p>
 </div>
-<div id="prop-defecto">
-<p>Bajo (H1)–(H5) y <span class="math inline">\(h\le h_0\)</span> se tiene: <span id="eq-cotasrho"><span class="math display">\[
+<div id="prp-defecto" class="theorem proposition">
+<p><span class="theorem-title"><strong>Proposición 5.1</strong></span> Bajo (H1)–(H5) y <span class="math inline">\(h\le h_0\)</span> se tiene: <span id="eq-cotasrho"><span class="math display">\[
 \boxed{\;\|\rho_n\|\le C\,h_n,\qquad\bigl\|\mathbb E[\rho_n\mid\mathcal F_{t_n}]\bigr\|\le C\,h_n^{3/2}\;}
 \tag{5.18}\]</span></span> (de hecho, si <span class="math inline">\(c,r\)</span> son Lipschitz, el segundo término es <span class="math inline">\(\leq Ch_n^2\)</span>).</p>
 </div>
@@ -741,7 +741,7 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 <ul>
 <li>Por definición, <span class="math inline">\(R_{r,2} = r_n \int_{t_n}^{t_{n+1}} [U_{s-} - U_n] \, ds\)</span>. Tomando norma <span class="math inline">\(L^2\)</span> y aplicando Minkowski: <span class="math display">\[
 \|R_{r,2}\|_{L^2} \le |r_n| \int_{t_n}^{t_{n+1}} \|U_{s-} - U_n\|_{L^2} \, ds \le \bar{r} \int_{t_n}^{t_{n+1}} \|U_{s-} - U_n\|_{L^2} \, ds.
-\]</span> Usando el <span class="quarto-unresolved-ref">?lem-incr</span> (<a href="#eq-incr" class="quarto-xref">Ecuación&nbsp;<span>5.13</span></a>), <span class="math inline">\(\mathbb{E}|U_t - U_{t_n}|^2 \leq C(t - t_n)\)</span>. Tomando raíz cuadrada: <span class="math display">\[
+\]</span> Usando el <a href="#lem-incr" class="quarto-xref">Lema&nbsp;<span>5.4</span></a> (<a href="#eq-incr" class="quarto-xref">Ecuación&nbsp;<span>5.13</span></a>), <span class="math inline">\(\mathbb{E}|U_t - U_{t_n}|^2 \leq C(t - t_n)\)</span>. Tomando raíz cuadrada: <span class="math display">\[
 \|U_{s-} - U_n\|_{L^2} = \left( \mathbb{E}|U_{s-} - U_n|^2 \right)^{1/2} \le C(s - t_n)^{1/2}.
 \]</span> Integrando:</li>
 </ul>
@@ -753,7 +753,7 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 \|R_\sigma\|_{L^2}^2 = \mathbb{E}\left| \int_{t_n}^{t_{n+1}} [\sigma(s) U_{s-} - \sigma_n U_n] \, dW_s \right|^2 = \int_{t_n}^{t_{n+1}} \mathbb{E}|\sigma(s) U_{s-} - \sigma_n U_n|^2 \, ds.
 \]</span> Descomponemos la diferencia como <span class="math inline">\(\sigma(s) U_{s-} - \sigma_n U_n = [\sigma(s) - \sigma_n] U_{s-} + \sigma_n [U_{s-} - U_n]\)</span>. Aplicando la desigualdad <span class="math inline">\((a+b)^2 \le 2a^2 + 2b^2\)</span>: <span class="math display">\[
 |\sigma(s) U_{s-} - \sigma_n U_n|^2 \le 2|\sigma(s) - \sigma_n|^2 |U_{s-}|^2 + 2\sigma_n^2 |U_{s-} - U_n|^2.
-\]</span> Acotamos cada término usando (H1), el <a href="#lem-mom" class="quarto-xref">Lema&nbsp;<span>5.2</span></a> y el <span class="quarto-unresolved-ref">?lem-incr</span>: <span class="math display">\[
+\]</span> Acotamos cada término usando (H1), el <a href="#lem-mom" class="quarto-xref">Lema&nbsp;<span>5.2</span></a> y el <a href="#lem-incr" class="quarto-xref">Lema&nbsp;<span>5.4</span></a>: <span class="math display">\[
 \mathbb{E}|\sigma(s) U_{s-} - \sigma_n U_n|^2 \leq 2L_\sigma^2 (s - t_n) \cdot C + 2\bar{\sigma}^2 \cdot C(s - t_n) = C(s - t_n).
 \]</span> Integrando: <span class="math display">\[
 \|R_\sigma\|_{L^2}^2 \leq C \int_{t_n}^{t_{n+1}} (s - t_n) \, ds = C \left[ \frac{(s - t_n)^2}{2} \right]_{t_n}^{t_{n+1}} = C \frac{h_n^2}{2}.
@@ -777,7 +777,7 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 \]</span> pues <span class="math inline">\(h_n \le h_n^{1/2}\)</span> para <span class="math inline">\(h_n \le 1\)</span>. Multiplicando por <span class="math inline">\(r_n h_n\)</span>: <span class="math display">\[
 \|R_{\mathrm{impl}}\|_{L^2} \le \bar{r} h_n \cdot C h_n^{1/2} = C h_n^{3/2}.
 \]</span></p>
-<p>Sumando todas las cotas y usando que <span class="math inline">\(q_n \le 2\)</span> (<span class="quarto-unresolved-ref">?lem-factor</span>), de la <a href="#eq-desc" class="quarto-xref">Ecuación&nbsp;<span>5.17</span></a> se concluye que <span class="math inline">\(\|\rho_n\|_{L^2} \le C h_n\)</span>, demostrando la primera cota de la <span class="citation" data-cites="prop-defecto">(<a href="references.html#ref-prop-defecto" role="doc-biblioref"><strong>prop-defecto?</strong></a>)</span> (<a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.18</span></a>).</p>
+<p>Sumando todas las cotas y usando que <span class="math inline">\(q_n \le 2\)</span> (<span class="quarto-unresolved-ref">?lem-factor_prop</span>), de la <a href="#eq-desc" class="quarto-xref">Ecuación&nbsp;<span>5.17</span></a> se concluye que <span class="math inline">\(\|\rho_n\|_{L^2} \le C h_n\)</span>, demostrando la primera cota de la <a href="#prp-defecto" class="quarto-xref">Proposición&nbsp;<span>5.1</span></a> (<a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.18</span></a>).</p>
 <p>Se toma <span class="math inline">\(\mathbb E[\,\cdot\mid\mathcal F_{t_n}]\)</span> en <a href="#eq-desc" class="quarto-xref">Ecuación&nbsp;<span>5.17</span></a> (el factor <span class="math inline">\(1-r_nh_n\)</span> es determinista); se usa la desigualdad de Jensen condicional, <span class="math inline">\(\|\mathbb E[g\mid\mathcal F]\|\le\|g\|\)</span>, y el teorema de Fubini condicional.</p>
 <ul>
 <li><span class="math inline">\(R_c\)</span> es determinista: <span class="math inline">\(\le Ch_n^{3/2}\)</span>.</li>
@@ -795,7 +795,7 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 </div>
 <div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>La estructura (defecto local con cotas <span class="math inline">\(h_n\)</span> en norma y <span class="math inline">\(h_n^{3/2}\)</span> en esperanza condicional, recurrencia del error y Grönwall discreto) es la de Wang, Mei y Xue , que a su vez sigue a Baker y Buckwar; aquí la hacemos completa y explícita para el modelo de reservas, con el defecto descompuesto en <a href="#eq-desc" class="quarto-xref">Ecuación&nbsp;<span>5.17</span></a>.</p>
-<p> Por <a href="#eq-recur" class="quarto-xref">Ecuación&nbsp;<span>5.16</span></a>, <span class="math inline">\(e_0=0\)</span> y <span class="math inline">\(e_{n+1}=A_ne_n+\rho_n\)</span>. Por los <span class="quarto-unresolved-ref">?lem-factor</span>, <span class="quarto-unresolved-ref">?lem-bienplanteado</span> y la <span class="citation" data-cites="prop-defecto">(<a href="references.html#ref-prop-defecto" role="doc-biblioref"><strong>prop-defecto?</strong></a>)</span>, <span class="math inline">\(A_ne_n\in L^2\)</span> (<span class="math inline">\(A_n\)</span> es independiente de <span class="math inline">\(e_n\)</span>, que es <span class="math inline">\(\mathcal F_{t_n}\)</span>-medible) y <span class="math inline">\(\rho_n\in L^2\)</span>; todos los términos siguientes son integrables.</p>
+<p> Por <a href="#eq-recur" class="quarto-xref">Ecuación&nbsp;<span>5.16</span></a>, <span class="math inline">\(e_0=0\)</span> y <span class="math inline">\(e_{n+1}=A_ne_n+\rho_n\)</span>. Por los <span class="quarto-unresolved-ref">?lem-factor_prop</span>, <a href="#lem-bienplanteado" class="quarto-xref">Lema&nbsp;<span>5.6</span></a> y la <a href="#prp-defecto" class="quarto-xref">Proposición&nbsp;<span>5.1</span></a>, <span class="math inline">\(A_ne_n\in L^2\)</span> (<span class="math inline">\(A_n\)</span> es independiente de <span class="math inline">\(e_n\)</span>, que es <span class="math inline">\(\mathcal F_{t_n}\)</span>-medible) y <span class="math inline">\(\rho_n\in L^2\)</span>; todos los términos siguientes son integrables.</p>
 <p>Elevando al cuadrado y tomando esperanza, <span id="eq-expansion"><span class="math display">\[
 \mathbb E|e_{n+1}|^2=\mathbb E[A_n^2e_n^2]+2\,\mathbb E[A_n e_n\rho_n]+\mathbb E|\rho_n|^2 .
 \tag{5.20}\]</span></span> Como <span class="math inline">\(e_n\)</span> es <span class="math inline">\(\mathcal F_{t_n}\)</span>-medible, por <a href="#eq-factor" class="quarto-xref">Ecuación&nbsp;<span>5.14</span></a>, <span class="math inline">\(\mathbb E[A_n^2e_n^2]=\mathbb E\bigl[e_n^2\,\mathbb E[A_n^2\mid\mathcal F_{t_n}]\bigr]\le(1+Ch_n)\,\mathbb E|e_n|^2\)</span>.</p>
