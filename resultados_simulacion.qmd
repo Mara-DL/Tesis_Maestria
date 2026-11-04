@@ -24,7 +24,7 @@ jupyter: python3
 # Análisis de Resultados.
 
 ::: {style="text-align:justify"}
-En este capítulo se presentan y discuten los resultados numéricos obtenidos de la simulación numérica del modelo de Cramér-Lundberg extendido con difusión y saltos, descrito en la @sec-modelo_c_l_extendido, propuesto para la ecuación diferencial estocástica con saltos (EDE) que modela las reservas de la aseguradora. El objetivo central es validar la robustez computacional de los métodos Milstein Compensado (@eq-milstein_formal) y Semi-Implícito Compensado (@eq-semiimplicito_formal), evaluando su desempeño bajo las condiciones de mercado del sector asegurador de vivienda en la Ciudad de México.
+En este capítulo se presentan y discuten los resultados numéricos obtenidos de la simulación numérica del modelo de Cramér-Lundberg extendido con difusión y saltos, descrito en la @sec-modelo_c_l_extendido, propuesto para la ecuación diferencial estocástica con saltos (EDE) que modela las reservas de la aseguradora. El objetivo central es validar el comportamiento computacional de los métodos Milstein Compensado (@eq-milstein_formal) y Semi-Implícito Compensado (@eq-semiimplicito_formal), evaluando su desempeño bajo las condiciones de mercado del sector asegurador de vivienda en la Ciudad de México.
 
 ## Simulación Milstein sin Compensación.
 
@@ -334,17 +334,17 @@ donde $\Delta J_n^{\text{bruto}}$ es la suma no compensada de saltos ocurridos. 
 ::: {style="text-align:justify"}
 Se presentan las definiciones operativas de los esquemas numéricos, destacando sus fundamentos teóricos: la corrección de Milstein para la parte difusiva y el tratamiento implícito del término de interés para garantizar estabilidad incondicional.
 
-En el cual se ejecutaron $N_{\text{sim}} = 1000$ trayectorias Monte Carlo para el periodo histórico (enero 2024 - diciembre 2025) y pronóstico de enero 2026, con semilla fija ($2024-2025$ para histórico, $2026$ para pronóstico) para reproducibilidad. La cartera simulada corresponde a $N_{\text{pólizas}} = 6,800$ pólizas, representando aproximadamente el $40\%$ del mercado total de seguros de vivienda en la CDMX
+Se ejecutaron $N_{\mathrm{sim}}=1000$ trayectorias Monte Carlo para el periodo histórico (enero 2024--diciembre 2025, $\Delta t=1/365$, $X_0=500$ millones de USD) y un pronóstico a $30$ días (enero 2026) iniciado en la mediana final del histórico de cada esquema, con semillas $2026$ y $2027$. Ambos esquemas usan los mismos números aleatorios (conteos, severidades y $\Delta W_n$), de modo que las diferencias observadas se deben únicamente a la discretización. La cartera simulada corresponde a $N_{\mathrm{p\acute{o}lizas}}=6\,800$ pólizas.
 
 | Métrica | Milstein Compensado | Semi-Implícito Compensado | Diferencia Relativa |
 |:----------------:|:----------------:|:----------------:|:----------------:|
-| Reserva inicial ($U_0$) | $520.00$ | $520.00$ | $0.00\%$ |
-| Mediana final | $528.45$ | $540.60$ | $+2.30\%$ |
-| Límite inferior IC $90\%$ ($5\%$) | $512.30$ | $521.50$ | $+1.80\%$ |
-| Límite superior IC $90\%$ ($95\%$) | $545.80$ | $559.20$ | $+2.46\%$ |
-| Ancho IC $90\%$ | $33.50$ | $37.70$ | $+12.54\%$ |
-| Desviación estándar final | $8.21$ | $9.15$ | $+11.45\%$ |
-| Error estándar de la mediana | $0.26$ | $0.29$ | $+11.54\%$ |
+| Reserva inicial ($U_0$) | $572.788$ | $572.804$ | $+0.0028\%$ |
+| Mediana final | $576.494$ | $576.512$ | $+0.0031\%$ |
+| Límite inferior IC $90\%$ ($5\%$) | $571.461$ | $521.50$ | $+0.0024\%$ |
+| Límite superior IC $90\%$ ($95\%$) | $581.635$ | $$581.635 $ | $+0.0031\%$ |
+| Ancho IC $90\%$ | $10.156$ | $10.160$ | $+0.0031\%$ |
+| Desviación estándar final | $3.0698$ | $3.0704$ | $+0.019\%$ |
+| Error estándar de la mediana | $0.1216$ | $0.1217$ | $+0.018\%$ |
 
 : Comparación cuantitativa de resultados para enero 2026 Milstein vs. Semi-Implícito (millones USD).
 :::
@@ -1172,25 +1172,17 @@ if GUARDAR_NPZ:                                            # [RESTAURADO]
 
 La @fig-milstein y la @fig-semi_implicito presenta las trayectorias medianas e intervalos de confianza. Se observan tres hallazgos críticos:
 
-a)  **Sesgo sistemático en la tendencia**: El esquema semi-implícito genera reservas medianas consistentemente superiores ($+2.30\%$ al final del periodo). Esto se explica matemáticamente por la desigualdad: $$\frac{1}{1 - r\Delta t} > 1 + r\Delta t + \mathcal{O}((r\Delta t)^2), \quad \forall r\Delta t \in (0,1),$$ {#eq-sesgo_implicito}
+a) La mediana final del histórico es $572.80$ millones con el semi-implícito y $572.79$ millones con Milstein (diferencia $+0.003\,\%$). La diferencia es la que se espera de $\sum_i(r_i\Delta t)^2$, es un efecto de discretización de orden $\Delta t$ que desaparece al refinar la malla. La tendencia de la mediana refleja la acumulación de primas e inversión frente a siniestros esperados: primas medias de $4.06$ millones de USD por año frente a un costo esperado de siniestros de $3.35$ millones (razón $82.6\,\%$), con tasa de inversión anualizada de $6.0\,\%$ a $7.3\,\%$ (promedio $6.7\,\%$) según el programa.
 
-que amplifica el efecto de capitalización del término $r(t)U(t)$. En contextos de tasas de interés positivas (como el mexicano con $r_{\text{prom}} \approx 5.6\%$ anual), este sesgo actúa como un factor de conservadurismo deseable para gestión de solvencia.
-
-b)  **Patrón estacional de saltos**: Ambos métodos detectan $7$ saltos significativos en la trayectoria mediana durante el periodo histórico, con concentración en agosto-septiembre ($61.1\%$ de los saltos), coincidiendo con la temporada de huracanes (@fig-milstein, @fig-semi_implicito marcadores rojos/azules). La coincidencia espacio-temporal de los saltos ($94.4\%$ en las mismas fechas) valida la robustez de la modelación estado-dependiente de $c(t,x,v)$.
-
-c)  **Comportamiento asintótico del intervalo de confianza**: El ancho del IC $90\%$ crece un $12.54\%$ más rápido en el esquema Semi-implícito. Esto refleja una mayor dispersión en las trayectorias extremas, atribuible a la no linealidad introducida por el denominador $1 - r(t_n)\Delta t$ en la @eq-semiimplicito_formal, que amplifica las realizaciones con $\Delta W_n > 0$.
+b) El detector de $3\sigma$ sobre los log-rendimientos de la trayectoria mediana identifica $11$ saltos con el semi-implícito y $12$ con Milstein en el histórico, de los cuales $9$ coinciden en la fecha. Como la mediana de $1000$ trayectorias suaviza los siniestros individuales.
 
 ### Análisis de Monte Carlo y Pronóstico mediante Mediana
 
-La elección de la mediana como estadístico de pronóstico es rigurosamente justificable en este contexto:
-
-- **Robustez ante colas pesadas**: La distribución de reservas presenta asimetría negativa ($\gamma_1 \approx -0.85$) debido a los saltos catastróficos. La mediana es invariante ante transformaciones monótonas y menos sensible a outliers que la media (@huber2004robust), crucial para evitar subestimación de riesgos extremos.
-- **Consistencia con principios actuariales**: La CNSF exige en su Circular Única (Capítulo $7.3.2$) que las proyecciones de reservas utilicen medidas de tendencia central robustas ante eventos de baja frecuencia y alta severidad. La mediana satisface este requisito regulatorio.
-- **Eficiencia estadística**: Para $N_{\text{sim}} = 1000$, el error estándar de la mediana es $\text{EE}(\tilde{U}) \approx \frac{1.253\sigma}{\sqrt{N_{\text{sim}}}}$ \autocite{kenney1951mathematics}, comparable al error de la media ($\sigma/\sqrt{N_{\text{sim}}}$) pero con menor sesgo ante no normalidad. Los resultados muestran $\text{EE}^{\text{Mil}} = 0.26$ y $\text{EE}^{\text{SI}} = 0.29$, dentro de márgenes aceptables para toma de decisiones.
+La mediana es un estadístico robusto de tendencia central, invariante ante transformaciones monótonas y menos sensible a observaciones extremas que la media (Huber y Ronchetti). Con $N_{\mathrm{sim}}=1000$, el error estándar de la mediana es $\approx1.253\,\sigma/\sqrt{N_{\mathrm{sim}}}$ (Kenney y Keeping), es decir $0.12$ millones en el pronóstico y $0.90$ millones en el histórico. La distribución de las reservas finales del histórico tiene asimetría positiva moderada (coeficiente de asimetría muestral $0.20$ en ambos esquemas), no la asimetría negativa de $-0.85$ citada en la versión anterior; la elección de la mediana se justifica por su robustez y no por esa asimetría. La referencia a la Circular Única de la CNSF debe citarse con el artículo exacto o eliminarse
 
 ## Distribución de severidad de los saltos detectados y distribución de los tiempos entre detecciones
 
-La presente sección constituye la continuación del análisis de la trayectoria mediana y de la formulación metodológica establecida en la @sec-Es_N_Pa_D_S_S_html y @sec-Dis_tiem_entre_saltos. Mientras que en la @sec-an_tra_med_sal se estudia la trayectoria agregada mediante estadísticos del ensamble, en esta sección se utiliza la información completa de las $N_{\mathrm{sim}}=1000$ trayectorias simuladas mediante los esquemas de **Milstein compensado** y **Semi-Implícito compensado**.
+La presente sección constituye la continuación del análisis de la trayectoria mediana y de la formulación metodológica establecida en la @sec-Es_N_Pa_D_S_S_html y @sec-Dis_tiem_entre_saltos_html. Mientras que en la @sec-an_tra_med_sal se estudia la trayectoria agregada mediante estadísticos del ensamble, en esta sección se utiliza la información completa de las $N_{\mathrm{sim}}=1000$ trayectorias simuladas mediante los esquemas de **Milstein compensado** y **Semi-Implícito compensado**.
 
 Los resultados presentados corresponden directamente a las salidas generadas por los programas. Ambos experimentos emplean la misma semilla aleatoria $2026$, $N_{\mathrm{sim}}=1000$, horizonte $T=2$ años, paso temporal $\Delta t=1/365$ y ventana local de bipotencia $K=27$.
 :::
@@ -2264,7 +2256,7 @@ La elección de la mediana como estadístico de pronóstico es rigurosamente jus
 
 ## Distribución de severidad de los saltos detectados y distribución de los tiempos entre detecciones
 
-La presente sección constituye la continuación del análisis de la trayectoria mediana y de la formulación metodológica establecida en la @sec-Es_N_Pa_D_S_S y @sec-Dis_tiem_entre_saltos. Mientras que en la Sección @sec-an_tra_med_sal se estudia la trayectoria agregada mediante estadísticos del ensamble, en esta sección se utiliza la información completa de las $N_{\mathrm{sim}}=1000$ trayectorias simuladas mediante los esquemas de **Milstein compensado** y **Semi-Implícito compensado**.
+La presente sección constituye la continuación del análisis de la trayectoria mediana y de la formulación metodológica establecida en la @sec-Es_N_Pa_D_S_S y @sec-Dis_tiem_entre_saltos_pdf. Mientras que en la Sección @sec-an_tra_med_sal se estudia la trayectoria agregada mediante estadísticos del ensamble, en esta sección se utiliza la información completa de las $N_{\mathrm{sim}}=1000$ trayectorias simuladas mediante los esquemas de **Milstein compensado** y **Semi-Implícito compensado**.
 
 Los resultados presentados corresponden directamente a las salidas generadas por los programas. Ambos experimentos emplean la misma semilla aleatoria $2026$, $N_{\mathrm{sim}}=1000$, horizonte $T=2$ años, paso temporal $\Delta t=1/365$ y ventana local de bipotencia $K=27$.
 :::

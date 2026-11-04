@@ -442,7 +442,7 @@ Consideramos el proceso de reservas bajo el modelo extendido de Cramér–Lundbe
 
 $$
 dX_t=\Big[\underbrace{c(t)+r(t)X_{t^-}-\lambda_{\text{meteo}}(t) \ \mathbb E[Y_{\text{meteo}}]-\lambda_{\text{sismo}} \ \mathbb E[Y_{\text{sismo}}]}_{\mu(t,X_{t^-})}\Big]dt+\underbrace{\sigma(t)X_{t^-}}_{\sigma(t,X_{t^-})} \ dW_t-d\tilde J_t,
-$$
+$$ {#eq-proce_reser_c_l_e}
 
 donde $\tilde J_t=J_t-\int_0^t\big[\lambda_{\text{meteo}}(s) \ \mathbb E[Y_{\text{meteo}}]+\lambda_{\text{sismo}} \ \mathbb E[Y_{\text{sismo}}]\big]ds$ es el proceso de siniestros agregados compensado (@sec-severidad}}), $d\tilde J_t=\int y \ \tilde N_{\text{meteo}}(dt,dy)+\int y \ \tilde N_{\text{sismo}}(dt,dy)$. Como las severidades son independientes del estado, el valor esperado $\mathbb E[Y]$ son constantes y no condicionales a $\mathcal F_t$.
 
@@ -457,7 +457,7 @@ Dada la complejidad de la ecuación diferencial estocástica con saltos resultan
 
 ## Implementación Numérica Métodos Milstein y Semi-Implícito.
 
-Presentando el algoritmo de Milstein compensado (@sec-Milstein_compensado), escrito en lenguaje natural estructurado (es decir, como un pseudocódigo), diseñado específicamente para aproximar soluciones de ecuaciones diferenciales estocásticas (EDS) con difusión y salto ( @eq-reservas-8-5), como las que surgen en el modelo de Cramér–Lundberg (@eq-modelo_extendido) por ejemplo, con componentes de procesos compuestos de Poisson)
+Presentando el algoritmo de Milstein compensado (@sec-Milstein_compensado), escrito en lenguaje natural estructurado (es decir, como un pseudocódigo), diseñado específicamente para aproximar soluciones de ecuaciones diferenciales estocásticas (EDS) con difusión y salto, como las que surgen en el modelo de Cramér–Lundberg (@eq-modelo_extendido) por ejemplo, con componentes de procesos compuestos de Poisson)
 
 El pseudocódigo siguiente está pensado para ser puente conceptual entre la teoría y la implementación, y se enfoca en la versión compensada (es decir, usando el proceso de salto compensado (@def-med_alea_poisson) $\tilde{N} = N_t - \lambda t$) para garantizar que el término de salto tenga esperanza cero y sea adecuado para esquemas numéricos estables.
 :::
