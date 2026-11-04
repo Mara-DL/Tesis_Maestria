@@ -1195,9 +1195,9 @@ F_t^{\mathrm{sismo}}(dy)
 <section id="aproximación-numérica-del-modelo-de-crámer-lundberg-extendido" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="aproximación-numérica-del-modelo-de-crámer-lundberg-extendido"><span class="header-section-number">6.3</span> Aproximación numérica del modelo de Crámer Lundberg extendido</h2>
 <p>Consideramos el proceso de reservas bajo el modelo extendido de Cramér–Lundberg con inversión estocástica y saltos en forma diferencial estocástica compensada:</p>
-<p><span class="math display">\[
+<p><span id="eq-proce_reser_c_l_e"><span class="math display">\[
 dX_t=\Big[\underbrace{c(t)+r(t)X_{t^-}-\lambda_{\text{meteo}}(t) \ \mathbb E[Y_{\text{meteo}}]-\lambda_{\text{sismo}} \ \mathbb E[Y_{\text{sismo}}]}_{\mu(t,X_{t^-})}\Big]dt+\underbrace{\sigma(t)X_{t^-}}_{\sigma(t,X_{t^-})} \ dW_t-d\tilde J_t,
-\]</span></p>
+\tag{6.5}\]</span></span></p>
 <p>donde <span class="math inline">\(\tilde J_t=J_t-\int_0^t\big[\lambda_{\text{meteo}}(s) \ \mathbb E[Y_{\text{meteo}}]+\lambda_{\text{sismo}} \ \mathbb E[Y_{\text{sismo}}]\big]ds\)</span> es el proceso de siniestros agregados compensado (<a href="#sec-severidad" class="quarto-xref"><span>Sección 6.2</span></a>}}), <span class="math inline">\(d\tilde J_t=\int y \ \tilde N_{\text{meteo}}(dt,dy)+\int y \ \tilde N_{\text{sismo}}(dt,dy)\)</span>. Como las severidades son independientes del estado, el valor esperado <span class="math inline">\(\mathbb E[Y]\)</span> son constantes y no condicionales a <span class="math inline">\(\mathcal F_t\)</span>.</p>
 <p>La compensación separa el costo esperado de los siniestros, <span class="math display">\[\Lambda(t)=\lambda_{\text{meteo}}(t)\mathbb E[Y_{\text{meteo}}]+\lambda_{\text{sismo}}\mathbb E[Y_{\text{sismo}}],\]</span></p>
 <p>que se carga en la deriva, de su innovación de media cero, <span class="math inline">\(d\tilde J_t\)</span>.</p>
@@ -1206,7 +1206,7 @@ dX_t=\Big[\underbrace{c(t)+r(t)X_{t^-}-\lambda_{\text{meteo}}(t) \ \mathbb E[Y_{
 </section>
 <section id="implementación-numérica-métodos-milstein-y-semi-implícito." class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="implementación-numérica-métodos-milstein-y-semi-implícito."><span class="header-section-number">6.4</span> Implementación Numérica Métodos Milstein y Semi-Implícito.</h2>
-<p>Presentando el algoritmo de Milstein compensado (<a href="metodos-numericos.html#sec-Milstein_compensado" class="quarto-xref"><span>Sección 5.3</span></a>), escrito en lenguaje natural estructurado (es decir, como un pseudocódigo), diseñado específicamente para aproximar soluciones de ecuaciones diferenciales estocásticas (EDS) con difusión y salto ( <span class="quarto-unresolved-ref">?eq-reservas-8-5</span>), como las que surgen en el modelo de Cramér–Lundberg (<a href="edes_saltos.html#eq-modelo_extendido" class="quarto-xref">Ecuación&nbsp;<span>4.10</span></a>) por ejemplo, con componentes de procesos compuestos de Poisson)</p>
+<p>Presentando el algoritmo de Milstein compensado (<a href="metodos-numericos.html#sec-Milstein_compensado" class="quarto-xref"><span>Sección 5.3</span></a>), escrito en lenguaje natural estructurado (es decir, como un pseudocódigo), diseñado específicamente para aproximar soluciones de ecuaciones diferenciales estocásticas (EDS) con difusión y salto, como las que surgen en el modelo de Cramér–Lundberg (<a href="edes_saltos.html#eq-modelo_extendido" class="quarto-xref">Ecuación&nbsp;<span>4.10</span></a>) por ejemplo, con componentes de procesos compuestos de Poisson)</p>
 <p>El pseudocódigo siguiente está pensado para ser puente conceptual entre la teoría y la implementación, y se enfoca en la versión compensada (es decir, usando el proceso de salto compensado (<a href="fundamentos_estocasticos.html#def-med_alea_poisson" class="quarto-xref">Definición&nbsp;<span>3.18</span></a>) <span class="math inline">\(\tilde{N} = N_t - \lambda t\)</span>) para garantizar que el término de salto tenga esperanza cero y sea adecuado para esquemas numéricos estables.</p>
 </section>
 </div>
