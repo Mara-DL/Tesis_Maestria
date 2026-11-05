@@ -587,13 +587,247 @@ Y_{n+1}={}&amp;Y_n+(c_n+r_nY_n)h+\sigma_nY_n\Delta W_n\
 \tag{5.7}\]</span></span></p>
 <p>Por tanto, el esquema de <a href="#eq-4" class="quarto-xref">Ecuación&nbsp;<span>5.6</span></a> converge fuertemente con orden al menos <span class="math inline">\(1/2\)</span> en los tiempos de la malla.</p>
 </div>
+<div class="proof" style="text-align:justify">
+<p><span class="proof-title"><em>Demostración</em>. </span>Denotamos el paso de la malla uniforme como <span class="math inline">\(h = \Delta t = T/N\)</span>, con nodos <span class="math inline">\(t_n = nh\)</span> para <span class="math inline">\(n=0,1,\dots,N\)</span>. Bajo las hipótesis de regularidad y crecimiento lineal (H1) sobre los coeficientes de deriva <span class="math inline">\(a(t,x)=c(t)+r(t)x\)</span> y difusión <span class="math inline">\(b(t,x)=\sigma(t)x\)</span>, junto con la condición de momentos finitos de los saltos (H2) y la regularidad de la intensidad compensada (H3), se satisfacen las condiciones estándar de Lipschitz global para ecuaciones diferenciales estocásticas de It^o con saltos de actividad finita. En virtud de los resultados clásicos de existencia, unicidad y estimaciones de momentos (obtenidos mediante la desigualdad de Burkholder–Davis–Gundy y el lema de Gr"onwall, como se estableció en el Teorema 6.1), la solución exacta <span class="math inline">\(X_t\)</span> posee momentos de segundo orden uniformemente acotados en el horizonte finito <span class="math inline">\([0,T]\)</span>. En particular, se tiene que <span id="eq-momentos_solucion_exacta"><span class="math display">\[
+\sup_{0\le t\le T}\,\mathbb{E}\left[|X_t|^2\right] \le C\bigl(1+\mathbb{E}|X_0|^2\bigr) &lt; \infty,
+\tag{5.8}\]</span></span></p>
+<p>donde <span class="math inline">\(C&gt;0\)</span> es una constante independiente del paso de discretización <span class="math inline">\(h\)</span>.</p>
+<p>A continuación, se analiza la estabilidad en segundo momento de la aplicación numérica de un paso. Para un estado inicial <span class="math inline">\(x\)</span>, definimos el operador de transición del esquema de Milstein compensado como <span class="math display">\[
+    \Psi_n^{M}(x)=x+(c_n+r_nx)h+\sigma_nx\Delta W_n +\frac{1}{2}\sigma_n^2x\big((\Delta W_n)^2-h\big)-\Delta \tilde{J}_n,
+\]</span> donde <span class="math inline">\(\Delta \tilde{J}_n = \Delta J_n - \Lambda_n h\)</span> es el incremento compensado del proceso de saltos. Al evaluar la diferencia entre dos estados iniciales <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span>, los términos aditivos deterministas y los incrementos de salto compensados se cancelan idénticamente, lo que nos permite factorizar la diferencia como <span class="math display">\[
+    \Psi_n^{M}(x)-\Psi_n^{M}(y)=A_n^M(x-y),
+\]</span></p>
+<p>donde el factor de propagación estocástica está dado por <span id="eq-factor_propagacion_milstein"><span class="math display">\[
+    A_n^M=1+r_nh+\sigma_n\Delta W_n +\frac{1}{2}\sigma_n^2\big((\Delta W_n)^2-h\big).
+\tag{5.9}\]</span></span></p>
+<p>Dado que el incremento de Wiener <span class="math inline">\(\Delta W_n\)</span> es independiente de la filtración <span class="math inline">\(\mathcal{F}_{t_n}\)</span>, posee media cero y sus momentos de segundo y cuarto orden satisfacen <span class="math inline">\(\mathbb{E}[(\Delta W_n)^2]=h\)</span> y <span class="math inline">\(\mathbb{E}[(\Delta W_n)^4]=3h^2\)</span>. Aprovechando la acotación de los coeficientes <span class="math inline">\(r_n\)</span> y <span class="math inline">\(\sigma_n\)</span> (hipótesis (H1)), así como la ortogonalidad de los términos en la expansión de <span class="math inline">\(\mathbb{E}[(A_n^M)^2]\)</span>, se deduce que, para <span class="math inline">\(0&lt;h\le h_0\)</span>, existe una constante <span class="math inline">\(C&gt;0\)</span> tal que <span id="eq-cota_factor_propagacion"><span class="math display">\[
+    \mathbb{E}[(A_n^M)^2]\le 1+Ch.
+\tag{5.10}\]</span></span> En consecuencia, la estabilidad condicional en segundo momento del esquema se expresa como <span id="eq-estabilidad_segundo_momento"><span class="math display">\[
+    \mathbb{E}\left[ |\Psi_n^M(x)-\Psi_n^M(y)|^2 \mid \mathcal{F}_{t_n} \right] \le (1+Ch)|x-y|^2.
+\tag{5.11}\]</span></span></p>
+<p>Ahora se demostrarán las estimaciones locales a partir de la representación exacta de la solución y de las propiedades de los incrementos brownianos y de la medida de Poisson compensada.</p>
+<p>Para ello, defínase el factor de evolución de la ecuación homogénea (parte continua) mediante <span class="math display">\[
+G(s,u)=
+\exp\left(
+\int_u^s\left(r(v)-\frac{1}{2}\sigma^2(v)\right)\,dv
++\int_u^s\sigma(v)\,dW_v
+\right),\qquad u\leq s.
+\]</span></p>
+<p>Dado que el esquema numérico es compensado, es conveniente escribir la ecuaciónn exacta separando la medida de Poisson pura <span class="math inline">\(N(ds, dz)\)</span> de su compensador <span class="math inline">\(\nu(dz)ds\)</span>. La fórmula de variación de constantes proporciona</p>
+<p><span id="eq-variacion_constantes"><span class="math display">\[
+\begin{aligned}
+X_{t_{n+1}}
+={}&amp;G(t_{n+1},t_n)X_{t_n}
++\int_{t_n}^{t_{n+1}} G(t_{n+1},s)\bigl[c(s)-\Lambda(s)\bigr]\,ds\\
+&amp;+\int_{t_n}^{t_{n+1}}\int_E z\, G(t_{n+1},s)\,\tilde{N}(ds, dz),
+\end{aligned}
+\tag{5.12}\]</span></span></p>
+<p>donde <span class="math inline">\(\tilde{N}(ds, dz) = N(ds, dz) - \nu(dz)ds\)</span> es la medida de Poisson compensada definida en el Capítulo 5 (Definición 5.18), y <span class="math inline">\(\Lambda(s) = \int_E z\,\nu(dz)\)</span> es la intensidad compensada asociada al costo esperado de los siniestros por unidad de tiempo.</p>
+<p>Por otra parte, la aplicación numérica del esquema de Milstein compensado puede escribirse como <span id="eq-esquema_descompuesto"><span class="math display">\[
+\begin{aligned}
+\Psi_n^M(X_{t_n})
+={}&amp;P_n^M X_{t_n}+(c_n-\Lambda_n)h
++\int_{t_n}^{t_{n+1}}\int_E z\,\tilde{N}(ds, dz),
+\end{aligned}
+\tag{5.13}\]</span></span> donde <span class="math display">\[
+P_n^M=
+1+r_nh+\sigma_n\Delta W_n
++\frac{1}{2}\sigma_n^2\bigl((\Delta W_n)^2-h\bigr).
+\]</span> En consecuencia, el defecto local <span class="math inline">\(\rho_n^M = X_{t_{n+1}} - \Psi_n^M(X_{t_n})\)</span> admite la descomposición <span class="math display">\[
+\rho_n^M=R_n^{\mathrm{cont}}+R_n^{\mathrm{salto}},
+\]</span> con <span id="eq-residuo_continuo"><span class="math display">\[
+\begin{aligned}
+R_n^{\mathrm{cont}}
+={}&amp;X_{t_n}\bigl(G(t_{n+1},t_n)-P_n^M\bigr)\\
+&amp;+\int_{t_n}^{t_{n+1}} \Bigl[G(t_{n+1},s)\bigl(c(s)-\Lambda(s)\bigr) - (c_n-\Lambda_n)\Bigr]\,ds
+\end{aligned}
+\tag{5.14}\]</span></span></p>
+<p>y el residuo de interaccón salto–difus}omn dado por</p>
+<p><span id="eq-residuo_salto"><span class="math display">\[
+R_n^{\mathrm{salto}}
+=\int_{t_n}^{t_{n+1}}\int_E z\,\bigl(G(t_{n+1},s)-1\bigr)\,\tilde{N}(ds, dz).
+\tag{5.15}\]</span></span> Esta descomposición separa el residuo de la aproximación continua de Milstein de los términos que describen la interacción entre los saltos y la difusión.</p>
+<p>Bajo las hipótesis de regularidad (H1) y acotamiento de los coeficientes, la expansión estocástica del factor <span class="math inline">\(G(t_{n+1},t_n)\)</span> hasta los términos de segundo orden en el incremento browniano da <span class="math display">\[
+G(t_{n+1},t_n)
+=P_n^M+\mathcal{R}_n^G,
+\]</span> donde el residuo satisface las estimaciones <span class="math display">\[
+|\mathcal{R}_n^G|_{L^2}\leq Ch^{3/2},
+\qquad
+\left|\mathbb{E}[\mathcal{R}_n^G]\right|\leq Ch^2.
+\]</span> La primera cota se obtiene controlando los términos iterados de las integrales estocásticas que no aparecen en la expansión de Milstein y la variación temporal de <span class="math inline">\(r\)</span> y <span class="math inline">\(\sigma\)</span>. La segunda se obtiene tomando esperanza en la expansión: los incrementos brownianos centrados desaparecen y los términos deterministas restantes son de orden al menos <span class="math inline">\(h^2\)</span>. Las constantes son uniformes respecto de <span class="math inline">\(n\)</span>.</p>
+<p>De manera análoga, la regularidad Lipschitz de <span class="math inline">\(c\)</span> y <span class="math inline">\(\Lambda\)</span> (hipótesis (H1) y (H3)), junto con la estimación <span class="math display">\[
+\|G(t_{n+1},s)-1\|_{L^2}
+\leq C(t_{n+1}-s)^{1/2},
+\]</span> implican que <span class="math display">\[
+\left\|
+\int_{t_n}^{t_{n+1}}
+G(t_{n+1},s)\bigl(c(s)-\Lambda(s)\bigr)\,ds-(c_n-\Lambda_n)h
+\right\|_{L^2}
+\leq Ch^{3/2}.
+\]</span> En efecto, se descompone la diferencia como <span class="math display">\[
+\begin{aligned}
+&amp;\int_{t_n}^{t_{n+1}}
+G(t_{n+1},s)\bigl(c(s)-\Lambda(s)\bigr)\,ds-(c_n-\Lambda_n)h\\
+&amp;\quad =
+\int_{t_n}^{t_{n+1}}
+\bigl(G(t_{n+1},s)-1\bigr)\bigl(c(s)-\Lambda(s)\bigr)\,ds\\
+&amp;\qquad+
+\int_{t_n}^{t_{n+1}}\bigl[\bigl(c(s)-\Lambda(s)\bigr)-\bigl(c_n-\Lambda_n\bigr)\bigr]\,ds.
+\end{aligned}
+\]</span> El primer término se estima mediante la desigualdad integral de Minkowski y la cota anterior para <span class="math inline">\(G-1\)</span>, mientras que el segundo es de orden <span class="math inline">\(h^2\)</span> por la condición Lipschitz de <span class="math inline">\(c\)</span> y <span class="math inline">\(\Lambda\)</span>. Además, como <span class="math display">\[
+\mathbb{E}[G(t_{n+1},s)]
+=\exp\left(\int_s^{t_{n+1}}r(v)\,dv\right),
+\]</span> se obtiene <span class="math display">\[
+\left|
+\mathbb{E}\left[
+\int_{t_n}^{t_{n+1}}
+G(t_{n+1},s)\bigl(c(s)-\Lambda(s)\bigr)\,ds-(c_n-\Lambda_n)h
+\right]
+\right|
+\leq Ch^2.
+\]</span></p>
+<p>Puesto que <span class="math inline">\(X_{t_n}\)</span> es <span class="math inline">\(\mathcal{F}_{t_n}\)</span>-medible y los incrementos futuros son independientes de <span class="math inline">\(\mathcal{F}_{t_n}\)</span>, las estimaciones anteriores implican <span class="math display">\[
+\|R_n^{\mathrm{cont}}\|_{L^2}
+\leq Ch^{3/2}
+\left(1+\|X_{t_n}\|_{L^2}\right)
+\]</span> y <span class="math display">\[
+\left\|
+\mathbb{E}[R_n^{\mathrm{cont}}\mid\mathcal{F}_{t_n}]
+\right\|_{L^2}
+\leq Ch^2
+\left(1+\|X_{t_n}\|_{L^2}\right).
+\]</span> La estimación de momentos <a href="#eq-momentos_solucion_exacta" class="quarto-xref">Ecuación&nbsp;<span>5.8</span></a> garantiza que las cantidades <span class="math inline">\(\|X_{t_n}\|_{L^2}\)</span> están uniformemente acotadas para <span class="math inline">\(t_n\in[0,T]\)</span>. Por tanto, <span class="math display">\[
+\|R_n^{\mathrm{cont}}\|_{L^2}\leq Ch^{3/2},
+\qquad
+\left\|
+\mathbb{E}[R_n^{\mathrm{cont}}\mid\mathcal{F}_{t_n}]
+\right\|_{L^2}
+\leq Ch^2.
+\]</span></p>
+<p>Para controlar la contribución de los saltos, observemos que la integral estocástica respecto a la medida compensada <span class="math inline">\(\tilde{N}\)</span> es una martingala de cuadrado integrable (Teorema 5.17). Usando la isometría de Itô para la medida de Poisson compensada y la acotación de la intensidad <span class="math inline">\(\lambda(s)\)</span> (hipótesis (H2)) y del segundo momento de las marcas <span class="math inline">\(\int_E z^2\,\nu(dz) \le C\)</span>, obtenemos directamente el segundo momento incondicional: <span class="math display">\[
+\begin{aligned}
+\mathbb{E}\bigl|R_n^{\mathrm{salto}}\bigr|^2
+&amp;= \mathbb{E}\left[\int_{t_n}^{t_{n+1}}\int_E z^2\,\bigl|G(t_{n+1},s)-1\bigr|^2\,\nu(dz)\,ds\right]\\
+&amp;\le C\int_{t_n}^{t_{n+1}}\mathbb{E}\left[\bigl|G(t_{n+1},s)-1\bigr|^2\right]\,ds.
+\end{aligned}
+\]</span> Dado que <span class="math inline">\(\mathbb{E}[|G(t_{n+1},s)-1|^2] \le C(t_{n+1}-s)\)</span>, la integral está acotada por <span class="math display">\[
+C\int_{t_n}^{t_{n+1}}(t_{n+1}-s)\,ds \leq Ch^2.
+\]</span> Por consiguiente, <span class="math inline">\(\|R_n^{\mathrm{salto}}\|_{L^2}\leq Ch\)</span>. Además, como la integral compensada tiene esperanza condicional cero respecto a la filtración <span class="math inline">\(\mathcal{F}_{t_n}\)</span> (por ser una integral estocástica respecto a una martingala con integrando predecible), y el factor <span class="math inline">\(G(t_{n+1},s)-1\)</span> es <span class="math inline">\(\mathcal{F}_{t_{n+1}}\)</span>-medible pero independiente de los saltos futuros, se tiene que <span class="math display">\[
+\left\|\mathbb{E}\bigl[R_n^{\mathrm{salto}}\mid\mathcal{F}_{t_n}\bigr]\right\|_{L^2} \le Ch^2.
+\]</span></p>
+<p>Al combinar las estimaciones de las contribuciones continua y de salto, se obtiene</p>
+<p><span id="eq-cota_defecto_L2"><span class="math display">\[
+\begin{aligned}
+\|\rho_n^M\|_{L^2}
+&amp;\leq
+\|R_n^{\mathrm{cont}}\|_{L^2}
++\|R_n^{\mathrm{salto}}\|_{L^2}\\
+&amp;\leq C(h^{3/2}+h)
+\leq Ch,
+\end{aligned}
+\tag{5.16}\]</span></span></p>
+<p>para <span class="math inline">\(h\leq h_0\)</span>, ajustando la constante si es necesario. De igual manera, la linealidad de la esperanza condicional proporciona <span id="eq-cota_defecto_esperanza"><span class="math display">\[
+\begin{aligned}
+&amp;\left\|
+\mathbb{E}[\rho_n^M\mid\mathcal{F}_{t_n}]
+\right\|_{L^2}\\
+&amp;\quad\leq
+\left\|
+\mathbb{E}[R_n^{\mathrm{cont}}\mid\mathcal{F}_{t_n}]
+\right\|_{L^2}
++
+\left\|
+\mathbb{E}[R_n^{\mathrm{salto}}\mid\mathcal{F}_{t_n}]
+\right\|_{L^2}\\
+&amp;\quad\leq Ch^2.
+\end{aligned}
+\tag{5.17}\]</span></span></p>
+<p>Se han demostrado, por tanto, las dos estimaciones locales fundamentales: <span class="math display">\[
+    \|\rho_n^M\|_{L^2}\le Ch, \qquad \text{y} \qquad \|\mathbb{E}[\rho_n^M\mid\mathcal{F}_{t_n}]\|_{L^2} \le Ch^2.
+\]</span></p>
+<p>Finalmente, para establecer la cota de covarianza cruzada, recordemos que <span class="math inline">\(\mathbb{E}[A_n^M]=1+r_nh\)</span>. Por la expresión de <span class="math inline">\(A_n^M\)</span> y los momentos del incremento browniano, <span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[
+(A_n^M-\mathbb{E} A_n^M)^2
+\right]
+&amp;=\sigma_n^2h+\frac{1}{2}\sigma_n^4h^2\\
+&amp;\leq Ch.
+\end{aligned}
+\]</span> Además, <span class="math inline">\(A_n^M-\mathbb{E} A_n^M\)</span> tiene esperanza condicional cero respecto de <span class="math inline">\(\mathcal{F}_{t_n}\)</span>, y su segundo momento condicional es determinista. Aplicando la desigualdad de Cauchy–Schwarz condicional, se obtiene <span class="math display">\[
+\begin{aligned}
+&amp;\left|
+\mathbb{E}\left[
+(A_n^M-\mathbb{E} A_n^M)\rho_n^M
+\mid\mathcal{F}_{t_n}
+\right]
+\right|\\
+&amp;\quad\leq
+\left(
+\mathbb{E}\bigl[
+(A_n^M-\mathbb{E} A_n^M)^2
+\mid\mathcal{F}_{t_n}\bigr]
+\right)^{1/2}\\
+&amp;\qquad\quad\times
+\left(
+\mathbb{E}\bigl[
+|\rho_n^M|^2
+\mid\mathcal{F}_{t_n}\bigr]
+\right)^{1/2}\\
+&amp;\quad\leq
+Ch^{1/2}
+\left(
+\mathbb{E}\bigl[
+|\rho_n^M|^2
+\mid\mathcal{F}_{t_n}\bigr]
+\right)^{1/2}.
+\end{aligned}
+\]</span> Tomando la norma <span class="math inline">\(L^2\)</span> y usando la primera estimación de <a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.37</span></a>, resulta <span id="eq-cota_covarianza"><span class="math display">\[
+\begin{aligned}
+&amp;\left\|
+\mathbb{E}\left[
+(A_n^M-\mathbb{E} A_n^M)\rho_n^M
+\mid\mathcal{F}_{t_n}
+\right]
+\right\|_{L^2}\\
+&amp;\qquad\leq Ch^{1/2}\|\rho_n^M\|_{L^2}
+\leq Ch^{3/2}.
+\end{aligned}
+\tag{5.18}\]</span></span></p>
+<p>Una vez establecidas las cotas locales, procedemos a analizar la propagación del error global. Definimos el error en el paso <span class="math inline">\(n\)</span> como <span class="math inline">\(e_n=X_{t_n}-Y_n\)</span>. Por la definición del defecto local, la recurrencia del error se descompone como <span id="eq-recurrencia_error"><span class="math display">\[
+    e_{n+1}=A_n^M e_n+\rho_n^M.
+\tag{5.19}\]</span></span></p>
+<p>Esta identidad representa una descomposición entre la aplicación numérica evaluada en dos estados y el defecto local, sin afirmar que el flujo exacto y el esquema compartan el mismo factor de propagación. Al elevar <a href="#eq-recurrencia_error" class="quarto-xref">Ecuación&nbsp;<span>5.19</span></a> al cuadrado y tomar esperanza incondicional, obtenemos <span id="eq-error_cuadrado_expandido"><span class="math display">\[
+    \mathbb{E}|e_{n+1}|^2 = \mathbb{E}[(A_n^M)^2e_n^2] + 2\mathbb{E}[A_n^Me_n\rho_n^M] + \mathbb{E}|\rho_n^M|^2.
+\tag{5.20}\]</span></span> Gracias a la cota <a href="#eq-cota_factor_propagacion" class="quarto-xref">Ecuación&nbsp;<span>5.10</span></a> y a la <span class="math inline">\(\mathcal{F}_{t_n}\)</span>-medibilidad de <span class="math inline">\(e_n\)</span>, el primer término se acota mediante <span id="eq-cota_primer_termino"><span class="math display">\[
+    \mathbb{E}[(A_n^M)^2e_n^2] \le (1+Ch)\mathbb{E}|e_n|^2.
+\tag{5.21}\]</span></span></p>
+<p>Para acotar el término cruzado, descomponemos el defecto en su esperanza condicional y su parte centrada: <span class="math display">\[
+    \rho_n^M=\mathbb{E}[\rho_n^M\mid\mathcal{F}_{t_n}] + \Big(\rho_n^M-\mathbb{E}[\rho_n^M\mid\mathcal{F}_{t_n}]\Big).
+\]</span></p>
+<p>La primera parte se controla mediante las cotas de <a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.37</span></a> y la desigualdad de Young. La segunda parte se domina utilizando la cota de covarianza <a href="#eq-cota_covarianza" class="quarto-xref">Ecuación&nbsp;<span>5.18</span></a>, aprovechando nuevamente que <span class="math inline">\(e_n\)</span> es <span class="math inline">\(\mathcal{F}_{t_n}\)</span>-medible. Aplicando la desigualdad de Young con un parámetro <span class="math inline">\(\epsilon\)</span> adecuadamente elegido, se obtiene <span id="eq-cota_termino_cruzado"><span class="math display">\[
+    2\left|\mathbb{E}[A_n^Me_n\rho_n^M]\right| \le Ch\,\mathbb{E}|e_n|^2+Ch^2.
+\tag{5.22}\]</span></span> Adicionalmente, la cota <span class="math inline">\(L^2\)</span> del defecto local <a href="#eq-cota_defecto_L2" class="quarto-xref">Ecuación&nbsp;<span>5.16</span></a> implica directamente que <span id="eq-cota_defecto_cuadrado"><span class="math display">\[
+    \mathbb{E}|\rho_n^M|^2\le Ch^2.
+\tag{5.23}\]</span></span> Sustituyendo <a href="#eq-cota_primer_termino" class="quarto-xref">Ecuación&nbsp;<span>5.21</span></a>, <a href="#eq-cota_termino_cruzado" class="quarto-xref">Ecuación&nbsp;<span>5.22</span></a> y <a href="#eq-cota_defecto_cuadrado" class="quarto-xref">Ecuación&nbsp;<span>5.23</span></a> en <a href="#eq-error_cuadrado_expandido" class="quarto-xref">Ecuación&nbsp;<span>5.20</span></a>, arribamos a la desigualdad de energía discreta: <span id="eq-desigualdad_energia"><span class="math display">\[
+    \mathbb{E}|e_{n+1}|^2 \le (1+Ch)\mathbb{E}|e_n|^2+Ch^2.
+\tag{5.24}\]</span></span></p>
+<p>Finalmente, para obtener la cota global, aplicamos el lema de Grönwall discreto a la recurrencia <a href="#eq-desigualdad_energia" class="quarto-xref">Ecuación&nbsp;<span>5.24</span></a>. Dado que el error inicial es nulo (<span class="math inline">\(e_0=0\)</span> por la hipótesis (H4)), la iteración de la desigualdad conduce a <span id="eq-iteracion_gronwall"><span class="math display">\[
+    \begin{aligned}
+        \mathbb{E}|e_n|^2 &amp;\le Ch^2\sum_{k=0}^{n-1}(1+Ch)^k \\
+        &amp;\le Ch^2\frac{(1+Ch)^n-1}{Ch} \le C_T h,
+    \end{aligned}
+\tag{5.25}\]</span></span></p>
+<p>donde hemos utilizado que <span class="math inline">\(nh\le T\)</span> y la cota exponencial <span class="math inline">\((1+Ch)^n\le e^{CT} \equiv C_T\)</span>. Tomando la raíz cuadrada y el máximo sobre todos los pasos de la malla, concluimos que <span class="math display">\[
+    \max_{0\le n\le N} \left(\mathbb{E}|X_{t_n}-Y_n|^2\right)^{1/2} \le C_T^{1/2}h^{1/2}.
+\]</span> Esto demuestra rigurosamente la convergencia fuerte de orden al menos <span class="math inline">\(1/2\)</span> bajo las hipótesis (H1)–(H4) y las estimaciones locales establecidas.</p>
+</div>
 </section>
 <section id="esquema-semi-implícito-compensado" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="esquema-semi-implícito-compensado"><span class="header-section-number">5.4</span> Esquema Semi-Implícito compensado</h2>
 <p>El método semi-implícito compensado aplica una regla de Euler implícita al término de inversión <span class="math inline">\(r(t)X\)</span> y explícita a la difusión y al salto compensado:</p>
 <p><span id="eq-esquema_semiimplicito_despeje"><span class="math display">\[
 \hat U_{n+1}=\hat U_n+\big[c_n-\Lambda_n+r_n\hat U_{n+1}\big]\Delta t+\sigma_n\hat U_n\,\Delta W_n-\Delta\tilde J_n ,
-\tag{5.8}\]</span></span></p>
+\tag{5.26}\]</span></span></p>
 <p>con <span class="math inline">\(c_n,r_n,\sigma_n,\Lambda_n\)</span> evaluados en <span class="math inline">\(t_n\)</span> (como en la implementación; evaluarlos en <span class="math inline">\(t_{n+1}\)</span> solo modifica las constantes). Despejando <span class="math inline">\(\hat U_{n+1}\)</span> se tiene:</p>
 <p><span class="math display">\[
 \hat U_{n+1}=\frac{\hat U_n\big[1+\sigma_n\Delta W_n\big]+\big(c_n-\Lambda_n\big)\Delta t-\Delta\tilde J_n}{1-r_n\Delta t}
@@ -602,16 +836,16 @@ Y_{n+1}={}&amp;Y_n+(c_n+r_nY_n)h+\sigma_nY_n\Delta W_n\
 <p>Sea <span class="math inline">\((\Omega,\mathcal F,(\mathcal F_t)_{t\in[0,T]},\mathbb P)\)</span> un espacio filtrado que satisface las condiciones usuales. Sea <span class="math inline">\(\pi_h=\{0=t_0&lt;\dots&lt;t_N=T\}\)</span> una partición, <span class="math inline">\(h_n=t_{n+1}-t_n\)</span> y <span class="math inline">\(h=\max_n h_n\)</span>.</p>
 <p>Sea <span class="math inline">\(E=(0,\infty)\times\{m,s\}\)</span> (monto y tipo de siniestro: meteorológico o sísmico). Para cada tipo <span class="math inline">\(k\in\{m,s\}\)</span>, <span class="math inline">\(F_k\)</span> es la ley de la severidad <span class="math inline">\(\zeta_k\)</span> y <span class="math inline">\(\lambda_k(\cdot)\)</span> la intensidad. Las intensidades se en el extremo izquierdo de cada paso: <span id="eq-lamcong"><span class="math display">\[
 \lambda_k^h(s):=\lambda_k(t_n),\qquad s\in[t_n,t_{n+1}),
-\tag{5.9}\]</span></span></p>
+\tag{5.27}\]</span></span></p>
 <p>Sea <span class="math inline">\(N^h(ds,dv)\)</span> una medida aleatoria de Poisson sobre <span class="math inline">\([0,T]\times E\)</span> con intensidad <span class="math inline">\(\nu^h(s,dy\times\{k\})\,ds=\lambda_k^h(s)F_k(dy) \ ds\)</span>. Se definen <span id="eq-Jh"><span class="math display">\[
 J^h_t=\int_0^t\!\!\int_E y\,N^h(ds,dv),\qquad
 \Lambda^h(s)=\sum_{k}\lambda_k^h(s) \ \mathbb E[\zeta_k],\qquad
 \Gamma^h(s)=\sum_{k}\lambda_k^h(s)\,\mathbb E[\zeta_k^2].
-\tag{5.10}\]</span></span> <span class="math inline">\(\Lambda^h\)</span> es el costo esperado de siniestros por unidad de tiempo y <span class="math inline">\(\Gamma^h\)</span> el segundo momento instantáneo del salto. Escribimos <span class="math inline">\(\widetilde N^h=N^h-\nu^h \ ds\)</span> para la medida compensada y <span class="math inline">\(\widetilde J^h_t=J^h_t-\int_0^t\Lambda^h(s) \ ds\)</span>.</p>
+\tag{5.28}\]</span></span> <span class="math inline">\(\Lambda^h\)</span> es el costo esperado de siniestros por unidad de tiempo y <span class="math inline">\(\Gamma^h\)</span> el segundo momento instantáneo del salto. Escribimos <span class="math inline">\(\widetilde N^h=N^h-\nu^h \ ds\)</span> para la medida compensada y <span class="math inline">\(\widetilde J^h_t=J^h_t-\int_0^t\Lambda^h(s) \ ds\)</span>.</p>
 <p>El proceso de reservas <span class="math inline">\(U\)</span> (que depende de <span class="math inline">\(h\)</span> a través de <span class="math inline">\(J^h\)</span>) satisface <span id="eq-ecU"><span class="math display">\[
 dU_t=\bigl(c(t)+r(t)U_{t-}\bigr)dt+\sigma(t)U_{t-}\,dW_t-dJ^h_t,\qquad U_0 \text{ dado}.
-\tag{5.11}\]</span></span></p>
-<p>Como <span class="math inline">\(dJ^h_t=d\widetilde J^h_t+\Lambda^h(t)\,dt\)</span>, la <a href="#eq-ecU" class="quarto-xref">Ecuación&nbsp;<span>5.11</span></a> es equivalente a la forma compensada <span class="math display">\[
+\tag{5.29}\]</span></span></p>
+<p>Como <span class="math inline">\(dJ^h_t=d\widetilde J^h_t+\Lambda^h(t)\,dt\)</span>, la <a href="#eq-ecU" class="quarto-xref">Ecuación&nbsp;<span>5.29</span></a> es equivalente a la forma compensada <span class="math display">\[
 dU_t=(c+rU_{t-}-\Lambda^h)\,dt+\sigma U_{t-}\,dW_t-d\widetilde J^h_t
 \]</span> los términos <span class="math inline">\(\pm\Lambda^h\,dt\)</span> se cancelan, de modo que la compensación es una reescritura algebraica y no cambia la dinámica.</p>
 <p>Con <span class="math inline">\(c_n=c(t_n)\)</span>, <span class="math inline">\(r_n=r(t_n)\)</span>, <span class="math inline">\(\sigma_n=\sigma(t_n)\)</span>, <span class="math inline">\(\Lambda_n=\Lambda^h(t_n)\)</span>, <span class="math inline">\(\Delta W_n=W_{t_{n+1}}-W_{t_n}\)</span>, <span class="math inline">\(\Delta J_n=J^h_{t_{n+1}}-J^h_{t_n}\)</span> y <span class="math inline">\(\Delta\widetilde J_n=\Delta J_n-\Lambda_nh_n\)</span>, el esquema semi-implícito compensado trata de forma implícita el término de inversión <span class="math inline">\(r(t)U\)</span> y de forma explícita la difusión y los saltos: <span class="math display">\[
@@ -620,7 +854,7 @@ dU_t=(c+rU_{t-}-\Lambda^h)\,dt+\sigma U_{t-}\,dW_t-d\widetilde J^h_t
 <p><span id="eq-esquema"><span class="math display">\[
 \widehat U_{n+1}=q_n\Bigl[\widehat U_n(1+\sigma_n\Delta W_n)+(c_n-\Lambda_n)h_n-\Delta\widetilde J_n\Bigr]
 =q_n\Bigl[\widehat U_n(1+\sigma_n\Delta W_n)+c_nh_n-\Delta J_n\Bigr]
-\tag{5.12}\]</span></span></p>
+\tag{5.30}\]</span></span></p>
 <p>donde la segunda igualdad es la cancelación de <span class="math inline">\(\pm\Lambda_nh_n\)</span>.</p>
 <div id="lem-equiv_comp" class="theorem lemma">
 <p><span class="theorem-title"><strong>Lema 5.1</strong></span> Para todo <span class="math inline">\(x\in\mathbb R\)</span> y todo <span class="math inline">\(n\)</span>: <span class="math inline">\((c_n-\Lambda_n)h_n-\Delta\widetilde J_n=c_nh_n-\Delta J_n\)</span>. En consecuencia, el esquema compensado coincide con el no compensado.</p>
@@ -633,18 +867,18 @@ dU_t=(c+rU_{t-}-\Lambda^h)\,dt+\sigma U_{t-}\,dW_t-d\widetilde J^h_t
 <h3 data-number="5.4.1" class="anchored" data-anchor-id="hipótesis-1"><span class="header-section-number">5.4.1</span> Hipótesis:</h3>
 <ul>
 <li><strong>(H1).</strong> <span class="math inline">\(c,r,\sigma:[0,T]\to\mathbb R\)</span> son medibles, acotados (<span class="math inline">\(|c|\le\bar c\)</span>, <span class="math inline">\(|r|\le\bar r\)</span>, <span class="math inline">\(|\sigma|\le\bar\sigma\)</span>) y Hölder de exponente <span class="math inline">\(1/2\)</span>: existen constantes <span class="math inline">\(L_f\)</span> tales que <span class="math inline">\(|f(t)-f(s)|\le L_f|t-s|^{1/2}\)</span> para <span class="math inline">\(f\in\{c,r,\sigma\}\)</span>. En particular, toda función Lipschitz cumple (HS1), como las interpolaciones lineales de los valores mensuales.</li>
-<li><strong>(H2).</strong> <span class="math inline">\(N^h\)</span> es una medida de Poisson como en <a href="#eq-lamcong" class="quarto-xref">Ecuación&nbsp;<span>5.9</span></a> – <a href="#eq-Jh" class="quarto-xref">Ecuación&nbsp;<span>5.10</span></a>; <span class="math inline">\(0\le\lambda_k(t)\le\bar\lambda\)</span>; las severidades son positivas, independientes entre sí, de los conteos y de <span class="math inline">\(W\)</span>, y <span class="math inline">\(\mathbb E[\zeta_m^2]+\mathbb E[\zeta_s^2]&lt;\infty\)</span>. Se denotan <span class="math inline">\(\bar\Lambda=\sup\Lambda^h\)</span> y <span class="math inline">\(\bar\Gamma=\sup\Gamma^h\)</span> (cotas uniformes en <span class="math inline">\(h\)</span>).</li>
+<li><strong>(H2).</strong> <span class="math inline">\(N^h\)</span> es una medida de Poisson como en <a href="#eq-lamcong" class="quarto-xref">Ecuación&nbsp;<span>5.27</span></a> – <a href="#eq-Jh" class="quarto-xref">Ecuación&nbsp;<span>5.28</span></a>; <span class="math inline">\(0\le\lambda_k(t)\le\bar\lambda\)</span>; las severidades son positivas, independientes entre sí, de los conteos y de <span class="math inline">\(W\)</span>, y <span class="math inline">\(\mathbb E[\zeta_m^2]+\mathbb E[\zeta_s^2]&lt;\infty\)</span>. Se denotan <span class="math inline">\(\bar\Lambda=\sup\Lambda^h\)</span> y <span class="math inline">\(\bar\Gamma=\sup\Gamma^h\)</span> (cotas uniformes en <span class="math inline">\(h\)</span>).</li>
 <li><strong>(H3).</strong> <span class="math inline">\(U_0\)</span> es <span class="math inline">\(\mathcal F_0\)</span>-medible, independiente de <span class="math inline">\((W,N^h)\)</span>, y <span class="math inline">\(\mathbb E[U_0^2]&lt;\infty\)</span>. (Puede ser determinista.)</li>
 <li><strong>(H4).</strong> Sea <span class="math inline">\(\bar r^+=\sup_t\max\{r(t),0\}\)</span>. El paso cumple <span class="math inline">\(h\le h_0:=1/(2\bar r^+)\)</span> (sin restricción si <span class="math inline">\(\bar r^+=0\)</span>).</li>
 <li><strong>(H5).</strong> <span class="math inline">\(W\)</span> y <span class="math inline">\(N^h\)</span> son <span class="math inline">\((\mathcal F_t)\)</span>-adaptados con incrementos futuros independientes de <span class="math inline">\(\mathcal F_t\)</span>; la solución y el esquema usan los mismos <span class="math inline">\(\Delta W_n,\Delta J_n\)</span>.</li>
 </ul>
 <div id="lem-mom" class="theorem lemma">
-<p><span class="theorem-title"><strong>Lema 5.2</strong></span> [Existencia, unicidad y segundos momentos] Bajo <strong>(HS1)–(HS3) y (HS5)</strong>, la <a href="#eq-ecU" class="quarto-xref">Ecuación&nbsp;<span>5.11</span></a> tiene una única solución fuerte càdlàg y <span id="eq-mom2"><span class="math display">\[
+<p><span class="theorem-title"><strong>Lema 5.2</strong></span> [Existencia, unicidad y segundos momentos] Bajo <strong>(HS1)–(HS3) y (HS5)</strong>, la <a href="#eq-ecU" class="quarto-xref">Ecuación&nbsp;<span>5.29</span></a> tiene una única solución fuerte càdlàg y <span id="eq-mom2"><span class="math display">\[
 \sup_{0\le t\le T}\mathbb E|U_t|^2\le C\,(1+\mathbb E|U_0|^2).
-\tag{5.13}\]</span></span></p>
+\tag{5.31}\]</span></span></p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>Sea <span class="math inline">\(\Phi_t=\exp\bigl(\int_0^t(r-\tfrac12\sigma^2)\,ds+\int_0^t\sigma\,dW\bigr)\)</span>, que es continuo, adaptado, positivo y satisface <span class="math inline">\(d\Phi=\Phi(r\,dt+\sigma\,dW)\)</span>. Sea <span class="math inline">\(Y_t=U_0+\int_0^t\Phi_s^{-1}\bigl(c(s)\,ds-dJ^h_s\bigr)\)</span>, que es de variación finita (las integrales respecto de <span class="math inline">\(J^h\)</span> son sumas finitas sobre los saltos). Como <span class="math inline">\(\Phi\)</span> es continuo e <span class="math inline">\(Y\)</span> es de variación finita, <span class="math inline">\([\Phi,Y]=0\)</span>, y por la regla del producto <span class="math inline">\(d(\Phi Y)=\Phi\,dY+Y_{-}\,d\Phi=(c\,dt-dJ^h)+(\Phi Y)_{-}(r\,dt+\sigma\,dW)\)</span>, de modo que <span class="math inline">\(U:=\Phi Y\)</span> resuelve <a href="#eq-ecU" class="quarto-xref">Ecuación&nbsp;<span>5.11</span></a>.</p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Sea <span class="math inline">\(\Phi_t=\exp\bigl(\int_0^t(r-\tfrac12\sigma^2)\,ds+\int_0^t\sigma\,dW\bigr)\)</span>, que es continuo, adaptado, positivo y satisface <span class="math inline">\(d\Phi=\Phi(r\,dt+\sigma\,dW)\)</span>. Sea <span class="math inline">\(Y_t=U_0+\int_0^t\Phi_s^{-1}\bigl(c(s)\,ds-dJ^h_s\bigr)\)</span>, que es de variación finita (las integrales respecto de <span class="math inline">\(J^h\)</span> son sumas finitas sobre los saltos). Como <span class="math inline">\(\Phi\)</span> es continuo e <span class="math inline">\(Y\)</span> es de variación finita, <span class="math inline">\([\Phi,Y]=0\)</span>, y por la regla del producto <span class="math inline">\(d(\Phi Y)=\Phi\,dY+Y_{-}\,d\Phi=(c\,dt-dJ^h)+(\Phi Y)_{-}(r\,dt+\sigma\,dW)\)</span>, de modo que <span class="math inline">\(U:=\Phi Y\)</span> resuelve <a href="#eq-ecU" class="quarto-xref">Ecuación&nbsp;<span>5.29</span></a>.</p>
 <p>Luego si <span class="math inline">\(U,U'\)</span> son dos soluciones, <span class="math inline">\(D=U-U'\)</span> es continuo (los saltos coinciden) y satisface <span class="math inline">\(dD=rD\,dt+\sigma D\,dW\)</span>, <span class="math inline">\(D_0=0\)</span>. Por Itô, <span class="math inline">\(d\Phi^{-1}=\Phi^{-1}\bigl((-r+\sigma^2)\,dt-\sigma\,dW\bigr)\)</span> y <span class="math inline">\(d[\Phi^{-1},D]=-\sigma^2\Phi^{-1}D\,dt\)</span>, de donde <span class="math inline">\(d(\Phi^{-1}D)=0\)</span>; por tanto <span class="math inline">\(\Phi^{-1}D\equiv0\)</span> y <span class="math inline">\(D\equiv0\)</span>. (Aplicando el teorema de existencia y unicidad de la tesis a la representación de <span class="math inline">\(J^h\)</span> como integral respecto de una medida de Poisson marcada; ver también Applebaum , cap.~6.)</p>
 <p>Sea <span class="math inline">\(\tau_k=\inf\{t:|U_t|&gt;k\}\)</span>; como las trayectorias càdlàg son acotadas en <span class="math inline">\([0,T]\)</span>, <span class="math inline">\(\tau_k\uparrow\infty\)</span> c.s. Por integración por partes, con <span class="math inline">\([U]_t=\int_0^t\sigma^2U_{s-}^2\,ds+\sum_{s\le t}(\Delta J^h_s)^2\)</span>, <span class="math display">\[
 U_t^2=U_0^2+2\!\int_0^t\!U_{s-}(c+rU_{s-})\,ds+2\!\int_0^t\!\sigma U_{s-}^2\,dW_s-2\!\int_0^t\!\!\int_E\!U_{s-}\,y\,N^h(ds,dv)+[U]_t .
@@ -652,7 +886,7 @@ U_t^2=U_0^2+2\!\int_0^t\!U_{s-}(c+rU_{s-})\,ds+2\!\int_0^t\!\sigma U_{s-}^2\,dW_
 <p>Además <span class="math inline">\(\mathbb E\sum_{s\le t\wedge\tau_k}(\Delta J^h_s)^2\le\bar\Gamma T\)</span>. Tomando valor esperado y usando <span class="math inline">\(2|u|a\le u^2+a^2\)</span> en los términos <span class="math inline">\(2U_{s-}c\)</span> y <span class="math inline">\(-2U_{s-}\Lambda^h\)</span> se tiene que <span class="math display">\[
 \mathbb E|U_{t\wedge\tau_k}|^2\le\mathbb E U_0^2+(\bar c^2+\bar\Lambda^2+\bar\Gamma)T+(2\bar r+\bar\sigma^2+2)\int_0^t\mathbb E|U_{s\wedge\tau_k}|^2\,ds ,
 \]</span></p>
-<p>Por el lema de Grönwall, <span class="math inline">\(\mathbb E|U_{t\wedge\tau_k}|^2\le C(1+\mathbb EU_0^2)\)</span> uniformemente en <span class="math inline">\(k\)</span>, y el lema de Fatou con <span class="math inline">\(k\to\infty\)</span> da <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.13</span></a>. Es la versión de segundo orden de , adaptada a una medida de Poisson con severidades aleatorias. <span class="math inline">\(\quad \square\)</span></p>
+<p>Por el lema de Grönwall, <span class="math inline">\(\mathbb E|U_{t\wedge\tau_k}|^2\le C(1+\mathbb EU_0^2)\)</span> uniformemente en <span class="math inline">\(k\)</span>, y el lema de Fatou con <span class="math inline">\(k\to\infty\)</span> da <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.31</span></a>. Es la versión de segundo orden de , adaptada a una medida de Poisson con severidades aleatorias. <span class="math inline">\(\quad \square\)</span></p>
 </div>
 <div id="lem-saltos" class="theorem lemma">
 <p><span class="theorem-title"><strong>Lema 5.3</strong></span> Para todo <span class="math inline">\(n\)</span> y <span class="math inline">\(t\in[t_n,t_{n+1}]\)</span>: <span class="math display">\[
@@ -666,11 +900,11 @@ U_t^2=U_0^2+2\!\int_0^t\!U_{s-}(c+rU_{s-})\,ds+2\!\int_0^t\!\sigma U_{s-}^2\,dW_
 <div id="lem-inc" class="theorem lemma">
 <p><span class="theorem-title"><strong>Lema 5.4</strong></span> (Incrementos de la solución). Para todo <span class="math inline">\(n\)</span> y <span class="math inline">\(t\in[t_n,t_{n+1}]\)</span>, <span id="eq-incr"><span class="math display">\[
 \mathbb E|U_t-U_{t_n}|^2\le C\,(t-t_n)\le C\,h_n .
-\tag{5.14}\]</span></span></p>
+\tag{5.32}\]</span></span></p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>De <a href="#eq-ecU" class="quarto-xref">Ecuación&nbsp;<span>5.11</span></a> se tiene <span class="math inline">\(U_t-U_{t_n}=\int_{t_n}^t(c+rU_{s-})\,ds+\int_{t_n}^t\sigma U_{s-}\,dW_s-(J^h_t-J^h_{t_n})\)</span>.</p>
-<p>Por Cauchy–Schwarz y <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.13</span></a>, el primer término tiene segundo momento <span class="math inline">\(\leq(t-t_n)\int_{t_n}^t\mathbb E|c+rU_{s-}|^2\,ds\leq C(t-t_n)^2\)</span>. Por la isometría de Itô y <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.13</span></a>, el segundo termino es <span class="math inline">\(\leq\bar\sigma^2\int_{t_n}^t\mathbb E|U_{s-}|^2\,ds\leq C(t-t_n)\)</span>. Para el tercero termino, por la isometría respecto de <span class="math inline">\(\widetilde N^h\)</span> y la fórmula de varianza más cuadrado de la media, <span class="math inline">\(\mathbb E|J^h_t-J^h_{t_n}|^2=\int_{t_n}^t\Gamma^h\,ds+\bigl(\int_{t_n}^t\Lambda^h\,ds\bigr)^2\leq\bar\Gamma(t-t_n)+\bar\Lambda^2(t-t_n)^2\)</span> (cf.&nbsp;). Se combina con <span class="math inline">\(|x+y+z|^2\le3(|x|^2+|y|^2+|z|^2)\)</span> y <span class="math inline">\(t-t_n\le T\)</span>. <span class="math inline">\(\quad \square\)</span></p>
+<p><span class="proof-title"><em>Demostración</em>. </span>De <a href="#eq-ecU" class="quarto-xref">Ecuación&nbsp;<span>5.29</span></a> se tiene <span class="math inline">\(U_t-U_{t_n}=\int_{t_n}^t(c+rU_{s-})\,ds+\int_{t_n}^t\sigma U_{s-}\,dW_s-(J^h_t-J^h_{t_n})\)</span>.</p>
+<p>Por Cauchy–Schwarz y <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.31</span></a>, el primer término tiene segundo momento <span class="math inline">\(\leq(t-t_n)\int_{t_n}^t\mathbb E|c+rU_{s-}|^2\,ds\leq C(t-t_n)^2\)</span>. Por la isometría de Itô y <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.31</span></a>, el segundo termino es <span class="math inline">\(\leq\bar\sigma^2\int_{t_n}^t\mathbb E|U_{s-}|^2\,ds\leq C(t-t_n)\)</span>. Para el tercero termino, por la isometría respecto de <span class="math inline">\(\widetilde N^h\)</span> y la fórmula de varianza más cuadrado de la media, <span class="math inline">\(\mathbb E|J^h_t-J^h_{t_n}|^2=\int_{t_n}^t\Gamma^h\,ds+\bigl(\int_{t_n}^t\Lambda^h\,ds\bigr)^2\leq\bar\Gamma(t-t_n)+\bar\Lambda^2(t-t_n)^2\)</span> (cf.&nbsp;). Se combina con <span class="math inline">\(|x+y+z|^2\le3(|x|^2+|y|^2+|z|^2)\)</span> y <span class="math inline">\(t-t_n\le T\)</span>. <span class="math inline">\(\quad \square\)</span></p>
 </div>
 <div id="lem-factor_prop" class="theorem lemma">
 <p><span class="theorem-title"><strong>Lema 5.5</strong></span> Sea <span class="math inline">\(A_n:=q_n(1+\sigma_n\Delta W_n)\)</span>. Bajo (HS1) y (HS4), para <span class="math inline">\(h\le h_0\)</span>: <span id="eq-factor"><span class="math display">\[
@@ -679,7 +913,7 @@ U_t^2=U_0^2+2\!\int_0^t\!U_{s-}(c+rU_{s-})\,ds+2\!\int_0^t\!\sigma U_{s-}^2\,dW_
 \mathbb E[A_n^2\mid\mathcal F_{t_n}]\le1+Ch_n,\\
 \mathbb E\bigl[(A_n-q_n)^2\mid\mathcal F_{t_n}\bigr]=q_n^2\sigma_n^2h_n\le4\bar\sigma^2h_n .
 \end{gathered}
-\tag{5.15}\]</span></span></p>
+\tag{5.33}\]</span></span></p>
 </div>
 <div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>Si <span class="math inline">\(r_n&lt;0\)</span>, <span class="math inline">\(1-r_nh_n&gt;1\)</span>; si <span class="math inline">\(r_n\geq0\)</span>, <span class="math inline">\(1-r_nh_n\geq1-\bar r^+h\geq\tfrac12\)</span>, de donde <span class="math inline">\(q_n\leq2\)</span>. Como <span class="math inline">\(\Delta W_n\)</span> es independiente de <span class="math inline">\(\mathcal F_{t_n}\)</span>, con media <span class="math inline">\(0\)</span> y varianza <span class="math inline">\(h_n\)</span>, valen las dos igualdades y <span class="math inline">\(\mathbb E[A_n^2\mid\mathcal F_{t_n}]=q_n^2(1+\sigma_n^2h_n)\)</span>. Para <span class="math inline">\(x=r_nh_n\in[0,\tfrac12]\)</span>, la función convexa <span class="math inline">\((1-x)^{-2}\)</span> queda por debajo de su cuerda entre <span class="math inline">\(0\)</span> y <span class="math inline">\(\tfrac12\)</span>, así que <span class="math inline">\((1-x)^{-2}\leq1+6x\)</span>; para <span class="math inline">\(x&lt;0\)</span>, <span class="math inline">\((1-x)^{-2}\leq1\)</span>. Luego <span class="math inline">\(q_n^2(1+\sigma_n^2h_n)\leq e^{\bar\sigma^2h_n}(1+6\bar r^+h_n)\leq1+Ch_n\)</span>. <span class="math inline">\(\quad \square\)</span></p>
@@ -688,19 +922,19 @@ U_t^2=U_0^2+2\!\int_0^t\!U_{s-}(c+rU_{s-})\,ds+2\!\int_0^t\!\sigma U_{s-}^2\,dW_
 <p><span class="theorem-title"><strong>Lema 5.6</strong></span> Para todo <span class="math inline">\(n\)</span>, <span class="math inline">\(\widehat U_n\)</span> es <span class="math inline">\(\mathcal F_{t_n}\)</span>-medible y está en <span class="math inline">\(L^2(\Omega)\)</span>. En consecuencia, <span class="math inline">\(e_n:=U_{t_n}-\widehat U_n\)</span> es <span class="math inline">\(\mathcal F_{t_n}\)</span>-medible y está en <span class="math inline">\(L^2(\Omega)\)</span>.</p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>Inducción: <span class="math inline">\(\widehat U_{n+1}=A_n\widehat U_n+q_n(c_nh_n-\Delta J_n)\)</span>, con <span class="math inline">\(A_n\in L^2\)</span> independiente de <span class="math inline">\(\widehat U_n\in L^2\)</span> y <span class="math inline">\(\Delta J_n\in L^2\)</span> (<a href="#lem-inc" class="quarto-xref">Lema&nbsp;<span>5.4</span></a>). Para <span class="math inline">\(e_n\)</span> se usa además <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.13</span></a>. <span class="math inline">\(\quad \square\)</span></p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Inducción: <span class="math inline">\(\widehat U_{n+1}=A_n\widehat U_n+q_n(c_nh_n-\Delta J_n)\)</span>, con <span class="math inline">\(A_n\in L^2\)</span> independiente de <span class="math inline">\(\widehat U_n\in L^2\)</span> y <span class="math inline">\(\Delta J_n\in L^2\)</span> (<a href="#lem-inc" class="quarto-xref">Lema&nbsp;<span>5.4</span></a>). Para <span class="math inline">\(e_n\)</span> se usa además <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.31</span></a>. <span class="math inline">\(\quad \square\)</span></p>
 </div>
 <p>Definimos aplicando un paso del esquema a la solución exacta en <span class="math inline">\(t_n\)</span>, con los mismos incrementos: <span id="eq-defecto"><span class="math display">\[
 \rho_n:=U_{t_{n+1}}-q_n\Bigl[U_{t_n}(1+\sigma_n\Delta W_n)+c_nh_n-\Delta J_n\Bigr].
-\tag{5.16}\]</span></span></p>
-<p>Como el esquema es afín en el estado, restando <a href="#eq-esquema" class="quarto-xref">Ecuación&nbsp;<span>5.12</span></a> se obtiene exactamente: <span id="eq-recur"><span class="math display">\[
+\tag{5.34}\]</span></span></p>
+<p>Como el esquema es afín en el estado, restando <a href="#eq-esquema" class="quarto-xref">Ecuación&nbsp;<span>5.30</span></a> se obtiene exactamente: <span id="eq-recur"><span class="math display">\[
 e_{n+1}=A_n\,e_n+\rho_n,\qquad e_0=0 .
-\tag{5.17}\]</span></span> <span class="math inline">\(\quad \square\)</span></p>
+\tag{5.35}\]</span></span> <span class="math inline">\(\quad \square\)</span></p>
 <div id="lem-descomp" class="theorem lemma">
 <p><span class="theorem-title"><strong>Lema 5.7</strong></span> Sean <span class="math inline">\(U_n:=U_{t_n}\)</span> y <span class="math inline">\(I_c=\int_{t_n}^{t_{n+1}}c\,ds\)</span>, <span class="math inline">\(I_r=\int_{t_n}^{t_{n+1}}rU_{s-}\,ds\)</span>, <span class="math inline">\(I_\sigma=\int_{t_n}^{t_{n+1}}\sigma U_{s-}\,dW_s\)</span>, de modo que <span class="math inline">\(U_{t_{n+1}}-U_n=I_c+I_r+I_\sigma-\Delta J_n\)</span>. Entonces</p>
 <p><span id="eq-desc"><span class="math display">\[
 (1-r_nh_n)\rho_n=R_{c}+R_{r,1}+R_{r,2}+R_{\sigma}+R_{J}+R_{\mathrm{impl}},
-\tag{5.18}\]</span></span> donde <span class="math display">\[
+\tag{5.36}\]</span></span> donde <span class="math display">\[
 \begin{align*}
 R_c&amp;=\int_{t_n}^{t_{n+1}}(c(s)-c_n)\,ds, &amp;
 R_{r,1}&amp;=\int_{t_n}^{t_{n+1}}(r(s)-r_n)U_{s-}\,ds,\\
@@ -712,7 +946,7 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 \]</span></p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>Multiplicando <a href="#eq-defecto" class="quarto-xref">Ecuación&nbsp;<span>5.16</span></a> por <span class="math inline">\(1-r_nh_n\)</span>:</p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Multiplicando <a href="#eq-defecto" class="quarto-xref">Ecuación&nbsp;<span>5.34</span></a> por <span class="math inline">\(1-r_nh_n\)</span>:</p>
 <p><span class="math display">\[(1-r_nh_n)\rho_n=(U_{t_{n+1}}-U_n)-r_nh_nU_{t_{n+1}}-\sigma_nU_n\Delta W_n-c_nh_n+\Delta J_n.\]</span></p>
 <p>Como <span class="math inline">\(-r_nh_nU_{t_{n+1}}=-r_nh_nU_n-r_nh_n(U_{t_{n+1}}-U_n)\)</span>, y <span class="math inline">\(U_{t_{n+1}}-U_n+\Delta J_n=I_c+I_r+I_\sigma\)</span>, nos queda <span class="math display">\[
 (1-r_nh_n)\rho_n=[I_c-c_nh_n]+[I_r-r_nh_nU_n]-r_nh_n(I_c+I_r+I_\sigma)+[I_\sigma-\sigma_nU_n\Delta W_n]+r_nh_n\Delta J_n .
@@ -721,11 +955,11 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 <div id="prp-defecto" class="theorem proposition">
 <p><span class="theorem-title"><strong>Proposición 5.1</strong></span> Bajo (H1)–(H5) y <span class="math inline">\(h\le h_0\)</span> se tiene: <span id="eq-cotasrho"><span class="math display">\[
 \boxed{\;\|\rho_n\|\le C\,h_n,\qquad\bigl\|\mathbb E[\rho_n\mid\mathcal F_{t_n}]\bigr\|\le C\,h_n^{3/2}\;}
-\tag{5.19}\]</span></span> (de hecho, si <span class="math inline">\(c,r\)</span> son Lipschitz, el segundo término es <span class="math inline">\(\leq Ch_n^2\)</span>).</p>
+\tag{5.37}\]</span></span> (de hecho, si <span class="math inline">\(c,r\)</span> son Lipschitz, el segundo término es <span class="math inline">\(\leq Ch_n^2\)</span>).</p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>Sea <span class="math inline">\(M:=\sup_t\|U_t\|\le C\)</span> por <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.13</span></a>. Usamos <span class="math inline">\(h_n\le T\)</span>, por lo que <span class="math inline">\(h_n^{3/2}\le\sqrt T\,h_n\)</span>.</p>
-<p>Por <a href="#eq-desc" class="quarto-xref">Ecuación&nbsp;<span>5.18</span></a>, <span class="math inline">\((1-r_nh_n)\rho_n\)</span> es la suma de seis términos, y para acotar <span class="math inline">\(\|\rho_n\|\)</span> basta acotar la norma <span class="math inline">\(L^2(\Omega)\)</span> de cada uno. Teniendo así las siguientes estimaciones de norma <span class="math inline">\(L^2\)</span> para cada uno de los términos:</p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Sea <span class="math inline">\(M:=\sup_t\|U_t\|\le C\)</span> por <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.31</span></a>. Usamos <span class="math inline">\(h_n\le T\)</span>, por lo que <span class="math inline">\(h_n^{3/2}\le\sqrt T\,h_n\)</span>.</p>
+<p>Por <a href="#eq-desc" class="quarto-xref">Ecuación&nbsp;<span>5.36</span></a>, <span class="math inline">\((1-r_nh_n)\rho_n\)</span> es la suma de seis términos, y para acotar <span class="math inline">\(\|\rho_n\|\)</span> basta acotar la norma <span class="math inline">\(L^2(\Omega)\)</span> de cada uno. Teniendo así las siguientes estimaciones de norma <span class="math inline">\(L^2\)</span> para cada uno de los términos:</p>
 <ul>
 <li><p>Por definición, <span class="math inline">\(R_c = \int_{t_n}^{t_{n+1}} [c(s) - c_n] \, ds\)</span>. Aplicando la hipótesis (H1) (Hölder-<span class="math inline">\(1/2\)</span> en el tiempo), se tiene que <span class="math inline">\(|c(s) - c(t_n)| \leq L_c |s - t_n|^{1/2}\)</span>. Tomando valor absoluto e integrando: <span class="math display">\[
 |R_c| \leq \int_{t_n}^{t_{n+1}} |c(s) - c_n| \, ds \leq \int_{t_n}^{t_{n+1}} L_c (s - t_n)^{1/2} \, ds.
@@ -742,7 +976,7 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 <ul>
 <li>Por definición, <span class="math inline">\(R_{r,2} = r_n \int_{t_n}^{t_{n+1}} [U_{s-} - U_n] \, ds\)</span>. Tomando norma <span class="math inline">\(L^2\)</span> y aplicando Minkowski: <span class="math display">\[
 \|R_{r,2}\|_{L^2} \le |r_n| \int_{t_n}^{t_{n+1}} \|U_{s-} - U_n\|_{L^2} \, ds \le \bar{r} \int_{t_n}^{t_{n+1}} \|U_{s-} - U_n\|_{L^2} \, ds.
-\]</span> Usando el <a href="#lem-inc" class="quarto-xref">Lema&nbsp;<span>5.4</span></a> (<a href="#eq-incr" class="quarto-xref">Ecuación&nbsp;<span>5.14</span></a>), <span class="math inline">\(\mathbb{E}|U_t - U_{t_n}|^2 \leq C(t - t_n)\)</span>. Tomando raíz cuadrada: <span class="math display">\[
+\]</span> Usando el <a href="#lem-inc" class="quarto-xref">Lema&nbsp;<span>5.4</span></a> (<a href="#eq-incr" class="quarto-xref">Ecuación&nbsp;<span>5.32</span></a>), <span class="math inline">\(\mathbb{E}|U_t - U_{t_n}|^2 \leq C(t - t_n)\)</span>. Tomando raíz cuadrada: <span class="math display">\[
 \|U_{s-} - U_n\|_{L^2} = \left( \mathbb{E}|U_{s-} - U_n|^2 \right)^{1/2} \le C(s - t_n)^{1/2}.
 \]</span> Integrando:</li>
 </ul>
@@ -761,7 +995,7 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 \]</span> Por tanto, <span class="math inline">\(\|R_\sigma\|_{L^2} \leq C h_n\)</span>.</p></li>
 <li><p>Por definición, <span class="math inline">\(R_J = r_n h_n \Delta J_n\)</span>. Tomando norma <span class="math inline">\(L^2\)</span>: <span class="math display">\[
 \|R_J\|_{L^2} = |r_n| h_n \|\Delta J_n\|_{L^2} \le \bar{r} h_n \|\Delta J_n\|_{L^2}.
-\]</span> Para calcular <span class="math inline">\(\|\Delta J_n\|_{L^2}\)</span>, usamos las propiedades de los procesos de Poisson compuestos (<a href="#eq-Jh" class="quarto-xref">Ecuación&nbsp;<span>5.10</span></a> y Higham &amp; Kloeden~, ecuaciones (20) y (41)): <span class="math display">\[
+\]</span> Para calcular <span class="math inline">\(\|\Delta J_n\|_{L^2}\)</span>, usamos las propiedades de los procesos de Poisson compuestos (<a href="#eq-Jh" class="quarto-xref">Ecuación&nbsp;<span>5.28</span></a> y Higham &amp; Kloeden~, ecuaciones (20) y (41)): <span class="math display">\[
 \mathbb{E}|\Delta J_n|^2 = \int_{t_n}^{t_{n+1}} \Gamma^h(s) \, ds + \left( \int_{t_n}^{t_{n+1}} \Lambda^h(s) \, ds \right)^2 \le \bar{\Gamma} h_n + \bar{\Lambda}^2 h_n^2 \le C h_n,
 \]</span> pues <span class="math inline">\(h_n \le T\)</span> implica <span class="math inline">\(h_n^2 \le T h_n\)</span>. Tomando raíz cuadrada, <span class="math inline">\(\|\Delta J_n\|_{L^2} \le C h_n^{1/2}\)</span>. Sustituyendo: <span class="math display">\[
 \|R_J\|_{L^2} \le \bar{r} h_n \cdot C h_n^{1/2} = C h_n^{3/2}.
@@ -778,37 +1012,37 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 \]</span> pues <span class="math inline">\(h_n \le h_n^{1/2}\)</span> para <span class="math inline">\(h_n \le 1\)</span>. Multiplicando por <span class="math inline">\(r_n h_n\)</span>: <span class="math display">\[
 \|R_{\mathrm{impl}}\|_{L^2} \le \bar{r} h_n \cdot C h_n^{1/2} = C h_n^{3/2}.
 \]</span></p>
-<p>Sumando todas las cotas y usando que <span class="math inline">\(q_n \le 2\)</span> (<a href="#lem-factor_prop" class="quarto-xref">Lema&nbsp;<span>5.5</span></a>), de la <a href="#eq-desc" class="quarto-xref">Ecuación&nbsp;<span>5.18</span></a> se concluye que <span class="math inline">\(\|\rho_n\|_{L^2} \le C h_n\)</span>, demostrando la primera cota de la <a href="#prp-defecto" class="quarto-xref">Proposición&nbsp;<span>5.1</span></a> (<a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.19</span></a>).</p>
-<p>Se toma <span class="math inline">\(\mathbb E[\,\cdot\mid\mathcal F_{t_n}]\)</span> en <a href="#eq-desc" class="quarto-xref">Ecuación&nbsp;<span>5.18</span></a> (el factor <span class="math inline">\(1-r_nh_n\)</span> es determinista); se usa la desigualdad de Jensen condicional, <span class="math inline">\(\|\mathbb E[g\mid\mathcal F]\|\le\|g\|\)</span>, y el teorema de Fubini condicional.</p>
+<p>Sumando todas las cotas y usando que <span class="math inline">\(q_n \le 2\)</span> (<a href="#lem-factor_prop" class="quarto-xref">Lema&nbsp;<span>5.5</span></a>), de la <a href="#eq-desc" class="quarto-xref">Ecuación&nbsp;<span>5.36</span></a> se concluye que <span class="math inline">\(\|\rho_n\|_{L^2} \le C h_n\)</span>, demostrando la primera cota de la <a href="#prp-defecto" class="quarto-xref">Proposición&nbsp;<span>5.1</span></a> (<a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.37</span></a>).</p>
+<p>Se toma <span class="math inline">\(\mathbb E[\,\cdot\mid\mathcal F_{t_n}]\)</span> en <a href="#eq-desc" class="quarto-xref">Ecuación&nbsp;<span>5.36</span></a> (el factor <span class="math inline">\(1-r_nh_n\)</span> es determinista); se usa la desigualdad de Jensen condicional, <span class="math inline">\(\|\mathbb E[g\mid\mathcal F]\|\le\|g\|\)</span>, y el teorema de Fubini condicional.</p>
 <ul>
 <li><span class="math inline">\(R_c\)</span> es determinista: <span class="math inline">\(\le Ch_n^{3/2}\)</span>.</li>
 <li><span class="math inline">\(\mathbb E[R_{r,1}\mid\mathcal F_{t_n}]=\int(r(s)-r_n)\,\mathbb E[U_{s-}\mid\mathcal F_{t_n}]\,ds\)</span>, de norma <span class="math inline">\(\le L_rM\int(s-t_n)^{1/2}\,ds\le Ch_n^{3/2}\)</span>.</li>
-<li>Para <span class="math inline">\(R_{r,2}\)</span>: en la ecuación de <span class="math inline">\(U_s-U_n\)</span> (con <span class="math inline">\(s\in(t_n,t_{n+1}]\)</span>) la integral de Itô aporta cero (martingala, por <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.13</span></a>) y, por independencia de los incrementos y <a href="#eq-Jh" class="quarto-xref">Ecuación&nbsp;<span>5.10</span></a>, <span class="math inline">\(\mathbb E[J^h_s-J^h_{t_n}\mid\mathcal F_{t_n}]=\Lambda_n(s-t_n)\)</span>. Así <span class="math inline">\(\mathbb E[U_s-U_n\mid\mathcal F_{t_n}]=\int_{t_n}^s\mathbb E[c(u)+r(u)U_{u-}\mid\mathcal F_{t_n}]\,du-\Lambda_n(s-t_n)\)</span>, cuya norma es <span class="math inline">\(\le(\bar c+\bar rM+\bar\Lambda)(s-t_n)\)</span> (para cada <span class="math inline">\(s\)</span> fijo <span class="math inline">\(U_{s-}=U_s\)</span> c.s., pues <span class="math inline">\(J^h\)</span> no salta en tiempos fijos). Por tanto <span class="math inline">\(\|\mathbb E[R_{r,2}\mid\mathcal F_{t_n}]\|\le\bar r\,C\int(s-t_n)\,ds\le Ch_n^2\)</span>.</li>
+<li>Para <span class="math inline">\(R_{r,2}\)</span>: en la ecuación de <span class="math inline">\(U_s-U_n\)</span> (con <span class="math inline">\(s\in(t_n,t_{n+1}]\)</span>) la integral de Itô aporta cero (martingala, por <a href="#eq-mom2" class="quarto-xref">Ecuación&nbsp;<span>5.31</span></a>) y, por independencia de los incrementos y <a href="#eq-Jh" class="quarto-xref">Ecuación&nbsp;<span>5.28</span></a>, <span class="math inline">\(\mathbb E[J^h_s-J^h_{t_n}\mid\mathcal F_{t_n}]=\Lambda_n(s-t_n)\)</span>. Así <span class="math inline">\(\mathbb E[U_s-U_n\mid\mathcal F_{t_n}]=\int_{t_n}^s\mathbb E[c(u)+r(u)U_{u-}\mid\mathcal F_{t_n}]\,du-\Lambda_n(s-t_n)\)</span>, cuya norma es <span class="math inline">\(\le(\bar c+\bar rM+\bar\Lambda)(s-t_n)\)</span> (para cada <span class="math inline">\(s\)</span> fijo <span class="math inline">\(U_{s-}=U_s\)</span> c.s., pues <span class="math inline">\(J^h\)</span> no salta en tiempos fijos). Por tanto <span class="math inline">\(\|\mathbb E[R_{r,2}\mid\mathcal F_{t_n}]\|\le\bar r\,C\int(s-t_n)\,ds\le Ch_n^2\)</span>.</li>
 <li><span class="math inline">\(\mathbb E[R_\sigma\mid\mathcal F_{t_n}]=0\)</span>: integral de Itô con integrando predecible y de cuadrado integrable.</li>
 <li><span class="math inline">\(\mathbb E[R_J\mid\mathcal F_{t_n}]=r_nh_n\Lambda_nh_n\)</span>, de módulo <span class="math inline">\(\le\bar r\bar\Lambda h_n^2\)</span>.</li>
-<li><span class="math inline">\(\mathbb E[R_{\mathrm{impl}}\mid\mathcal F_{t_n}]=-r_nh_n\bigl(I_c+\mathbb E[I_r\mid\mathcal F_{t_n}]\bigr)\)</span> (pues <span class="math inline">\(\mathbb E[I_\sigma\mid\mathcal F_{t_n}]=0\)</span>), de norma <span class="math inline">\(\le\bar rh_n(\bar ch_n+Ch_n)\le Ch_n^2\)</span>. Sumando se obtiene la segunda cota de <a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.19</span></a>; si <span class="math inline">\(c,r\)</span> son Lipschitz, <span class="math inline">\(R_c\)</span> y <span class="math inline">\(R_{r,1}\)</span> son <span class="math inline">\(O(h_n^2)\)</span>. <span class="math inline">\(\quad \square\)</span></li>
+<li><span class="math inline">\(\mathbb E[R_{\mathrm{impl}}\mid\mathcal F_{t_n}]=-r_nh_n\bigl(I_c+\mathbb E[I_r\mid\mathcal F_{t_n}]\bigr)\)</span> (pues <span class="math inline">\(\mathbb E[I_\sigma\mid\mathcal F_{t_n}]=0\)</span>), de norma <span class="math inline">\(\le\bar rh_n(\bar ch_n+Ch_n)\le Ch_n^2\)</span>. Sumando se obtiene la segunda cota de <a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.37</span></a>; si <span class="math inline">\(c,r\)</span> son Lipschitz, <span class="math inline">\(R_c\)</span> y <span class="math inline">\(R_{r,1}\)</span> son <span class="math inline">\(O(h_n^2)\)</span>. <span class="math inline">\(\quad \square\)</span></li>
 </ul>
 </div>
 <div id="thm-convergencia_fuerte_milste_comp" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 5.3</strong></span> Supóngase (H1)–(H5). Existe <span class="math inline">\(C_T&gt;0\)</span>, que depende únicamente de <span class="math inline">\(T,\bar c,\bar r,\bar\sigma,L_c,L_r,L_\sigma,\bar\Lambda,\bar\Gamma\)</span> y <span class="math inline">\(\mathbb E U_0^2\)</span>, tal que para toda partición con <span class="math inline">\(h\le h_0\)</span>: <span id="eq-teo"><span class="math display">\[
 \boxed{\;\max_{0\le n\le N}\bigl(\mathbb E|U_{t_n}-\widehat U_n|^2\bigr)^{1/2}\le C_T\,h^{1/2}\;}
-\tag{5.20}\]</span></span> Es decir, el esquema converge fuertemente en <span class="math inline">\(L^2\)</span>, en los nodos, con orden al menos <span class="math inline">\(1/2\)</span>.</p>
+\tag{5.38}\]</span></span> Es decir, el esquema converge fuertemente en <span class="math inline">\(L^2\)</span>, en los nodos, con orden al menos <span class="math inline">\(1/2\)</span>.</p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>La estructura (defecto local con cotas <span class="math inline">\(h_n\)</span> en norma y <span class="math inline">\(h_n^{3/2}\)</span> en esperanza condicional, recurrencia del error y Grönwall discreto) es la de Wang, Mei y Xue , que a su vez sigue a Baker y Buckwar; aquí la hacemos completa y explícita para el modelo de reservas, con el defecto descompuesto en <a href="#eq-desc" class="quarto-xref">Ecuación&nbsp;<span>5.18</span></a>.</p>
-<p> Por <a href="#eq-recur" class="quarto-xref">Ecuación&nbsp;<span>5.17</span></a>, <span class="math inline">\(e_0=0\)</span> y <span class="math inline">\(e_{n+1}=A_ne_n+\rho_n\)</span>. Por los <a href="#lem-factor_prop" class="quarto-xref">Lema&nbsp;<span>5.5</span></a>, <a href="#lem-bienplanteado" class="quarto-xref">Lema&nbsp;<span>5.6</span></a> y la <a href="#prp-defecto" class="quarto-xref">Proposición&nbsp;<span>5.1</span></a>, <span class="math inline">\(A_ne_n\in L^2\)</span> (<span class="math inline">\(A_n\)</span> es independiente de <span class="math inline">\(e_n\)</span>, que es <span class="math inline">\(\mathcal F_{t_n}\)</span>-medible) y <span class="math inline">\(\rho_n\in L^2\)</span>; todos los términos siguientes son integrables.</p>
+<p><span class="proof-title"><em>Demostración</em>. </span>La estructura (defecto local con cotas <span class="math inline">\(h_n\)</span> en norma y <span class="math inline">\(h_n^{3/2}\)</span> en esperanza condicional, recurrencia del error y Grönwall discreto) es la de Wang, Mei y Xue , que a su vez sigue a Baker y Buckwar; aquí la hacemos completa y explícita para el modelo de reservas, con el defecto descompuesto en <a href="#eq-desc" class="quarto-xref">Ecuación&nbsp;<span>5.36</span></a>.</p>
+<p> Por <a href="#eq-recur" class="quarto-xref">Ecuación&nbsp;<span>5.35</span></a>, <span class="math inline">\(e_0=0\)</span> y <span class="math inline">\(e_{n+1}=A_ne_n+\rho_n\)</span>. Por los <a href="#lem-factor_prop" class="quarto-xref">Lema&nbsp;<span>5.5</span></a>, <a href="#lem-bienplanteado" class="quarto-xref">Lema&nbsp;<span>5.6</span></a> y la <a href="#prp-defecto" class="quarto-xref">Proposición&nbsp;<span>5.1</span></a>, <span class="math inline">\(A_ne_n\in L^2\)</span> (<span class="math inline">\(A_n\)</span> es independiente de <span class="math inline">\(e_n\)</span>, que es <span class="math inline">\(\mathcal F_{t_n}\)</span>-medible) y <span class="math inline">\(\rho_n\in L^2\)</span>; todos los términos siguientes son integrables.</p>
 <p>Elevando al cuadrado y tomando esperanza, <span id="eq-expansion"><span class="math display">\[
 \mathbb E|e_{n+1}|^2=\mathbb E[A_n^2e_n^2]+2\,\mathbb E[A_n e_n\rho_n]+\mathbb E|\rho_n|^2 .
-\tag{5.21}\]</span></span> Como <span class="math inline">\(e_n\)</span> es <span class="math inline">\(\mathcal F_{t_n}\)</span>-medible, por <a href="#eq-factor" class="quarto-xref">Ecuación&nbsp;<span>5.15</span></a>, <span class="math inline">\(\mathbb E[A_n^2e_n^2]=\mathbb E\bigl[e_n^2\,\mathbb E[A_n^2\mid\mathcal F_{t_n}]\bigr]\le(1+Ch_n)\,\mathbb E|e_n|^2\)</span>.</p>
+\tag{5.39}\]</span></span> Como <span class="math inline">\(e_n\)</span> es <span class="math inline">\(\mathcal F_{t_n}\)</span>-medible, por <a href="#eq-factor" class="quarto-xref">Ecuación&nbsp;<span>5.33</span></a>, <span class="math inline">\(\mathbb E[A_n^2e_n^2]=\mathbb E\bigl[e_n^2\,\mathbb E[A_n^2\mid\mathcal F_{t_n}]\bigr]\le(1+Ch_n)\,\mathbb E|e_n|^2\)</span>.</p>
 <p>Descomponemos <span class="math inline">\(A_n=q_n+q_n\sigma_n\Delta W_n\)</span>, con <span class="math inline">\(q_n\)</span> determinista: <span class="math display">\[
 \mathbb E[A_n e_n\rho_n]=\mathbb E\bigl[q_ne_n\,\mathbb E[\rho_n\mid\mathcal F_{t_n}]\bigr]+\mathbb E\bigl[q_n\sigma_ne_n\,\mathbb E[\Delta W_n\rho_n\mid\mathcal F_{t_n}]\bigr].
-\]</span> Para el primer sumando, por <span class="math inline">\(q_n\le2\)</span>, Cauchy–Schwarz y <a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.19</span></a>: <span class="math inline">\(\le2\|e_n\|\,Ch_n^{3/2}\)</span>. Para el segundo, la desigualdad de Cauchy–Schwarz condicional y <span class="math inline">\(\mathbb E[\Delta W_+n^2\mid\mathcal F_{t_n}]=h_n\)</span> dan <span class="math inline">\(|\mathbb E[\Delta W_n\rho_n\mid\mathcal F_{t_n}]|\le\sqrt{h_n}\bigl(\mathbb E[\rho_n^2\mid\mathcal F_{t_n}]\bigr)^{1/2}\)</span>; luego, por Cauchy–Schwarz en <span class="math inline">\(L^2(\Omega)\)</span> y <a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.19</span></a>, el sumando es <span class="math inline">\(\le2\bar\sigma\sqrt{h_n}\,\|e_n\|\,\|\rho_n\|\le Ch_n^{3/2}\|e_n\|\)</span>. Entonces <span class="math display">\[
+\]</span> Para el primer sumando, por <span class="math inline">\(q_n\le2\)</span>, Cauchy–Schwarz y <a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.37</span></a>: <span class="math inline">\(\le2\|e_n\|\,Ch_n^{3/2}\)</span>. Para el segundo, la desigualdad de Cauchy–Schwarz condicional y <span class="math inline">\(\mathbb E[\Delta W_+n^2\mid\mathcal F_{t_n}]=h_n\)</span> dan <span class="math inline">\(|\mathbb E[\Delta W_n\rho_n\mid\mathcal F_{t_n}]|\le\sqrt{h_n}\bigl(\mathbb E[\rho_n^2\mid\mathcal F_{t_n}]\bigr)^{1/2}\)</span>; luego, por Cauchy–Schwarz en <span class="math inline">\(L^2(\Omega)\)</span> y <a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.37</span></a>, el sumando es <span class="math inline">\(\le2\bar\sigma\sqrt{h_n}\,\|e_n\|\,\|\rho_n\|\le Ch_n^{3/2}\|e_n\|\)</span>. Entonces <span class="math display">\[
 |\mathbb E[A_n e_n\rho_n]|\le C\,h_n^{3/2}\|e_n\| .
 \]</span></p>
-<p>Por <a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.19</span></a>, <span class="math inline">\(\mathbb E|\rho_n|^2\le Ch_n^2\)</span>. Con la desigualdad de Young, <span class="math inline">\(2Ch_n^{3/2}\|e_n\|\le Ch_n\|e_n\|^2+Ch_n^2\)</span>, se obtiene <span id="eq-rec2"><span class="math display">\[
+<p>Por <a href="#eq-cotasrho" class="quarto-xref">Ecuación&nbsp;<span>5.37</span></a>, <span class="math inline">\(\mathbb E|\rho_n|^2\le Ch_n^2\)</span>. Con la desigualdad de Young, <span class="math inline">\(2Ch_n^{3/2}\|e_n\|\le Ch_n\|e_n\|^2+Ch_n^2\)</span>, se obtiene <span id="eq-rec2"><span class="math display">\[
 \boxed{\;\mathbb E|e_{n+1}|^2\le(1+Ch_n)\,\mathbb E|e_n|^2+Ch_n^2\;}
-\tag{5.22}\]</span></span></p>
-<p>Sea <span class="math inline">\(u_n=\mathbb E|e_n|^2\)</span>, <span class="math inline">\(u_0=0\)</span>. Iterando <a href="#eq-rec2" class="quarto-xref">Ecuación&nbsp;<span>5.22</span></a>, <span class="math inline">\(u_n\le C\sum_{j=0}^{n-1}h_j^2\prod_{k=j+1}^{n-1}(1+Ch_k)\)</span>. Como <span class="math inline">\(1+x\le e^x\)</span> y <span class="math inline">\(\sum_kh_k\le T\)</span>, cada producto es <span class="math inline">\(\le e^{CT}\)</span>; además <span class="math inline">\(\sum_jh_j^2\le h\sum_jh_j\le hT\)</span>. Por tanto <span class="math inline">\(u_n\le C\,T\,e^{CT}h=:C_T^2h\)</span> para <span class="math inline">\(0\le n\le N\)</span>. Tomando raíz cuadrada y máximo sobre <span class="math inline">\(n\)</span> se obtiene <a href="#eq-teo" class="quarto-xref">Ecuación&nbsp;<span>5.20</span></a>. <span class="math inline">\(\quad \square\)</span></p>
+\tag{5.40}\]</span></span></p>
+<p>Sea <span class="math inline">\(u_n=\mathbb E|e_n|^2\)</span>, <span class="math inline">\(u_0=0\)</span>. Iterando <a href="#eq-rec2" class="quarto-xref">Ecuación&nbsp;<span>5.40</span></a>, <span class="math inline">\(u_n\le C\sum_{j=0}^{n-1}h_j^2\prod_{k=j+1}^{n-1}(1+Ch_k)\)</span>. Como <span class="math inline">\(1+x\le e^x\)</span> y <span class="math inline">\(\sum_kh_k\le T\)</span>, cada producto es <span class="math inline">\(\le e^{CT}\)</span>; además <span class="math inline">\(\sum_jh_j^2\le h\sum_jh_j\le hT\)</span>. Por tanto <span class="math inline">\(u_n\le C\,T\,e^{CT}h=:C_T^2h\)</span> para <span class="math inline">\(0\le n\le N\)</span>. Tomando raíz cuadrada y máximo sobre <span class="math inline">\(n\)</span> se obtiene <a href="#eq-teo" class="quarto-xref">Ecuación&nbsp;<span>5.38</span></a>. <span class="math inline">\(\quad \square\)</span></p>
 </div>
 </section>
 </section>
@@ -817,7 +1051,7 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 <div style="text-align:justify">
 <p>La base teórica del método reside en la construcción de un estimador no sesgado basado en muestras independientes.</p>
 </div>
-<p>::: {#def-Estimador de Monte Carlo} (Estimador de Monte Carlo).Sean <span class="math inline">\(X_1, X_2, \dots, X_N\)</span> variables aleatorias independientes e idénticamente distribuidas (i.i.d.) con la misma distribución que <span class="math inline">\(X\)</span>. Definimos el estimador de Monte Carlo <span class="math inline">\(\hat{I}_N\)</span> como la media muestral de las realizaciones de la función <span class="math inline">\(f\)</span>: <span id="eq-mc_estimator"><span class="math display">\[ \hat{I}_N = \frac{1}{N} \sum_{i=1}^{N} f(X_i). \tag{5.23}\]</span></span></p>
+<p>::: {#def-Estimador de Monte Carlo} (Estimador de Monte Carlo).Sean <span class="math inline">\(X_1, X_2, \dots, X_N\)</span> variables aleatorias independientes e idénticamente distribuidas (i.i.d.) con la misma distribución que <span class="math inline">\(X\)</span>. Definimos el estimador de Monte Carlo <span class="math inline">\(\hat{I}_N\)</span> como la media muestral de las realizaciones de la función <span class="math inline">\(f\)</span>: <span id="eq-mc_estimator"><span class="math display">\[ \hat{I}_N = \frac{1}{N} \sum_{i=1}^{N} f(X_i). \tag{5.41}\]</span></span></p>
 <p>:::</p>
 <div style="text-align:justify">
 <p>La validez de este estimador se sustenta en dos propiedades estadísticas fundamentales: su insesgamiento y su consistencia.</p>
@@ -851,7 +1085,7 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 <p><span class="theorem-title"><strong>Teorema 5.5</strong></span> (Teorema del Límite Central para MC) Bajo las condiciones de varianza finita, la distribución del error normalizado converge en distribución a una normal estándar: <span class="math display">\[    \sqrt{N} \frac{\hat{I}_N - I}{\sigma} \xrightarrow{d} \mathbb{N}(0, 1) \quad \text{cuando } N \to \infty.\]</span></p>
 </div>
 <div style="text-align:justify">
-<p>De este resultado se desprende una conclusión crítica para la simulación computacional: el error estándar del estimador decae proporcionalmente a <span class="math inline">\(N^{-1/2}\)</span>, independientemente de la dimensión del problema. <span id="eq-error_rate"><span class="math display">\[\text{Error}(\hat{I}_N) \approx \frac{\sigma}{\sqrt{N}}. \tag{5.24}\]</span></span></p>
+<p>De este resultado se desprende una conclusión crítica para la simulación computacional: el error estándar del estimador decae proporcionalmente a <span class="math inline">\(N^{-1/2}\)</span>, independientemente de la dimensión del problema. <span id="eq-error_rate"><span class="math display">\[\text{Error}(\hat{I}_N) \approx \frac{\sigma}{\sqrt{N}}. \tag{5.42}\]</span></span></p>
 <p>Esta propiedad es distintiva del método Monte Carlo. Mientras que los métodos deterministas sufren una degradación exponencial en su precisión a medida que aumenta la dimensionalidad del espacio de integración, la tasa de convergencia <span class="math inline">\(O(N^{-1/2})\)</span> de Monte Carlo permanece invariante ante la dimensionalidad, lo que lo hace superior para sistemas complejos de alta dimensión.</p>
 </div>
 </section>
@@ -859,7 +1093,7 @@ R_{\mathrm{impl}}&amp;=-\,r_nh_n\,(I_c+I_r+I_\sigma).
 <section id="generación-de-variables-aleatorias." class="level3" data-number="5.5.2">
 <h3 data-number="5.5.2" class="anchored" data-anchor-id="generación-de-variables-aleatorias."><span class="header-section-number">5.5.2</span> Generación de variables aleatorias.</h3>
 <div style="text-align:justify">
-<p>La implementación práctica de la ecuación <a href="#eq-mc_estimator" class="quarto-xref">Ecuación&nbsp;<span>5.23</span></a> requiere la capacidad de generar muestras <span class="math inline">\(X_i\)</span> de una distribución de probabilidad específica <span class="math inline">\(P\)</span>. Matemáticamente, esto se logra a menudo mediante el Método de la Transformada Inversa.</p>
+<p>La implementación práctica de la ecuación <a href="#eq-mc_estimator" class="quarto-xref">Ecuación&nbsp;<span>5.41</span></a> requiere la capacidad de generar muestras <span class="math inline">\(X_i\)</span> de una distribución de probabilidad específica <span class="math inline">\(P\)</span>. Matemáticamente, esto se logra a menudo mediante el Método de la Transformada Inversa.</p>
 <p>Sea <span class="math inline">\(U \sim \text{Uniforme}(0,1)\)</span> una variable aleatoria uniforme. Si <span class="math inline">\(F_X(x) = \mathbb{P}(X \leq x)\)</span> es la función de distribución acumulada (CDF) de <span class="math inline">\(X\)</span>, y <span class="math inline">\(F_X^{-1}\)</span> es su inversa generalizada definida como: <span class="math display">\[F_X^{-1}(u) = \inf \{ x \in \mathbb{R} : F_X(x) \geq u \},\]</span> entonces la variable aleatoria <span class="math inline">\(Y = F_X^{-1}(U)\)</span> tiene la misma distribución que <span class="math inline">\(X\)</span>.</p>
 <p>En sistemas complejos donde <span class="math inline">\(F_X^{-1}\)</span> no tiene forma cerrada, se emplean métodos de rechazo (Rejection Sampling) o cadenas de Markov (MCMC), los cuales garantizan que la distribución estacionaria de la cadena generada coincida con la distribución objetivo <span class="math inline">\(P\)</span>.</p>
 </div>
