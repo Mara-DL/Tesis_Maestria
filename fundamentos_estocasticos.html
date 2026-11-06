@@ -504,7 +504,14 @@ window.Quarto = {
 <p><span class="theorem-title"><strong>Definición 3.2</strong></span> (Filtración natural). Sea <span class="math inline">\(W = \{W_t\}_{t \geq 0}\)</span> un movimiento browniano. La es <span class="math inline">\(\mathcal{F}_t^W = \sigma(W_s : s \leq t)\)</span>. La filtración asociada es <span class="math display">\[\mathcal{F}_t = \bigcap_{s &gt; t} \sigma(\mathcal{F}_s^W \cup \mathcal{N}),\]</span> donde <span class="math inline">\(\mathcal{N}\)</span> es la colección de todos los conjuntos <span class="math inline">\(\mathbb{P}\)</span>-nulos.</p>
 </div>
 <div id="def-tiempo_paro" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.3</strong></span> (Tiempo de paro). Una variable aleatoria <span class="math inline">\(\tau : \Omega \to [0,\infty]\)</span> es un respecto a <span class="math inline">\(\{\ \mathcal{F} \}\)</span> si <span class="math inline">\(\{\tau \leq t\} \in \mathcal{F}_t\)</span> para todo <span class="math inline">\(t \geq 0\)</span>.</p>
+<p><span class="theorem-title"><strong>Definición 3.3</strong></span> (Tiempo de paro).Sea <span class="math inline">\((\Omega,\mathcal F,\mathbb P,\mathbb F)\)</span> un espacio de probabilidad filtrado.</p>
+<p>Una variable aleatoria <span class="math display">\[
+    \tau:\Omega\longrightarrow[0,\infty]
+\]</span> se denomina tiempo de paro respecto de la filtración <span class="math inline">\(\mathbb F=(\mathcal F_t)_{t\geq0}\)</span> si <span class="math display">\[
+    \{\omega\in\Omega:\tau(\omega)\leq t\}
+    \in\mathcal F_t,
+    \qquad t\geq0.
+\]</span></p>
 </div>
 <div id="def-Tiempos_paro_controlados" class="theorem definition">
 <p><span class="theorem-title"><strong>Definición 3.4</strong></span> (Tiempos de paro controlados). Un tiempo de paro <span class="math inline">\(\{\tau &lt; t\} \in \mathcal{F}_t\)</span> para todo <span class="math inline">\(t\)</span>. La continuidad por la derecha se deduce que <span class="math display">\[\{\tau &lt; t\} = \bigcup_{q \in \mathbb{Q}, q &lt; t} \{\tau \leq q\} \in \mathcal{F}_t,\]</span></p>
@@ -513,27 +520,49 @@ window.Quarto = {
 <section id="resultados-de-teoría-de-la-medida-y-análisis-funcional" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="resultados-de-teoría-de-la-medida-y-análisis-funcional"><span class="header-section-number">3.2</span> Resultados de Teoría de la Medida y Análisis Funcional</h2>
 <div id="lem-Fatou" class="theorem lemma">
-<p><span class="theorem-title"><strong>Lema 3.1</strong></span> <em>(Fatou).</em> Sea <span class="math inline">\(\{f_n\}_{n \in \mathbb{N}}\)</span> una sucesión de funciones medibles no negativas. Entonces:</p>
-<p><span class="math display">\[\liminf_{n \to \infty} \int_X f_n \, d\mu \geq \int_X \liminf_{n \to \infty} f_n \, d\mu.\]</span></p>
+<p><span class="theorem-title"><strong>Lema 3.1</strong></span> <em>(Fatou).</em> Sea <span class="math inline">\((X,\mathcal A,\mu)\)</span> un espacio de medida y sea <span class="math inline">\((f_n)_{n\geq1}\)</span> una sucesión de funciones medibles tales que <span class="math display">\[
+    f_n:X\longrightarrow[0,\infty].
+\]</span></p>
+<p>Entonces <span class="math display">\[
+    \int_X\liminf_{n\to\infty}f_n\,d\mu
+    \leq
+    \liminf_{n\to\infty}
+    \int_Xf_n\,d\mu.
+\]</span></p>
 </div>
 <div class="proof">
 <p><span class="proof-title"><em>Demostración</em>. </span>Ver demostración completa <span class="citation" data-cites="applebaum2009levy">Applebaum (<a href="references.html#ref-applebaum2009levy" role="doc-biblioref">2009</a>)</span> Corolario 1.1.2.<span class="math inline">\(\quad \square\)</span></p>
 </div>
 <div id="thm-con_monotona" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.1</strong></span> <em>(Convergencia Monotona).</em> Sea <span class="math inline">\(\{f_n\}_{n \in \mathbb{N}}\)</span> una sucesión de funciones medibles no negativas tales que <span class="math inline">\(0 \leq f_1 \leq f_2 \leq \cdots\)</span> y <span class="math inline">\(f_n \to f\)</span> puntualmente. Entonces:</p>
-<p><span class="math display">\[\lim_{n \to \infty} \int_X f_n \, d\mu = \int_X f \, d\mu.\]</span></p>
+<p><span class="theorem-title"><strong>Teorema 3.1</strong></span> <em>(Convergencia Monotona).</em> Sea <span class="math inline">\((X,\mathcal A,\mu)\)</span> un espacio de medida y sea <span class="math inline">\((f_n)_{n\geq1}\)</span> una sucesión de funciones medibles con valores en <span class="math inline">\([0,\infty]\)</span>.</p>
+<p>Supóngase que <span class="math display">\[
+    0\leq f_n(x)\leq f_{n+1}(x)
+\]</span> para todo <span class="math inline">\(n\geq1\)</span> y para casi todo <span class="math inline">\(x\in X\)</span>, y que <span class="math display">\[
+    f_n(x)\longrightarrow f(x)
+\]</span> casi en todas partes.</p>
+<p>Entonces <span class="math display">\[
+    \lim_{n\to\infty}
+    \int_Xf_n\,d\mu
+    =
+    \int_Xf\,d\mu.
+\]</span></p>
 </div>
 <div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>Ver demostración completa <span class="citation" data-cites="applebaum2009levy">Applebaum (<a href="references.html#ref-applebaum2009levy" role="doc-biblioref">2009</a>)</span> Teorema 1.1.1 <span class="math inline">\(\quad \square\)</span></p>
 </div>
 <div id="thm-con_dom" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.2</strong></span> (Convergencia Dominada). Sea <span class="math inline">\((X, \mathcal{A}, \mu)\)</span> un espacio de medida y <span class="math inline">\(\{f_n\}_{n\in\mathbb{N}}\)</span> una sucesión de funciones <span class="math inline">\(\mu\)</span>-medibles <span class="math inline">\(f_n : X \to \mathbb{R}\)</span>. Supongamos que:</p>
-<ol type="I">
-<li><p><span class="math inline">\(f_n(x) \to f(x)\)</span> <span class="math inline">\(\mu -\text{casi en todas partes,}\)</span></p></li>
-<li><p>existe una función <span class="math inline">\(g \in L^1(X, \mathcal{A}, \mu)\)</span> tal que <span class="math inline">\(|f_n(x)| \leq g(x)\)</span> para <span class="math inline">\(\mu\)</span>-casi todo <span class="math inline">\(x \in X\)</span> y todo <span class="math inline">\(n \in \mathbb{N}.\)</span></p></li>
-</ol>
-<p>Entonces <span class="math inline">\(f \in L^1(\mu)\)</span> y</p>
-<p><span class="math display">\[\lim_{n \to \infty} \int_X f_n \, d\mu = \int_X f \, d\mu.\]</span></p>
+<p><span class="theorem-title"><strong>Teorema 3.2</strong></span> (Convergencia Dominada). Sea <span class="math inline">\((X,\mathcal A,\mu)\)</span> un espacio de medida y sea <span class="math inline">\((f_n)_{n\geq1}\)</span> una sucesión de funciones medibles con valores reales o complejos.</p>
+<p>Supóngase que <span class="math display">\[
+    f_n(x)\longrightarrow f(x)
+\]</span> para <span class="math inline">\(\mu\)</span>-casi todo <span class="math inline">\(x\in X\)</span>, y que existe <span class="math inline">\(g\in L^1(\mu)\)</span> tal que <span class="math display">\[
+    |f_n(x)|\leq g(x)
+\]</span> para todo <span class="math inline">\(n\geq1\)</span> y para <span class="math inline">\(\mu\)</span>-casi todo <span class="math inline">\(x\in X\)</span>.</p>
+<p>Entonces <span class="math inline">\(f\in L^1(\mu)\)</span> y <span class="math display">\[
+    \lim_{n\to\infty}
+    \int_X f_n\,d\mu
+    =
+    \int_X f\,d\mu.
+\]</span></p>
 </div>
 <div class="proof">
 <p><span class="proof-title"><em>Demostración</em>. </span>Ver demostración completa Teorema 1.34 <span class="citation" data-cites="rudin1987real">(<a href="references.html#ref-rudin1987real" role="doc-biblioref">Rudin 1987</a>)</span> La idea central consiste en aplicar el Lema de Fatou a la sucesión <span class="math inline">\(2g - |f_n - f| \geq 0\)</span>. <span class="math inline">\(\quad \square\)</span></p>
