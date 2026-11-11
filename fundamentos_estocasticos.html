@@ -680,7 +680,8 @@ A\in\mathcal B(Z)
 <p><span class="proof-title"><em>Demostración</em>. </span>Para <span class="math inline">\(g\ge0\)</span> medible sea <span class="math inline">\(g_n=\min\{n,\,2^{-n}\lfloor2^ng\rfloor\}\)</span>, simple y creciente a <span class="math inline">\(g\)</span>. Dada <span class="math inline">\(f\in L^2(\mu)\)</span> real, sea <span class="math inline">\(\psi_n=(f^+)_n-(f^-)_n\)</span>. Entonces <span class="math inline">\(\psi_n\)</span> es simple, <span class="math inline">\(\psi_n\to f\)</span> puntualmente y <span class="math inline">\(|\psi_n|\le f^++f^-=|f|\)</span>. Así <span class="math inline">\(|\psi_n-f|^2\le4|f|^2\in L^1(\mu)\)</span> y, por el Teorema~<span class="math inline">\(\ref{thm:DCT}\)</span>, <span class="math inline">\(\|\psi_n-f\|_{L^2}\to0\)</span>. Por último, si <span class="math inline">\(c\neq0\)</span> es un valor de <span class="math inline">\(\psi_n\)</span> sobre <span class="math inline">\(A\)</span>, entonces <span class="math inline">\(c^2\mu(A)\le\int\psi_n^2\,d\mu\le\int f^2\,d\mu&lt;\infty\)</span>, de modo que cada <span class="math inline">\(\psi_n\)</span> tiene soporte de medida finita.</p>
 </div>
 <div style="text-align:justify">
-<p>::: {#rem-Continuidad de la norma} (Continuidad de la norma). En todo espacio normado, <span class="math inline">\(\bigl|\|x_n\|-\|x\|\bigr|\le\|x_n-x\|\)</span>; en particular <span class="math inline">\(x_n\to x\)</span> implica <span class="math inline">\(\|x_n\|\to\|x\|\)</span>.</p>
+<div id="rem-Continuidad_de_la_norma" class="proof remark">
+<p><span class="proof-title"><em>Observación 3.1</em>. </span>(Continuidad de la norma). En todo espacio normado, <span class="math inline">\(\bigl|\|x_n\|-\|x\|\bigr|\le\|x_n-x\|\)</span>; en particular <span class="math inline">\(x_n\to x\)</span> implica <span class="math inline">\(\|x_n\|\to\|x\|\)</span>.</p>
 </div>
 <div id="thm-espac_integra_prede" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.4</strong></span> (Espacio de integrandos predecibles).</p>
@@ -688,7 +689,7 @@ A\in\mathcal B(Z)
 <div id="thm-cont_norm_esp_Hil" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.5</strong></span> Sea <span class="math inline">\(H\)</span> un espacio de Hilbert y <span class="math inline">\(\{x_n\} \subset H\)</span> una sucesión tal que <span class="math inline">\(x_n \to x\)</span> en norma. Entonces <span class="math inline">\(\|x_n\| \to \|x\|\)</span></p>
 </div>
-<p>:::</p>
+</div>
 <div class="proof" style="text-align:justify">
 <p><span class="proof-title"><em>Demostración</em>. </span>Por la desigualdad triangular inversa, <span class="math display">\[\big| \|x_n\| - \|x\| \big| \leq \|x_n - x\| \to 0.\]</span> <span class="math inline">\(\quad \square\)</span></p>
 </div>
@@ -776,6 +777,16 @@ El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <
 <p><span class="proof-title"><em>Demostración</em>. </span>Si <span class="math inline">\(\mathbb E[Y^2]=0\)</span>, entonces <span class="math inline">\(Y=0\)</span> c.s. y ambos lados son <span class="math inline">\(0\)</span>; lo mismo si <span class="math inline">\(\mathbb E[X^2]=0\)</span>. Supongamos ambos positivos. Para todo <span class="math inline">\(\lambda\in\mathbb R\)</span>, <span class="math inline">\(0\le\mathbb E[(X-\lambda Y)^2]=\mathbb E[Y^2]\lambda^2
 -2\mathbb E[XY]\lambda+\mathbb E[X^2]\)</span>. Un trinomio con coeficiente principal positivo es no negativo si y solo si su discriminante es <span class="math inline">\(\le0\)</span>: <span class="math inline">\(4\mathbb E[XY]^2-4\mathbb E[X^2]\mathbb E[Y^2]\le0\)</span>. La igualdad equivale a discriminante nulo, es decir, a una raíz doble <span class="math inline">\(\lambda_0\)</span> con <span class="math inline">\(\mathbb E[(X-\lambda_0Y)^2]=0\)</span>, o sea <span class="math inline">\(X=\lambda_0Y\)</span> c.s. Recíprocamente, si <span class="math inline">\(aX=bY\)</span> c.s. con <span class="math inline">\(a\ne0\)</span>, entonces <span class="math inline">\(X=(b/a)Y\)</span> y <span class="math inline">\(\mathbb E[X^2]\mathbb E[Y^2]=(b/a)^2\mathbb E[Y^2]^2=\mathbb E[XY]^2\)</span>; si <span class="math inline">\(a=0\)</span> entonces <span class="math inline">\(bY=0\)</span> con <span class="math inline">\(b\neq 0\)</span>, luego <span class="math inline">\(Y=0\)</span> c.s.</p>
 </div>
+<div id="cor-v_C_D_M" class="theorem corollary">
+<p><span class="theorem-title"><strong>Corolario 3.1</strong></span> (Versión condicional y desigualdad de Minkowski). Sea <span class="math inline">\(\mathcal G\subseteq\mathcal F\)</span> una sub-<span class="math inline">\(\sigma\)</span>-álgebra y <span class="math inline">\(X,Y\in L^2\)</span>. Entonces, c.s., <span class="math display">\[
+  \bigl(\mathbb E[XY\mid\mathcal G]\bigr)^2\le
+  \mathbb E[X^2\mid\mathcal G]\;\mathbb E[Y^2\mid\mathcal G].
+\]</span> Además <span class="math inline">\(\|X+Y\|_{L^2}\le\|X\|_{L^2}+\|Y\|_{L^2}\)</span> y, por inducción, <span class="math inline">\(\bigl\|\sum_{i=1}^nX_i\bigr\|_{L^2}\le\sum_{i=1}^n\|X_i\|_{L^2}\)</span>.</p>
+</div>
+<div class="proof" style="text-align:justify">
+<p><span class="proof-title"><em>Demostración</em>. </span>Para cada <span class="math inline">\(q\in\mathbb Q\)</span>, <span class="math inline">\(\mathbb E[(X-qY)^2\mid\mathcal G]\ge0\)</span> c.s., es decir <span class="math inline">\(\mathbb E[X^2\mid\mathcal G]-2q\,\mathbb E[XY\mid\mathcal G]
++q^2\mathbb E[Y^2\mid\mathcal G]\ge0\)</span>. Como <span class="math inline">\(\mathbb Q\)</span> es numerable, existe <span class="math inline">\(\Omega_0\)</span> de probabilidad <span class="math inline">\(1\)</span> donde esto vale para todo <span class="math inline">\(q\in\mathbb Q\)</span> y, por continuidad en <span class="math inline">\(q\)</span>, para todo <span class="math inline">\(q\in\mathbb R\)</span>. En <span class="math inline">\(\Omega_0\cap\{\mathbb E[Y^2\mid\mathcal G]&gt;0\}\)</span> el discriminante es <span class="math inline">\(\le0\)</span>; en <span class="math inline">\(\Omega_0\cap\{\mathbb E[Y^2\mid\mathcal G]=0\}\)</span> la desigualdad lineal en <span class="math inline">\(q\)</span> fuerza <span class="math inline">\(\mathbb E[XY\mid\mathcal G]=0\)</span>. Para Minkowski: <span class="math inline">\(\|X+Y\|^2=\|X\|^2+2\mathbb E[XY]+\|Y\|^2\le(\|X\|+\|Y\|)^2\)</span> por el <a href="#thm-des_Cauchy_Sch" class="quarto-xref">Teorema&nbsp;<span>3.7</span></a></p>
+</div>
 <div id="thm-D_C_S" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.8</strong></span> <em>Para cualesquier</em> <span class="math inline">\(x_1, x_2, \ldots, x_n \in \mathbb{R}\)</span>, se cumple:</p>
 <p><span class="math display">\[\left(\sum_{i=1}^n x_i\right)^2 \leq n \sum_{i=1}^n x_i^2.\]</span></p>
@@ -794,124 +805,148 @@ El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <
 <p><em>La igualdad se alcanza si y solo si</em> <span class="math inline">\(a = b\)</span>.</p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>Por la desigualdad <em>aritmético-geométric</em>a para números no negativos:</p>
-<p><span class="math display">\[\sqrt{a^2 b^2} \leq \frac{a^2 + b^2}{2} \implies |ab| \leq \frac{a^2 + b^2}{2} \implies 2ab \leq a^2 + b^2. \quad \square\]</span></p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Como <span class="math inline">\((a-b)^2\geq0\)</span>, se tiene <span class="math display">\[
+    a^2-2ab+b^2\geq0.
+\]</span> Reordenando queda, <span class="math display">\[
+    2ab\leq a^2+b^2.
+\]</span></p>
+<p>La igualdad se cumple exactamente cuando <span class="math display">\[
+    (a-b)^2=0,
+\]</span> es decir, cuando <span class="math inline">\(a=b\)</span>.</p>
 </div>
 <div id="lem-Borel_cantelli" class="theorem lemma">
-<p><span class="theorem-title"><strong>Lema 3.2</strong></span> (Borel–Cantelli). Si <span class="math inline">\(\sum_{n=1}^\infty \mathbb{P}(A_n) &lt; \infty\)</span>, entonces <span class="math inline">\(\mathbb{P}(A_n \text{ i.o.}) = 0\)</span>.</p>
-</div>
-<div id="thm-Des_Doob" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.10</strong></span> Si <span class="math inline">\(M\)</span> es una martingala en <span class="math inline">\(L^2\)</span>, entonces <span class="math display">\[\mathbb{E}\left[ \sup_{0 \leq s \leq t} M_s^2 \right] \leq 4 \mathbb{E}[M_t^2].\]</span></p>
-</div>
-<div id="thm-Desigualdad_Grönwall" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.11</strong></span> Sea <span class="math inline">\(u, \alpha: [0,T] \to \mathbb{R}_{+}\)</span> funciones continuas, <span class="math inline">\(\beta \in L^1([0,T])\)</span>, con <span class="math inline">\(\beta \geq 0\)</span>, tales que <span class="math display">\[u(t) \leq \alpha(t) + \int_0^t \beta(s) u(s) ds, \quad \forall t \in [0,T].\]</span> Entonces, <span class="math display">\[u(t) \leq \alpha(t) \exp\left( \int_0^t \beta(s) ds \right).\]</span> En particular, si <span class="math inline">\(\alpha \equiv 0\)</span>, entonces <span class="math inline">\(u \equiv 0\)</span>.</p>
+<p><span class="theorem-title"><strong>Lema 3.2</strong></span> (Borel–Cantelli). Sea <span class="math inline">\((A_n)_{n\geq1}\)</span> una sucesión de eventos en un espacio de probabilidad. Si <span class="math display">\[
+    \sum_{n=1}^{\infty}\mathbb P(A_n)&lt;\infty,
+\]</span> entonces <span class="math display">\[
+    \mathbb P(A_n\ \text{i.o.})=0,
+\]</span> donde <span class="math display">\[
+    \{A_n\ \text{i.o.}\}
+    =
+    \bigcap_{m=1}^{\infty}
+    \bigcup_{n=m}^{\infty}A_n.
+\]</span></p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>Definimos la función auxiliar <span class="math display">\[v(t) := \int_{0}^{t} \beta(s) u(s) \, ds, \quad t \in [0,T].\]</span> Dado que <span class="math inline">\(\beta \in L^{1}([0,T])\)</span> y <span class="math inline">\(u \in C([0,T])\)</span>, el producto <span class="math inline">\(\beta u\)</span> pertenece a <span class="math inline">\(L^{1}([0,T])\)</span>, y por lo tanto <span class="math inline">\(v \in C([0,T])\)</span>. Además, <span class="math inline">\(v\)</span> es absolutamente continua y satisface <span class="math inline">\(v(0) = 0\)</span> y <span class="math display">\[v'(t) = \beta(t) u(t) \quad \text{para casi todo } t \in [0,T].\]</span> Por hipótesis, <span class="math display">\[u(t) \leq \alpha(t) + v(t), \quad \forall t \in [0,T],\]</span> y, sustituyendo en la derivada de <span class="math inline">\(v\)</span>, obtenemos <span class="math display">\[v'(t) \leq \beta(t) \bigl( \alpha(t) + v(t) \bigr) \quad \text{casi en todas partes en } [0,T].\]</span> Consideremos ahora la función <span class="math display">\[w(t) := v(t) \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right), \quad t \in [0,T].\]</span> La función <span class="math inline">\(w\)</span> es absolutamente continua (pues <span class="math inline">\(v\)</span> y la exponencial lo son), y diferenciable casi en todas partes. Derivando se obtiene <span class="math display">\[w'(t) = \Bigl[ v'(t) - \beta(t) v(t) \Bigr] \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right)
-\leq \beta(t) \alpha(t) \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right) \quad \text{c.t.p.}\]</span> Integrando desde <span class="math inline">\(0\)</span> hasta <span class="math inline">\(t\)</span> y usando que <span class="math inline">\(w(0) = 0\)</span>, resulta <span class="math display">\[w(t) \leq \int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds.\]</span> Multiplicando ambos lados por <span class="math inline">\(\exp\bigl(\int_{0}^{t} \beta(s) \, ds \bigr)\)</span> obtenemos <span class="math display">\[v(t) \leq \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right) \int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds.\]</span> Dado que <span class="math inline">\(\alpha\)</span> es no decreciente, para todo <span class="math inline">\(s \in [0,t]\)</span> se tiene <span class="math inline">\(\alpha(s) \leq \alpha(t)\)</span>. Por lo tanto, <span class="math display">\[\begin{align*}
-\int_{0}^{t} \beta(s) \alpha(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds
-\leq \alpha(t) \int_{0}^{t} \beta(s) \exp\!\left( -\int_{0}^{s} \beta(r) \, dr \right) ds\\
-=\alpha(t) \Bigl( 1 - \exp\!\left( -\int_{0}^{t} \beta(s) \, ds \right) \Bigr).
-\end{align*}\]</span> Sustituyendo en la expresión anterior para <span class="math inline">\(v(t)\)</span>, se sigue que <span class="math display">\[v(t) \leq \alpha(t) \Bigl( \exp\!\left( \int_{0}^{t} \beta(s) \, ds \right) - 1 \Bigr).\]</span> Finalmente, combinando con la desigualdad <span class="math inline">\(u(t) \leq \alpha(t) + v(t)\)</span>, obtenemos <span class="math display">\[u(t) \leq \alpha(t) + \alpha(t) \Bigl( \exp \left( \int_{0}^{t} \beta(s) \, ds \right) - 1 \Bigr)
-= \alpha(t) \exp \left( \int_{0}^{t} \beta(s), ds \right)\]</span>, lo cual concluye la demostración. El caso <span class="math inline">\(\alpha \equiv 0\)</span> se deduce inmediatamente: la desigualdad implica <span class="math inline">\(u(t) \leq 0\)</span>. Si además <span class="math inline">\(u \geq 0\)</span>, entonces <span class="math inline">\(u \equiv 0\)</span> en $[0,T]. $</p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Para cada <span class="math inline">\(m\geq1\)</span>, por subaditividad numerable, <span class="math display">\[
+\mathbb P\left(
+    \bigcup_{n=m}^{\infty}A_n
+\right)
+\leq
+\sum_{n=m}^{\infty}\mathbb P(A_n).
+\]</span></p>
+<p>Como la serie converge, sus colas tienden a cero: <span class="math display">\[
+    \lim_{m\to\infty}
+    \sum_{n=m}^{\infty}\mathbb P(A_n)=0.
+\]</span></p>
+<p>Además, los eventos <span class="math display">\[
+    B_m=\bigcup_{n=m}^{\infty}A_n
+\]</span> forman una sucesión decreciente.</p>
+<p>Por continuidad en la probabilidad desde arriba, <span class="math display">\[
+\begin{aligned}
+\mathbb P(A_n\ \text{i.o.})
+&amp;=
+\mathbb P\left(
+    \bigcap_{m=1}^{\infty}B_m
+\right)\\
+&amp;=
+\lim_{m\to\infty}\mathbb P(B_m)\\
+&amp;=0.
+\end{aligned}
+\]</span></p>
+</div>
+<div id="thm-Des_Doob" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 3.10</strong></span> Sea <span class="math inline">\(M\)</span> una martingala càdlàg con <span class="math inline">\(\mathbb E[M_t^2]&lt;\infty\)</span>. Entonces <span class="math display">\[
+  \mathbb E\Bigl[\sup_{0\le s\le t}M_s^2\Bigr]\le4\,\mathbb E[M_t^2],
+  \qquad
+  c^2\,\mathbb P\Bigl(\sup_{0\le s\le t}|M_s|\ge c\Bigr)\le
+  \mathbb E[M_t^2]\quad(c&gt;0).
+\]</span></p>
+</div>
+<div class="proof" style="text-align:justify">
+<p><span class="proof-title"><em>Demostración</em>. </span>La primera desigualdad es el caso <span class="math inline">\(p=q=2\)</span> de la desigualdad <span class="math inline">\(L^p\)</span> de Doob aplicada a la submartingala positiva <span class="math inline">\(|M|\)</span>. Para la segunda, sea <span class="math inline">\(\tau=\inf\{s:|M_s|\ge c\}\wedge t\)</span>, un tiempo de paro. Por continuidad por la derecha, <span class="math inline">\(|M_\tau|\ge c\)</span> en <span class="math inline">\(\{\sup_{s\le t}|M_s|\ge c\}\)</span> (usando <span class="math inline">\(c-\varepsilon\)</span> y haciendo <span class="math inline">\(\varepsilon\downarrow0\)</span> ). Por muestreo opcional, <span class="math inline">\(M_\tau=\mathbb E[M_t\mid\mathcal F_\tau]\)</span>, y por Jensen condicional <span class="math inline">\(M_\tau^2\le\mathbb E[M_t^2\mid\mathcal F_\tau]\)</span>. Entonces <span class="math inline">\(\mathbb E[M_t^2]\ge\mathbb E[M_\tau^2]\ge
+c^2\,\mathbb P(\sup_{s\le t}|M_s|\ge c)\)</span>.</p>
+</div>
+<div id="thm-Desigualdad_Grönwall" class="theorem">
+<p><span class="theorem-title"><strong>Teorema 3.11</strong></span> Sean <span class="math inline">\(u,\alpha:[0,T]\to[0,\infty)\)</span> funciones medibles, con <span class="math inline">\(u\)</span> integrable y <span class="math inline">\(\alpha\)</span> no decreciente.</p>
+<p>Sea <span class="math inline">\(\beta\in L^1(0,T)\)</span> una función no negativa. Supóngase que <span class="math display">\[
+    u(t)
+    \leq
+    \alpha(t)+
+    \int_0^t\beta(s)u(s)\,ds
+\]</span> para casi todo <span class="math inline">\(t\in[0,T]\)</span>.</p>
+<p>Entonces <span class="math display">\[
+    u(t)
+    \leq
+    \alpha(t)
+    \exp\left(
+        \int_0^t\beta(s)\,ds
+    \right)
+\]</span> para casi todo <span class="math inline">\(t\in[0,T]\)</span>.</p>
+</div>
+<div class="proof" style="text-align:justify">
+<p><span class="proof-title"><em>Demostración</em>. </span>Definamos <span class="math inline">\(v(t)=\int_0^t\beta(s)u(s)\,ds.\)</span> Como <span class="math inline">\(\beta u\)</span> es integrable, <span class="math inline">\(v\)</span> es absolutamente continua y <span class="math inline">\(v'(t)=\beta(t)u(t)\)</span> para casi todo <span class="math inline">\(t\in[0,T]\)</span>. Por hipótesis,$ u(t)(t)+v(t).$</p>
+<p>Como <span class="math inline">\(\beta(t)\geq0\)</span>, <span class="math display">\[
+    v'(t)
+    \leq
+    \beta(t)\bigl(\alpha(t)+v(t)\bigr)
+\]</span> para casi todo <span class="math inline">\(t\)</span>.</p>
+<p>Puesto que <span class="math inline">\(\alpha\)</span> es no decreciente, para <span class="math inline">\(0\leq s\leq t\)</span> se tiene <span class="math display">\[
+    \alpha(s)\leq\alpha(t).
+\]</span></p>
+<p>Aplicando el factor integrante <span class="math display">\[
+    \exp\left(-\int_0^t\beta(r)\,dr\right),
+\]</span> se obtiene <span class="math display">\[
+    v(t)
+    \leq
+    \alpha(t)
+    \left[
+        \exp\left(\int_0^t\beta(s)\,ds\right)-1
+    \right].
+\]</span> Por consiguiente, <span class="math display">\[
+\begin{aligned}
+u(t)
+&amp;\leq \alpha(t)+v(t)\\
+&amp;\leq
+\alpha(t)
+\exp\left(\int_0^t\beta(s)\,ds\right).
+\end{aligned}
+\]</span></p>
+</div>
+<div id="lem-Desigualdad_Grönwall_discreto" class="theorem lemma">
+<p><span class="theorem-title"><strong>Lema 3.3</strong></span> Sean <span class="math inline">\(h_0,\dots,h_{N-1}&gt;0\)</span> con <span class="math inline">\(\sum_jh_j\le T\)</span> y <span class="math inline">\(h=\max_jh_j\)</span>; <span class="math inline">\(a,b\ge0\)</span>, <span class="math inline">\(\gamma&gt;0\)</span> y <span class="math inline">\(u_0,\dots,u_N\ge0\)</span> tales que <span class="math display">\[
+  u_{n+1}\le(1+a\,h_n)\,u_n+b\,h_n^{1+\gamma},\qquad 0\le n&lt;N.
+\]</span> Entonces <span class="math inline">\(u_n\le e^{aT}\bigl(u_0+bT\,h^{\gamma}\bigr)\)</span> para todo <span class="math inline">\(0\le n\le N\)</span>.</p>
+</div>
+<div class="proof" style="text-align:justify">
+<p><span class="proof-title"><em>Demostración</em>. </span>Iterando, <span class="math inline">\(u_n\le u_0\prod_{k&lt;n}(1+ah_k)+b\sum_{j&lt;n}h_j^{1+\gamma} \prod_{k=j+1}^{n-1}(1+ah_k)\)</span>. Como <span class="math inline">\(1+x\le e^x\)</span> y <span class="math inline">\(\sum_kh_k\le T\)</span>, cada producto es <span class="math inline">\(\le e^{aT}\)</span>; además <span class="math inline">\(\sum_jh_j^{1+\gamma}\le h^{\gamma}\sum_jh_j\le Th^\gamma\)</span>.</p>
 </div>
 </section>
 <section id="sec-medida_aleatoria_poisson" class="level2" data-number="3.5">
 <h2 data-number="3.5" class="anchored" data-anchor-id="sec-medida_aleatoria_poisson"><span class="header-section-number">3.5</span> Medidas Aleatorias de Poisson.</h2>
-<div id="def-punto_absorbente" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.10</strong></span> Sea <span class="math inline">\((Z, \mathcal{B}(Z))\)</span> un espacio medible polaco o de Lusin. El punto absorbente es un elemento <span class="math inline">\(\partial \notin Z\)</span> que se añade al espacio de estados para formar:</p>
-<p><span class="math display">\[Z_\partial := Z \cup \{\partial\}.\]</span></p>
-<p>La <span class="math inline">\(\sigma\)</span>-álgebra en <span class="math inline">\(Z_\partial\)</span> se define como:</p>
-<p><span class="math display">\[\mathcal{B}(Z_\partial) := \sigma\left(\mathcal{B}(Z) \cup \{\{\partial\}\}\right).\]</span></p>
-<p>Un proceso estocástico <span class="math inline">\(\{X_t\}_{t \geq 0}\)</span> con valores en <span class="math inline">\(Z_\partial\)</span> se dice que:</p>
-<ol type="1">
-<li>Es absorbido en <span class="math inline">\(\partial\)</span> si <span class="math inline">\(X_t = \partial\)</span> para todo <span class="math inline">\(t \geq \tau\)</span>, donde <span class="math inline">\(\tau = \inf\{s &gt; 0 : X_s = \partial\}\)</span> es el tiempo de absorción,</li>
-<li>Permanece en <span class="math inline">\(\partial\)</span> una vez que llega: <span class="math inline">\(X_t = \partial \implies X_s = \partial\)</span> para todo <span class="math inline">\(s \geq t\)</span>.</li>
-</ol>
-</div>
-<div style="text-align:justify">
-<p><strong>Observación:</strong> El punto absorbente se utiliza para:</p>
-<ul>
-<li>Manejar procesos que pueden “explotar” en tiempo finito.</li>
-<li>Definir procesos de Markov con muerte.</li>
-<li>Extender funciones medibles <span class="math inline">\(f: Z \to \mathbb{R}\)</span> a <span class="math inline">\(Z_\partial\)</span> mediante <span class="math inline">\(f(\partial) = 0\)</span>.</li>
-</ul>
-<p><span class="math display">\[f(\partial) = 0, \quad \int_{\{\partial\}} g(z) \, \nu(dz) = 0, \quad \text{y} \quad \partial + z = \partial \quad \forall z \in Z_\partial.\]</span></p>
-</div>
-<div id="def-proceso_puntual" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.11</strong></span> (Proceso puntual). Sea <span class="math inline">\((Z, \mathcal{B}(Z))\)</span> un espacio de Lusin (en particular, Hausdorff y con <span class="math inline">\(\sigma\)</span>-álgebra de Borel estándar). Un proceso puntual es una aplicación medible <span class="math inline">\(p : \Omega \times (0,\infty) \to Z \cup \{\partial\}\)</span> tal que, para casi toda <span class="math inline">\(\omega \in \Omega\)</span>, el conjunto <span class="math inline">\(\{ t \in (0,T] : p(t,\omega) \in Z \}\)</span> es finito para todo <span class="math inline">\(T &gt; 0\)</span>. Se asocia a <span class="math inline">\(p\)</span> su medida de conteo <span class="math inline">\(N_p\)</span>, definida en <span class="math inline">\((0,\infty) \times Z\)</span>. Donde <span class="math inline">\(\partial\)</span> es un punto absorbente (<a href="#def-punto_absorbente" class="quarto-xref">Definición&nbsp;<span>3.10</span></a>) fuera de <span class="math inline">\(Z\)</span>.</p>
-</div>
-<div id="def-saltos_aislados" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.12</strong></span> (Saltos aislados). Sea <span class="math inline">\(p: \Omega \times (0, \infty) \to Z \cup \{\partial\}\)</span> un proceso puntual (<a href="#def-proceso_puntual" class="quarto-xref">Definición&nbsp;<span>3.11</span></a>). Decimos que <span class="math inline">\(p\)</span> tiene saltos aislados si para casi toda <span class="math inline">\(\omega \in \Omega\)</span> y todo <span class="math inline">\(T &gt; 0\)</span>, el conjunto de tiempos de salto:</p>
-<p><span class="math display">\[\mathcal{T}(\omega) \cap (0, T] := \{t \in (0, T] : p(t, \omega) \in Z\}\]</span></p>
-<p>es finito o, más generalmente, discreto sin puntos de acumulación en <span class="math inline">\((0, T]\)</span>. Esto significa que:</p>
-<ol type="1">
-<li><p>Para todo <span class="math inline">\(t \in \mathcal{T}(\omega)\)</span>, existe <span class="math inline">\(\varepsilon &gt; 0\)</span> tal que: <span class="math display">\[(t - \varepsilon, t + \varepsilon) \cap \mathcal{T}(\omega) = \{t\}.\]</span></p></li>
-<li><p>El ínfimo entre tiempos de salto consecutivos es positivo: <span class="math display">\[\inf\{t_{i+1} - t_i : t_i, t_{i+1} \in \mathcal{T}(\omega) \cap (0, T]\} &gt; 0 \quad \text{c.s.}\]</span></p></li>
-<li><p>La suma sobre saltos está bien definida: <span class="math display">\[\sum_{0 &lt; s \leq t} f(s, p(s)) = \sum_{t_i \in \mathcal{T}(\omega) \cap (0, t]} f(t_i, p(t_i)) &lt; \infty \quad \text{c.s.}\]</span></p></li>
-</ol>
-</div>
-<div id="def-2" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.13</strong></span> (Conjunto de no salto <span class="math inline">\(p^{-1}(\partial)\)</span>). Sea <span class="math inline">\(p : \Omega \times (0,\infty) \to Z \cup {\partial}\)</span> un proceso puntual de clase (QL), donde <span class="math inline">\(Z\)</span> es un espacio de Lusin y <span class="math inline">\(\partial \notin Z\)</span> es el punto absorbente (<a href="#def-punto_absorbente" class="quarto-xref">Definición&nbsp;<span>3.10</span></a>) que indica ausencia de salto, entonces <span class="math display">\[p^{-1}(\partial) = \{ (\omega, t) \in \Omega \times (0,\infty) : p(t,\omega) = \partial \}\]</span> representa el conjunto de todos los pares <span class="math inline">\((\omega, t)\)</span> en los que la trayectoria del sistema no experimenta un salto en el instante <span class="math inline">\(t\)</span>.</p>
-</div>
-<div id="def-3" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.14</strong></span> (Medida de conteo aleatoria <span class="math inline">\(N_p\)</span>). La medida de conteo aleatoria asociada a <span class="math inline">\(p\)</span>, denotada <span class="math inline">\(N_p\)</span>, es una medida aleatoria sobre el espacio producto <span class="math inline">\((0,\infty) \times Z\)</span>, definida por <span class="math display">\[N_p((0,t] \times U) := \sum_{0 &lt; s \leq t} \mathbf{1}_U(p(s)), \quad \text{para todo } U \in \mathcal{B}(Z),  t &gt; 0.\]</span></p>
-</div>
-<div style="text-align:justify">
-<p>En la anterior expresión la suma <span class="math inline">\(\sum_{0 &lt; s \leq t}\)</span> recorre todos los instantes <span class="math inline">\(s\)</span> en el intervalo <span class="math inline">\((0,t]\)</span>.</p>
-<p>Aunque hay infinitos <span class="math inline">\(s\)</span> en principio, sólo en los tiempos donde ocurre un salto (es decir, cuando <span class="math inline">\(p(s) \in Z\)</span> el término <span class="math inline">\(\mathbf{1}_U(p(s))\)</span>) puede ser distinto de cero. Gracias a la propiedad de que los saltos son aislados (<a href="#def-saltos_aislados" class="quarto-xref">Definición&nbsp;<span>3.12</span></a>), la suma es finita c.s. en cada intervalo <span class="math inline">\((0,t]\)</span>.</p>
-<p>El indicador <span class="math inline">\(\mathbf{1}_U(p(s))\)</span>, evalúa si el tamaño (o tipo) del salto en el instante <span class="math inline">\(s\)</span>, que es <span class="math inline">\(p(s) \in Z\)</span>, cae dentro del conjunto <span class="math inline">\(U \subset Z\)</span>. Si <span class="math inline">\(p(s) \in U\)</span>, el salto cuenta para <span class="math inline">\(N_p((0,t] \times U)\)</span>; si no, no se cuenta. La medida <span class="math inline">\(N_p((0,t] \times U)\)</span> es simplemente el número de saltos del proceso <span class="math inline">\(p\)</span> que ocurren hasta el tiempo <span class="math inline">\(t\)</span> y cuyo valor (localización en <span class="math inline">\(Z\)</span>) está en el conjunto <span class="math inline">\(U\)</span>.</p>
-<p>Un caso particular y muy importante de proceso puntual es el proceso puntual de Poisson estacionario.</p>
-</div>
-<div id="def-Proc_pun_poiss_esta" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.15</strong></span> (Proceso puntual de Poisson estacionario). Un proceso puntual de Poisson estacionario <span class="math inline">\(k:\Omega\times(0,\infty) \rightarrow Z\cup\{\partial\}\)</span> es un proceso puntual <span class="math inline">\(\mathcal{F}_t\)</span>-adaptado, <span class="math inline">\(\sigma\)</span> -finito y de clase (QL) (cuasi-continuo por la izquierda).</p>
-</div>
-<div style="text-align:justify">
-<p>El proceso de Poisson estacionario <span class="math inline">\(k\)</span> es un caso específico de proceso puntual que satisface propiedades adicionales (independencia, estacionariedad, distribución de Poisson). Por lo tanto, en este contexto, el proceso puntual <span class="math inline">\(p\)</span> del que hablamos en general se especializa al proceso <span class="math inline">\(k\)</span>.</p>
-</div>
-<div id="def-Espacio_topológico_Hausdorff" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.16</strong></span> (Espacio topológico Hausdorff). Sea <span class="math inline">\((Z, \tau)\)</span> un espacio topológico, es decir, <span class="math inline">\(Z\)</span> es un conjunto no vacío y <span class="math inline">\(\tau \subseteq \mathcal{P}(Z)\)</span> es una colección de subconjuntos (llamados abiertos) que satisface</p>
-<ul>
-<li><p><span class="math inline">\(\varnothing, Z \in \tau\)</span>,</p></li>
-<li><p>La unión arbitraria de elementos de <span class="math inline">\(\tau\)</span> pertenece a <span class="math inline">\(\tau\)</span>,</p></li>
-<li><p>La intersección finita de elementos de <span class="math inline">\(\tau\)</span> pertenece a <span class="math inline">\(\tau\)</span>.</p></li>
-</ul>
-<p>Se dice que <span class="math inline">\((Z, \tau)\)</span> es un espacio Hausdorff (o <span class="math inline">\(T_2\)</span>) si satisface la siguiente propiedad de separación: Para todo par de puntos distintos <span class="math inline">\(x, y \in Z\)</span>, con <span class="math inline">\(x \neq y\)</span>, existen abiertos <span class="math inline">\(U, V \in \tau\)</span> tales que: <span class="math display">\[x \in U,\quad y \in V,\quad \text{y} \quad U \cap V = \varnothing.\]</span></p>
-</div>
-<div class="callout callout-style-default callout-caution no-icon callout-titled" style="text-align: justify">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Precaución</span>Ejemplo (<strong><em>Espacio topológicoHausdorff</em></strong>)
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>El espacio <span class="math inline">\(Z= \mathbb{R}\)</span> con topología euclidiana. Es métrico, y todo espacio métrico es Hausdorff.</p>
-</div>
-</div>
-</div>
-<div id="def-Espacio_Lusin" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.17</strong></span> Un espacio de Lusin es un espacio topológico Hausdorff <span class="math inline">\(Z\)</span> que es imagen continua e inyectiva de un espacio polaco.</p>
-<ul>
-<li><p>Su <span class="math inline">\(\sigma\)</span>-álgebra de Borel es estándar (isomorfa a la de un espacio polaco).</p></li>
-<li><p>Permite la aplicación de teoremas de selección medible, teoremas de convergencia, y garantiza regularidad de medidas.</p></li>
-</ul>
-</div>
 <div id="def-med_alea_poisson" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.18</strong></span> <span class="math inline">\(N(dt,dz)\)</span>: medida aleatoria de Poisson en <span class="math inline">\(\mathbb{R}_+ \times Z\)</span>, donde <span class="math inline">\(Z\)</span> es un espacio de Lusin(<a href="#def-Espacio_Lusin" class="quarto-xref">Definición&nbsp;<span>3.17</span></a>) (e.g., <span class="math inline">\(\mathbb{R}^d \setminus \{0\}\)</span>), con medida de intensidad <span class="math inline">\(\nu(dz)dt\)</span>, y <span class="math inline">\(\nu\)</span> es una medida de Lévy, i.e., <span class="math display">\[\int_Z (1 \wedge |z|^2)\,\nu(dz) &lt; \infty.\]</span> <span class="math inline">\(\tilde{N}(dt,dz) = N(dt,dz) - \nu(dz)dt\)</span>: medida de Poisson compensada. Se asume que <span class="math inline">\(W\)</span> y <span class="math inline">\(N\)</span> son independientes entre sí y de <span class="math inline">\(\mathcal{F}_0\)</span></p>
+<p><span class="theorem-title"><strong>Definición 3.10</strong></span> Sea <span class="math inline">\((Z,\mathcal B(Z))\)</span> un espacio medible (en este trabajo <span class="math inline">\(Z\subseteq\mathbb R\)</span> con la <span class="math inline">\(\sigma\)</span>-álgebra de Borel) y <span class="math inline">\(\mu\)</span> una medida <span class="math inline">\(\sigma\)</span>-finita sobre <span class="math inline">\(\bigl((0,\infty)\times Z,
+\mathcal B((0,\infty))\otimes\mathcal B(Z)\bigr)\)</span>. Una es una aplicación <span class="math inline">\(N(\omega,C)\in\{0,1,2,\dots\}\cup\{\infty\}\)</span> tal que:</p>
+<ol type="1">
+<li>para <span class="math inline">\(\mathbb P\)</span>-casi todo <span class="math inline">\(\omega\)</span>, <span class="math inline">\(N(\omega,\cdot)\)</span> es una medida;</li>
+<li>si <span class="math inline">\(\mu(C)&lt;\infty\)</span>, entonces <span class="math inline">\(N(C)\)</span> tiene distribución de Poisson de parámetro <span class="math inline">\(\mu(C)\)</span>; si <span class="math inline">\(\mu(C)=\infty\)</span>, <span class="math inline">\(N(C)=\infty\)</span> c.s.;</li>
+<li>si <span class="math inline">\(C_1,\dots,C_k\)</span> son disjuntos, las variables <span class="math inline">\(N(C_1),\dots,N(C_k)\)</span> son independientes.</li>
+</ol>
+<p>Respecto de <span class="math inline">\(\mathbb F\)</span> se exige además que <span class="math inline">\(N((0,t]\times A)\)</span> sea <span class="math inline">\(\mathcal F_t\)</span>-medible y que <span class="math inline">\(N((s,t]\times A)\)</span> sea independiente de <span class="math inline">\(\mathcal F_s\)</span> para <span class="math inline">\(0\le s&lt;t\)</span> y <span class="math inline">\(A\in\mathcal B(Z)\)</span>. La medida compensada es <span class="math inline">\(\tilde N(C)=N(C)-\mu(C)\)</span> para los conjuntos <span class="math inline">\(C\)</span> con <span class="math inline">\(\mu(C)&lt;\infty\)</span>.</p>
 </div>
 <div id="def-1" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.19</strong></span> (Conjunto de tiempos de salto <span class="math inline">\(D_p(\omega)\)</span>). Para cada realización <span class="math inline">\(\omega \in \Omega\)</span>, se define el conjunto de tiempos de salto como: <span class="math display">\[D_p(\omega) := \left\{ t &gt; 0 : p(t, \omega) \in Z \right\}.\]</span> Este conjunto recoge todos los instantes <span class="math inline">\(t &gt; 0\)</span> en los cuales el proceso puntual <span class="math inline">\(p\)</span> registra un salto con marca en el espacio de estados <span class="math inline">\(Z\)</span>.</p>
+<p><span class="theorem-title"><strong>Definición 3.11</strong></span> (Conjunto de tiempos de salto <span class="math inline">\(D_p(\omega)\)</span>). Para cada realización <span class="math inline">\(\omega \in \Omega\)</span>, se define el conjunto de tiempos de salto como: <span class="math display">\[D_p(\omega) := \left\{ t &gt; 0 : p(t, \omega) \in Z \right\}.\]</span> Este conjunto recoge todos los instantes <span class="math inline">\(t &gt; 0\)</span> en los cuales el proceso puntual <span class="math inline">\(p\)</span> registra un salto con marca en el espacio de estados <span class="math inline">\(Z\)</span>.</p>
 </div>
 <div id="thm-orto_mo_corre" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.12</strong></span> Sean <span class="math inline">\(A, B \in \mathcal{B}([0,T]) \otimes \mathcal{B}(Z)\)</span> con <span class="math inline">\(A \cap B = \emptyset\)</span>. Entonces <span class="math display">\[\mathbb{E}\big[ \widetilde{N}(A) \, \widetilde{N}(B) \big] = 0.\]</span></p>
+<p><span class="theorem-title"><strong>Teorema 3.12</strong></span> (Covarianza de la medida compensada). Sean <span class="math inline">\(A,B\in\mathcal B((0,T])\otimes\mathcal B(Z)\)</span> con <span class="math inline">\(\mu(A)&lt;\infty\)</span> y <span class="math inline">\(\mu(B)&lt;\infty\)</span>. Entonces <span class="math inline">\(\tilde N(A),\tilde N(B)\in L^2(\mathbb P)\)</span>, <span class="math inline">\(\mathbb E[\tilde N(A)]=0\)</span> y <span class="math display">\[
+  \mathbb E\bigl[\tilde N(A)\,\tilde N(B)\bigr]=\mu(A\cap B).
+\]</span> En particular, si <span class="math inline">\(A\cap B=\emptyset\)</span> la covarianza es nula (y las variables son independientes), y <span class="math inline">\(\operatorname{Var}\tilde N(A)=\mu(A)\)</span>.</p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>Por definición de la medida compensada, <span class="math display">\[\widetilde{N}(A) = N(A) - \mu(A), \quad \widetilde{N}(B) = N(B) - \mu(B),\]</span> donde <span class="math inline">\(\mu = ds \otimes \nu\)</span>. Como <span class="math inline">\(A \cap B = \emptyset\)</span>, los incrementos <span class="math inline">\(N(A)\)</span> y <span class="math inline">\(N(B)\)</span> son independientes (propiedad de la medida de Poisson). Luego, <span class="math display">\[\mathbb{E}[N(A) N(B)] = \mathbb{E}[N(A)] \, \mathbb{E}[N(B)] = \mu(A) \mu(B).\]</span> Por lo tanto, <span class="math display">\[\mathbb{E}[\widetilde{N}(A) \widetilde{N}(B)] = \mathbb{E}[N(A)N(B)] - \mu(A)\mu(B) - \mu(B)\mathbb{E}[N(A)] + \mu(A)\mu(B) = 0. \quad \square\]</span></p>
+<p><span class="proof-title"><em>Demostración</em>. </span>Si <span class="math inline">\(P\sim\mathrm{Poi}(m)\)</span> entonces <span class="math inline">\(\mathbb E[P]=m\)</span> y <span class="math inline">\(\operatorname{Var}P=m\)</span>. Por la propiedad (2) de la @-med_alea_poisson, <span class="math inline">\(N(C)\sim\mathrm{Poi}(\mu(C))\)</span> si <span class="math inline">\(\mu(C)&lt;\infty\)</span>; luego <span class="math inline">\(\tilde N(C)=N(C)-\mu(C)\)</span> está en <span class="math inline">\(L^2\)</span>, tiene media <span class="math inline">\(0\)</span> y <span class="math inline">\(\mathbb E[\tilde N(C)^2]=\operatorname{Var}N(C)=\mu(C)\)</span>. Sean <span class="math inline">\(C_1=A\setminus B\)</span>, <span class="math inline">\(C_2=A\cap B\)</span>, <span class="math inline">\(C_3=B\setminus A\)</span>. Son disjuntos, están contenidos en <span class="math inline">\(A\)</span> o en <span class="math inline">\(B\)</span>, así que tienen medida finita, y <span class="math inline">\(A=C_1\sqcup C_2\)</span>, <span class="math inline">\(B=C_2\sqcup C_3\)</span>. Como <span class="math inline">\(N\)</span> es una medida (propiedad (i)) y <span class="math inline">\(\mu\)</span> también, <span class="math inline">\(\tilde N(A)=\tilde N(C_1)+\tilde N(C_2)\)</span> y <span class="math inline">\(\tilde N(B)=\tilde N(C_2)+\tilde N(C_3)\)</span>. Dado <span class="math display">\[
+  \mathbb E[\tilde N(A)\tilde N(B)]=\mathbb E[\tilde N(C_1)\tilde N(C_2)]
+  +\mathbb E[\tilde N(C_1)\tilde N(C_3)]+\mathbb E[\tilde N(C_2)^2]
+  +\mathbb E[\tilde N(C_2)\tilde N(C_3)].
+\]</span> Cada término está bien definido (producto de dos elementos de <span class="math inline">\(L^2\)</span>). Por la propiedad (3) de la @-med_alea_poisson, <span class="math inline">\(N(C_1),N(C_2),N(C_3)\)</span> son independientes, luego también lo son <span class="math inline">\(\tilde N(C_1),\tilde N(C_2), \tilde N(C_3)\)</span> (funciones medibles de variables independientes), y para <span class="math inline">\(i\ne j\)</span> la independencia da <span class="math inline">\(\mathbb E[\tilde N(C_i)\tilde N(C_j)]=\mathbb E[\tilde N(C_i)]\, \mathbb E[\tilde N(C_j)]=0\)</span>. El término restante vale <span class="math inline">\(\mathbb E[\tilde N(C_2)^2]=\mu(C_2)=\mu(A\cap B)\)</span>. Si <span class="math inline">\(A\cap B=\emptyset\)</span> entonces <span class="math inline">\(C_2=\emptyset\)</span> y la covarianza es <span class="math inline">\(0\)</span>; como <span class="math inline">\(N(A),N(B)\)</span> son independientes, <span class="math inline">\(\tilde N(A),\tilde N(B)\)</span> también. Con <span class="math inline">\(B=A\)</span> se obtiene <span class="math inline">\(\operatorname{Var}\tilde N(A)=\mu(A)\)</span>.</p>
 </div>
 <div id="thm-Fubinni_esperanzas" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.13</strong></span> Sea <span class="math inline">\(f : \Omega \times [0,T] \times Z \to \mathbb{R}\)</span> una función <span class="math inline">\(\mathbb{P} \otimes ds \otimes \nu\)</span>-medible. Si <span class="math inline">\(f \geq 0\)</span> ,o <span class="math inline">\(\mathbb{E}\!\left[ \int_0^T \int_Z |f(\omega,s,z)| \, \nu(dz) ds \right] &lt; \infty\)</span>, entonces <span class="math display">\[\mathbb{E}\!\left[ \int_0^T \int_Z f(\omega,s,z) \, \nu(dz) ds \right] = \int_0^T \int_Z \mathbb{E}[f(\cdot,s,z)] \, \nu(dz) ds.\]</span></p>
@@ -927,27 +962,61 @@ El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <
 <h2 data-number="3.6" class="anchored" data-anchor-id="sec-proc_predecibles"><span class="header-section-number">3.6</span> Espacios Funcionales para Procesos Predecibles.</h2>
 <section id="definición-del-espacio-l2_textpredwidetilden-y-su-norma." class="level3" data-number="3.6.1">
 <h3 data-number="3.6.1" class="anchored" data-anchor-id="definición-del-espacio-l2_textpredwidetilden-y-su-norma."><span class="header-section-number">3.6.1</span> Definición del espacio <span class="math inline">\(L^2_{\text{pred}}(\widetilde{N})\)</span> y su norma.</h3>
+<div style="text-align:justify">
+<p>Sea <span class="math inline">\((\Omega,\mathcal F,(\mathcal F_t)_{t\geq 0},\mathbb P)\)</span> un espacio de probabilidad filtrado que satisface las condiciones usuales. Denotemos por <span class="math inline">\(\mathcal P\)</span> la <span class="math inline">\(\sigma\)</span>-álgebra predecible sobre <span class="math inline">\(\Omega\times[0,T]\)</span>.</p>
+<p>Sea <span class="math inline">\((Z,\mathcal B(Z),\nu)\)</span> un espacio de medida <span class="math inline">\(\sigma\)</span>-finito. Consideramos la medida producto <span class="math display">\[
+m(d\omega,dt,dz) = \mathbb P(d\omega)\,dt\,\nu(dz).
+\]</span></p>
+<p>Definimos <span class="math display">\[
+L_{\mathrm{pred}}^2 = L^2\left( \Omega\times[0,T]\times Z,\, \mathcal P\otimes\mathcal B(Z),\, m \right).
+\]</span> Es decir, <span class="math display">\[
+L_{\mathrm{pred}}^2 = \left\{ R:\ R \text{ es } \mathcal P\otimes\mathcal B(Z)\text{-medible}, \quad \mathbb E\left[ \int_0^T\int_Z |R(t,z)|^2\nu(dz)dt \right]&lt;\infty \right\},
+\]</span> donde las funciones que coinciden <span class="math inline">\(m\)</span>-casi en todas partes se identifican. La norma y el producto interno son <span class="math display">\[
+\|R\|_{L_{\mathrm{pred}}^2}^2 = \mathbb E\left[ \int_0^T\int_Z |R(t,z)|^2\nu(dz)dt \right],
+\]</span> y <span class="math display">\[ \langle R,S\rangle = \mathbb E\left[ \int_0^T\int_Z R(t,z)S(t,z)\nu(dz)dt \right].
+\]</span></p>
+</div>
 <div id="thm-den_esp_pro_simp_prede_L2" class="theorem">
-<p><span class="theorem-title"><strong>Teorema 3.14</strong></span> El conjunto <span class="math inline">\(\mathcal{E}\)</span> de procesos elementales simples predecibles es denso en el espacio de Hilbert</p>
-<p><span class="math display">\[L^2_{\text{pred}}(\widetilde{N}) := \left\{ R : \mathbb{E}\!\left[ \int_0^T \int_Z R(s,z)^2 \, \nu(dz) ds \right] &lt; \infty \right\}\]</span> dotado de la norma <span class="math display">\[\|R\| := \left( \mathbb{E}\!\left[ \int_0^T \int_Z R(s,z)^2 \, \nu(dz) ds \right] \right)^{1/2}.\]</span></p>
+<p><span class="theorem-title"><strong>Teorema 3.14</strong></span> Supongamos que <span class="math inline">\(\nu\)</span> es <span class="math inline">\(\sigma\)</span>-finita. Entonces el conjunto de procesos elementales predecibles con soporte de medida finita en la variable de marcas es denso en <span class="math inline">\(L {\mathrm{pred}}^2\)</span>.</p>
 </div>
 <div class="proof" style="text-align:justify">
-<p><span class="proof-title"><em>Demostración</em>. </span>Sea <span class="math inline">\(R \in L^2_{\text{pred}}(\widetilde{N})\)</span>. Por el resultado anterior, existe una sucesión de funciones simples <span class="math inline">\(\phi_n\)</span> (no necesariamente predecibles) tal que <span class="math inline">\(\|\phi_n - R\| \to 0\)</span>.</p>
-<p>Cada <span class="math inline">\(\phi_n\)</span> es <span class="math inline">\(\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z)\)</span>-medible. Dado que la <span class="math inline">\(\sigma\)</span>-álgebra predecible <span class="math inline">\(\mathcal{P}\)</span> es generada por procesos adaptados y càglàd, y la filtración satisface las condiciones usuales, el espacio <span class="math inline">\(L^2(\mathcal{P} \otimes \mathcal{B}(Z))\)</span> es un subespacio cerrado de <span class="math inline">\(L^2(\mathcal{F} \otimes \mathcal{B}([0,T]) \otimes \mathcal{B}(Z))\)</span>.</p>
-<p>Existe, por tanto, una proyección ortogonal de <span class="math inline">\(\phi_n\)</span> sobre este subespacio, sin embargo, basta observar que cualquier función simple puede aproximarse por funciones simples <span class="math inline">\(\mathcal{P} \otimes \mathcal{B}(Z)\)</span>-medibles <span class="citation" data-cites="applebaum2009levy">(<a href="references.html#ref-applebaum2009levy" role="doc-biblioref">Applebaum 2009</a>)</span> más explícitamente, uno puede refinar la partición de <span class="math inline">\([0,T]\)</span> y usar funciones constantes en intervalos <span class="math inline">\((t_{i-1}, t_i]\)</span> con coeficientes <span class="math inline">\(\mathcal{F}_{t_{i-1}}\)</span>-medibles. Esto define una sucesión <span class="math inline">\(\{R_n\} \subset \mathcal{E}\)</span> tal que <span class="math inline">\(\|R_n - R\| \to 0. \quad \square\)</span></p>
+<p><span class="proof-title"><em>Demostración</em>. </span>La <span class="math inline">\(\sigma\)</span>-álgebra predecible <span class="math inline">\(\mathcal P\)</span> está generada por los conjuntos de la forma <span class="math display">\[
+A\times(s,t],
+\qquad A\in\mathcal F_s,
+\]</span> junto con los conjuntos de tiempo inicial <span class="math inline">\(A_0\times\{0\}\)</span>, donde <span class="math inline">\(A_0\in\mathcal F_0\)</span>. Como <span class="math inline">\(\nu\)</span> es <span class="math inline">\(\sigma\)</span>-finita, existe una sucesión <span class="math inline">\((Z_j)_{j\geq1}\)</span> de conjuntos medibles tal que <span class="math display">\[
+Z_j\uparrow Z,
+\qquad \nu(Z_j)&lt;\infty.
+\]</span></p>
+<p>Consideremos la familia de rectángulos medibles <span class="math display">\[
+C=A\times(s,t]\times B,
+\]</span> donde <span class="math display">\[
+A\in\mathcal F_s,\qquad
+B\in\mathcal B(Z),\qquad
+\nu(B)&lt;\infty.
+\]</span></p>
+<p>Los indicadores de estos conjuntos son procesos elementales predecibles y pertenecen a <span class="math inline">\(L_{\mathrm{pred}}^2\)</span> cuando <span class="math display">\[
+\mathbb P(A)(t-s)\nu(B)&lt;\infty.
+\]</span></p>
+<p>La familia de estos rectángulos genera <span class="math inline">\(\mathcal P\otimes\mathcal B(Z)\)</span>, después de restringir a una sucesión creciente de conjuntos de medida finita. Por el teorema de aproximación de funciones medibles por funciones simples en espacios de medida <span class="math inline">\(\sigma\)</span>-finitos, las combinaciones lineales finitas de dichos indicadores son densas en <span class="math display">\[
+L^2(\mathcal P\otimes\mathcal B(Z),m).
+\]</span></p>
+<p>Por consiguiente, para cada <span class="math inline">\(R\in L_{\mathrm{pred}}^2\)</span> existe una sucesión <span class="math inline">\((R_n)\)</span> de procesos elementales predecibles tal que <span class="math display">\[
+\|R_n-R\|_{L_{\mathrm{pred}}^2}
+\longrightarrow 0.
+\]</span> Esto demuestra la densidad. <span class="math inline">\(\quad \square\)</span></p>
 </div>
 </section>
 </section>
 <section id="sec-Ito" class="level2" data-number="3.7">
 <h2 data-number="3.7" class="anchored" data-anchor-id="sec-Ito"><span class="header-section-number">3.7</span> La Integral de Itô para Movimiento Browniano.</h2>
 <div id="def-procesp_Simple" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.20</strong></span> Sea <span class="math inline">\(0 = t_0 &lt; t_1 &lt; \cdots &lt; t_n = T\)</span> una partición finita de <span class="math inline">\([0,T]\)</span>. Un proceso simple es un proceso de la forma <span class="math display">\[X_t(\omega) = \sum_{k=0}^{n-1} X^{(k)}(\omega) \, \mathbf{1}_{[t_k, t_{k+1})}(t),\]</span> donde cada <span class="math inline">\(X^{(k)}\)</span> es una variable aleatoria <span class="math inline">\(\mathcal{F}_{t_k}\)</span>-medible y cuadrado integrable.</p>
+<p><span class="theorem-title"><strong>Definición 3.12</strong></span> Sea <span class="math inline">\(0 = t_0 &lt; t_1 &lt; \cdots &lt; t_n = T\)</span> una partición finita de <span class="math inline">\([0,T]\)</span>. Un proceso simple es un proceso de la forma <span class="math display">\[X_t(\omega) = \sum_{k=0}^{n-1} X^{(k)}(\omega) \, \mathbf{1}_{[t_k, t_{k+1})}(t),\]</span> donde cada <span class="math inline">\(X^{(k)}\)</span> es una variable aleatoria <span class="math inline">\(\mathcal{F}_{t_k}\)</span>-medible y cuadrado integrable.</p>
 </div>
 <div style="text-align:justify">
 <p>Denotaremos por <span class="math inline">\(\mathcal{H}_{\text{simple}}\)</span> al espacio de todos los procesos simples</p>
 </div>
 <div id="def-int_ito_proc_simples" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.21</strong></span> Sea <span class="math inline">\(X\)</span> un proceso simple. La integral estocástica de Itô de <span class="math inline">\(X\)</span> respecto a <span class="math inline">\(\{B_t\}\)</span> se define como <span class="math display">\[\int_0^T X_s \, dB_s := \sum_{k=0}^{n-1} X^{(k)} \bigl( B_{t_{k+1}} - B_{t_k} \bigr).\]</span></p>
+<p><span class="theorem-title"><strong>Definición 3.13</strong></span> Sea <span class="math inline">\(X\)</span> un proceso simple. La integral estocástica de Itô de <span class="math inline">\(X\)</span> respecto a <span class="math inline">\(\{B_t\}\)</span> se define como <span class="math display">\[\int_0^T X_s \, dB_s := \sum_{k=0}^{n-1} X^{(k)} \bigl( B_{t_{k+1}} - B_{t_k} \bigr).\]</span></p>
 </div>
 <div id="thm-isometria_ito_proc_simples" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.15</strong></span> (Isometría de Itô para procesos simples). Para todo <span class="math inline">\(X \in \mathcal{H}_{\text{simple}}\)</span> se cumple <span class="math display">\[\mathbb{E} \left[ \left( \int_0^T X_s \, dB_s \right)^2 \right] = \mathbb{E} \left[ \int_0^T X_s^2 \, ds \right].\]</span></p>
@@ -959,7 +1028,7 @@ El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <
 <p>Dado que <span class="math inline">\(\mathcal{H}_{\text{simple}}\)</span> es denso en <span class="math inline">\(\mathcal{H}^2\)</span>, para cualquier <span class="math inline">\(X \in \mathcal{H}^2\)</span> existe una sucesión <span class="math inline">\(\{X^{(n)}\} \subset \mathcal{H}_{\text{simple}}\)</span> tal que <span class="math display">\[\|X^{(n)} - X\|_{L^2(\mathbb{P} \times dt)} \xrightarrow[n \to \infty]{} 0.\]</span> La Isometría de Itô implica que <span class="math inline">\(\{I(X^{(n)})\}\)</span> es una sucesión de Cauchy en <span class="math inline">\(L^2(\mathbb{P})\)</span>, y por la completitud de este espacio, converge en media cuadrática.</p>
 </div>
 <div id="def-integral_ito_H2" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.22</strong></span> Sea <span class="math inline">\(X \in \mathcal{H}^2\)</span> y <span class="math inline">\(\{X^{(n)}\} \subset \mathcal{H}_{\text{simple}}\)</span> tal que <span class="math inline">\(X^{(n)} \to X\)</span> en <span class="math inline">\(L^2(\mathbb{P} \times dt)\)</span>. Se define <span class="math display">\[\int_0^T X_s \, dB_s := \lim_{n \to \infty} \int_0^T X^{(n)}_s \, dB_s,\]</span> donde el límite se entiende en <span class="math inline">\(L^2(\mathbb{P})\)</span>. Esta definición es independiente de la sucesión aproximante.</p>
+<p><span class="theorem-title"><strong>Definición 3.14</strong></span> Sea <span class="math inline">\(X \in \mathcal{H}^2\)</span> y <span class="math inline">\(\{X^{(n)}\} \subset \mathcal{H}_{\text{simple}}\)</span> tal que <span class="math inline">\(X^{(n)} \to X\)</span> en <span class="math inline">\(L^2(\mathbb{P} \times dt)\)</span>. Se define <span class="math display">\[\int_0^T X_s \, dB_s := \lim_{n \to \infty} \int_0^T X^{(n)}_s \, dB_s,\]</span> donde el límite se entiende en <span class="math inline">\(L^2(\mathbb{P})\)</span>. Esta definición es independiente de la sucesión aproximante.</p>
 </div>
 <div id="thm-isometria_ito_H2" class="theorem">
 <p><span class="theorem-title"><strong>Teorema 3.16</strong></span> Para todo <span class="math inline">\(X \in \mathcal{H}^2\)</span> se cumple <span class="math display">\[ \mathbb{E} \left[ \left( \int_0^T X_s \, dB_s \right)^2 \right] = \mathbb{E} \left[ \int_0^T X_s^2 \, ds \right].\]</span> Además, <span class="math display">\[ \mathbb{E} \left[ \int_0^T X_s \, dB_s \right] = 0.\]</span></p>
@@ -1016,7 +1085,7 @@ El proceso <span class="math inline">\(W\)</span> es adaptado a la filtración <
 <section id="variación-cuadrática-y-desigualdades-de-martingalas" class="level2" data-number="3.10">
 <h2 data-number="3.10" class="anchored" data-anchor-id="variación-cuadrática-y-desigualdades-de-martingalas"><span class="header-section-number">3.10</span> Variación Cuadrática y Desigualdades de Martingalas</h2>
 <div id="def-variacion_cuadratica" class="theorem definition">
-<p><span class="theorem-title"><strong>Definición 3.23</strong></span> Sean <span class="math inline">\(M = \{M_t\}_{t \geq 0}\)</span> una martingala local continua (como se asume en la desigualdad Burkholder-Davis-Gundy). La variación cuadrática se denota <span class="math inline">\([M]_t\)</span> y se define como el límite en probabilidad de sumas de cuadrados de incrementos sobre particiones que se refinan <span class="math display">\[[M]_t = \lim_{|\Pi| \to 0} \sum_{i} (M_{t_{i+1}} - M_{t_i})^2,\]</span> donde <span class="math inline">\(\Pi = \{0 = t_0 &lt; t_1 &lt; \cdots &lt; t_n = t\}\)</span>.</p>
+<p><span class="theorem-title"><strong>Definición 3.15</strong></span> Sean <span class="math inline">\(M = \{M_t\}_{t \geq 0}\)</span> una martingala local continua (como se asume en la desigualdad Burkholder-Davis-Gundy). La variación cuadrática se denota <span class="math inline">\([M]_t\)</span> y se define como el límite en probabilidad de sumas de cuadrados de incrementos sobre particiones que se refinan <span class="math display">\[[M]_t = \lim_{|\Pi| \to 0} \sum_{i} (M_{t_{i+1}} - M_{t_i})^2,\]</span> donde <span class="math inline">\(\Pi = \{0 = t_0 &lt; t_1 &lt; \cdots &lt; t_n = t\}\)</span>.</p>
 <p>Cuando <span class="math inline">\(M\)</span> es una martingala local continua, se tiene que <span class="math inline">\([M]\)</span> es un proceso continuo, creciente y adaptado, pero no necesariamente previsible. La variación cuadrática previsible, denotada <span class="math inline">\(\langle M \rangle\)</span>, es el único proceso creciente, continuo y previsible tal que <span class="math display">\[M_t^2 - \langle M \rangle_{t}\]</span> es una martingala local.</p>
 </div>
 <div id="thm-des_martingalas_espacios_hilbert" class="theorem">
